@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – Users</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/admin/admin-users.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+  <div class="main">
+    <div id="hs-topbar"></div>
+    <div class="content">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Users</h1>
+          <p class="page-sub">Manage buyers and sellers — review verification requests and account status.</p>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <div class="filter-tabs" id="filterTabs">
+          <button class="filter-tab active" data-filter="all">All</button>
+          <button class="filter-tab" data-filter="buyer">Buyers</button>
+          <button class="filter-tab" data-filter="seller">Sellers</button>
+          <button class="filter-tab" data-filter="pending">Pending Verification</button>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-card">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>MOA</th>
+              <th>Joined</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="usersBody"></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Verification Modal -->
+<div class="modal-backdrop" id="verifModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="verif-name"></div>
+        <div class="modal-sub" id="verif-email"></div>
+      </div>
+      <button class="modal-close-btn" onclick="closeVerifModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="verif-body"></div>
+    <div class="modal-footer" id="verif-footer"></div>
+  </div>
+</div>
+
+<!-- Verif Reject Reason Modal -->
+<div class="modal-backdrop" id="verifRejectModal" style="display:none">
+  <div class="modal reject-modal">
+    <div class="reject-modal-header">
+      <div class="reject-modal-title">Reject Verification</div>
+      <button class="reject-close-btn" onclick="closeVerifRejectModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="reject-modal-body">
+      <p class="reject-modal-sub">Select a reason for rejection. The seller will see this message and know what to fix.</p>
+      <div class="reject-reasons" id="verifRejectReasons"></div>
+      <div class="reject-custom-wrap">
+        <label class="reject-custom-label">Or write a custom reason</label>
+        <textarea id="verifRejectCustom" class="reject-textarea" placeholder="e.g. The submitted ID does not match the name on the TCT…" rows="3"></textarea>
+      </div>
+    </div>
+    <div class="reject-modal-footer">
+      <button class="btn-modal close" onclick="closeVerifRejectModal()">Cancel</button>
+      <button class="btn-modal reject" onclick="confirmVerifReject()">Confirm Rejection</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toastMsg"></span>
+</div>
+
+<script src="../../assets/js/fake-data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/admin/admin-users.js"></script>
+</body>
+</html>

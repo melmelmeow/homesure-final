@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – Messages</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/buyer/buyer-messages.css" />
+  <link rel="stylesheet" href="../../assets/css/payment-modal.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+  <div class="main">
+    <div id="hs-topbar"></div>
+    <div class="content">
+      <div class="messages-layout">
+
+        <!-- ── Conversation list ── -->
+        <div class="conv-panel">
+          <div class="conv-top">
+            <div class="conv-title">Messages</div>
+            <div class="conv-search-wrap">
+              <span class="conv-search-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              </span>
+              <input class="conv-search" id="convSearch" placeholder="Search conversations..." oninput="filterConvs()" />
+            </div>
+          </div>
+          <div class="conv-list" id="convList">
+            <!-- Conversations will be loaded by JavaScript -->
+          </div>
+        </div>
+
+        <!-- ── Chat area ── -->
+        <div class="chat-panel" id="chatPanel">
+          <!-- Chat Header -->
+          <div class="chat-header">
+            <!-- Back button for mobile -->
+            <button class="chat-back-btn" onclick="window.closeChat()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <div class="chat-header-info">
+              <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=400&q=80" alt="Property" class="chat-avatar" />
+              <div>
+                <div class="chat-name">1-Bedroom Apartment</div>
+                <div class="chat-seller">Juan Santos · Verified Seller</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chat Messages -->
+          <div class="chat-messages" id="chatMessages">
+            <!-- Buyer Message -->
+            <div class="msg-row buyer">
+              <div class="msg-bubble">Hi! I'm interested in this apartment. Is it still available?</div>
+              <div class="msg-time">9:15 AM</div>
+            </div>
+
+            <!-- Seller Message -->
+            <div class="msg-row seller">
+              <div class="msg-bubble">Hello! Thank you for your interest. Yes, the unit is still available.</div>
+              <div class="msg-time">9:45 AM</div>
+            </div>
+
+            <!-- Buyer Message -->
+            <div class="msg-row buyer">
+              <div class="msg-bubble">Great! Can I schedule a viewing this weekend?</div>
+              <div class="msg-time">10:00 AM</div>
+            </div>
+
+            <!-- Seller Message -->
+            <div class="msg-row seller">
+              <div class="msg-bubble">Sure! Saturday or Sunday works for me. What time do you prefer?</div>
+              <div class="msg-time">10:05 AM</div>
+            </div>
+
+            <!-- Seller Message -->
+            <div class="msg-row seller">
+              <div class="msg-bubble">We have agreed on ₱15,000/month. Here is your payment request for June:</div>
+              <div class="msg-time">10:08 AM</div>
+            </div>
+
+            <!-- Payment Request Card ANO BANG MALIII AYAW GUMANA WARAHIL-->
+            <div class="msg-row seller">
+              <div class="payment-request-card">
+                <div class="pr-header">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                  Payment Request
+                  <span class="pr-status pr-status-pending">Awaiting Payment</span>
+                </div>
+                <div class="pr-property">1-Bedroom Apartment for Rent near Town Proper</div>
+                <div class="pr-period">Period: June 2026</div>
+                <div class="pr-amount">₱15,000</div>
+                <div class="pr-methods">
+                  <span class="pr-method-pill pr-gcash">
+                    <svg viewBox="0 0 24 24" width="16" height="16"><rect width="24" height="24" rx="4" fill="#007DFF"/><text x="12" y="16" text-anchor="middle" fill="white" font-size="10" font-weight="bold">G</text></svg>
+                    GCash
+                  </span>
+                  <span class="pr-method-pill pr-maya">
+                    <svg viewBox="0 0 24 24" width="16" height="16"><rect width="24" height="24" rx="4" fill="#4CAF50"/><text x="12" y="16" text-anchor="middle" fill="white" font-size="9" font-weight="bold">M</text></svg>
+                    Maya
+                  </span>
+                  <span class="pr-method-pill pr-bank">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9h18M3 15h18M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                    Bank Transfer
+                  </span>
+                </div>
+                <div class="pr-action">
+                  <button class="pr-pay-btn" onclick="payFromChat('c1', 'PR-001')">Pay Now →</button>
+                </div>
+              </div>
+              <div class="msg-time">10:08 AM</div>
+            </div>
+          </div>
+
+          <!-- Chat Input -->
+          <div class="chat-input-area">
+            <input class="chat-input" placeholder="Type a message..." />
+            <button class="chat-send-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════════
+     OLD PAYMENT MODAL - DISABLED (Now using QRPH)
+     ══════════════════════════════════════════════════════════════════════════════
+<div id="chatPayModal" style="display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)window.closeChatPayModal()">
+  <div style="background:#253347;border:1px solid rgba(255,255,255,0.08);border-radius:18px;width:100%;max-width:480px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;animation:fadeUp .22s ease both;">
+
+    <!-- Header -->
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:20px 22px 16px;border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0;">
+      <div>
+        <div style="font-size:16px;font-weight:800;color:#f1f5f9;">Pay Rent</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:3px;">
+          <span id="chatPayProperty"></span> &nbsp;·&nbsp; <span id="chatPayPeriod"></span> &nbsp;·&nbsp; <strong style="color:#00c9a7" id="chatPayAmount"></strong>
+        </div>
+      </div>
+      <button onclick="window.closeChatPayModal()" style="background:rgba(255,255,255,0.06);border:none;border-radius:8px;width:30px;height:30px;cursor:pointer;color:rgba(255,255,255,0.5);display:flex;align-items:center;justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div style="padding:20px 22px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:14px;">
+
+      <!-- Step 1: Method selection -->
+      <div id="chatPayStep1">
+        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.38);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;">Payment Methods</div>
+
+        <!-- Row 1: GCash, Maya, Card -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px;">
+          <button class="chat-method-card" id="cmc-gcash" onclick="window.selectChatMethod('gcash')">
+            <div style="width:36px;height:36px;margin-bottom:6px;background:#007DFF;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+              <span style="color:white;font-size:18px;font-weight:900;">G</span>
+            </div>
+            <div style="font-size:12px;font-weight:800;">GCash</div>
+          </button>
+          <button class="chat-method-card" id="cmc-maya" onclick="window.selectChatMethod('maya')">
+            <div style="width:36px;height:36px;margin-bottom:6px;background:#4CAF50;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+              <span style="color:white;font-size:17px;font-weight:900;">M</span>
+            </div>
+            <div style="font-size:12px;font-weight:800;">Maya</div>
+          </button>
+          <button class="chat-method-card" id="cmc-card" onclick="window.selectChatMethod('card')">
+            <div style="width:36px;height:36px;margin-bottom:6px;background:#6366F1;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="white" stroke-width="2">
+                <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+              </svg>
+            </div>
+            <div style="font-size:12px;font-weight:800;">Card</div>
+          </button>
+        </div>
+
+        <!-- Row 2: Bank, More -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <button class="chat-method-card" id="cmc-bank" onclick="window.selectChatMethod('bank')">
+            <div style="width:36px;height:36px;margin-bottom:6px;background:#374151;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="white" stroke-width="2">
+                <path d="M3 21h18M3 10h18M5 6l7-3 7 3M6 10v11M10 10v11M14 10v11M18 10v11"/>
+              </svg>
+            </div>
+            <div style="font-size:12px;font-weight:800;">Bank Transfer</div>
+          </button>
+          <button class="chat-method-card" id="cmc-more" onclick="window.selectChatMethod('more')">
+            <div style="width:36px;height:36px;margin-bottom:6px;background:#64748B;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="white" stroke-width="2">
+                <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
+              </svg>
+            </div>
+            <div style="font-size:12px;font-weight:800;">More</div>
+          </button>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:10px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.07);margin-top:16px;">
+          <button onclick="window.closeChatPayModal()" style="background:transparent;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 20px;color:rgba(255,255,255,0.6);font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;">Cancel</button>
+          <button id="chatNextBtn" onclick="window.chatGoToProof()" disabled style="background:#00c9a7;border:none;border-radius:10px;padding:10px 22px;color:#fff;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;opacity:0.5;transition:opacity .18s;">
+            Continue to Payment
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: QR Code (GCash/Maya) -->
+      <div id="chatPayStep2QR" style="display:none;">
+        <div style="text-align:center;">
+          <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(0,201,167,0.1);border:1px solid rgba(0,201,167,0.25);border-radius:100px;padding:5px 14px;font-size:12px;font-weight:700;color:#00c9a7;margin-bottom:20px;">
+            Paying via <span id="chatQRMethod"></span>
+          </div>
+
+          <div style="background:#fff;padding:20px;border-radius:16px;margin:0 auto 20px;width:fit-content;">
+            <div id="qrCodeDisplay" style="width:200px;height:200px;background:#f5f5f5;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:80px;">
+              📱
+            </div>
+          </div>
+
+          <p style="font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:16px;">Scan QR code with your <span id="qrAppName"></span> app</p>
+
+          <!-- OR Divider -->
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+            <div style="flex:1;height:1px;background:rgba(255,255,255,0.1);"></div>
+            <span style="font-size:11px;color:rgba(255,255,255,0.4);font-weight:600;">OR</span>
+            <div style="flex:1;height:1px;background:rgba(255,255,255,0.1);"></div>
+          </div>
+
+          <!-- Open in App Button -->
+          <button id="openInAppBtn" onclick="window.openInApp()" style="width:100%;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-radius:12px;padding:14px 20px;color:#f1f5f9;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;margin-bottom:20px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;">
+            <span>Open in <span id="appNameBtn"></span> App</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+
+          <div id="qrWaiting" style="display:none;padding:12px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.25);border-radius:10px;margin-bottom:16px;">
+            <div style="display:flex;align-items:center;gap:8px;justify-content:center;">
+              <div class="spinner" style="width:16px;height:16px;border:2px solid rgba(251,191,36,0.3);border-top-color:#fbbf24;border-radius:50%;animation:spin 1s linear infinite;"></div>
+              <span style="font-size:12px;color:#fbbf24;font-weight:600;">Waiting for payment...</span>
+            </div>
+          </div>
+
+          <div id="qrSuccess" style="display:none;padding:12px;background:rgba(0,201,167,0.1);border:1px solid rgba(0,201,167,0.25);border-radius:10px;margin-bottom:16px;">
+            <div style="display:flex;align-items:center;gap:8px;justify-content:center;">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#00c9a7" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              <span style="font-size:12px;color:#00c9a7;font-weight:600;">Payment confirmed!</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:center;gap:10px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.07);">
+          <button onclick="window.backToMethodSelect()" style="background:transparent;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 20px;color:rgba(255,255,255,0.6);font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;">← Back</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Card Payment Form -->
+      <div id="chatPayStep2Card" style="display:none;">
+        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.38);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px;">Card Details</div>
+
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div>
+            <label style="font-size:11.5px;color:rgba(255,255,255,0.5);font-weight:600;display:block;margin-bottom:6px;">Card Number</label>
+            <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" style="width:100%;background:#2c3d55;border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;color:#f1f5f9;font-family:inherit;font-size:13.5px;outline:none;" />
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div>
+              <label style="font-size:11.5px;color:rgba(255,255,255,0.5);font-weight:600;display:block;margin-bottom:6px;">Expiry Date</label>
+              <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5" style="width:100%;background:#2c3d55;border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;color:#f1f5f9;font-family:inherit;font-size:13.5px;outline:none;" />
+            </div>
+            <div>
+              <label style="font-size:11.5px;color:rgba(255,255,255,0.5);font-weight:600;display:block;margin-bottom:6px;">CVV</label>
+              <input type="text" id="cardCVV" placeholder="123" maxlength="3" style="width:100%;background:#2c3d55;border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;color:#f1f5f9;font-family:inherit;font-size:13.5px;outline:none;" />
+            </div>
+          </div>
+
+          <div>
+            <label style="font-size:11.5px;color:rgba(255,255,255,0.5);font-weight:600;display:block;margin-bottom:6px;">Cardholder Name</label>
+            <input type="text" id="cardName" placeholder="JUAN DELA CRUZ" style="width:100%;background:#2c3d55;border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;color:#f1f5f9;font-family:inherit;font-size:13.5px;text-transform:uppercase;outline:none;" />
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;gap:10px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.07);margin-top:16px;">
+          <button onclick="window.backToMethodSelect()" style="background:transparent;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 20px;color:rgba(255,255,255,0.6);font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;">← Back</button>
+          <button onclick="window.processCardPayment()" style="background:#00c9a7;border:none;border-radius:10px;padding:10px 22px;color:#fff;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;">
+            Pay Now
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Bank Transfer -->
+      <div id="chatPayStep2Bank" style="display:none;">
+        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.38);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px;">Select Your Bank</div>
+
+        <div style="display:grid;gap:8px;margin-bottom:16px;">
+          <button onclick="window.selectBank('bpi')" class="bank-option" style="background:#2c3d55;border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;color:#f1f5f9;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;text-align:left;transition:all .18s;display:flex;align-items:center;gap:10px;">
+            <div style="width:32px;height:32px;background:#e63946;border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:12px;">BPI</div>
+            Bank of the Philippine Islands
+          </button>
+          <button onclick="window.selectBank('bdo')" class="bank-option" style="background:#2c3d55;border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;color:#f1f5f9;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;text-align:left;transition:all .18s;display:flex;align-items:center;gap:10px;">
+            <div style="width:32px;height:32px;background:#003d82;border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:12px;">BDO</div>
+            Banco de Oro
+          </button>
+          <button onclick="window.selectBank('metrobank')" class="bank-option" style="background:#2c3d55;border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;color:#f1f5f9;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;text-align:left;transition:all .18s;display:flex;align-items:center;gap:10px;">
+            <div style="width:32px;height:32px;background:#d4af37;border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:10px;">MB</div>
+            Metrobank
+          </button>
+        </div>
+
+        <div style="display:flex;justify-content:flex-start;padding-top:18px;border-top:1px solid rgba(255,255,255,0.07);">
+          <button onclick="window.backToMethodSelect()" style="background:transparent;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 20px;color:rgba(255,255,255,0.6);font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;">← Back</button>
+        </div>
+      </div>
+
+      <!-- Step 2: More Options -->
+      <div id="chatPayStep2More" style="display:none;">
+        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.38);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px;">Other Payment Methods</div>
+
+        <div style="display:grid;gap:8px;margin-bottom:16px;">
+          <button onclick="window.showNotif('GrabPay coming soon!')" class="more-option" style="background:#2c3d55;border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;color:rgba(255,255,255,0.5);font-family:inherit;font-size:13px;font-weight:600;cursor:not-allowed;text-align:left;display:flex;align-items:center;gap:10px;opacity:0.6;">
+            <div style="width:32px;height:32px;background:#00b14f;border-radius:6px;"></div>
+            GrabPay
+          </button>
+          <button onclick="window.showNotif('ShopeePay coming soon!')" class="more-option" style="background:#2c3d55;border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;color:rgba(255,255,255,0.5);font-family:inherit;font-size:13px;font-weight:600;cursor:not-allowed;text-align:left;display:flex;align-items:center;gap:10px;opacity:0.6;">
+            <div style="width:32px;height:32px;background:#ee4d2d;border-radius:6px;"></div>
+            ShopeePay
+          </button>
+          <button onclick="window.showNotif('PayPal coming soon!')" class="more-option" style="background:#2c3d55;border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 14px;color:rgba(255,255,255,0.5);font-family:inherit;font-size:13px;font-weight:600;cursor:not-allowed;text-align:left;display:flex;align-items:center;gap:10px;opacity:0.6;">
+            <div style="width:32px;height:32px;background:#003087;border-radius:6px;"></div>
+            PayPal
+          </button>
+          <div style="padding:12px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:10px;margin-top:8px;">
+            <p style="font-size:11.5px;color:rgba(251,191,36,0.9);font-weight:600;text-align:center;">💡 Coming soon! More payment options will be available.</p>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:flex-start;padding-top:18px;border-top:1px solid rgba(255,255,255,0.07);">
+          <button onclick="window.backToMethodSelect()" style="background:transparent;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 20px;color:rgba(255,255,255,0.6);font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;">← Back</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+────────────────────────────────────────────────────────────────────────────── -->
+
+<style>
+  .chat-method-card {
+    background: #2c3d55; border: 2px solid rgba(255,255,255,0.07);
+    border-radius: 12px; padding: 14px 12px; cursor: pointer;
+    text-align: left; display: flex; flex-direction: column;
+    font-family: inherit; color: #f1f5f9;
+    transition: border-color .18s, background .18s, transform .14s;
+  }
+  .chat-method-card:hover { border-color: rgba(255,255,255,0.18); transform: translateY(-2px); }
+  .chat-method-card.selected {
+    border-color: #00c9a7 !important;
+    background: rgba(0,201,167,0.15) !important;
+    box-shadow: 0 0 0 1px #00c9a7;
+    transform: scale(1.02);
+  }
+  #chatNextBtn:not([disabled]) { opacity: 1; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Custom Notification Toast */
+  .custom-notif {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #00c9a7 0%, #00a88a 100%);
+    color: white;
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,201,167,0.4), 0 2px 8px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 9999;
+    min-width: 300px;
+    animation: slideInRight 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+  .custom-notif.hiding {
+    animation: slideOutRight 0.3s ease-in forwards;
+  }
+  .custom-notif-icon {
+    width: 24px;
+    height: 24px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  @keyframes slideInRight {
+    from {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  @keyframes slideOutRight {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  console.log('✓✓✓ Payment script loaded!');
+  let selectedMethod = null;
+
+  // Open chat function (for mobile + desktop)
+  window.openChat = function(chatId) {
+    console.log('✓ Opening chat:', chatId);
+
+    // Mark conversation as active
+    document.querySelectorAll('.conv-item').forEach(item => item.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+
+    // On mobile, slide in the chat panel
+    const messagesLayout = document.querySelector('.messages-layout');
+    if (messagesLayout) {
+      messagesLayout.classList.add('chat-open');
+    }
+
+    // Remove unread badge
+    const badge = event.currentTarget.querySelector('.conv-badge');
+    if (badge) {
+      badge.style.display = 'none';
+    }
+  };
+
+  // Close chat (back button on mobile)
+  window.closeChat = function() {
+    const messagesLayout = document.querySelector('.messages-layout');
+    if (messagesLayout) {
+      messagesLayout.classList.remove('chat-open');
+    }
+  };
+
+  // Custom notification function
+  window.showNotif = function(message, duration = 3000) {
+    const notif = document.createElement('div');
+    notif.className = 'custom-notif';
+    notif.innerHTML = `
+      <div class="custom-notif-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" width="14" height="14">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <div>${message}</div>
+    `;
+    document.body.appendChild(notif);
+
+    setTimeout(() => {
+      notif.classList.add('hiding');
+      setTimeout(() => notif.remove(), 300);
+    }, duration);
+  };
+
+  /* ══════════════════════════════════════════════════════════════════════════════
+     OLD MODAL FUNCTIONS - DISABLED (Now using QRPH)
+     ══════════════════════════════════════════════════════════════════════════════
+  window.selectChatMethod = function(method) {
+    console.log('✓ selectChatMethod called:', method);
+    selectedMethod = method;
+    document.querySelectorAll('.chat-method-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('cmc-' + method).classList.add('selected');
+
+    const btn = document.getElementById('chatNextBtn');
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+    console.log('✓ Continue button enabled');
+  };
+
+  window.chatGoToProof = function() {
+    console.log('✓ chatGoToProof called, selectedMethod:', selectedMethod);
+    if (!selectedMethod) {
+      console.log('✗ ERROR: No method selected!');
+      return;
+    }
+
+    const methodNames = {
+      gcash: 'GCash',
+      maya: 'Maya',
+      card: 'Card',
+      bank: 'Bank Transfer',
+      more: 'More Options'
+    };
+
+    // Hide step 1
+    document.getElementById('chatPayStep1').style.display = 'none';
+    console.log('✓ Showing step 2 for:', selectedMethod);
+
+    if (selectedMethod === 'gcash' || selectedMethod === 'maya') {
+      // Show QR Code flow
+      document.getElementById('chatPayStep2QR').style.display = '';
+      document.getElementById('chatQRMethod').textContent = methodNames[selectedMethod];
+      document.getElementById('qrAppName').textContent = methodNames[selectedMethod];
+      document.getElementById('appNameBtn').textContent = methodNames[selectedMethod];
+
+    } else if (selectedMethod === 'card') {
+      // Show Card Payment Form
+      document.getElementById('chatPayStep2Card').style.display = '';
+
+    } else if (selectedMethod === 'bank') {
+      // Show Bank Selection
+      document.getElementById('chatPayStep2Bank').style.display = '';
+
+    } else if (selectedMethod === 'more') {
+      // Show More Options
+      document.getElementById('chatPayStep2More').style.display = '';
+    }
+  };
+
+  // Open in App button - opens gateway
+  window.openInApp = function() {
+    const methodColors = {
+      gcash: { bg: '#007DFF', gradient: 'linear-gradient(135deg, #007DFF 0%, #0066DD 100%)', icon: 'G', name: 'GCash', btnShadow: 'rgba(0,125,255,0.3)' },
+      maya: { bg: '#4CAF50', gradient: 'linear-gradient(135deg, #4CAF50 0%, #388E3C 100%)', icon: 'M', name: 'Maya', btnShadow: 'rgba(76,175,80,0.3)' }
+    };
+
+    const method = methodColors[selectedMethod];
+    if (!method) return;
+
+    // Update gateway with current method
+    const gateway = document.getElementById('mockGateway');
+    gateway.style.background = method.bg;
+    document.querySelector('.custom-gateway-header').style.background = method.gradient;
+    document.querySelector('.custom-gateway-icon').style.background = method.bg;
+    document.querySelector('.custom-gateway-name').textContent = method.icon;
+
+    const btn = document.getElementById('mockGatewayPayBtn');
+    btn.style.background = method.bg;
+    btn.style.boxShadow = `0 4px 12px ${method.btnShadow}`;
+    btn.textContent = `Pay with ${method.name}`;
+
+    // Close modal and open gateway
+    window.closeChatPayModal();
+    gateway.style.display = 'flex';
+  };
+
+  // Process Card Payment
+  window.processCardPayment = function() {
+    const cardNum = document.getElementById('cardNumber').value;
+    const cardExp = document.getElementById('cardExpiry').value;
+    const cardCVV = document.getElementById('cardCVV').value;
+    const cardName = document.getElementById('cardName').value;
+
+    if (!cardNum || !cardExp || !cardCVV || !cardName) {
+      window.showNotif('Please fill in all card details');
+      return;
+    }
+
+    // Simulate processing
+    const btn = event.target;
+    btn.innerHTML = '<div class="spinner" style="width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto;"></div>';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      window.closeChatPayModal();
+      window.showNotif('Card payment successful! The seller has been notified.');
+
+      // Trigger review prompt after card payment
+      setTimeout(() => {
+        ReviewPrompt.trigger({
+          context: 'payment',
+          propertyName: '1-Bedroom Apartment',
+          delay: 1000
+        });
+      }, 3000);
+    }, 2000);
+  };
+
+  // Select Bank
+  window.selectBank = function(bank) {
+    const bankDetails = {
+      bpi: { name: 'Bank of the Philippine Islands', account: '1234-5678-90' },
+      bdo: { name: 'Banco de Oro', account: '0987-6543-21' },
+      metrobank: { name: 'Metrobank', account: '5555-4444-33' }
+    };
+
+    const selected = bankDetails[bank];
+    if (!selected) return;
+
+    // Show account details
+    const bankStep = document.getElementById('chatPayStep2Bank');
+    bankStep.innerHTML = `
+      <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.38);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px;">Transfer to this account</div>
+
+      <div style="background:#2c3d55;border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;margin-bottom:16px;">
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:4px;">Bank</div>
+        <div style="font-size:14px;font-weight:700;color:#f1f5f9;margin-bottom:14px;">${selected.name}</div>
+
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:4px;">Account Number</div>
+        <div style="font-size:18px;font-weight:800;color:#00c9a7;font-family:monospace;margin-bottom:8px;">${selected.account}</div>
+
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:4px;">Account Name</div>
+        <div style="font-size:14px;font-weight:700;color:#f1f5f9;">JUAN SANTOS</div>
+      </div>
+
+      <div style="padding:12px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:10px;margin-bottom:16px;">
+        <p style="font-size:11.5px;color:rgba(251,191,36,0.9);font-weight:600;">Please transfer the exact amount and send proof of payment to the seller.</p>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;gap:10px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.07);">
+        <button onclick="window.backToMethodSelect()" style="background:transparent;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 20px;color:rgba(255,255,255,0.6);font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;">← Back</button>
+        <button onclick="window.confirmBankTransfer()" style="background:#00c9a7;border:none;border-radius:10px;padding:10px 22px;color:#fff;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;">I've Transferred</button>
+      </div>
+    `;
+  };
+
+  window.confirmBankTransfer = function() {
+    window.closeChatPayModal();
+    window.showNotif('Bank transfer noted! Please send proof to the seller.');
+  };
+
+  window.backToMethodSelect = function() {
+    document.getElementById('chatPayStep1').style.display = '';
+    document.getElementById('chatPayStep2QR').style.display = 'none';
+    document.getElementById('chatPayStep2Card').style.display = 'none';
+    document.getElementById('chatPayStep2Bank').style.display = 'none';
+    document.getElementById('chatPayStep2More').style.display = 'none';
+    document.getElementById('qrWaiting').style.display = 'none';
+    document.getElementById('qrSuccess').style.display = 'none';
+  };
+
+  window.closeChatPayModal = function() {
+    document.getElementById('chatPayModal').style.display = 'none';
+    window.backToMethodSelect();
+    selectedMethod = null;
+    document.querySelectorAll('.chat-method-card').forEach(c => c.classList.remove('selected'));
+
+    const btn = document.getElementById('chatNextBtn');
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+    btn.style.cursor = 'not-allowed';
+  };
+  ────────────────────────────────────────────────────────────────────────────── */
+
+  window.openMockGateway = function() {
+    window.closeChatPayModal();
+    document.getElementById('mockGateway').style.display = 'flex';
+  };
+
+  window.closeMockGateway = function() {
+    document.getElementById('mockGateway').style.display = 'none';
+  }
+
+  window.completeMockPayment = function() {
+    window.closeMockGateway();
+    window.showNotif('Payment successful! The seller has been notified.');
+
+    // Trigger review prompt after payment (3 seconds delay)
+    setTimeout(() => {
+      ReviewPrompt.trigger({
+        context: 'payment',
+        propertyName: '1-Bedroom Apartment',
+        delay: 1000
+      });
+    }, 3000);
+  };
+</script>
+
+<!-- ── Mock Payment Gateway (GCash/Maya Style) ── -->
+<div id="mockGateway" style="display:none;position:fixed;inset:0;z-index:1000;background:#007DFF;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#ffffff;border-radius:24px;width:100%;max-width:420px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+
+    <!-- Gateway Header -->
+    <div class="custom-gateway-header" style="background:linear-gradient(135deg, #007DFF 0%, #0066DD 100%);padding:32px 24px 40px;text-align:center;position:relative;">
+      <button onclick="window.closeMockGateway()" style="position:absolute;top:16px;left:16px;background:rgba(255,255,255,0.2);border:none;border-radius:50%;width:36px;height:36px;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </button>
+      <div class="custom-gateway-icon" style="width:60px;height:60px;background:#007DFF;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,0.15);">
+        <span class="custom-gateway-name" style="font-size:28px;font-weight:900;color:white;">G</span>
+      </div>
+      <div style="font-size:15px;color:rgba(255,255,255,0.9);margin-bottom:8px;">Send Money to</div>
+      <div style="font-size:20px;font-weight:800;color:white;">Juan Santos</div>
+    </div>
+
+    <!-- Amount -->
+    <div style="padding:32px 24px 24px;text-align:center;background:#f8f9fa;">
+      <div style="font-size:13px;color:#6c757d;margin-bottom:8px;font-weight:600;">Amount to Pay</div>
+      <div style="font-size:48px;font-weight:900;color:#212529;letter-spacing:-1px;">₱15,000</div>
+      <div style="font-size:13px;color:#6c757d;margin-top:8px;">June 2026 Rent Payment</div>
+    </div>
+
+    <!-- Details -->
+    <div style="padding:0 24px 24px;">
+      <div style="background:white;border-radius:16px;padding:20px;margin-bottom:16px;border:1px solid #e9ecef;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+          <span style="font-size:13px;color:#6c757d;">Property</span>
+          <span style="font-size:13px;color:#212529;font-weight:600;text-align:right;">1-Bedroom Apartment</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+          <span style="font-size:13px;color:#6c757d;">Payment for</span>
+          <span style="font-size:13px;color:#212529;font-weight:600;">June 2026</span>
+        </div>
+        <div style="height:1px;background:#e9ecef;margin:12px 0;"></div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="font-size:14px;color:#212529;font-weight:700;">Total</span>
+          <span style="font-size:16px;color:#007DFF;font-weight:900;">₱15,000.00</span>
+        </div>
+      </div>
+
+      <!-- Pay Button -->
+      <button id="mockGatewayPayBtn" onclick="window.completeMockPayment()" class="custom-gateway-btn" style="width:100%;background:#007DFF;border:none;border-radius:12px;padding:16px;color:white;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;margin-bottom:12px;box-shadow:0 4px 12px rgba(0,125,255,0.3);">
+        Pay with GCash
+      </button>
+
+      <div style="text-align:center;">
+        <div style="font-size:11px;color:#adb5bd;display:flex;align-items:center;justify-content:center;gap:4px;">
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Secured & Encrypted
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../../assets/js/fake-data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/payment-integration.js"></script>
+<script src="../../assets/js/buyer/buyer-messages.js"></script>
+<script src="../../components/review-prompt.js"></script>
+
+<!-- Mobile Navigation Fix: Show conversation list when Messages nav clicked -->
+<script>
+  // On page load, ensure conversation list is visible on mobile
+  window.addEventListener('DOMContentLoaded', () => {
+    // Close any open chat on mobile when page loads
+    if (window.innerWidth <= 768) {
+      window.closeChat();
+    }
+
+    // Listen for Messages nav item clicks (especially on mobile)
+    document.addEventListener('click', (e) => {
+      const navItem = e.target.closest('[data-page="messages"]');
+      if (navItem && window.innerWidth <= 768) {
+        // Close chat to show conversation list
+        setTimeout(() => {
+          window.closeChat();
+        }, 100);
+      }
+    });
+  });
+
+  // Handle window resize
+  window.addEventListener('resize', () => {
+    if (window.innerWidth <= 768) {
+      // If resizing to mobile, close chat
+      const messagesLayout = document.querySelector('.messages-layout');
+      if (messagesLayout && messagesLayout.classList.contains('chat-open')) {
+        window.closeChat();
+      }
+    }
+  });
+</script>
+</body>
+</html>

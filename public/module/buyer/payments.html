@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – My Payments</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/buyer/buyer-payments.css" />
+  <link rel="stylesheet" href="../../assets/css/payment-modal.css" />
+  <link rel="stylesheet" href="../../assets/css/property-selector-modal.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+  <style>
+    /* Force hide old payment modal and any stray elements */
+    #payModal,
+    #payStep0,
+    #payStep1a,
+    #payStep1b,
+    #payStep2 {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+  <div class="main">
+    <div id="hs-topbar"></div>
+    <div class="content">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div>
+          <div class="page-title">My Payments</div>
+          <div class="page-sub">Track rent payments, view history, and manage your security deposit</div>
+        </div>
+        <button class="btn-primary" onclick="payNowWithQRPH()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Pay Now
+        </button>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="stat-row" id="statRow">
+        <!-- injected by JS -->
+      </div>
+
+      <!-- Tab Bar -->
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="upcoming" onclick="switchTab('upcoming')">Upcoming</button>
+        <button class="tab-btn" data-tab="history" onclick="switchTab('history')">History</button>
+        <button class="tab-btn" data-tab="deposit" onclick="switchTab('deposit')">Deposit</button>
+      </div>
+
+      <!-- Tab: Upcoming -->
+      <div class="tab-content" id="tab-upcoming">
+        <div id="upcomingContainer"></div>
+      </div>
+
+      <!-- Tab: History -->
+      <div class="tab-content" id="tab-history" style="display:none">
+        <div class="table-toolbar">
+          <input class="search-input" id="historySearch" type="text" placeholder="Search by reference, period, or method…" oninput="renderHistory()" />
+        </div>
+        <div id="historyContainer"></div>
+      </div>
+
+      <!-- Tab: Deposit -->
+      <div class="tab-content" id="tab-deposit" style="display:none">
+        <div id="depositContainer"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!--
+  OLD PAYMENT MODAL - DISABLED (Replaced with QRPH integration)
+  Kept here for reference only - can be deleted later
+
+<div class="modal-backdrop" id="payModal" style="display:none" onclick="if(event.target===this)closePayModal()">
+  <div class="modal modal-pay">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="payModalTitle">Choose Payment Method</div>
+        <div class="modal-sub">2BR Apartment — Poblacion &nbsp;·&nbsp; June 2026 &nbsp;·&nbsp; <strong>₱15,000</strong></div>
+      </div>
+      <button class="modal-close-btn" onclick="closePayModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+
+      <!-- ── Step 0: Payment Type Selection ── -->
+      <div id="payStep0">
+        <div class="payment-type-grid">
+          <!-- Platform Payment (Recommended) -->
+          <button class="payment-type-card recommended" onclick="selectPaymentType('platform')">
+            <div class="payment-type-badge">✅ RECOMMENDED</div>
+            <div class="payment-type-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="payment-type-title">Pay with Card/E-wallet</div>
+            <div class="payment-type-desc">Secure payment through platform</div>
+            <div class="payment-type-features">
+              <div class="payment-type-feature">✓ Escrow protected</div>
+              <div class="payment-type-feature">✓ Auto-refund if rejected</div>
+              <div class="payment-type-feature">✓ Zero fraud risk</div>
+            </div>
+            <div class="payment-type-fee">
+              <span class="fee-label">Fee:</span>
+              <span class="fee-amount">₱15 + 2.5%</span>
+            </div>
+          </button>
+
+          <!-- Manual Payment (Warning) -->
+          <button class="payment-type-card manual" onclick="selectPaymentType('manual')">
+            <div class="payment-type-badge warning">⚠️ MANUAL</div>
+            <div class="payment-type-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            </div>
+            <div class="payment-type-title">Bank Transfer / Cash</div>
+            <div class="payment-type-desc">Pay outside platform, upload proof</div>
+            <div class="payment-type-features">
+              <div class="payment-type-feature warning">⚠️ No escrow protection</div>
+              <div class="payment-type-feature warning">⚠️ Manual verification</div>
+              <div class="payment-type-feature warning">⚠️ Fraud risk exists</div>
+            </div>
+            <div class="payment-type-fee">
+              <span class="fee-label">Fee:</span>
+              <span class="fee-amount">Free</span>
+            </div>
+          </button>
+        </div>
+
+        <div class="modal-footer" style="margin-top:24px">
+          <button type="button" class="btn-ghost" onclick="closePayModal()">Cancel</button>
+        </div>
+      </div>
+
+      <!-- ── Step 1a: Platform Payment (QRPH Simulation) ── -->
+      <div id="payStep1a" style="display:none">
+        <div class="platform-payment-container">
+          <div class="platform-payment-header">
+            <div class="platform-logo">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <div class="platform-title">Secure Platform Payment</div>
+              <div class="platform-subtitle">Powered by QRPH</div>
+            </div>
+          </div>
+
+          <div class="payment-summary">
+            <div class="summary-row">
+              <span>Rent Payment</span>
+              <span>₱15,000.00</span>
+            </div>
+            <div class="summary-row">
+              <span>Platform Fee (2.5% + ₱15)</span>
+              <span>₱390.00</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-row total">
+              <span>Total Amount</span>
+              <span>₱15,390.00</span>
+            </div>
+          </div>
+
+          <div class="payment-info-box">
+            <div class="info-icon">💡</div>
+            <div class="info-text">
+              <strong>Money held in escrow:</strong> Your payment is held securely until the landlord confirms receipt. If rejected, you get an automatic refund.
+            </div>
+          </div>
+
+          <div class="payment-methods-platform">
+            <div class="method-section-label">Choose Payment Method</div>
+            <div class="platform-method-list">
+              <button class="platform-method-btn" onclick="selectPlatformMethod('card')">
+                <div class="platform-method-icon">💳</div>
+                <div class="platform-method-info">
+                  <div class="platform-method-name">Card</div>
+                  <div class="platform-method-desc">Visa, Mastercard, JCB</div>
+                </div>
+                <div class="platform-method-arrow">→</div>
+              </button>
+              <button class="platform-method-btn" onclick="selectPlatformMethod('gcash')">
+                <div class="platform-method-icon">📱</div>
+                <div class="platform-method-info">
+                  <div class="platform-method-name">GCash</div>
+                  <div class="platform-method-desc">Pay with GCash app</div>
+                </div>
+                <div class="platform-method-arrow">→</div>
+              </button>
+              <button class="platform-method-btn" onclick="selectPlatformMethod('paymaya')">
+                <div class="platform-method-icon">💰</div>
+                <div class="platform-method-info">
+                  <div class="platform-method-name">Maya</div>
+                  <div class="platform-method-desc">Pay with Maya app</div>
+                </div>
+                <div class="platform-method-arrow">→</div>
+              </button>
+              <button class="platform-method-btn" onclick="selectPlatformMethod('bank')">
+                <div class="platform-method-icon">🏦</div>
+                <div class="platform-method-info">
+                  <div class="platform-method-name">Online Banking</div>
+                  <div class="platform-method-desc">BPI, BDO, UnionBank, etc.</div>
+                </div>
+                <div class="platform-method-arrow">→</div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer" style="margin-top:20px">
+          <button type="button" class="btn-ghost" onclick="goToStep(0)">← Back</button>
+        </div>
+      </div>
+
+      <!-- ── Step 1b: Manual Payment Method Selection ── -->
+      <div id="payStep1b" style="display:none">
+        <div class="manual-warning-banner">
+          <div class="warning-icon">⚠️</div>
+          <div class="warning-text">
+            <strong>Manual Payment Selected</strong><br>
+            No escrow protection. Verify payment carefully before confirming.
+          </div>
+        </div>
+
+        <div class="method-section-label">E-Wallets</div>
+        <div class="method-grid">
+          <button class="method-card gcash" onclick="selectManualMethod('gcash')" id="card-gcash">
+            <div class="method-logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="20" fill="#00aff0"/><text x="20" y="26" text-anchor="middle" font-size="16" font-weight="800" fill="#fff" font-family="sans-serif">G</text></svg></div>
+            <div class="method-name">GCash</div>
+            <div class="method-desc">Send to landlord's GCash number</div>
+            <div class="method-check" id="check-gcash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </button>
+          <button class="method-card maya" onclick="selectManualMethod('maya')" id="card-maya">
+            <div class="method-logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="20" fill="#1a8f5d"/><text x="20" y="26" text-anchor="middle" font-size="13" font-weight="800" fill="#fff" font-family="sans-serif">Maya</text></svg></div>
+            <div class="method-name">Maya</div>
+            <div class="method-desc">Send to landlord's Maya account</div>
+            <div class="method-check" id="check-maya"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </button>
+        </div>
+
+        <div class="method-section-label" style="margin-top:16px">Bank Transfer</div>
+        <div class="method-grid">
+          <button class="method-card bpi" onclick="selectManualMethod('bpi')" id="card-bpi">
+            <div class="method-logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="20" fill="#cc0000"/><text x="20" y="26" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" font-family="sans-serif">BPI</text></svg></div>
+            <div class="method-name">BPI</div>
+            <div class="method-desc">Bank of the Philippine Islands</div>
+            <div class="method-check" id="check-bpi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </button>
+          <button class="method-card cash" onclick="selectManualMethod('cash')" id="card-cash">
+            <div class="method-logo"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="20" fill="#374151"/><text x="20" y="26" text-anchor="middle" font-size="10" font-weight="800" fill="#fff" font-family="sans-serif">CASH</text></svg></div>
+            <div class="method-name">Cash</div>
+            <div class="method-desc">Paid in person to landlord</div>
+            <div class="method-check" id="check-cash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </button>
+        </div>
+
+        <div class="modal-footer" style="margin-top:24px">
+          <button type="button" class="btn-ghost" onclick="goToStep(0)">← Back</button>
+          <button type="button" class="btn-primary" id="proceedManualBtn" onclick="goToProofStep()" disabled>
+            Next — Upload Proof
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Step 2: Upload Proof of Payment ── -->
+      <div id="payStep2" style="display:none">
+        <div class="proof-fraud-warning">
+          <div class="fraud-warning-icon">⚠️</div>
+          <div class="fraud-warning-content">
+            <div class="fraud-warning-title">IMPORTANT: Fraud Prevention</div>
+            <div class="fraud-warning-text">Only submit REAL payment receipts. Fake receipts are illegal and will result in account suspension. The seller will verify your payment with their bank/e-wallet before confirming.</div>
+          </div>
+        </div>
+
+        <div class="proof-method-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Paying via <strong id="chosenMethodLabel"></strong>
+        </div>
+
+        <div class="proof-instructions">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Complete the transfer outside this app, then upload your screenshot or receipt below so the seller can confirm.
+        </div>
+
+        <form id="logPaymentForm" onsubmit="submitPayment(event)">
+          <div class="form-group" style="margin-top:16px">
+            <label class="form-label">Proof of Payment <span style="color:#f87171">*</span></label>
+            <div class="file-upload-area" onclick="document.getElementById('proofFile').click()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span id="proofLabel">Click to attach screenshot or photo</span>
+            </div>
+            <input type="file" id="proofFile" accept="image/*,.pdf" style="display:none" onchange="onProofSelect(event)" />
+          </div>
+
+          <div class="payment-status-flow">
+            <div class="status-step active">
+              <div class="status-step-dot"></div>
+              <span>You upload proof</span>
+            </div>
+            <div class="status-step-line"></div>
+            <div class="status-step">
+              <div class="status-step-dot pending"></div>
+              <span>Seller confirms receipt</span>
+            </div>
+            <div class="status-step-line"></div>
+            <div class="status-step">
+              <div class="status-step-dot pending"></div>
+              <span>Marked as Paid</span>
+            </div>
+          </div>
+
+          <div class="modal-footer" style="margin-top:20px">
+            <button type="button" class="btn-ghost" onclick="goToStep('1b')">← Back</button>
+            <button type="submit" class="btn-primary" id="submitPayBtn" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Submit Proof
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+-->
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <span class="toast-icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </span>
+  <span id="toastMsg"></span>
+</div>
+
+<script src="../../assets/js/fake-data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/payment-integration.js"></script>
+<script src="../../assets/js/buyer/buyer-payments.js"></script>
+
+<script>
+  // Clean up any stray modal elements on page load
+  window.addEventListener('DOMContentLoaded', function() {
+    // Remove old payment modal if it exists
+    const oldModal = document.getElementById('payModal');
+    if (oldModal) {
+      oldModal.remove();
+      console.log('✅ Removed old payment modal');
+    }
+
+    // Hide any orphaned modal backdrops
+    document.querySelectorAll('.modal-backdrop').forEach(el => {
+      if (!el.closest('#paymentModalBackdrop')) {
+        el.style.display = 'none';
+        console.log('✅ Hidden stray modal backdrop');
+      }
+    });
+  });
+</script>
+</body>
+</html>

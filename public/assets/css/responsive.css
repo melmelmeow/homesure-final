@@ -1,0 +1,931 @@
+/* ============================================================
+   HomeSure – Global Responsive Styles
+   Breakpoints: tablet 1100px | mobile 768px | small 480px
+   ============================================================ */
+
+/* ── 1. Content Padding ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .content { padding: 16px 14px 40px !important; }
+}
+
+/* ── 2. Page Headers ────────────────────────────────────── */
+@media (max-width: 640px) {
+  .page-header  { margin-bottom: 16px !important; }
+  .page-title   { font-size: 18px !important; }
+  .page-header[style*="display:flex"],
+  .page-header[style*="display: flex"] {
+    flex-direction: column !important;
+    gap: 12px !important;
+    align-items: flex-start !important;
+  }
+  .detail-header { flex-direction: column !important; gap: 12px !important; }
+  .header-actions { flex-wrap: wrap; }
+}
+
+/* ── 3. Stat Grids ──────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .stat-grid { grid-template-columns: repeat(3, 1fr) !important; }
+}
+@media (max-width: 768px) {
+  .stat-grid  { grid-template-columns: repeat(2, 1fr) !important; }
+  .health-row { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 480px) {
+  .stat-grid  { grid-template-columns: 1fr 1fr !important; }
+  .health-row { grid-template-columns: 1fr !important; }
+  .stat-card  { padding: 14px 16px !important; }
+  /* .stat-value removed - causing conflicts with profile page */
+}
+
+/* ── 4. Filter Bars ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  .filter-bar {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    padding: 10px 14px !important;
+  }
+  .filter-search-wrap { width: 100%; }
+  .filter-search      { width: 100% !important; }
+  .search-wrap        { width: 100%; }
+  .search-wrap input  { width: 100% !important; }
+  /* Buyer 4-col filter panel */
+  .filter-row { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 480px) {
+  .filter-row  { grid-template-columns: 1fr !important; }
+  .filter-tabs {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    padding-bottom: 2px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .filter-tab { flex-shrink: 0; }
+}
+
+/* ── 5. Data Tables → Card Layout on Mobile ─────────────────── */
+@media (max-width: 900px) {
+  /* Desktop table - horizontal scroll for medium screens */
+  .section-card { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+  .data-table   { min-width: 580px; }
+}
+
+@media (max-width: 768px) {
+  /* Mobile: Convert tables to cards */
+  .data-table {
+    display: block !important;
+    min-width: unset !important;
+  }
+
+  .data-table thead {
+    display: none !important; /* Hide table headers */
+  }
+
+  .data-table tbody {
+    display: block !important;
+  }
+
+  .data-table tr {
+    display: block !important;
+    background: rgba(255,255,255,0.02) !important;
+    border: 1.5px solid rgba(255,255,255,0.08) !important;
+    border-radius: 12px !important;
+    padding: 16px !important;
+    margin-bottom: 12px !important;
+    position: relative;
+  }
+
+  .data-table td {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 8px 0 !important;
+    border: none !important;
+    text-align: left !important;
+    gap: 12px;
+  }
+
+  .data-table td::before {
+    content: attr(data-label) !important;
+    font-weight: 700 !important;
+    font-size: 11px !important;
+    color: var(--muted) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    flex-shrink: 0;
+    min-width: 100px;
+    display: block !important;
+  }
+
+  /* Payment table specific overrides */
+  .pay-table.data-table td {
+    display: flex !important;
+    justify-content: space-between !important;
+    padding: 8px 0 !important;
+    border: none !important;
+    background: transparent !important;
+  }
+
+  .pay-table.data-table td::before {
+    content: attr(data-label) !important;
+    font-weight: 700 !important;
+    font-size: 11px !important;
+    color: var(--muted) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    display: block !important;
+  }
+
+  .pay-table.data-table tbody tr:hover td {
+    background: transparent !important;
+  }
+
+  .data-table td:first-child {
+    padding-top: 0 !important;
+    border-top: none !important;
+  }
+
+  .data-table td:last-child {
+    padding-bottom: 0 !important;
+  }
+
+  /* Action buttons in tables */
+  .action-btns {
+    flex-wrap: wrap !important;
+    justify-content: flex-end !important;
+  }
+
+  /* User cell with avatar */
+  .user-cell {
+    flex-direction: row !important;
+    justify-content: flex-end !important;
+  }
+
+  /* Status badges */
+  .status-badge {
+    margin-left: auto !important;
+  }
+}
+
+/* ── 6. Property / Listing Card Grid ────────────────────── */
+@media (max-width: 1100px) {
+  .property-grid  { grid-template-columns: repeat(2, 1fr) !important; }
+  .listings-grid  { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 640px) {
+  .property-grid  { grid-template-columns: 1fr !important; }
+  .listings-grid  { grid-template-columns: 1fr !important; }
+}
+
+/* ── 7. Messages Layout — Messenger-style slide on mobile ─── */
+.chat-back-btn { display: none; }
+
+@media (max-width: 768px) {
+  .messages-layout {
+    position: relative !important;
+    overflow: hidden !important;
+  }
+  .conv-panel {
+    position: absolute !important;
+    top: 0; left: 0;
+    width: 100% !important; height: 100% !important;
+    min-width: unset !important;
+    border-right: none !important;
+    transform: translateX(0);
+    transition: transform 0.28s cubic-bezier(0.4,0,0.2,1) !important;
+    z-index: 1;
+  }
+  .chat-panel {
+    position: absolute !important;
+    top: 0; left: 0;
+    width: 100% !important; height: 100% !important;
+    transform: translateX(100%);
+    transition: transform 0.28s cubic-bezier(0.4,0,0.2,1) !important;
+    z-index: 2;
+    background: var(--bg, #1E293B);
+  }
+  .messages-layout.chat-open .conv-panel {
+    transform: translateX(-20%) !important;
+    opacity: 0.5;
+  }
+  .messages-layout.chat-open .chat-panel {
+    transform: translateX(0) !important;
+    opacity: 1;
+  }
+  .chat-back-btn {
+    display: flex !important;
+    align-items: center; justify-content: center;
+    width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    border: none; cursor: pointer;
+    color: rgba(255,255,255,0.8);
+    flex-shrink: 0; margin-right: 8px;
+    transition: background 0.2s;
+  }
+  .chat-back-btn:hover { background: rgba(255,255,255,0.15); }
+  .chat-back-btn svg { width: 18px; height: 18px; display: block; }
+
+  /* Light mode back button */
+  [data-theme="light"] .chat-back-btn {
+    background: rgba(0,0,0,0.08) !important;
+    color: rgba(0,0,0,0.7) !important;
+  }
+  [data-theme="light"] .chat-back-btn:hover {
+    background: rgba(0,0,0,0.15) !important;
+  }
+  .content.no-pad { padding: 0 !important; }
+}
+
+/* ── 8. Admin Listing Detail Two-Col ────────────────────── */
+@media (max-width: 900px) {
+  .detail-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ── 9. Buyer Listing Detail ─────────────────────────────── */
+@media (max-width: 768px) {
+  .detail-img-wrap { height: 220px !important; }
+  .detail-title    { font-size: 18px !important; }
+  .listing-detail-wrap,
+  .detail-body-wrap { flex-direction: column !important; }
+  .seller-sidebar { width: 100% !important; order: -1; }
+  .seller-actions { flex-wrap: wrap; gap: 8px; }
+  .seller-actions .save-btn,
+  .seller-actions .msg-btn { flex: 1; justify-content: center; }
+}
+
+/* ── 10. User Detail & Profile ──────────────────────────── */
+@media (max-width: 900px) {
+  .compare-grid { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 768px) {
+  .info-grid    { grid-template-columns: repeat(2, 1fr) !important; }
+  .docs-grid    { grid-template-columns: repeat(2, 1fr) !important; }
+  .profile-head { flex-direction: column !important; gap: 12px !important; align-items: flex-start !important; }
+}
+@media (max-width: 480px) {
+  .info-grid    { grid-template-columns: 1fr !important; }
+  .docs-grid    { grid-template-columns: 1fr 1fr !important; }
+}
+
+/* ── 11. Reports — Charts Row ───────────────────────────── */
+@media (max-width: 900px) {
+  .charts-row { grid-template-columns: 1fr !important; }
+  .breakdown-wrap { justify-content: center; }
+}
+
+/* ── 12. Modals → Bottom Sheet on Mobile ────────────────── */
+@media (max-width: 640px) {
+  .modal-backdrop,
+  .verif-modal-backdrop,
+  .listing-modal-backdrop,
+  [id$="Modal"][style*="display: flex"],
+  [id$="Modal"][style*="display:flex"] {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+  .modal,
+  .verif-modal,
+  .reject-modal-box,
+  .listing-modal-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 20px 20px 0 0 !important;
+    max-height: 88vh;
+    overflow-y: auto !important;
+  }
+  .field-group { grid-template-columns: 1fr !important; }
+}
+
+/* ── 13. Form Grids (post listing, settings) ────────────── */
+@media (max-width: 768px) {
+  .two-col   { grid-template-columns: 1fr !important; }
+  .three-col { grid-template-columns: 1fr 1fr !important; }
+  .field-group { grid-template-columns: 1fr !important; }
+  .section-body { padding: 16px 14px !important; }
+  .section-header { padding: 14px !important; }
+}
+@media (max-width: 480px) {
+  .three-col { grid-template-columns: 1fr !important; }
+}
+
+/* ── 14. Notifications Page ─────────────────────────────── */
+@media (max-width: 768px) {
+  .notif-container { padding: 14px !important; max-width: 100% !important; }
+  .notif-item      { padding: 12px 14px !important; gap: 10px !important; }
+  .notif-header    { padding: 16px 14px 12px !important; }
+}
+
+/* ── 15. Toast ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .toast {
+    left: 14px !important;
+    right: 14px !important;
+    bottom: 16px !important;
+    width: auto !important;
+  }
+}
+
+/* ── 16. Action Button Rows ─────────────────────────────── */
+@media (max-width: 480px) {
+  .action-btns { flex-wrap: wrap; gap: 4px !important; }
+  .btn-sm { font-size: 11px !important; padding: 5px 10px !important; }
+}
+
+/* ── 17. Seller Verification Steps ─────────────────────── */
+@media (max-width: 640px) {
+  .step-bar { gap: 6px !important; }
+  .step-label { display: none; }
+}
+
+/* ── 18. Analytics / Admin Dashboard Charts ─────────────── */
+@media (max-width: 900px) {
+  .analytics-grid,
+  .dashboard-charts { grid-template-columns: 1fr !important; }
+}
+
+/* ── 19. Seller Post — Photo Upload Grid ────────────────── */
+@media (max-width: 640px) {
+  .photo-grid   { grid-template-columns: repeat(3, 1fr) !important; }
+  .amenity-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* ── 20. Index / Landing Page ────────────────────────────── */
+@media (max-width: 768px) {
+  nav { padding: 0 20px !important; }
+  .nav-links { display: none; }
+  .hero-content h1 { font-size: 32px !important; }
+  .hero-stats { flex-wrap: wrap; gap: 16px !important; }
+  .features-grid { grid-template-columns: 1fr !important; }
+  .feature-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
+  .steps-grid    { grid-template-columns: 1fr !important; }
+  .cta-actions   { flex-direction: column !important; align-items: center; }
+
+  /* Mobile hero — hide map, use gradient background */
+  .hero-map-wrap { display: none !important; }
+  .hero-overlay  { display: none !important; }
+  .hero-right { display: none !important; }
+  .hero {
+    background: linear-gradient(160deg, #071924 0%, #0b3530 55%, #0d2a22 100%) !important;
+    min-height: auto !important;
+  }
+  .hero-left {
+    max-width: 100% !important;
+    padding: 60px 24px 44px !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+  .hero-badge, .hero-content, .hero-actions, .hero-stats {
+    align-items: center !important;
+    text-align: center !important;
+  }
+  .hero-title {
+    font-size: clamp(28px, 8vw, 40px) !important;
+    line-height: 1.2 !important;
+  }
+  .hero-desc {
+    font-size: 15px !important;
+    max-width: 100% !important;
+  }
+
+  /* Hide Browse/List buttons on mobile, show Sign In/Up instead */
+  .hero-btn-browse,
+  .hero-btn-list {
+    display: none !important;
+  }
+  .hero-btn-mobile-signin,
+  .hero-btn-mobile-signup {
+    display: flex !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+  .hero-ctas {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 12px !important;
+    width: 100% !important;
+    flex-wrap: nowrap !important;
+  }
+
+  /* Feature cards mobile */
+  .feature-card {
+    padding: 32px 24px !important;
+    text-align: center !important;
+  }
+  .feature-card::before {
+    width: 150px !important;
+    height: 150px !important;
+  }
+  .feature-card-title {
+    font-size: 18px !important;
+  }
+  .feature-card-desc {
+    font-size: 14px !important;
+  }
+
+  /* Sections mobile padding */
+  .section, .section-alt {
+    padding: 48px 20px !important;
+  }
+  .section-title {
+    font-size: clamp(24px, 6vw, 32px) !important;
+  }
+  .section-desc {
+    font-size: 14px !important;
+  }
+
+  /* Trust banner */
+  .trust-banner {
+    padding: 48px 20px !important;
+  }
+
+  /* Stats grid */
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* Features wrap */
+  .features-card-wrap {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* Categories grid */
+  .categories-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* Testimonials */
+  .testimonials-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* CTA section */
+  .cta-section {
+    padding: 48px 20px !important;
+  }
+  .cta-title {
+    font-size: clamp(24px, 6vw, 32px) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-left {
+    padding: 40px 16px 32px !important;
+  }
+  .hero-title {
+    font-size: clamp(24px, 7vw, 32px) !important;
+  }
+  .hero-ctas {
+    width: 100% !important;
+    flex-direction: row !important;
+    gap: 10px !important;
+  }
+  .hero-btn-mobile-signin,
+  .hero-btn-mobile-signup {
+    flex: 1 !important;
+    padding: 12px 16px !important;
+    font-size: 13px !important;
+  }
+  .hero-trust {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  /* Feature cards extra small */
+  .feature-card {
+    padding: 24px 20px !important;
+  }
+  .feature-card-icon {
+    width: 48px !important;
+    height: 48px !important;
+    margin-bottom: 16px !important;
+  }
+  .feature-card-title {
+    font-size: 16px !important;
+  }
+  .feature-card-desc {
+    font-size: 13px !important;
+  }
+
+  /* Sections */
+  .section, .section-alt {
+    padding: 40px 16px !important;
+  }
+  .section-title {
+    font-size: clamp(20px, 5vw, 28px) !important;
+  }
+}
+
+/* ── How It Works — vertical timeline on mobile ─────────── */
+@media (max-width: 768px) {
+  .how-steps {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    padding: 0 4px !important;
+  }
+
+  /* Each step: number circle left, text right */
+  .how-step {
+    display: grid !important;
+    grid-template-columns: 44px 1fr !important;
+    grid-template-rows: auto auto !important;
+    column-gap: 16px !important;
+    row-gap: 4px !important;
+    text-align: left !important;
+    padding: 0 0 28px !important;
+    position: relative !important;
+  }
+  .how-step:last-child { padding-bottom: 0 !important; }
+
+  /* Vertical connector line */
+  .how-step:not(:last-child)::before {
+    content: '' !important;
+    position: absolute !important;
+    left: 21px !important;
+    top: 44px !important;
+    bottom: 0 !important;
+    width: 2px !important;
+    background: rgba(0,201,167,0.22) !important;
+  }
+
+  /* Kill the desktop horizontal connector */
+  .how-step::after { display: none !important; }
+
+  .how-step-num {
+    grid-column: 1 !important;
+    grid-row: 1 / 3 !important;
+    align-self: flex-start !important;
+    margin: 0 !important;
+    width: 44px !important;
+    height: 44px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .how-step-title {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    padding-top: 10px !important;
+    font-size: 15px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .how-step-desc {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    font-size: 13px !important;
+  }
+}
+
+/* ── Bottom nav spacing — push content up on mobile ─────── */
+@media (max-width: 768px) {
+  .content { padding-bottom: 78px !important; }
+  .toast   { bottom: 76px !important; }
+}
+
+/* ── 21. About Page ──────────────────────────────────────── */
+@media (max-width: 900px) {
+  .team-grid   { grid-template-columns: repeat(2, 1fr) !important; }
+  .about-intro { flex-direction: column !important; }
+}
+@media (max-width: 480px) {
+  .team-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ── 22. Auth Pages ──────────────────────────────────────── */
+@media (max-width: 480px) {
+  .auth-card  { padding: 24px 18px !important; border-radius: 16px !important; }
+  .auth-title { font-size: 20px !important; }
+}
+
+/* ── 23. Topbar Notification Panel & Profile Dropdown ────── */
+@media (max-width: 768px) {
+  /* Hide notification panel on mobile - go to page instead */
+  .hs-notif-panel {
+    display: none !important;
+  }
+
+  /* Profile dropdown still works on mobile */
+  .hs-profile-dropdown {
+    right: 12px !important;
+    left: auto !important;
+    min-width: 200px !important;
+    max-width: calc(100vw - 24px) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hs-profile-dropdown {
+    right: 8px !important;
+    min-width: 180px !important;
+  }
+}
+
+/* ── 24. Tab Bars (seller listings, admin tabs) ──────────── */
+@media (max-width: 640px) {
+  .tab-bar, .filter-tabs {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .tab-bar::-webkit-scrollbar,
+  .filter-tabs::-webkit-scrollbar { display: none; }
+  .tab, .filter-tab { flex-shrink: 0; white-space: nowrap; }
+}
+
+/* ── 25. Page Header Buttons on Mobile ───────────────────── */
+@media (max-width: 640px) {
+  .page-header { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; }
+  .btn-add, .btn-primary-sm { width: 100% !important; justify-content: center; }
+}
+
+/* ── 26. Warn / Verify Banner ────────────────────────────── */
+@media (max-width: 640px) {
+  .warn-banner { flex-direction: column !important; gap: 12px !important; align-items: flex-start !important; }
+  .btn-verify  { width: 100% !important; text-align: center; }
+}
+
+/* ── 27. Listing Cards (seller my-listings) ──────────────── */
+@media (max-width: 640px) {
+  .listing-card { flex-direction: column !important; }
+  .listing-card .card-thumb { width: 100% !important; height: 180px !important; }
+  .card-actions { flex-wrap: wrap; gap: 8px !important; }
+}
+
+
+/* ── 28. Verification Steps ──────────────────────────────── */
+@media (max-width: 640px) {
+  .step-bar { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; padding-bottom: 4px; }
+  .step-item { flex-shrink: 0; }
+}
+
+/* ── 29. Seller Post Form Sections ───────────────────────── */
+@media (max-width: 768px) {
+  .section-grid   { grid-template-columns: 1fr !important; }
+  .doc-grid       { grid-template-columns: 1fr !important; }
+  .upload-zone    { padding: 28px 16px !important; }
+}
+
+/* ── 30. Profile / Settings Form Cards ──────────────────── */
+@media (max-width: 768px) {
+  .form-cards-row { flex-direction: column !important; gap: 16px !important; }
+  .form-card      { width: 100% !important; }
+}
+
+/* ── 31. Admin / Super-admin: Listing Table ──────────────── */
+@media (max-width: 900px) {
+  .listings-table-wrap { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+  .listings-table      { min-width: 700px; }
+}
+
+/* ── 32. Global touch target minimum ────────────────────── */
+@media (max-width: 768px) {
+  button, a, [role="button"] { min-height: 40px; }
+  .btn-sm { min-height: 32px !important; }
+}
+
+/* ── 35. Payment Cards - Compact Mobile Layout ──────────── */
+@media (max-width: 768px) {
+  /* Payment stat-row in 2-column grid on mobile */
+  .stat-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Make individual stat cards more compact */
+  .stat-card {
+    padding: 16px 14px !important;
+  }
+
+  .stat-card .stat-value {
+    font-size: 22px !important;
+  }
+
+  .stat-card .stat-label {
+    font-size: 10px !important;
+  }
+
+  .stat-card .stat-hint {
+    font-size: 11px !important;
+  }
+
+  .stat-icon {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .stat-icon svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* On very small screens, keep 2 columns but tighter */
+  .stat-row {
+    gap: 10px !important;
+  }
+
+  .stat-card {
+    padding: 14px 12px !important;
+  }
+
+  .stat-card .stat-value {
+    font-size: 20px !important;
+  }
+}
+
+/* ── 33. Prevent horizontal overflow on mobile ──────────── */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+  * {
+    max-width: 100%;
+  }
+  img {
+    height: auto !important;
+  }
+
+  /* Fix common overflow causes */
+  .hero, .section, .section-alt, .cta-section, .feature-highlights, .platform-features {
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+  }
+
+  /* Ensure containers don't overflow */
+  .container, .hero-left, .section-inner, .feature-grid, .features-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Feature cards containment */
+  .feature-card, .feature-card::before {
+    max-width: 100% !important;
+  }
+
+  /* Text wrapping */
+  h1, h2, h3, h4, h5, h6, p {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* Prevent long URLs or text from breaking layout */
+  a {
+    word-break: break-word !important;
+  }
+
+  /* SVG and absolute elements */
+  svg, .hero-map-svg {
+    max-width: 100% !important;
+    max-height: 100% !important;
+  }
+}
+
+/* ── 34. Landing page specific mobile fixes ─────────────── */
+@media (max-width: 768px) {
+  /* Nav mobile */
+  nav {
+    padding: 0 12px !important;
+    height: 60px !important;
+  }
+  .nav-logo {
+    font-size: 16px !important;
+    gap: 6px !important;
+  }
+  .nav-logo img {
+    height: 24px !important;
+    max-height: 24px !important;
+  }
+  .nav-catstone-wrap {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  .nav-logo-divider {
+    height: 18px !important;
+  }
+  .nav-btns {
+    gap: 6px !important;
+    flex-shrink: 0 !important;
+  }
+  /* Hide Sign In/Up buttons on mobile (use hero buttons instead) */
+  .btn-outline,
+  .btn-solid {
+    display: none !important;
+  }
+  .nav-theme-btn {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  /* Footer mobile */
+  footer {
+    padding: 40px 20px 24px !important;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+    margin-bottom: 32px !important;
+  }
+  .footer-logo {
+    font-size: 16px !important;
+    margin-bottom: 10px !important;
+  }
+  .footer-logo img {
+    height: 24px !important;
+  }
+  .footer-tagline {
+    font-size: 12px !important;
+    line-height: 1.6 !important;
+  }
+  .footer-col-title {
+    font-size: 10px !important;
+    margin-bottom: 12px !important;
+  }
+  .footer-link {
+    font-size: 13px !important;
+    margin-bottom: 8px !important;
+  }
+  .footer-divider {
+    margin: 0 auto 20px !important;
+  }
+  .footer-copy {
+    font-size: 11px !important;
+  }
+
+  /* How it works section */
+  .how-steps {
+    padding: 0 !important;
+  }
+
+  /* Category cards */
+  .cat-card {
+    padding: 20px 16px !important;
+  }
+  .cat-title {
+    font-size: 15px !important;
+  }
+  .cat-desc {
+    font-size: 13px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  nav {
+    padding: 0 10px !important;
+  }
+  .nav-logo {
+    font-size: 14px !important;
+    gap: 4px !important;
+  }
+  .nav-logo img {
+    height: 22px !important;
+  }
+  .nav-catstone-wrap {
+    width: 26px !important;
+    height: 26px !important;
+  }
+  .nav-logo-divider {
+    height: 16px !important;
+  }
+  .btn-outline, .btn-primary {
+    padding: 6px 10px !important;
+    font-size: 11px !important;
+  }
+  .nav-theme-btn {
+    width: 30px !important;
+    height: 30px !important;
+  }
+}
+
+@media (max-width: 375px) {
+  /* Extra small phones */
+  nav {
+    padding: 0 8px !important;
+  }
+  .nav-logo {
+    font-size: 13px !important;
+  }
+  .nav-logo img {
+    height: 20px !important;
+  }
+  .nav-catstone-wrap {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  .btn-outline {
+    display: none !important; /* Hide Sign In on very small screens */
+  }
+  .btn-primary {
+    padding: 6px 12px !important;
+    font-size: 11px !important;
+  }
+}

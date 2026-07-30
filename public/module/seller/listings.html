@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – My Listings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/seller/seller-listings.css" />
+  <link rel="stylesheet" href="../../assets/css/adjust-availability-modal.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+  <div class="main">
+    <div id="hs-topbar"></div>
+    <div class="content">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div>
+          <div class="page-title">My Listings</div>
+          <div class="page-sub">Manage and track your property listings</div>
+        </div>
+        <button class="btn-add" id="addListingBtn" onclick="handleAddListing()">
+          <span class="btn-add-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+          </span>
+          Add New Listing
+        </button>
+      </div>
+
+      <!-- Verification Warning Banner -->
+      <div class="warn-banner" id="warnBanner" style="display:none">
+        <div class="warn-left">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          <span class="warn-text">You must be verified to publish listings. Please complete verification first.</span>
+        </div>
+        <button class="btn-verify" onclick="window.location.href='verification.html'">
+          Complete Verification &rarr;
+        </button>
+      </div>
+
+      <!-- Tab Bar -->
+      <div class="tab-bar">
+        <div class="tab active" data-tab="active"  onclick="switchTab('active')">Active (<span id="countActive">0</span>)</div>
+        <div class="tab" data-tab="draft"   onclick="switchTab('draft')">Draft (<span id="countDraft">0</span>)</div>
+        <div class="tab" data-tab="pending" onclick="switchTab('pending')">Pending (<span id="countPending">0</span>)</div>
+        <div class="tab" data-tab="closed"  onclick="switchTab('closed')">Closed (<span id="countClosed">0</span>)</div>
+      </div>
+
+      <!-- Listing Panels -->
+      <div id="listActive"></div>
+      <div id="listDraft"   style="display:none"></div>
+      <div id="listPending" style="display:none"></div>
+      <div id="listClosed"  style="display:none"></div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Edit Listing Modal -->
+<div class="modal-backdrop" id="editModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Edit Listing</div>
+        <div class="modal-sub">Update your listing details</div>
+      </div>
+      <button class="modal-close" onclick="closeEditModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="modal-field">
+      <label>Listing Title</label>
+      <input type="text" id="editTitle" placeholder="Listing title" />
+    </div>
+    <div class="modal-2col">
+      <div class="modal-field">
+        <label>Price (₱)</label>
+        <input type="number" id="editPrice" placeholder="0" />
+      </div>
+      <div class="modal-field">
+        <label>Listing Type</label>
+        <select id="editType">
+          <option value="sale">For Sale</option>
+          <option value="rent">For Rent</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-field">
+      <label>Address</label>
+      <input type="text" id="editAddress" placeholder="Full address" />
+    </div>
+
+    <div class="modal-actions">
+      <button class="modal-btn-ghost" onclick="closeEditModal()">Cancel</button>
+      <button class="modal-btn-primary" onclick="saveEdit()">Save Changes</button>
+    </div>
+
+    <hr class="modal-divider" />
+
+    <div class="modal-delete-row">
+      <div class="modal-delete-info">
+        <strong>Delete Listing</strong>
+        <span id="editDeleteName" style="font-size:12px;color:var(--muted2)"></span> — this cannot be undone.
+      </div>
+      <button class="modal-btn-danger" onclick="deleteFromEdit()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        Delete
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="../../assets/js/fake-data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/adjust-availability.js"></script>
+<script src="../../assets/js/seller/seller-listings.js"></script>
+</body>
+</html>

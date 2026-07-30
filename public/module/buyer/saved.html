@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – Saved Listings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/buyer/buyer-saved.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+  <div class="main">
+    <div id="hs-topbar"></div>
+    <div class="content">
+
+      <div class="page-header">
+        <div class="page-title-wrap">
+          <div>
+            <div class="page-title">Saved Listings</div>
+            <div class="page-sub" id="savedCount">Loading...</div>
+          </div>
+        </div>
+        <div class="sort-wrap">
+          <select class="sort-select" id="sortSelect" onchange="renderSaved()">
+            <option value="recent">Recently Saved</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="saved-list" id="savedList"></div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../../assets/js/fake-data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/buyer/buyer-saved.js"></script>
+</body>
+</html>

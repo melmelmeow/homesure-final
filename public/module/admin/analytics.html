@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – Analytics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/admin/admin-analytics.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+  <div class="main">
+    <div id="hs-topbar"></div>
+    <div class="content">
+
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Analytics</h1>
+          <p class="page-sub">Platform usage overview and data insights</p>
+        </div>
+        <div class="export-btns">
+          <button class="btn-export" onclick="exportCSV()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export CSV
+          </button>
+          <button class="btn-export" onclick="exportJSON()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Export JSON
+          </button>
+        </div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="stat-grid" id="analyticsStats"></div>
+
+      <!-- Charts Row -->
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-header">
+            <span class="chart-title">High-Demand Areas</span>
+            <div class="period-dropdown" id="demandDropdown">
+              <button class="period-btn" onclick="togglePeriodDropdown('demandDropdown')">
+                <span id="demandPeriodLabel">Monthly</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="period-menu">
+                <div class="period-option active" onclick="setDemandPeriod('monthly',this)">Monthly</div>
+                <div class="period-option" onclick="setDemandPeriod('weekly',this)">Weekly</div>
+                <div class="period-option" onclick="setDemandPeriod('daily',this)">Daily</div>
+              </div>
+            </div>
+          </div>
+          <div class="vchart-wrap" id="demandChart"></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <span class="chart-title" id="trendChartTitle">Search Trends (Last 7 Months)</span>
+            <div class="period-dropdown" id="trendsDropdown">
+              <button class="period-btn" onclick="togglePeriodDropdown('trendsDropdown')">
+                <span id="trendsPeriodLabel">Monthly</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="period-menu">
+                <div class="period-option active" onclick="setTrendsPeriod('monthly',this)">Monthly</div>
+                <div class="period-option" onclick="setTrendsPeriod('weekly',this)">Weekly</div>
+                <div class="period-option" onclick="setTrendsPeriod('daily',this)">Daily</div>
+              </div>
+            </div>
+          </div>
+          <div class="linechart-wrap" id="trendsChart"></div>
+        </div>
+      </div>
+
+      <!-- Key Insights -->
+      <div class="key-insights-section">
+        <h3 class="ki-heading">Key Insights</h3>
+        <div class="ki-row" id="keyInsights"></div>
+      </div>
+
+      <!-- Barangay Table -->
+      <div class="table-card">
+        <div class="chart-header">
+          <span class="chart-title">Listings Per Barangay</span>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Barangay</th>
+              <th>Total Listings</th>
+              <th>For Rent</th>
+              <th>For Sale</th>
+              <th>Approved</th>
+              <th>Pending</th>
+            </tr>
+          </thead>
+          <tbody id="barangayTable"></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../../assets/js/fake-data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/admin/admin-analytics.js"></script>
+</body>
+</html>

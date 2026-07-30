@@ -1,0 +1,425 @@
+/* ── Message Layout Overrides (Seller Perspective) ──────────── */
+/* From seller's view: buyer = LEFT, seller = RIGHT */
+.msg-row.buyer {
+  flex-direction: row !important; /* LEFT side */
+}
+
+.msg-row.seller {
+  flex-direction: row-reverse !important; /* RIGHT side */
+}
+
+/* ── Viewing Request Card ──────────────────────────────────── */
+.viewing-request-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 420px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .viewing-request-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.vr-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.vr-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--teal);
+}
+
+.vr-header-left span {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.vr-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 2px solid transparent;
+}
+
+.vr-status-badge svg {
+  flex-shrink: 0;
+}
+
+.vr-status-badge.pending {
+  background: rgba(251, 191, 36, 0.2);
+  color: #FCD34D;
+  border-color: rgba(251, 191, 36, 0.4);
+}
+
+.vr-status-badge.accepted {
+  background: rgba(0, 201, 167, 0.2);
+  color: var(--teal);
+  border-color: rgba(0, 201, 167, 0.5);
+}
+
+[data-theme="light"] .vr-status-badge.accepted {
+  color: #00a389;
+  border-color: #00a389;
+}
+
+.vr-status-badge.declined {
+  background: rgba(248, 113, 113, 0.2);
+  color: #FCA5A5;
+  border-color: rgba(248, 113, 113, 0.5);
+}
+
+[data-theme="light"] .vr-status-badge.declined {
+  color: #dc2626;
+  border-color: #dc2626;
+}
+
+.vr-status-badge.counter {
+  background: rgba(96, 165, 250, 0.2);
+  color: #93C5FD;
+  border-color: rgba(96, 165, 250, 0.5);
+}
+
+[data-theme="light"] .vr-status-badge.counter {
+  color: #2563eb;
+  border-color: #2563eb;
+}
+
+.vr-property {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+}
+
+.vr-detail {
+  font-size: 14px;
+  color: var(--muted2);
+  margin-bottom: 12px;
+}
+
+.vr-label {
+  font-weight: 600;
+}
+
+.vr-value {
+  font-weight: 500;
+}
+
+.vr-amount {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 20px 0 24px 0;
+  line-height: 1.2;
+}
+
+.vr-notes {
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid rgba(255, 255, 255, 0.2);
+  padding: 12px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 24px;
+  color: var(--muted2);
+  line-height: 1.5;
+}
+
+[data-theme="light"] .vr-notes {
+  background: rgba(0, 0, 0, 0.03);
+  border-left: 3px solid rgba(0, 201, 167, 0.4);
+}
+
+.vr-notes strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.vr-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.vr-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 15px 22px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vr-btn svg {
+  flex-shrink: 0;
+}
+
+.vr-btn-accept {
+  background: var(--teal);
+  color: #fff;
+  border-color: var(--teal);
+}
+
+.vr-btn-accept:hover {
+  background: #1fc8b4;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 201, 167, 0.3);
+}
+
+[data-theme="light"] .vr-btn-accept {
+  background: #00a389;
+  border-color: #00a389;
+}
+
+.vr-btn-counter {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.vr-btn-counter:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.vr-btn-reject {
+  background: #ef4444;
+  color: #fff;
+  border-color: #ef4444;
+}
+
+.vr-btn-reject:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+[data-theme="light"] .vr-btn-reject {
+  background: #dc2626;
+  border-color: #dc2626;
+}
+
+/* ── Custom Notification ──────────────────────────────────── */
+.custom-notification {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  padding: 16px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 10000;
+  transform: translateY(-100px);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.custom-notification.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.custom-notification.success {
+  background: rgba(0, 201, 167, 0.95);
+  color: #051226;
+  border: 1px solid rgba(0, 201, 167, 1);
+}
+
+.custom-notification.error {
+  background: rgba(248, 113, 113, 0.95);
+  color: #fff;
+  border: 1px solid rgba(239, 68, 68, 1);
+}
+
+/* ── Reject Viewing Modal ──────────────────────────────────── */
+.reject-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+}
+
+.reject-modal.active {
+  display: flex;
+}
+
+.reject-modal-content {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="light"] .reject-modal-content {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.reject-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.reject-modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.reject-modal-close {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: var(--muted);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.reject-modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text);
+}
+
+.reject-modal-body {
+  padding: 24px;
+}
+
+.reject-modal-body label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.reject-modal-body textarea {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text);
+  resize: vertical;
+  min-height: 100px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+[data-theme="light"] .reject-modal-body textarea {
+  background: #f8f9fa;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.reject-modal-body textarea:focus {
+  border-color: rgba(0, 201, 167, 0.5);
+}
+
+.reject-modal-body textarea::placeholder {
+  color: var(--muted);
+}
+
+.reject-modal-body textarea.error {
+  border-color: #ef4444;
+}
+
+.reject-error {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+.reject-help {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+/* ── Loading Spinner ──────────────────────────────────────── */
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(0, 201, 167, 0.1);
+  border-top-color: var(--teal);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.reject-modal-actions {
+  padding: 20px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.reject-modal-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reject-modal-btn svg {
+  flex-shrink: 0;
+}
+
+.reject-send {
+  background: var(--teal);
+  color: #051226;
+}
+
+.reject-send:hover {
+  background: #1fc8b4;
+  transform: translateY(-1px);
+}

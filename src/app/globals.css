@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg: #0d1b2a;
+  --card: #162032;
+  --card2: #1a2840;
+  --border: rgba(255,255,255,0.07);
+  --text: #f1f5f9;
+  --muted: rgba(255,255,255,0.45);
+  --muted2: rgba(255,255,255,0.65);
+  --teal: #00c9a7;
+  --teal-dk: #1fc8b4;
+  --dot: rgba(255,255,255,0.045);
+  --nav-bg: rgba(13,27,42,0.88);
+  --alt-bg: rgba(255,255,255,0.025);
+  --radius: 14px;
+  --shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #ffffff;
+    --card: #f8f9fa;
+    --card2: #f1f3f5;
+    --border: rgba(0,0,0,0.12);
+    --text: #111827;
+    --muted: #6b7280;
+    --muted2: #374151;
+    --dot: rgba(0,0,0,0.04);
+    --nav-bg: rgba(255,255,255,0.95);
+    --alt-bg: rgba(0,201,167,0.04);
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark {
+  --bg: #0d1b2a;
+  --card: #162032;
+  --card2: #1a2840;
+  --border: rgba(255,255,255,0.07);
+  --text: #f1f5f9;
+  --muted: rgba(255,255,255,0.45);
+  --muted2: rgba(255,255,255,0.65);
+  --nav-bg: rgba(13,27,42,0.88);
+  --alt-bg: rgba(255,255,255,0.025);
+  --shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+body.light {
+  --bg: #ffffff;
+  --card: #f8f9fa;
+  --card2: #f1f3f5;
+  --border: rgba(0,0,0,0.12);
+  --text: #111827;
+  --muted: #6b7280;
+  --muted2: #374151;
+  --nav-bg: rgba(255,255,255,0.95);
+  --alt-bg: rgba(0,201,167,0.04);
+  --shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0,201,167,0.2) transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(0,201,167,0.15);
+    border-radius: 10px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,201,167,0.4);
+  }
+}

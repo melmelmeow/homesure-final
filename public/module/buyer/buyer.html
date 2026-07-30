@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – Browse Properties</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/buyer/buyer-dashboard.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<body>
+<div class="layout">
+  <!-- Sidebar (rendered by component) -->
+  <div id="hs-sidebar"></div>
+
+  <div class="main">
+    <!-- Topbar (rendered by component) -->
+    <div id="hs-topbar"></div>
+
+    <!-- Page content -->
+    <div class="content">
+
+      <!-- Filter Panel -->
+      <div class="filter-panel">
+        <div class="filter-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          Filter Properties
+        </div>
+        <div class="filter-row">
+          <div class="filter-group">
+            <label>Location</label>
+            <select class="filter-select" id="filterBarangay" onchange="renderListings()">
+              <option value="">All Barangays</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Property Type</label>
+            <select class="filter-select" id="filterType" onchange="renderListings()">
+              <option value="">All Types</option>
+              <option value="house">House</option>
+              <option value="apartment">Apartment</option>
+
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Min Price</label>
+            <input class="filter-input" type="number" id="filterMin" placeholder="0" oninput="renderListings()" />
+          </div>
+          <div class="filter-group">
+            <label>Max Price</label>
+            <input class="filter-input" type="text" id="filterMax" placeholder="No limit" oninput="renderListings()" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Listings Header -->
+      <div class="listings-header">
+        <div class="listings-title">Explore Properties</div>
+        <div class="sort-wrap">
+          <button class="sort-btn" id="sortBtn" onclick="toggleSortDropdown()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            <span id="sortLabel">Recommended</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="sort-dropdown" id="sortDropdown">
+            <div class="sort-option active" data-sort="recommended" onclick="setSort('recommended','Recommended',this)">Recommended</div>
+            <div class="sort-option" data-sort="price-asc"    onclick="setSort('price-asc','Price: Low to High',this)">Price: Low to High</div>
+            <div class="sort-option" data-sort="price-desc"   onclick="setSort('price-desc','Price: High to Low',this)">Price: High to Low</div>
+            <div class="sort-option" data-sort="newest"       onclick="setSort('newest','Newest First',this)">Newest First</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="listings-grid" id="listingsGrid"></div>
+    </div>
+  </div>
+</div>
+
+<script src="../../assets/js/fake-data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/buyer/buyer-dashboard.js"></script>
+</body>
+</html>

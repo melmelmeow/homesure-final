@@ -1,0 +1,9 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   HomeSure – Seller Dashboard Styles
+   Requires: dashboard.css
+───────────────────────────────────────────────────────────────────────────── */
+
+/* Seller card value accent */
+.card-value { color: #00c9a7; }
+
+/* Add seller-specific module styles below as modules are built */

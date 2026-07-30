@@ -1,0 +1,159 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   HomeSure – Shared Dashboard Styles
+   Used by all role dashboards inside module/[role]/dashboard.html
+───────────────────────────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: #1E293B;
+  color: #f1f5f9;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Layout ────────────────────────────────────────────────────────────────── */
+.layout { display: flex; height: 100vh; }
+.main   { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px 32px 40px;
+}
+.content::-webkit-scrollbar { width: 5px; }
+.content::-webkit-scrollbar-track { background: transparent; }
+.content::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #1fc8b4, #0a5e53); border-radius: 99px; }
+.content::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #24e0ca, #1a9e8f); }
+
+/* ── Animations ────────────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* ── Page header ───────────────────────────────────────────────────────────── */
+.dash-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  animation: fadeUp 0.4s ease both;
+}
+.dash-sub {
+  color: rgba(255,255,255,0.4);
+  font-size: 13px;
+  margin-bottom: 28px;
+  animation: fadeUp 0.4s ease 0.06s both;
+}
+
+/* ── Stat cards ────────────────────────────────────────────────────────────── */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+  gap: 14px;
+  margin-bottom: 32px;
+  animation: fadeUp 0.4s ease 0.1s both;
+}
+.card {
+  background: #253347;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  padding: 20px 22px;
+  transition: transform 0.18s ease, border-color 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0,201,167,0.25);
+}
+.card-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+.card-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: #00c9a7;
+}
+
+/* ── Section title ─────────────────────────────────────────────────────────── */
+.section-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: rgba(255,255,255,0.85);
+}
+
+/* ── Placeholder sections ──────────────────────────────────────────────────── */
+.placeholder-section {
+  background: #253347;
+  border: 1px dashed rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 50px 24px;
+  text-align: center;
+  color: rgba(255,255,255,0.3);
+}
+.placeholder-section h3 {
+  margin: 0 0 6px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.45);
+}
+.placeholder-section p { margin: 0; font-size: 12px; }
+
+/* ── Two-column grid ───────────────────────────────────────────────────────── */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+  animation: fadeUp 0.4s ease 0.15s both;
+}
+@media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+
+/* ── Status notice (seller pending) ───────────────────────────────────────── */
+.status-notice {
+  background: rgba(245,158,11,0.1);
+  border: 1px solid rgba(245,158,11,0.3);
+  border-radius: 10px;
+  padding: 13px 16px;
+  font-size: 13px;
+  color: #fbbf24;
+  margin-bottom: 24px;
+  display: none;
+  animation: fadeUp 0.4s ease both;
+}
+
+/* ── Activity log table (super-admin) ─────────────────────────────────────── */
+.log-wrap {
+  background: #253347;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  overflow: hidden;
+  animation: fadeUp 0.4s ease 0.2s both;
+}
+.log-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.log-table th {
+  text-align: left;
+  padding: 10px 16px;
+  background: rgba(0,0,0,0.2);
+  color: rgba(255,255,255,0.4);
+  font-weight: 600;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.log-table td {
+  padding: 10px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.65);
+}
+.log-table tr:last-child td { border-bottom: none; }
