@@ -1,0 +1,19 @@
+name: homesure
+
+config:
+  via: cli
+  # Points Lando to the root directory where package.json lives
+  approot: .
+services:
+  node-dev:
+    type: node:22
+    port: 3000 # Set to match your app's port
+    command: npm run dev
+proxy:
+  node-dev:
+    - homesure.lndo.site:3000
+tooling:
+  npm:
+    service: node-dev
+  node:
+    service: node-dev
