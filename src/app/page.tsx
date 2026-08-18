@@ -41,10 +41,10 @@ export default function HomePage({ searchParams }: { searchParams: { q?: string 
             Browse verified land listings across the Philippines with instant QR Ph payments and secure escrow.
           </p>
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
-            <Link href="/dashboard/properties" style={{ background: 'var(--teal)', color: '#fff', border: 'none', padding: '13px 28px', borderRadius: '10px', fontSize: '14.5px', fontWeight: 700, cursor: 'pointer', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px', transition: 'opacity 0.18s' }} onMouseEnter={e => (e.currentTarget.style.opacity = '0.88')} onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
+            <Link href="/dashboard/properties" style={{ background: 'var(--teal)', color: '#fff', border: 'none', padding: '13px 28px', borderRadius: '10px', fontSize: '14.5px', fontWeight: 700, cursor: 'pointer', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px', transition: 'opacity 0.18s' }} >
               Browse Listings
             </Link>
-            <Link href="/auth/signup" style={{ background: 'transparent', color: 'var(--text)', border: '1.5px solid var(--border)', padding: '12px 24px', borderRadius: '10px', fontSize: '14.5px', fontWeight: 700, cursor: 'pointer', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px', transition: 'border-color 0.18s' }} onMouseEnter={e => (e.currentTarget.style.borderColor = 'var(--text)')} onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border)')}>
+            <Link href="/auth/signup" style={{ background: 'transparent', color: 'var(--text)', border: '1.5px solid var(--border)', padding: '12px 24px', borderRadius: '10px', fontSize: '14.5px', fontWeight: 700, cursor: 'pointer', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px', transition: 'border-color 0.18s' }} >
               Landowner? List Now
             </Link>
           </div>
