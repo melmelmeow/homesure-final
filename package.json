@@ -10,8 +10,6 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@supabase/auth-helpers-nextjs": "^0.10.0",
-    "@supabase/auth-helpers-react": "^0.15.0",
     "@supabase/ssr": "^0.12.4",
     "@supabase/supabase-js": "^2.49.1",
     "googleapis": "^173.0.0",
