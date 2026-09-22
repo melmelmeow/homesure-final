@@ -1,11 +1,10 @@
-
-import { createClient } from '@/lib/supabase/server-client'
+import { createClient } from '@/lib/supabase/client'
 import { createNote, deleteNote, updateNote } from './actions'
 
 export default async function NotesPage() {
   const supabase = await createClient()
   const { data: notes } = await supabase.from('notes').select('*').order('created_at', { ascending: false })
-
+  
   return (
     <main style={{ maxWidth: '600px', margin: '2rem auto', fontFamily: 'sans-serif' }}>
       <h1>Notes CRUD</h1>

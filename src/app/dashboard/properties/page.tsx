@@ -1,6 +1,6 @@
 
 
-import { createClient } from "@/lib/supabase/server-client";
+import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import PropertyTable from "@/components/property-table";
 
