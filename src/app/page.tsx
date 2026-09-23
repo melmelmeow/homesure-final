@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { getServerSupabase } from "@/lib/supabase/server-client";
+import { createClient } from "@/lib/supabase/server";
 import { getProperties } from "@/lib/supabase/service";
 import PropertyCard from "@/components/property-card";
 
