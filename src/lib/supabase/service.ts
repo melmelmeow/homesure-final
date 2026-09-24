@@ -1,9 +1,9 @@
-import { getServerSupabase } from "./server-client";
+import { createClient } from "./server";
 import type { Profile, Property, Payment, Refund, SearchDemandLog, LraAuditLog, UserRole, VerificationStatus, PaymentStatus, RefundStatus } from "./types";
 
 // Profiles
 export async function getProfile(userId: string) {
-  const supabase = await getServerSupabase();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("profiles")
     .select("*")
@@ -14,7 +14,7 @@ export async function getProfile(userId: string) {
 }
 
 export async function updateProfile(userId: string, updates: Partial<Profile>) {
-  const supabase = await getServerSupabase();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("profiles")
     .update(updates)
@@ -27,7 +27,7 @@ export async function updateProfile(userId: string, updates: Partial<Profile>) {
 
 // Properties
 export async function getProperties(filters?: { verified?: boolean; search?: string; minPrice?: number; maxPrice?: number; location?: string }) {
-  const supabase = await getServerSupabase();
+  const supabase = await createClient();
   let query = supabase.from("properties").select("*");
 
   if (filters?.verified !== undefined) {
@@ -52,7 +52,7 @@ export async function getProperties(filters?: { verified?: boolean; search?: str
 }
 
 export async function getProperty(id: string) {
-  const supabase = await getServerSupabase();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("properties")
     .select("*")
@@ -63,7 +63,7 @@ export async function getProperty(id: string) {
 }
 
 export async function createProperty(property: Omit<Property, "id" | "created_at">) {
-  const supabase = await getServerSupabase();
+ const supabase = await createClient();
   const { data, error } = await supabase
     .from("properties")
     .insert(property)
@@ -74,7 +74,7 @@ export async function createProperty(property: Omit<Property, "id" | "created_at
 }
 
 export async function updateProperty(id: string, updates: Partial<Property>) {
-  const supabase = await getServerSupabase();
+ const supabase = await createClient();
   const { data, error } = await supabase
     .from("properties")
     .update(updates)
@@ -86,14 +86,14 @@ export async function updateProperty(id: string, updates: Partial<Property>) {
 }
 
 export async function deleteProperty(id: string) {
-  const supabase = await getServerSupabase();
+  const supabase = await createClient();
   const { error } = await supabase.from("properties").delete().eq("id", id);
   if (error) throw error;
 }
 
 // Payments
 export async function getPayment(id: string) {
-  const supabase = await getServerSupabase();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("payments")
     .select("*")
@@ -104,7 +104,7 @@ export async function getPayment(id: string) {
 }
 
 export async function getPaymentByXenditId(xenditChargeId: string) {
-  const supabase = await getServerSupabase();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("payments")
     .select("*")
@@ -115,7 +115,7 @@ export async function getPaymentByXenditId(xenditChargeId: string) {
 }
 
 export async function createPayment(payment: Omit<Payment, "id" | "created_at">) {
-  const supabase = await getServerSupabase();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("payments")
     .insert(payment)
@@ -126,7 +126,7 @@ export async function createPayment(payment: Omit<Payment, "id" | "created_at">)
 }
 
 export async function updatePayment(id: string, updates: Partial<Payment>) {
-  const supabase = await getServerSupabase();
+ const supabase = await createClient();
   const { data, error } = await supabase
     .from("payments")
     .update(updates)
@@ -139,7 +139,7 @@ export async function updatePayment(id: string, updates: Partial<Payment>) {
 
 // Refunds
 export async function getRefund(id: string) {
-  const supabase = await getServerSupabase();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("refunds")
     .select("*")
@@ -150,7 +150,7 @@ export async function getRefund(id: string) {
 }
 
 export async function getRefundsByPayment(paymentId: string) {
-  const supabase = await getServerSupabase();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("refunds")
     .select("*")
@@ -160,7 +160,7 @@ export async function getRefundsByPayment(paymentId: string) {
 }
 
 export async function createRefund(refund: Omit<Refund, "id" | "created_at">) {
-  const supabase = await getServerSupabase();
+ const supabase = await createClient();
   const { data, error } = await supabase
     .from("refunds")
     .insert(refund)
@@ -171,7 +171,7 @@ export async function createRefund(refund: Omit<Refund, "id" | "created_at">) {
 }
 
 export async function updateRefund(id: string, updates: Partial<Refund>) {
-  const supabase = await getServerSupabase();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("refunds")
     .update(updates)
@@ -184,7 +184,7 @@ export async function updateRefund(id: string, updates: Partial<Refund>) {
 
 // Search logs
 export async function logSearch(log: Omit<SearchDemandLog, "id" | "created_at">) {
-  const supabase = await getServerSupabase();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("search_demand_logs")
     .insert(log)
@@ -196,7 +196,7 @@ export async function logSearch(log: Omit<SearchDemandLog, "id" | "created_at">)
 
 // LRA Audit logs
 export async function createLraAuditLog(log: Omit<LraAuditLog, "id" | "created_at">) {
-  const supabase = await getServerSupabase();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("lra_audit_logs")
     .insert(log)
@@ -207,7 +207,7 @@ export async function createLraAuditLog(log: Omit<LraAuditLog, "id" | "created_a
 }
 
 export async function getLraAuditLogs(propertyId: string) {
-  const supabase = await getServerSupabase();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("lra_audit_logs")
     .select("*")
@@ -219,7 +219,7 @@ export async function getLraAuditLogs(propertyId: string) {
 
 // Favorites
 export async function getFavorites(userId: string) {
-  const supabase = await getServerSupabase();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("favorites")
     .select("*, properties(*)")
@@ -230,7 +230,7 @@ export async function getFavorites(userId: string) {
 }
 
 export async function addFavorite(userId: string, propertyId: string) {
-  const supabase = await getServerSupabase();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("favorites")
     .insert({ user_id: userId, property_id: propertyId })
@@ -241,7 +241,7 @@ export async function addFavorite(userId: string, propertyId: string) {
 }
 
 export async function removeFavorite(userId: string, propertyId: string) {
-  const supabase = await getServerSupabase();
+ const supabase = await createClient();
   const { error } = await supabase
     .from("favorites")
     .delete()
@@ -252,7 +252,7 @@ export async function removeFavorite(userId: string, propertyId: string) {
 
 // GSC Metrics
 export async function getGscMetrics() {
-  const supabase = await getServerSupabase();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("gsc_metrics")
     .select("*")
@@ -262,7 +262,7 @@ export async function getGscMetrics() {
 }
 
 export async function upsertGscMetrics(metrics: Array<{ url: string; query: string; clicks: number; impressions: number; ctr: number; position: number }>) {
-  const supabase = await getServerSupabase();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("gsc_metrics")
     .upsert(metrics, { onConflict: ["url", "query"] as any })

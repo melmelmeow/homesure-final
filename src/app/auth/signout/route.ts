@@ -1,12 +1,37 @@
-import { NextResponse } from "next/server";
-import { getServerSupabase } from "@/lib/supabase/server-client";
+import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
+import { NextResponse, type NextRequest } from "next/server";
 
-export async function GET() {
-  return NextResponse.redirect(new URL("/auth/login", process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"));
+function getBaseUrl(request: NextRequest): string {
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return process.env.NEXT_PUBLIC_SITE_URL;
+  }
+  const host = request.headers.get("x-forwarded-host") || request.headers.get("host");
+  const proto = request.headers.get("x-forwarded-proto") || "https";
+  if (host) {
+    return `${proto}://${host}`;
+  }
+  return request.url;
 }
 
-export async function POST() {
-  const supabase = await getServerSupabase();
+export async function GET(request: NextRequest) {
+  const supabase = await createClient();
   await supabase.auth.signOut();
-  return NextResponse.redirect(new URL("/auth/login", process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"));
+
+  revalidatePath("/", "layout");
+
+  const baseUrl = getBaseUrl(request);
+  return NextResponse.redirect(new URL("/auth/login", baseUrl));
 }
+
+export async function POST(request: NextRequest) {
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+
+  revalidatePath("/", "layout");
+
+  const baseUrl = getBaseUrl(request);
+  return NextResponse.redirect(new URL("/auth/login", baseUrl));
+}
+
+

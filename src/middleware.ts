@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  const { getServerSupabase } = await import("@/lib/supabase/server-client");
-  const supabase = await getServerSupabase();
+  const { createClient } = await import("@/lib/supabase/server");
+  const supabase = await createClient();
   const { data: { session } } = await supabase.auth.getSession();
   
   const protectedRoutes = ["/dashboard", "/api/payments", "/api/refunds", "/api/verify", "/api/analytics"];
