@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HomeSure – Property Detail</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  <link rel="stylesheet" href="../../assets/css/buyer/buyer-listing.css" />
+    <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+  <body>
+    <div class="layout">
+      <div id="hs-sidebar"></div>
+      <div class="main">
+        <div id="hs-topbar"></div>
+        <div class="content">
+          <button class="back-link" onclick="history.back()">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+            Back to Listings
+          </button>
+
+          <div class="detail-wrap" id="listingDetail"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Report Modal ── -->
+    <div class="modal-overlay" id="reportModal">
+      <div class="modal-box">
+        <button class="modal-close" onclick="closeReportModal()">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+
+        <div class="modal-title">Report Listing</div>
+        <div class="modal-sub">
+          Please provide details about why you're reporting this listing.
+        </div>
+
+        <div class="modal-field">
+          <label class="modal-label"
+            >Select reason <span class="req">*</span></label
+          >
+          <select class="modal-select" id="reportReason">
+            <option value="">Select a reason</option>
+            <option value="fraudulent">Fraudulent or Scam Listing</option>
+            <option value="incorrect">Incorrect Information</option>
+            <option value="sold">Already Sold / Rented</option>
+            <option value="inappropriate">Inappropriate Content</option>
+            <option value="spam">Spam or Duplicate Listing</option>
+            <option value="price">Misleading Price</option>
+            <option value="other">Other</option>
+          </select>
+          <div class="modal-error" id="reportReasonErr">
+            Please select a reason before submitting.
+          </div>
+        </div>
+
+        <div class="modal-field">
+          <label class="modal-label"
+            >Additional Details
+            <span style="color: var(--muted); font-weight: 400"
+              >(optional)</span
+            ></label
+          >
+          <textarea
+            class="modal-textarea"
+            id="reportDetails"
+            placeholder="Please describe the issue"
+          ></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button class="modal-cancel" onclick="closeReportModal()">
+            Cancel
+          </button>
+          <button class="modal-submit" onclick="submitReport()">
+            Submit Report
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Schedule Viewing Modal ── -->
+    <div class="modal-overlay" id="scheduleModal">
+      <div class="modal-box schedule-modal-box">
+        <button class="modal-close" onclick="closeScheduleModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+
+        <div class="modal-title">Schedule Property Viewing</div>
+        <div class="modal-sub">Select a date and time to visit this property</div>
+
+        <div class="modal-field">
+          <label class="modal-label">Select Date <span class="req">*</span></label>
+          <input type="date" class="modal-input" id="viewingDate" min="" placeholder="mm/dd/yyyy" />
+          <div class="modal-error" id="viewingDateErr">Please select a date</div>
+        </div>
+
+        <div class="modal-field">
+          <label class="modal-label">Select Time <span class="req">*</span></label>
+          <select class="modal-select" id="viewingTime">
+            <option value="">Choose a time slot</option>
+            <option value="09:00">9:00 AM</option>
+            <option value="10:00">10:00 AM</option>
+            <option value="11:00">11:00 AM</option>
+            <option value="13:00">1:00 PM</option>
+            <option value="14:00">2:00 PM</option>
+            <option value="15:00">3:00 PM</option>
+            <option value="16:00">4:00 PM</option>
+            <option value="17:00">5:00 PM</option>
+          </select>
+          <div class="modal-error" id="viewingTimeErr">Please select a time</div>
+        </div>
+
+        <div class="modal-field">
+          <label class="modal-label">Additional Notes (Optional)</label>
+          <textarea class="modal-textarea" id="viewingNotes" rows="3" placeholder="Any specific requests or questions..."></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button class="modal-cancel" onclick="closeScheduleModal()">Cancel</button>
+          <button class="modal-submit" onclick="submitSchedule()">Request Viewing</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Notification -->
+    <div class="success-notification" id="successNotif">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <div class="success-content">
+        <div class="success-title">Viewing Request Sent!</div>
+        <div class="success-message" id="successMessage"></div>
+      </div>
+    </div>
+
+    <script src="../../assets/js/fake-data.js"></script>
+    <script src="../../components/sidebar.js"></script>
+    <script src="../../components/topbar.js"></script>
+    <script src="../../assets/js/buyer/buyer-listing.js"></script>
+  </body>
+</html>

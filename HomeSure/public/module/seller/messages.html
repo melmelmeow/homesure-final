@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – Messages</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/buyer/buyer-messages.css" />
+  <link rel="stylesheet" href="../../assets/css/seller/seller-messages.css" />
+  <link rel="stylesheet" href="../../assets/css/close-listing-modal.css" />
+  <link rel="stylesheet" href="../../assets/css/adjust-availability-modal.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<style>
+  @keyframes slideIn {
+    from { transform: translateX(400px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  @keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(400px); opacity: 0; }
+  }
+
+  /* Remove ugly number input spinners nakakatakot magdelete */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  /* Custom Checkbox Styling kasi pangit yung default */
+  input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+  }
+
+  input[type="checkbox"]:hover {
+    border-color: rgba(0,201,167,0.5);
+  }
+
+  input[type="checkbox"]:checked {
+    background: #00c9a7;
+    border-color: #00c9a7;
+  }
+
+  input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 4px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  /* Scrollbar for modal */
+  form::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  form::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.03);
+    border-radius: 10px;
+  }
+
+  form::-webkit-scrollbar-thumb {
+    background: rgba(0,201,167,0.3);
+    border-radius: 10px;
+  }
+
+  form::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,201,167,0.5);
+  }
+</style>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+  <div class="main">
+    <div id="hs-topbar"></div>
+    <div class="content">
+      <div class="messages-layout">
+
+        <!-- ── Conversation list ── -->
+        <div class="conv-panel">
+          <div class="conv-top">
+            <div class="conv-title">Messages</div>
+            <div class="conv-search-wrap">
+              <span class="conv-search-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              </span>
+              <input class="conv-search" id="convSearch" placeholder="Search conversations..." oninput="filterConvs()" />
+            </div>
+          </div>
+          <div class="conv-list" id="convList">
+            <!-- Conversations will be loaded by JavaScript -->
+          </div>
+        </div>
+
+        <!-- ── Chat area ── -->
+        <div class="chat-panel" id="chatPanel">
+          <!-- Chat Header -->
+          <div class="chat-header">
+            <img class="chat-header-img" src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=400&q=80" alt="Property" />
+            <div class="chat-header-info">
+              <div class="chat-header-title">1-Bedroom Apartment</div>
+              <div class="chat-header-seller">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg>
+                Maria Santos · Interested Buyer
+              </div>
+            </div>
+            <div class="chat-header-price">
+              ₱15,000
+              <span>/month</span>
+            </div>
+          </div>
+
+          <!-- Chat Messages -->
+          <div class="chat-messages" id="chatMessages">
+            <!-- Buyer Message -->
+            <div class="msg-row seller">
+              <div class="msg-bubble">Hi! I'm interested in your 1-Bedroom Apartment. Is it still available?</div>
+              <div class="msg-time">9:45 AM</div>
+            </div>
+
+            <!-- Your Reply (Seller) -->
+            <div class="msg-row buyer">
+              <div class="msg-bubble">Hello Maria! Yes, it's available starting next month. Would you like to schedule a viewing?</div>
+              <div class="msg-time">9:50 AM</div>
+            </div>
+
+            <!-- Buyer Message -->
+            <div class="msg-row seller">
+              <div class="msg-bubble">That would be great! I can view it this Saturday.</div>
+              <div class="msg-time">9:52 AM</div>
+            </div>
+
+            <!-- Your Reply (Seller) -->
+            <div class="msg-row buyer">
+              <div class="msg-bubble">Perfect! Saturday at 2 PM works. Here's the payment request for June rent:</div>
+              <div class="msg-time">10:05 AM</div>
+            </div>
+
+            <!-- Payment Request Card (SENT BY SELLER) -->
+            <div class="msg-row buyer">
+              <div class="payment-request-card">
+                <div class="pr-header">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                  Payment Request Sent
+                  <span class="pr-status pr-status-paid">Proof Received</span>
+                </div>
+                <div class="pr-property">1-Bedroom Apartment for Rent near Town Proper</div>
+                <div class="pr-period">Period: June 2026</div>
+                <div class="pr-amount">₱15,000</div>
+                <div class="pr-methods">
+                  <span class="pr-method-pill pr-gcash">
+                    <svg viewBox="0 0 24 24" width="16" height="16"><rect width="24" height="24" rx="4" fill="#007DFF"/><text x="12" y="16" text-anchor="middle" fill="white" font-size="10" font-weight="bold">G</text></svg>
+                    GCash
+                  </span>
+                  <span class="pr-method-pill pr-maya">
+                    <svg viewBox="0 0 24 24" width="16" height="16"><rect width="24" height="24" rx="4" fill="#4CAF50"/><text x="12" y="16" text-anchor="middle" fill="white" font-size="9" font-weight="bold">M</text></svg>
+                    Maya
+                  </span>
+                  <span class="pr-method-pill pr-bank">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9h18M3 15h18M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                    Bank Transfer
+                  </span>
+                </div>
+              </div>
+              <div class="msg-time">10:05 AM</div>
+            </div>
+
+            <!-- Payment Proof Submitted by Buyer -->
+            <div class="msg-row seller">
+              <div class="payment-request-card proof-card">
+                <div class="pr-header">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  Payment Proof Submitted
+                  <span class="pr-status pr-status-pending">Awaiting Your Confirmation</span>
+                </div>
+                <div class="pr-property">1-Bedroom Apartment for Rent near Town Proper</div>
+                <div class="pr-period">Period: June 2026</div>
+                <div class="pr-amount">₱15,000</div>
+                <div class="proof-detail-row">
+                  <span class="proof-detail-label">Method</span>
+                  <span class="proof-detail-val">GCash</span>
+                </div>
+                <div class="proof-detail-row">
+                  <span class="proof-detail-label">Reference</span>
+                  <span class="proof-detail-val" style="font-family:monospace;font-size:12px;">REF-AB3X9K</span>
+                </div>
+                <div class="proof-file-chip">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  gcash_receipt_june2026.jpg
+                </div>
+
+                <!-- SELLER ACTION BUTTONS -->
+                <div class="proof-actions" id="proofActions">
+                  <button class="proof-btn proof-btn-confirm" onclick="confirmPaymentProof()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg>
+                    Confirm Receipt
+                  </button>
+                  <button class="proof-btn proof-btn-reject" onclick="rejectPaymentProof()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    Reject
+                  </button>
+                </div>
+              </div>
+              <div class="msg-time">10:22 AM</div>
+            </div>
+          </div>
+
+          <!-- Chat Input with REQUEST PAYMENT BUTTON -->
+          <div class="chat-input-area">
+            <button class="chat-pay-req-btn" onclick="openPayReqModal()" title="Send Payment Request">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              Request Payment
+            </button>
+            <input class="chat-input" placeholder="Type a message..." />
+            <button class="chat-send-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Reject Confirmation Modal ─────────────────────────────────── -->
+<div id="rejectConfirmModal" style="display:none;position:fixed;inset:0;z-index:950;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#253347;border:1.5px solid rgba(248,113,113,0.3);border-radius:18px;width:100%;max-width:480px;overflow:hidden;animation:fadeUp .25s ease both;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+
+    <!-- Warning Header -->
+    <div style="background:linear-gradient(135deg, rgba(248,113,113,0.15) 0%, rgba(220,38,38,0.1) 100%);padding:20px 22px;border-bottom:1px solid rgba(248,113,113,0.2);display:flex;align-items:center;gap:12px;">
+      <div style="width:40px;height:40px;background:rgba(248,113,113,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.5" width="22" height="22">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </div>
+      <div>
+        <div style="font-size:17px;font-weight:800;color:#f87171;">REFUND WARNING</div>
+        <div style="font-size:12px;color:rgba(248,113,113,0.7);margin-top:2px;">Money will be returned to buyer</div>
+      </div>
+    </div>
+
+    <!-- Warning Content -->
+    <div style="padding:24px 22px;">
+      <div style="font-size:14px;color:#f1f5f9;font-weight:600;margin-bottom:16px;">
+        The buyer has already paid <strong style="color:#00c9a7;">₱15,000</strong>.
+      </div>
+
+      <div style="background:#1a2739;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;margin-bottom:16px;">
+        <div style="font-size:13px;color:rgba(255,255,255,0.85);font-weight:600;margin-bottom:10px;">If you REJECT this payment:</div>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;">
+          <li style="display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:rgba(255,255,255,0.7);">
+            <span style="color:#f87171;flex-shrink:0;">•</span>
+            Money will be <strong style="color:#f87171;">AUTO-REFUNDED</strong> from escrow to buyer
+          </li>
+          <li style="display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:rgba(255,255,255,0.7);">
+            <span style="color:#f87171;flex-shrink:0;">•</span>
+            Buyer will be notified to resubmit correct proof
+          </li>
+          <li style="display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:rgba(255,255,255,0.7);">
+            <span style="color:#f87171;flex-shrink:0;">•</span>
+            Transaction will be marked as <strong>"Refund Pending"</strong>
+          </li>
+        </ul>
+      </div>
+
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:12px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:10px;">
+        <span style="font-size:16px;flex-shrink:0;">💡</span>
+        <div style="font-size:11.5px;color:rgba(251,191,36,0.95);font-weight:600;line-height:1.5;">
+          <strong>NOTE:</strong> In production, HomeSure holds payments in ESCROW until you confirm. This prevents money loss for both parties.
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div style="display:flex;gap:10px;padding:18px 22px;border-top:1px solid rgba(255,255,255,0.07);background:#1a2739;">
+      <button onclick="closeRejectModal()" style="flex:1;background:transparent;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:12px 20px;color:rgba(255,255,255,0.6);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;">
+        Cancel
+      </button>
+      <button onclick="proceedReject()" style="flex:1;background:#dc2626;border:none;border-radius:10px;padding:12px 20px;color:#fff;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(220,38,38,0.3);">
+        Yes, Reject & Refund
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Payment Request Modal ─────────────────────────────────── -->
+<div class="modal-backdrop" id="payReqModal" style="display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)closePayReqModal()">
+  <div style="background:#253347;border:1px solid rgba(255,255,255,0.07);border-radius:18px;width:100%;max-width:420px;overflow:hidden;animation:fadeUp .22s ease both;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:20px 22px 16px;border-bottom:1px solid rgba(255,255,255,0.07);">
+      <div>
+        <div style="font-size:16px;font-weight:800;color:#f1f5f9;">Send Payment Request</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:3px;" id="prPropertyName">—</div>
+      </div>
+      <button onclick="closePayReqModal()" style="background:rgba(255,255,255,0.06);border:none;border-radius:8px;width:30px;height:30px;cursor:pointer;color:rgba(255,255,255,0.5);display:flex;align-items:center;justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <form onsubmit="sendPaymentRequest(event)" style="padding:20px 22px;display:flex;flex-direction:column;gap:14px;max-height:calc(90vh - 150px);overflow-y:auto;">
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="font-size:11.5px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.05em;">Payment Type</label>
+        <select id="prPaymentType" required
+          style="background:#2c3d55;border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:10px 14px;color:#f1f5f9;font-family:inherit;font-size:13.5px;outline:none;width:100%;cursor:pointer;">
+          <option value="">Select payment type</option>
+          <option value="security">Security Deposit</option>
+          <option value="rent">Rent Payment</option>
+          <option value="both">Security Deposit + Rent</option>
+        </select>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="font-size:11.5px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.05em;">Amount (₱)</label>
+        <input id="prAmount" type="number" min="1" required
+          style="background:#2c3d55;border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:10px 14px;color:#f1f5f9;font-family:inherit;font-size:13.5px;outline:none;width:100%;" />
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="font-size:11.5px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.05em;">Period / Month</label>
+        <input id="prPeriod" type="text" placeholder="e.g. June 2026" required
+          style="background:#2c3d55;border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:10px 14px;color:#f1f5f9;font-family:inherit;font-size:13.5px;outline:none;width:100%;" />
+      </div>
+
+      <!-- Payment Methods Section -->
+      <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:14px;">
+        <label style="font-size:11.5px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;display:block;">Your Payment Receiving Methods</label>
+
+        <!-- E-Wallet Options -->
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px;">
+          <!-- GCash -->
+          <div style="background:#2c3d55;border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 14px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+              <input type="checkbox" id="enableGcash">
+              <div style="width:24px;height:24px;background:#007DFF;border-radius:6px;display:flex;align-items:center;justify-content:center;">
+                <span style="color:white;font-size:12px;font-weight:900;">G</span>
+              </div>
+              <label for="enableGcash" style="font-size:13px;font-weight:700;color:#f1f5f9;cursor:pointer;flex:1;">GCash</label>
+            </div>
+            <input id="gcashNumber" type="text" placeholder="09XX XXX XXXX" maxlength="11"
+              style="background:#1a2739;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:8px 12px;color:#f1f5f9;font-family:inherit;font-size:12.5px;outline:none;width:100%;display:none;" />
+            <input id="gcashName" type="text" placeholder="Account Name"
+              style="background:#1a2739;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:8px 12px;color:#f1f5f9;font-family:inherit;font-size:12.5px;outline:none;width:100%;margin-top:6px;display:none;" />
+          </div>
+
+          <!-- Maya -->
+          <div style="background:#2c3d55;border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 14px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+              <input type="checkbox" id="enableMaya">
+              <div style="width:24px;height:24px;background:#4CAF50;border-radius:6px;display:flex;align-items:center;justify-content:center;">
+                <span style="color:white;font-size:12px;font-weight:900;">M</span>
+              </div>
+              <label for="enableMaya" style="font-size:13px;font-weight:700;color:#f1f5f9;cursor:pointer;flex:1;">Maya</label>
+            </div>
+            <input id="mayaNumber" type="text" placeholder="09XX XXX XXXX" maxlength="11"
+              style="background:#1a2739;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:8px 12px;color:#f1f5f9;font-family:inherit;font-size:12.5px;outline:none;width:100%;display:none;" />
+            <input id="mayaName" type="text" placeholder="Account Name"
+              style="background:#1a2739;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:8px 12px;color:#f1f5f9;font-family:inherit;font-size:12.5px;outline:none;width:100%;margin-top:6px;display:none;" />
+          </div>
+
+          <!-- Credit/Debit Card -->
+          <div style="background:#2c3d55;border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 14px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <input type="checkbox" id="enableCard" checked>
+              <div style="width:24px;height:24px;background:#6366F1;border-radius:6px;display:flex;align-items:center;justify-content:center;">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="white" stroke-width="2">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                  <line x1="1" y1="10" x2="23" y2="10"/>
+                </svg>
+              </div>
+              <label for="enableCard" style="font-size:13px;font-weight:700;color:#f1f5f9;cursor:pointer;flex:1;">Credit/Debit Card</label>
+            </div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:6px;padding-left:32px;">Manual bank deposit or online transfer</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;padding-top:8px;border-top:1px solid rgba(255,255,255,0.07);margin-top:4px;">
+        <button type="button" onclick="closePayReqModal()"
+          style="background:transparent;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 20px;color:rgba(255,255,255,0.6);font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;">
+          Cancel
+        </button>
+        <button type="submit"
+          style="background:#00c9a7;border:none;border-radius:10px;padding:10px 24px;color:#fff;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Send Request
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Toggle payment method inputs
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('enableGcash').addEventListener('change', (e) => {
+      const inputs = [document.getElementById('gcashNumber'), document.getElementById('gcashName')];
+      inputs.forEach(input => input.style.display = e.target.checked ? 'block' : 'none');
+    });
+
+    document.getElementById('enableMaya').addEventListener('change', (e) => {
+      const inputs = [document.getElementById('mayaNumber'), document.getElementById('mayaName')];
+      inputs.forEach(input => input.style.display = e.target.checked ? 'block' : 'none');
+    });
+
+    // Card is always enabled (no additional inputs needed - handled by QRPH)
+  });
+
+  // Custom notification (copy from buyer messages)
+  window.showNotif = function(message, duration = 3000) {
+    const notif = document.createElement('div');
+    notif.className = 'custom-notif';
+    notif.innerHTML = `
+      <div class="custom-notif-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" width="14" height="14">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <div>${message}</div>
+    `;
+    notif.style.cssText = 'position:fixed;top:20px;right:20px;background:linear-gradient(135deg,#00c9a7 0%,#00a88a 100%);color:white;padding:16px 20px;border-radius:12px;box-shadow:0 8px 24px rgba(0,201,167,0.4),0 2px 8px rgba(0,0,0,0.2);display:flex;align-items:center;gap:12px;font-family:"Plus Jakarta Sans",sans-serif;font-size:14px;font-weight:600;z-index:9999;min-width:300px;animation:slideIn 0.4s ease;';
+    document.body.appendChild(notif);
+
+    setTimeout(() => {
+      notif.style.animation = 'slideOut 0.3s ease forwards';
+      setTimeout(() => notif.remove(), 300);
+    }, duration);
+  };
+
+  // Confirm Payment - Releases money from escrow
+  window.confirmPaymentProof = function() {
+    const card = document.querySelector('.proof-card');
+    const statusBadge = card.querySelector('.pr-status');
+    const actions = document.getElementById('proofActions');
+
+    // Update status
+    statusBadge.className = 'pr-status pr-status-done';
+    statusBadge.textContent = 'Confirmed — Paid ✓';
+
+    // Remove action buttons
+    actions.innerHTML = `
+      <div style="padding:12px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);border-radius:10px;text-align:center;">
+        <p style="font-size:12px;color:#22c55e;font-weight:600;">✓ Payment confirmed! Money released from escrow to your account.</p>
+      </div>
+    `;
+
+    // Show notification
+    window.showNotif('Payment confirmed! ₱15,000 has been released to your account.');
+
+    // ══════════════════════════════════════════════════════════════════════════════
+    // TRIGGER CLOSE LISTING MODAL after 2 seconds
+    // ══════════════════════════════════════════════════════════════════════════════
+    setTimeout(() => {
+      CloseListingModal.openModal({
+        listingId: 'prop-001',
+        listingTitle: '1-Bedroom Apartment for Rent near Town Proper',
+        tenantName: 'Maria Santos',
+        period: 'June 2026',
+        amount: 15000
+      });
+    }, 2000);
+  };
+
+  // Open Payment Request Modal
+  window.openPayReqModal = function() {
+    // Auto-load saved payment methods
+    const user = getSession();
+    if (user && user.paymentMethods) {
+      const pm = user.paymentMethods;
+
+      // Load GCash
+      if (pm.gcash && pm.gcash.enabled) {
+        document.getElementById('enableGcash').checked = true;
+        document.getElementById('gcashNumber').value = pm.gcash.number || '';
+        document.getElementById('gcashName').value = pm.gcash.name || '';
+        document.getElementById('gcashNumber').style.display = 'block';
+        document.getElementById('gcashName').style.display = 'block';
+      }
+
+      // Load Maya
+      if (pm.maya && pm.maya.enabled) {
+        document.getElementById('enableMaya').checked = true;
+        document.getElementById('mayaNumber').value = pm.maya.number || '';
+        document.getElementById('mayaName').value = pm.maya.name || '';
+        document.getElementById('mayaNumber').style.display = 'block';
+        document.getElementById('mayaName').style.display = 'block';
+      }
+
+      // Load Bank
+      if (pm.bank && pm.bank.enabled) {
+        document.getElementById('enableBank').checked = true;
+        document.getElementById('bankName').value = pm.bank.bankName || '';
+        document.getElementById('bankAccount').value = pm.bank.accountNumber || '';
+        document.getElementById('bankAccountName').value = pm.bank.accountName || '';
+        document.getElementById('bankName').style.display = 'block';
+        document.getElementById('bankAccount').style.display = 'block';
+        document.getElementById('bankAccountName').style.display = 'block';
+      }
+    }
+
+    document.getElementById('payReqModal').style.display = 'flex';
+  };
+
+  // Close Payment Request Modal
+  window.closePayReqModal = function() {
+    document.getElementById('payReqModal').style.display = 'none';
+    // Reset form
+    document.getElementById('prAmount').value = '';
+    document.getElementById('prPeriod').value = '';
+    document.getElementById('enableGcash').checked = false;
+    document.getElementById('enableMaya').checked = false;
+    document.getElementById('enableBank').checked = false;
+    // Hide all input fields
+    document.getElementById('gcashNumber').style.display = 'none';
+    document.getElementById('gcashName').style.display = 'none';
+    document.getElementById('mayaNumber').style.display = 'none';
+    document.getElementById('mayaName').style.display = 'none';
+    document.getElementById('bankName').style.display = 'none';
+    document.getElementById('bankAccount').style.display = 'none';
+    document.getElementById('bankAccountName').style.display = 'none';
+  };
+
+  // Send Payment Request
+  window.sendPaymentRequest = function(event) {
+    event.preventDefault();
+
+    const amount = document.getElementById('prAmount').value;
+    const period = document.getElementById('prPeriod').value;
+
+    // Check if at least one payment method is enabled
+    const gcashEnabled = document.getElementById('enableGcash').checked;
+    const mayaEnabled = document.getElementById('enableMaya').checked;
+    const bankEnabled = document.getElementById('enableBank').checked;
+
+    if (!gcashEnabled && !mayaEnabled && !bankEnabled) {
+      alert('Please enable at least one payment method!');
+      return;
+    }
+
+    // Build payment methods pills
+    let methodPills = '';
+    if (gcashEnabled) {
+      methodPills += `
+        <span class="pr-method-pill pr-gcash">
+          <svg viewBox="0 0 24 24" width="16" height="16"><rect width="24" height="24" rx="4" fill="#007DFF"/><text x="12" y="16" text-anchor="middle" fill="white" font-size="10" font-weight="bold">G</text></svg>
+          GCash
+        </span>`;
+    }
+    if (mayaEnabled) {
+      methodPills += `
+        <span class="pr-method-pill pr-maya">
+          <svg viewBox="0 0 24 24" width="16" height="16"><rect width="24" height="24" rx="4" fill="#4CAF50"/><text x="12" y="16" text-anchor="middle" fill="white" font-size="9" font-weight="bold">M</text></svg>
+          Maya
+        </span>`;
+    }
+    if (bankEnabled) {
+      methodPills += `
+        <span class="pr-method-pill pr-bank">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9h18M3 15h18M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+          Bank Transfer
+        </span>`;
+    }
+
+    // Get current time
+    const now = new Date();
+    const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+    // Create payment request card
+    const paymentCard = `
+      <div class="msg-row buyer">
+        <div class="payment-request-card">
+          <div class="pr-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Payment Request Sent
+            <span class="pr-status pr-status-pending">Awaiting Payment</span>
+          </div>
+          <div class="pr-property">1-Bedroom Apartment for Rent near Town Proper</div>
+          <div class="pr-period">Period: ${period}</div>
+          <div class="pr-amount">₱${parseInt(amount).toLocaleString()}</div>
+          <div class="pr-methods">
+            ${methodPills}
+          </div>
+        </div>
+        <div class="msg-time">${time}</div>
+      </div>
+    `;
+
+    // Add to chat messages
+    const chatMessages = document.getElementById('chatMessages');
+    chatMessages.insertAdjacentHTML('beforeend', paymentCard);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // Close modal
+    window.closePayReqModal();
+
+    // Show success notification
+    window.showNotif(`Payment request sent! Amount: ₱${parseInt(amount).toLocaleString()} for ${period}`);
+  };
+
+  // Reject Payment - Show custom warning modal
+  window.rejectPaymentProof = function() {
+    document.getElementById('rejectConfirmModal').style.display = 'flex';
+  };
+
+  // Close reject modal
+  window.closeRejectModal = function() {
+    document.getElementById('rejectConfirmModal').style.display = 'none';
+  };
+
+  // Proceed with rejection
+  window.proceedReject = function() {
+    // Close modal
+    window.closeRejectModal();
+
+    const card = document.querySelector('.proof-card');
+    const statusBadge = card.querySelector('.pr-status');
+    const actions = document.getElementById('proofActions');
+
+    // Update status
+    statusBadge.className = 'pr-status pr-status-rej';
+    statusBadge.textContent = 'Rejected — Refund Initiated';
+
+    // Remove action buttons, show refund status
+    actions.innerHTML = `
+      <div style="padding:12px;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.25);border-radius:10px;text-align:center;">
+        <p style="font-size:12px;color:#f87171;font-weight:600;">⚠️ Refund initiated. ₱15,000 will be returned to buyer from escrow within 3-5 business days.</p>
+      </div>
+    `;
+
+    // Show notification
+    window.showNotif('Payment rejected. Automatic refund initiated from escrow.');
+  };
+</script>
+<script src="../../assets/js/fake-data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/close-listing.js"></script>
+<script src="../../assets/js/adjust-availability.js"></script>
+<script src="../../assets/js/seller/seller-messages.js"></script>
+</body>
+</html>

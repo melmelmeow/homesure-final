@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – Account Settings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/admin/admin-settings.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+  <div class="main">
+    <div id="hs-topbar"></div>
+    <div class="content">
+
+      <div class="page-header">
+        <div class="page-title">Account Settings</div>
+        <div class="page-sub">Manage your password, security, and notification preferences</div>
+      </div>
+
+      <div class="settings-col">
+
+        <!-- ── Security ── -->
+        <div class="section-card">
+          <div class="section-header">
+            <div class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <div class="section-title">Security</div>
+              <div class="section-sub">Manage your password and account access</div>
+            </div>
+          </div>
+
+          <!-- Password row -->
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-label">Password</div>
+              <div class="setting-desc"><span class="pw-nudge-dot"></span>Last changed: Never — keep your account secure by updating regularly</div>
+            </div>
+            <button class="change-pw-btn" id="changePwBtn" onclick="togglePwForm()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Change Password
+            </button>
+          </div>
+
+          <!-- Password form -->
+          <div class="pw-form" id="pwForm">
+            <div class="field">
+              <label>Current Password</label>
+              <div class="field-input-wrap">
+                <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input type="password" id="currentPw" placeholder="Enter current password" autocomplete="current-password" />
+              </div>
+            </div>
+            <div class="field">
+              <label>New Password</label>
+              <div class="field-input-wrap">
+                <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input type="password" id="newPw" placeholder="Create a strong password" autocomplete="new-password" oninput="checkStrength(this.value)" />
+                <span class="pw-toggle-visibility" onclick="toggleVis('newPw',this)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </span>
+              </div>
+              <div class="pw-strength" id="pwStrengthWrap">
+                <div class="pw-strength-bars">
+                  <div class="pw-bar" id="pwBar1"></div>
+                  <div class="pw-bar" id="pwBar2"></div>
+                  <div class="pw-bar" id="pwBar3"></div>
+                  <div class="pw-bar" id="pwBar4"></div>
+                </div>
+                <span class="pw-strength-label" id="pwStrengthLabel"></span>
+              </div>
+              <div class="pw-requirements" id="pwRequirements">
+                <div class="pw-req" id="req-len">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
+                  At least 8 characters
+                </div>
+                <div class="pw-req" id="req-upper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
+                  One uppercase letter (A–Z)
+                </div>
+                <div class="pw-req" id="req-num">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
+                  One number (0–9)
+                </div>
+                <div class="pw-req" id="req-special">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
+                  One special character (!@#$…)
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <label>Confirm New Password</label>
+              <div class="field-input-wrap">
+                <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input type="password" id="confirmPw" placeholder="Re-enter new password" autocomplete="new-password" />
+                <span class="pw-toggle-visibility" onclick="toggleVis('confirmPw',this)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </span>
+              </div>
+            </div>
+            <div class="pw-actions">
+              <button class="btn-primary" onclick="savePassword()">Update Password</button>
+              <button class="btn-ghost" onclick="togglePwForm()">Cancel</button>
+            </div>
+          </div>
+
+          <!-- 2FA row -->
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-label">Two-Factor Authentication</div>
+              <div class="setting-desc">Add an extra layer of security — require a code when signing in</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="twoFaToggle" onchange="handle2FA(this)" />
+              <div class="toggle-track"></div>
+            </label>
+          </div>
+
+          <div class="setting-row" id="twoFaStatus">
+            <div class="setting-desc" id="twoFaStatusInner" style="display:flex;align-items:center;gap:7px;">
+              <svg id="twoFaStatusIcon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span id="twoFaStatusText">Two-Factor Authentication is disabled</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Appearance ── -->
+        <div class="section-card">
+          <div class="section-header">
+            <div class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </div>
+            <div>
+              <div class="section-title">Appearance</div>
+              <div class="section-sub">Customize how HomeSure looks to you</div>
+            </div>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-label">Theme</div>
+              <div class="setting-desc">Choose between light and dark mode</div>
+            </div>
+            <div class="toggle-group">
+              <span class="toggle-state" id="theme-lbl">Light</span>
+              <label class="toggle"><input type="checkbox" id="themeToggle" onchange="toggleTheme(this)" /><div class="toggle-track"></div></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Notifications ── -->
+        <div class="section-card">
+          <div class="section-header">
+            <div class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </div>
+            <div>
+              <div class="section-title">Notification Preferences</div>
+              <div class="section-sub">Choose how and when you want to be notified</div>
+            </div>
+          </div>
+
+          <div class="notif-section-label">Notification Channels</div>
+
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-label">Email Notifications</div>
+              <div class="setting-desc">Receive notifications via your email address</div>
+            </div>
+            <div class="toggle-group">
+              <span class="toggle-state on" id="notifEmail-lbl">On</span>
+              <label class="toggle"><input type="checkbox" id="notifEmail" checked onchange="updateToggleLabel(this,'notifEmail-lbl');updateChannelDependency()" /><div class="toggle-track"></div></label>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-label">SMS Notifications</div>
+              <div class="setting-desc">Receive notifications via text message</div>
+            </div>
+            <div class="toggle-group">
+              <span class="toggle-state" id="notifSms-lbl">Off</span>
+              <label class="toggle"><input type="checkbox" id="notifSms" onchange="updateToggleLabel(this,'notifSms-lbl');updateChannelDependency()" /><div class="toggle-track"></div></label>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-label">Push Notifications</div>
+              <div class="setting-desc">Receive in-browser push notifications</div>
+            </div>
+            <div class="toggle-group">
+              <span class="toggle-state on" id="notifPush-lbl">On</span>
+              <label class="toggle"><input type="checkbox" id="notifPush" checked onchange="updateToggleLabel(this,'notifPush-lbl');updateChannelDependency()" /><div class="toggle-track"></div></label>
+            </div>
+          </div>
+
+          <div class="notif-section-label">Notification Types</div>
+
+          <div class="setting-row" id="rowAdmins">
+            <div class="setting-info">
+              <div class="setting-label">Admin Account Activity</div>
+              <div class="setting-desc">Get notified when admin accounts are added, modified, or suspended</div>
+            </div>
+            <div class="toggle-group">
+              <span class="toggle-state on" id="notifAdmins-lbl">On</span>
+              <label class="toggle"><input type="checkbox" id="notifAdmins" checked onchange="updateToggleLabel(this,'notifAdmins-lbl')" /><div class="toggle-track"></div></label>
+            </div>
+          </div>
+          <div class="setting-row" id="rowReports">
+            <div class="setting-info">
+              <div class="setting-label">System Reports</div>
+              <div class="setting-desc">Receive summaries and alerts from platform-wide reports</div>
+            </div>
+            <div class="toggle-group">
+              <span class="toggle-state on" id="notifReports-lbl">On</span>
+              <label class="toggle"><input type="checkbox" id="notifReports" checked onchange="updateToggleLabel(this,'notifReports-lbl')" /><div class="toggle-track"></div></label>
+            </div>
+          </div>
+          <div class="setting-row" id="rowAudit">
+            <div class="setting-info">
+              <div class="setting-label">Audit Trail Alerts</div>
+              <div class="setting-desc">Get notified about critical or unusual audit log entries</div>
+            </div>
+            <div class="toggle-group">
+              <span class="toggle-state on" id="notifAudit-lbl">On</span>
+              <label class="toggle"><input type="checkbox" id="notifAudit" checked onchange="updateToggleLabel(this,'notifAudit-lbl')" /><div class="toggle-track"></div></label>
+            </div>
+          </div>
+          <div class="setting-row" id="rowSystem">
+            <div class="setting-info">
+              <div class="setting-label">System Updates</div>
+              <div class="setting-desc">Receive HomeSure platform announcements and maintenance notices</div>
+            </div>
+            <div class="toggle-group">
+              <span class="toggle-state" id="notifSystem-lbl">Off</span>
+              <label class="toggle"><input type="checkbox" id="notifSystem" onchange="updateToggleLabel(this,'notifSystem-lbl')" /><div class="toggle-track"></div></label>
+            </div>
+          </div>
+
+          <div class="notif-save-row">
+            <div class="notif-saved-msg" id="notifSavedMsg">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Preferences saved
+            </div>
+            <button class="btn-primary" onclick="saveNotifications()">Save Preferences</button>
+          </div>
+        </div>
+
+      </div><!-- /settings-col -->
+    </div><!-- /content -->
+  </div>
+</div>
+
+<!-- ── 2FA Modal ── -->
+<div class="modal-backdrop" id="twoFaModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Enable Two-Factor Authentication</div>
+        <div class="modal-sub">Enter the code we sent to your email</div>
+      </div>
+      <button class="modal-close" onclick="close2FA()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="twofa-email-sent">
+      <div class="twofa-email-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <div>
+        <div class="twofa-email-title">Code sent!</div>
+        <div class="twofa-email-sub">We sent a 6-digit code to <strong id="twoFaEmailTarget"></strong></div>
+      </div>
+    </div>
+
+    <div class="otp-boxes" id="twoFaBoxes">
+      <input class="otp-box" maxlength="1" type="text" inputmode="numeric" />
+      <input class="otp-box" maxlength="1" type="text" inputmode="numeric" />
+      <input class="otp-box" maxlength="1" type="text" inputmode="numeric" />
+      <input class="otp-box" maxlength="1" type="text" inputmode="numeric" />
+      <input class="otp-box" maxlength="1" type="text" inputmode="numeric" />
+      <input class="otp-box" maxlength="1" type="text" inputmode="numeric" />
+    </div>
+    <div class="otp-error" id="twoFaError">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Invalid code. Please try again.
+    </div>
+
+    <div class="twofa-resend">
+      <span id="twoFaResendText">Resend code in <strong id="twoFaTimer">30s</strong></span>
+      <span class="twofa-resend-link disabled" id="twoFaResendLink" onclick="resend2FA()">Resend</span>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="close2FA()">Cancel</button>
+      <button class="btn-primary" onclick="verify2FA()">Verify &amp; Enable</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <div class="toast-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="toastIcon"></svg></div>
+  <span id="toastMsg"></span>
+</div>
+
+<script src="../../assets/js/fake-data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/super-admin/super-admin-settings.js"></script>
+</body>
+</html>

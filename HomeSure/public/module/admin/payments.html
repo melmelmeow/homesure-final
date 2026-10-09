@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – Payments Overview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/admin/admin-payments.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+  <div class="main">
+    <div id="hs-topbar"></div>
+    <div class="content">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div>
+          <div class="page-title">Payments Overview</div>
+          <div class="page-sub">Monitor all rent transactions and security deposits across the platform</div>
+        </div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="stat-row" id="statRow">
+        <!-- injected by JS -->
+      </div>
+
+      <!-- Quick Filter Row -->
+      <div class="filter-row">
+        <input class="filter-input" type="date" id="fDateFrom" title="Date from" onchange="renderTransactions()" />
+        <input class="filter-input" type="date" id="fDateTo" title="Date to" onchange="renderTransactions()" />
+        <select class="filter-select" id="fLandlord" onchange="renderTransactions()">
+          <option value="">All Landlords</option>
+          <option value="Ramon Cruz">Ramon Cruz</option>
+          <option value="Lourdes Navarro">Lourdes Navarro</option>
+        </select>
+        <select class="filter-select" id="fPaymentType" onchange="renderTransactions()">
+          <option value="">All Payment Types</option>
+          <option value="security">Security Deposit</option>
+          <option value="rent">Rent Payment</option>
+          <option value="both">Security + Rent</option>
+        </select>
+        <select class="filter-select" id="fStatus" onchange="renderTransactions()">
+          <option value="">All Statuses</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="pending_confirmation">Pending</option>
+          <option value="overdue">Overdue</option>
+        </select>
+        <input class="filter-search" type="text" id="fSearch" placeholder="Search tenant, landlord, reference…" oninput="renderTransactions()" />
+      </div>
+
+      <!-- Section: All Transactions -->
+      <div class="section-header">
+        <div class="section-title">All Transactions</div>
+        <div class="section-count" id="txCount"></div>
+      </div>
+      <div class="table-wrap" style="margin-bottom: 32px;">
+        <table class="pay-table">
+          <thead>
+            <tr>
+              <th>Tenant</th>
+              <th>Landlord</th>
+              <th>Property</th>
+              <th>Period</th>
+              <th>Amount</th>
+              <th>Type</th>
+              <th>Method</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="transactionsBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Section: Security Deposits -->
+      <div class="section-header">
+        <div class="section-title">Security Deposits</div>
+        <div class="section-count" id="depCount"></div>
+      </div>
+      <div class="table-wrap">
+        <table class="pay-table">
+          <thead>
+            <tr>
+              <th>Tenant</th>
+              <th>Property</th>
+              <th>Deposit</th>
+              <th>Deductions</th>
+              <th>Refundable</th>
+              <th>Status</th>
+              <th>Landlord</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="depositsBody"></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <span class="toast-icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </span>
+  <span id="toastMsg"></span>
+</div>
+
+<script src="../../assets/js/fake-data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/admin/admin-payments.js"></script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HomeSure - Auto Review Prompt Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #1E293B;
+      color: #f1f5f9;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .demo-container {
+      max-width: 800px;
+      width: 100%;
+    }
+    h1 {
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #00c9a7, #00a88a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 16px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 60px;
+    }
+    .triggers {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+    .trigger-card {
+      background: #253347;
+      border: 1.5px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 24px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .trigger-card:hover {
+      border-color: rgba(0,201,167,0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,201,167,0.2);
+    }
+    .trigger-emoji {
+      font-size: 40px;
+      margin-bottom: 16px;
+    }
+    .trigger-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 8px;
+    }
+    .trigger-desc {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.6;
+    }
+    .info-box {
+      background: #253347;
+      border: 1.5px solid rgba(0,201,167,0.3);
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .info-box h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #00c9a7;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .info-list {
+      list-style: none;
+      padding: 0;
+    }
+    .info-list li {
+      padding: 8px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.6;
+    }
+    .info-list li::before {
+      content: '✓';
+      color: #00c9a7;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+    .code-block {
+      background: #1a2739;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 16px;
+      overflow-x: auto;
+    }
+    .code-block code {
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: #00c9a7;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-container">
+    <h1>📱 Auto Review Prompt</h1>
+    <p class="subtitle">Phone app-style review popups that appear automatically</p>
+
+    <div class="triggers">
+      <div class="trigger-card" onclick="triggerAfterPayment()">
+        <div class="trigger-emoji">💰</div>
+        <div class="trigger-title">After Payment</div>
+        <div class="trigger-desc">Show prompt after user completes a payment</div>
+      </div>
+
+      <div class="trigger-card" onclick="triggerRental()">
+        <div class="trigger-emoji">🏠</div>
+        <div class="trigger-title">After Rental</div>
+        <div class="trigger-desc">Prompt appears after a rental period</div>
+      </div>
+
+      <div class="trigger-card" onclick="triggerRandom()">
+        <div class="trigger-emoji">🎲</div>
+        <div class="trigger-title">Random Prompt</div>
+        <div class="trigger-desc">Appears randomly while using the app</div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <h2>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 16v-4"/>
+          <path d="M12 8h.01"/>
+        </svg>
+        How It Works
+      </h2>
+      <ul class="info-list">
+        <li><strong>Auto-appears</strong> after key actions (payment, rental completion)</li>
+        <li><strong>Star rating</strong> - Users tap 1-5 stars</li>
+        <li><strong>Optional feedback</strong> - Text appears after rating</li>
+        <li><strong>"Maybe Later"</strong> - Dismisses for 7 days</li>
+        <li><strong>Smart timing</strong> - Won't show if recently prompted</li>
+        <li><strong>localStorage tracking</strong> - Prevents spam</li>
+        <li><strong>Thank you screen</strong> - Confirms submission</li>
+      </ul>
+
+      <div class="code-block">
+        <code>
+// Add to any page<br>
+&lt;script src="components/review-prompt.js"&gt;&lt;/script&gt;<br>
+<br>
+// Trigger after payment confirmation<br>
+ReviewPrompt.trigger({<br>
+&nbsp;&nbsp;context: 'payment',<br>
+&nbsp;&nbsp;propertyName: '1-Bedroom Apartment',<br>
+&nbsp;&nbsp;delay: 2000 // 2 seconds after payment<br>
+});<br>
+<br>
+// Random trigger (use in app load)<br>
+if (Math.random() < 0.3) { // 30% chance<br>
+&nbsp;&nbsp;ReviewPrompt.trigger({ context: 'random' });<br>
+}
+        </code>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Review Prompt Component -->
+  <script src="components/review-prompt.js"></script>
+
+  <script>
+    // Demo trigger functions
+    function triggerAfterPayment() {
+      ReviewPrompt.trigger({
+        context: 'payment',
+        propertyName: '1-Bedroom Apartment near Town Proper',
+        delay: 500
+      });
+    }
+
+    function triggerRental() {
+      ReviewPrompt.trigger({
+        context: 'rental',
+        propertyName: 'Cozy Studio Apartment',
+        delay: 500
+      });
+    }
+
+    function triggerRandom() {
+      ReviewPrompt.trigger({
+        context: 'random',
+        delay: 500
+      });
+    }
+
+    // Example: Auto-trigger on page load (30% chance)
+    // Uncomment to test:
+    // if (Math.random() < 0.3) {
+    //   ReviewPrompt.trigger({
+    //     context: 'random',
+    //     delay: 3000
+    //   });
+    // }
+  </script>
+</body>
+</html>

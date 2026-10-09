@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Browse Listings - HomeSure</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/browse.css" />
+  <link rel="stylesheet" href="assets/css/responsive.css" />
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="browse-nav">
+    <div class="browse-nav-content">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/img/image.png" alt="HomeSure" class="nav-logo-img" />
+        <span class="nav-logo-text">HomeSure</span>
+      </a>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+          <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+        </button>
+        <a href="auth/signin.html" class="btn-signin">Sign In</a>
+        <a href="auth/signup.html" class="btn-signup">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="browse-container">
+    <!-- Page Header -->
+    <div class="browse-header">
+      <h1 class="browse-title">Browse Properties</h1>
+      <p class="browse-subtitle">Find your perfect home in Sta. Maria, Bulacan</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="browse-filters">
+      <div class="filter-row">
+        <select class="filter-select" id="filterType" onchange="applyFilters()">
+          <option value="">All Types</option>
+          <option value="apartment">Apartment</option>
+          <option value="house">House</option>
+          <option value="condo">Condo</option>
+          <option value="commercial">Commercial</option>
+        </select>
+        <select class="filter-select" id="filterFor" onchange="applyFilters()">
+          <option value="">For Sale & Rent</option>
+          <option value="rent">For Rent</option>
+          <option value="sale">For Sale</option>
+        </select>
+        <select class="filter-select" id="filterBarangay" onchange="applyFilters()">
+          <option value="">All Barangays</option>
+        </select>
+        <input type="text" class="filter-search" id="filterSearch" placeholder="Search by title or address..." oninput="applyFilters()" />
+      </div>
+    </div>
+
+    <!-- Results Count -->
+    <div class="browse-results-header">
+      <span class="results-count" id="resultsCount">Loading...</span>
+    </div>
+
+    <!-- Listings Grid -->
+    <div class="browse-grid" id="listingsGrid">
+      <!-- Injected by JS -->
+    </div>
+
+    <!-- Empty State -->
+    <div class="browse-empty" id="emptyState" style="display:none;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <div class="empty-title">No listings found</div>
+      <div class="empty-text">Try adjusting your filters</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="browse-footer">
+    <div class="footer-content">
+      <p>&copy; 2026 HomeSure. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="about.html">About Us</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/fake-data.js"></script>
+  <script src="assets/js/browse.js"></script>
+</body>
+</html>

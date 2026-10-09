@@ -1,0 +1,233 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   HomeSure – Buyer Dashboard Styles
+   Requires: dashboard.css
+───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Filter Panel ──────────────────────────────────────────────────────────── */
+.filter-panel {
+  background: #253347;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.4s ease 0.1s both;
+}
+.filter-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 13px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.filter-title svg { color: #00c9a7; width: 13px; height: 13px; }
+
+.filter-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+
+.filter-group label {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 5px;
+}
+.filter-select,
+.filter-input {
+  width: 100%;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px;
+  padding: 7px 10px;
+  color: #f1f5f9;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12.5px;
+  outline: none;
+}
+.filter-select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 9px center;
+  padding-right: 26px;
+}
+.filter-select option { background: #1E293B; }
+.filter-select:focus,
+.filter-input:focus  { border-color: rgba(0,201,167,0.45); outline: none; }
+.filter-input::placeholder { color: rgba(255,255,255,0.3); }
+
+/* ── Listings Header ───────────────────────────────────────────────────────── */
+.listings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  animation: fadeUp 0.4s ease 0.18s both;
+}
+.listings-title { font-size: 15px; font-weight: 700; color: #f1f5f9; }
+
+.sort-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #253347;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px;
+  padding: 6px 12px;
+  color: rgba(255,255,255,0.65);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: background 0.2s;
+}
+.sort-btn:hover { background: rgba(255,255,255,0.08); }
+.sort-btn svg { width: 12px; height: 12px; }
+
+/* ── Property Grid ─────────────────────────────────────────────────────────── */
+.listings-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+/* ── Property Card ─────────────────────────────────────────────────────────── */
+.prop-card {
+  background: #253347;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  animation: fadeUp 0.4s ease both;
+  transition: transform 0.18s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.prop-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0,201,167,0.35);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+}
+
+.prop-img-wrap {
+  position: relative;
+  height: 155px;
+  overflow: hidden;
+}
+.prop-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: transform 0.35s ease;
+}
+.prop-card:hover .prop-img-wrap img { transform: scale(1.06); }
+.prop-img-wrap::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.38) 100%);
+  pointer-events: none;
+}
+
+/* listing type badge (top-left of image) */
+.badge-tl {
+  position: absolute; top: 10px; left: 10px; z-index: 1;
+  padding: 3px 9px; border-radius: 20px;
+  font-size: 9.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.07em;
+}
+.badge-rent { background: #00c9a7; color: #ffffff; }
+.badge-sale { background: #3b82f6; color: #051226; }
+
+/* photo count badge (top-right of image) */
+.badge-tr {
+  position: absolute; top: 10px; right: 10px; z-index: 1;
+  padding: 3px 9px; border-radius: 20px;
+  font-size: 9.5px; font-weight: 600; letter-spacing: 0.04em;
+  background: rgba(0,0,0,0.5); color: #e2e8f0;
+  backdrop-filter: blur(4px);
+}
+
+/* ── Card body ─────────────────────────────────────────────────────────────── */
+.prop-body { padding: 13px 14px 14px; }
+
+.prop-title {
+  font-size: 13px; font-weight: 700; color: #f1f5f9;
+  margin-bottom: 5px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  display: flex; align-items: center; gap: 0;
+}
+
+/* verified check badge beside title */
+.verified-check {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 15px; height: 15px; border-radius: 50%;
+  background: #00c9a7; flex-shrink: 0;
+  margin-left: 5px; position: relative; top: -1px;
+}
+.verified-check svg { width: 9px; height: 9px; color: #fff; display: block; }
+
+.prop-address {
+  font-size: 11px; color: rgba(255,255,255,0.4);
+  display: flex; align-items: flex-start; gap: 4px;
+  margin-bottom: 11px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.prop-address svg { width: 11px; height: 11px; flex-shrink: 0; margin-top: 1px; }
+
+.prop-amenities {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 10px;
+}
+.amenity {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 11px; color: rgba(255,255,255,0.65);
+}
+.amenity svg { width: 12px; height: 12px; color: rgba(255,255,255,0.4); }
+
+.prop-footer {
+  display: flex; align-items: flex-end; justify-content: space-between;
+}
+.prop-price { font-size: 15px; font-weight: 800; color: #f1f5f9; line-height: 1.2; }
+.prop-price-per { font-size: 10.5px; color: rgba(255,255,255,0.4); font-weight: 400; }
+
+.prop-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.badge-negotiable {
+  padding: 2px 8px; border-radius: 20px;
+  background: #00c9a7; color: #fff;
+  font-size: 9.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+
+.badge-units {
+  padding: 2px 8px; border-radius: 20px;
+  background: rgba(139, 92, 246, 0.15);
+  color: #a78bfa;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  font-size: 9.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+
+.badge-units-full {
+  padding: 2px 8px; border-radius: 20px;
+  background: rgba(248, 113, 113, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  font-size: 9.5px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+
+/* ── Empty state ───────────────────────────────────────────────────────────── */
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 32px;
+  color: rgba(255,255,255,0.3);
+  font-size: 14px;
+}

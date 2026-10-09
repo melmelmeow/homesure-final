@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – Listings Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/admin/admin-listings.css" />
+  <link rel="stylesheet" href="../../assets/css/close-listing-modal.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+  <div class="main">
+    <div id="hs-topbar"></div>
+    <div class="content">
+
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Listings Management</h1>
+          <p class="page-sub">Review, approve, and manage all property listings</p>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <div class="filter-tabs" id="filterTabs">
+          <button class="filter-tab active" data-status="all">All</button>
+          <button class="filter-tab" data-status="pending">Pending</button>
+          <button class="filter-tab" data-status="approved">Approved</button>
+          <button class="filter-tab" data-status="rejected">Rejected</button>
+        </div>
+      </div>
+
+      <!-- Listings Table -->
+      <div class="table-card">
+        <table class="listings-table">
+          <thead>
+            <tr>
+              <th>Listing</th>
+              <th>Seller</th>
+              <th>Type</th>
+              <th>Price</th>
+              <th>Posted</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="listingsBody"></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Listing Detail Modal -->
+<div class="modal-backdrop" id="listingModal">
+  <div class="modal" id="listingModalContent"></div>
+</div>
+
+<!-- Reject Reason Modal -->
+<div class="modal-backdrop" id="rejectModal">
+  <div class="modal reject-modal">
+    <div class="reject-modal-header">
+      <div class="reject-modal-title">Reject Listing</div>
+      <button class="reject-close-btn" onclick="closeRejectModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="reject-modal-body">
+      <p class="reject-modal-sub">Select a reason for rejection. The seller will see this message.</p>
+      <div class="reject-reasons" id="rejectReasons"></div>
+      <div class="reject-custom-wrap">
+        <label class="reject-custom-label">Or write a custom reason</label>
+        <textarea id="rejectCustom" class="reject-textarea" placeholder="e.g. Photos are low quality and do not represent the property accurately…" rows="3"></textarea>
+      </div>
+    </div>
+    <div class="reject-modal-footer">
+      <button class="btn-modal close" onclick="closeRejectModal()">Cancel</button>
+      <button class="btn-modal reject" onclick="confirmReject()">Confirm Rejection</button>
+    </div>
+  </div>
+</div>
+
+<script src="../../assets/js/fake-data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/close-listing.js"></script>
+<script src="../../assets/js/admin/admin-listings.js"></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – My Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/seller/seller-profile.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+
+  <div class="main">
+    <div id="hs-topbar"></div>
+
+    <div class="content">
+
+      <!-- Profile Card -->
+      <div class="profile-card" id="profileCard">
+        <div class="avatar-wrap-seller">
+          <div class="avatar" id="profileAvatar"></div>
+          <div class="avatar-edit-btn" id="avatarEditBtn" title="Change photo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </div>
+          <input type="file" id="avatarInput" accept="image/*" style="display:none" />
+        </div>
+        <div class="profile-info">
+          <div class="profile-name" id="profileName"></div>
+          <div class="profile-meta" id="profileMeta"></div>
+        </div>
+        <div id="statusBadge"></div>
+
+        <button class="edit-profile-btn" onclick="openEditModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+          Edit Profile
+        </button>
+      </div>
+
+      <!-- Listings Section -->
+      <div class="section-header">
+        <div class="section-title" id="sectionTitle"></div>
+        <div class="section-sub" id="sectionSub"></div>
+      </div>
+
+      <div id="listingsContainer"></div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="edit-modal-overlay" id="editModal">
+  <div class="edit-modal">
+    <div class="edit-modal-header">
+      <div class="edit-modal-title">Edit Profile</div>
+      <button class="edit-modal-close" onclick="closeEditModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="edit-modal-body">
+      <div class="edit-field-row">
+        <div class="edit-field">
+          <label class="edit-label" for="editFirstName">First Name</label>
+          <input type="text" class="edit-input" id="editFirstName" placeholder="First name" />
+        </div>
+        <div class="edit-field">
+          <label class="edit-label" for="editLastName">Last Name</label>
+          <input type="text" class="edit-input" id="editLastName" placeholder="Last name" />
+        </div>
+      </div>
+
+      <div class="edit-field">
+        <label class="edit-label" for="editPhone">Phone Number</label>
+        <input type="tel" class="edit-input" id="editPhone" placeholder="+63 9XX XXX XXXX" />
+      </div>
+
+      <div class="edit-field">
+        <label class="edit-label" for="editEmail">Email Address</label>
+        <input type="email" class="edit-input" id="editEmail" placeholder="Email" disabled />
+        <div class="edit-field-note">Email cannot be changed</div>
+      </div>
+    </div>
+
+    <div class="edit-modal-footer">
+      <button class="edit-cancel-btn" onclick="closeEditModal()">Cancel</button>
+      <button class="edit-save-btn" onclick="saveProfile()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        Save Changes
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="../../assets/js/fake-data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/seller/seller-profile.js"></script>
+</body>
+</html>

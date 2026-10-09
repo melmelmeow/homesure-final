@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – Help & Support</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/chatbot-widget.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #1a1f2e;
+      --card: #252d3d;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --muted2: #cbd5e1;
+      --border: rgba(255, 255, 255, 0.1);
+      --teal: #00c9a7;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .help-header {
+      background: #0F766E;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+    .help-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .help-logo img {
+      height: 28px;
+    }
+
+    .help-logo-text {
+      font-size: 17px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+    }
+
+    .help-back-btn {
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .help-back-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Container */
+    .help-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .help-title-section {
+      margin-bottom: 20px;
+    }
+
+    .help-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .help-subtitle {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Chat window overrides */
+    .chatbot-window {
+      position: static;
+      width: 100%;
+      flex: 1;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      display: flex;
+      max-height: calc(100vh - 180px);
+    }
+
+    .chatbot-bubble {
+      display: none !important;
+    }
+
+    .chatbot-close {
+      display: none !important;
+    }
+
+    @media (max-width: 768px) {
+      .help-container {
+        padding: 16px;
+      }
+
+      .help-title {
+        font-size: 22px;
+      }
+
+      .chatbot-window {
+        max-height: calc(100vh - 160px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="help-header">
+    <a href="index.html" class="help-logo">
+      <img src="assets/img/image.png" alt="HomeSure" />
+      <span class="help-logo-text">HomeSure</span>
+    </a>
+    <a href="index.html" class="help-back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      Back to Home
+    </a>
+  </div>
+
+  <!-- Help Container -->
+  <div class="help-container">
+    <div class="help-title-section">
+      <div class="help-title">Help & Support</div>
+      <div class="help-subtitle">Get instant answers from our AI assistant or connect with our support team</div>
+    </div>
+
+    <!-- Chat Window -->
+    <div class="chatbot-window open" id="chatbotWindow">
+      <div class="chatbot-header">
+        <div class="chatbot-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2a4 4 0 0 1 4 4v2h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2h2V6a4 4 0 0 1 4-4z"/>
+            <circle cx="12" cy="14" r="2"/>
+          </svg>
+        </div>
+        <div class="chatbot-header-info">
+          <div class="chatbot-header-title">HomeSure Assistant</div>
+          <div class="chatbot-header-status">
+            <span class="chatbot-status-dot"></span>
+            Online - Always here to help
+          </div>
+        </div>
+      </div>
+
+      <div class="chatbot-messages" id="chatbotMessages"></div>
+
+      <div class="chatbot-input-area">
+        <div class="chatbot-input-wrap">
+          <textarea
+            class="chatbot-input"
+            id="chatbotInput"
+            placeholder="Type your message..."
+            rows="1"
+            onkeydown="ChatbotWidget.handleKeyDown(event)"
+          ></textarea>
+          <button class="chatbot-send-btn" id="chatbotSendBtn" onclick="ChatbotWidget.sendMessage()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/chatbot-widget.js"></script>
+  <script>
+    // Initialize chatbot in full-page mode
+    ChatbotWidget.initFullPage();
+  </script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – Admin Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/super-admin/super-admin.css" />
+  <link rel="stylesheet" href="../../assets/css/super-admin/admins.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+  <div class="main">
+    <div id="hs-topbar"></div>
+    <div class="content">
+
+      <!-- Page Header -->
+      <div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;">
+        <div>
+          <h1 class="page-title">Admin Management</h1>
+          <p class="page-sub">Add, activate, deactivate, or reset credentials for admin accounts.</p>
+        </div>
+        <button class="btn-primary" id="addAdminBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Admin
+        </button>
+      </div>
+
+      <!-- Filter + Search -->
+      <div class="filter-bar">
+        <div class="filter-tabs" id="filterTabs">
+          <button class="filter-tab active" data-status="all">All</button>
+          <button class="filter-tab" data-status="active">Active</button>
+          <button class="filter-tab" data-status="inactive">Inactive</button>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="section-card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Admin</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Date Added</th>
+              <th>Added By</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="adminTable"></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Add Admin Modal -->
+<div class="modal-backdrop" id="addAdminModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Add New Admin</span>
+      <button class="modal-close" id="closeAdminModal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <div class="field"><label>First Name</label><input type="text" id="newAdminFirst" placeholder="First name" /></div>
+        <div class="field"><label>Last Name</label><input type="text" id="newAdminLast" placeholder="Last name" /></div>
+      </div>
+      <div class="field"><label>Email Address</label><input type="email" id="newAdminEmail" placeholder="admin@homesure.com" /></div>
+      <div class="field"><label>Temporary Password</label><input type="password" id="newAdminPass" placeholder="Set a temporary password" /></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" id="cancelAdminModal">Cancel</button>
+      <button class="btn-primary" id="confirmAddAdmin">Create Admin</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toastMsg"></span>
+</div>
+
+<script src="../../assets/js/fake-data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/super-admin/admins.js"></script>
+</body>
+</html>

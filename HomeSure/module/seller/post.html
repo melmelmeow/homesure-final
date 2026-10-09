@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – Post a Property</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/seller/seller-post.css" />
+  <link rel="stylesheet" href="../../assets/css/camera-capture.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+  <div class="main">
+    <div id="hs-topbar"></div>
+    <div class="content">
+
+      <!-- ── PAGE HEADER ── -->
+      <div class="page-header">
+        <div class="page-title">Post a Property</div>
+        <div class="page-sub" id="pageSubtitle">Fill in the details below to submit your listing for review</div>
+      </div>
+
+      <!-- ── VERIFY GATE (hidden by default, shown when not verified) ── -->
+      <div id="verifyGate">
+        <div class="gate-card">
+          <div class="gate-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </div>
+          <div class="gate-title">Verification Required</div>
+          <div class="gate-desc">You must complete identity verification before you can post listings on HomeSure.</div>
+          <div class="gate-actions">
+            <a href="verification.html" class="gate-btn-primary">Start Verification</a>
+            <a href="listings.html" class="gate-btn-ghost">Go Back</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── POST FORM (shown when verified) ── -->
+      <div id="postForm">
+        <div class="settings-col">
+
+          <!-- ── SECTION 1: Listing Details ── -->
+          <div class="section-card">
+            <div class="section-header">
+              <div class="section-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              </div>
+              <div>
+                <div class="section-title">Listing Details</div>
+                <div class="section-sub">Basic information about your property</div>
+              </div>
+            </div>
+            <div class="section-body">
+
+              <!-- Listing Title (full width) -->
+              <div class="field">
+                <label>Listing Title</label>
+                <input type="text" id="listingTitle" placeholder="e.g. 3-Bedroom House for Sale in Poblacion" />
+              </div>
+
+              <!-- Listing Type: pill toggles -->
+              <div class="field">
+                <label>Listing Type</label>
+                <div class="pill-toggle-group" id="listingTypeGroup">
+                  <button type="button" class="pill-toggle active" data-value="sale" onclick="setListingType('sale')">For Sale</button>
+                  <button type="button" class="pill-toggle" data-value="rent" onclick="setListingType('rent')">For Rent</button>
+                </div>
+              </div>
+
+              <!-- Property Type + Price -->
+              <div class="field-2col">
+                <div class="field">
+                  <label>Property Type</label>
+                  <select id="propertyType">
+                    <option value="">Select type...</option>
+                    <option value="house">House</option>
+                    <option value="apartment">Apartment</option>
+                    <option value="condo">Condo</option>
+                    <option value="commercial">Commercial</option>
+                    <option value="lot">Lot Only</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Price (₱)</label>
+                  <div class="price-wrap">
+                    <input type="number" id="listingPrice" placeholder="0" min="0" />
+                    <span class="price-suffix" id="priceSuffix"></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Barangay + Full Address -->
+              <div class="field-2col">
+                <div class="field">
+                  <label>Barangay</label>
+                  <select id="listingBarangay">
+                    <option value="">Select barangay...</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Full Address</label>
+                  <input type="text" id="listingAddress" placeholder="Street, Subdivision, Barangay, Sta. Maria, Bulacan" />
+                </div>
+              </div>
+
+              <!-- Floor Area + Lot Area -->
+              <div class="field-2col">
+                <div class="field">
+                  <label>Floor Area (sqm)</label>
+                  <input type="number" id="floorArea" placeholder="e.g. 120" min="1" />
+                </div>
+                <div class="field">
+                  <label>Lot Area (sqm)</label>
+                  <input type="number" id="lotArea" placeholder="e.g. 200" min="1" />
+                </div>
+              </div>
+
+              <!-- Bedrooms + Bathrooms -->
+              <div class="field-2col">
+                <div class="field">
+                  <label>Bedrooms</label>
+                  <select id="listingBedrooms">
+                    <option value="0">Studio (0)</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3" selected>3</option>
+                    <option value="4">4</option>
+                    <option value="5">5+</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Bathrooms</label>
+                  <select id="listingBathrooms">
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4+</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Negotiable toggle -->
+              <div class="toggle-row">
+                <span class="toggle-row-label">Negotiable</span>
+                <div class="toggle-group">
+                  <span class="toggle-state" id="negLabel">Off</span>
+                  <label class="toggle">
+                    <input type="checkbox" id="negotiableToggle" onchange="onNegotiableChange()" />
+                    <span class="toggle-track"></span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Multiple Units toggle -->
+              <div class="toggle-row">
+                <span class="toggle-row-label">Multiple Units</span>
+                <div class="toggle-group">
+                  <span class="toggle-state" id="multiUnitLabel">Off</span>
+                  <label class="toggle">
+                    <input type="checkbox" id="multiUnitToggle" onchange="onMultiUnitChange()" />
+                    <span class="toggle-track"></span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Multiple Units Fields (hidden by default) -->
+              <div id="multiUnitFields" style="display:none;">
+                <div class="multi-unit-info">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                  </svg>
+                  <span>For apartment buildings or properties with multiple rentable or sellable units</span>
+                </div>
+                <div class="field-2col">
+                  <div class="field">
+                    <label>Total Units</label>
+                    <input type="number" id="totalUnits" placeholder="e.g. 10" min="2" value="2" />
+                  </div>
+                  <div class="field">
+                    <label>Available Units</label>
+                    <input type="number" id="availableUnits" placeholder="e.g. 8" min="0" value="2" />
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ── SECTION 2: Property Description ── -->
+          <div class="section-card">
+            <div class="section-header">
+              <div class="section-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>
+              </div>
+              <div>
+                <div class="section-title">Property Description</div>
+                <div class="section-sub">Describe the property in detail</div>
+              </div>
+            </div>
+            <div class="section-body">
+
+              <!-- Description textarea -->
+              <div class="field">
+                <label>Description</label>
+                <textarea id="listingDesc" rows="5" maxlength="500" placeholder="Describe the property's key features, nearby landmarks, and anything else buyers should know..." oninput="updateCharCount()"></textarea>
+                <div class="char-count" id="charCount">0 / 500</div>
+              </div>
+
+              <!-- Amenities tags -->
+              <div>
+                <div class="tag-label">Amenities</div>
+                <div class="tag-group" id="amenitiesGroup"></div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ── SECTION 3: Property Photos ── -->
+          <div class="section-card">
+            <div class="section-header">
+              <div class="section-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </div>
+              <div>
+                <div class="section-title">Property Photos</div>
+                <div class="section-sub">Upload clear photos of the property (up to 10)</div>
+              </div>
+            </div>
+            <div class="section-body">
+
+              <!-- Upload zone -->
+              <div class="upload-zone" id="photoUploadZone" onclick="document.getElementById('photoFileInput').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+                <div class="upload-zone-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+                </div>
+                <div class="upload-zone-title">Click to upload or drag and drop</div>
+                <div class="upload-zone-sub">PNG, JPG up to 10MB each &bull; Minimum 1 photo required</div>
+                <div class="photo-count" id="photoCount" style="display:none"></div>
+              </div>
+              <input type="file" id="photoFileInput" accept="image/*" multiple onchange="handlePhotoSelect(event)" />
+
+              <!-- Photo preview grid -->
+              <div class="photo-preview-grid" id="photoPreviewGrid"></div>
+
+            </div>
+          </div>
+
+          <!-- ── SECTION 4: Listing Verification Documents ── -->
+          <div class="section-card teal-card">
+            <div class="section-header">
+              <div class="section-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div>
+                <div class="section-title">Listing Verification</div>
+                <div class="section-sub">Required documents to verify your listing ownership</div>
+              </div>
+            </div>
+            <div class="section-body">
+
+              <!-- Upload 1: Deed of Sale / TCT -->
+              <div class="doc-upload-wrap">
+                <div class="doc-upload-label">
+                  Deed of Sale or TCT
+                  <span style="color:var(--danger);font-size:13px;">*</span>
+                </div>
+                <div class="doc-upload-desc">Must be under the name of <strong id="sellerNameDisplay"></strong> (your verified account name)</div>
+                <div class="doc-upload-instructions">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                  <strong>Take photos of ALL pages</strong> — Front and back if applicable. Multiple photos required for complete documents.
+                </div>
+                <div class="doc-upload-box" id="deedUploadBox" onclick="takeDeedPhoto()">
+                  <div class="doc-upload-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                      <circle cx="12" cy="13" r="4"/>
+                    </svg>
+                  </div>
+                  <div class="doc-upload-title" id="deedFileName">Click to take photos</div>
+                  <div class="doc-upload-sub doc-upload-sub-default">Take multiple photos if needed</div>
+                  <div class="doc-file-info" id="deedFileInfo" style="display:none"></div>
+                </div>
+                <div class="doc-photos-grid" id="deedPhotosGrid"></div>
+              </div>
+
+              <!-- Upload 2: Supporting Documents -->
+              <div class="doc-upload-wrap">
+                <div class="doc-upload-label">
+                  Supporting Documents
+                  <span class="label-optional">Optional</span>
+                </div>
+                <div class="doc-upload-desc">Mayor's permit, tax declaration, or any other supporting documents</div>
+                <div class="doc-upload-instructions">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                  <strong>Take photos of ALL pages</strong> — Front and back if applicable. You can add multiple documents.
+                </div>
+                <div class="doc-upload-box" id="supportUploadBox" onclick="takeSupportPhoto()">
+                  <div class="doc-upload-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                      <circle cx="12" cy="13" r="4"/>
+                    </svg>
+                  </div>
+                  <div class="doc-upload-title" id="supportFileName">Click to take photos</div>
+                  <div class="doc-upload-sub doc-upload-sub-default">Take multiple photos if needed</div>
+                  <div class="doc-file-info" id="supportFileInfo" style="display:none"></div>
+                </div>
+                <div class="doc-photos-grid" id="supportPhotosGrid"></div>
+              </div>
+
+            </div>
+
+            <!-- Notice box (amber) -->
+            <div class="notice-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <div class="notice-text">Your listing will be submitted for admin review. Approval typically takes <strong style="color:var(--text)">1–2 business days</strong>. You will be notified once your listing is reviewed.</div>
+            </div>
+          </div>
+
+        </div><!-- /.settings-col -->
+
+        <!-- ── SECTION 5: Submit Actions ── -->
+        <div class="submit-actions">
+          <button type="button" class="btn-primary" onclick="submitListing()">Submit for Review</button>
+          <button type="button" class="btn-ghost" onclick="saveAsDraft()">Save as Draft</button>
+        </div>
+
+      </div><!-- /#postForm -->
+
+    </div><!-- /.content -->
+  </div><!-- /.main -->
+</div><!-- /.layout -->
+
+<!-- ── Toast ── -->
+<div class="toast" id="toast">
+  <div class="toast-icon" id="toastIcon">
+    <svg id="toastIconSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+  </div>
+  <span id="toastMsg"></span>
+</div>
+
+<!-- ── Success Modal ── -->
+<div class="modal-backdrop" id="successModal">
+  <div class="success-modal">
+    <div class="success-modal-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+    </div>
+    <div class="success-modal-title">Listing Submitted!</div>
+    <div class="success-modal-sub">Your listing has been submitted for review. You'll receive a notification once it's approved, usually within 1–2 business days.</div>
+    <a href="listings.html" class="success-modal-btn">View My Listings</a>
+  </div>
+</div>
+
+<script src="../../assets/js/fake-data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/camera-capture.js"></script>
+<script src="../../assets/js/seller/seller-post.js"></script>
+</body>
+</html>
