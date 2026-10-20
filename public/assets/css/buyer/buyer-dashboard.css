@@ -70,6 +70,23 @@
     .filter-select:focus, .filter-input:focus { border-color: rgba(0,201,167,0.45); }
     .filter-input::placeholder { color: var(--muted); }
 
+    /* ── Mobile filter sheet ─────────────────
+       Hidden here on desktop; responsive.css turns them on and turns #filterPanel into the sheet
+       below 768px. Scoped to #filterPanel specifically, not .filter-panel — seller.html uses that
+       same class for its own panel, which has none of this wiring and must stay untouched. */
+    .mobile-filter-trigger {
+      display: none; width: 100%; align-items: center; gap: 8px;
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 12px 16px; margin-bottom: 20px;
+      color: var(--text); font-family: inherit; font-size: 13px; font-weight: 700;
+      cursor: pointer;
+    }
+    .mobile-filter-trigger svg { width: 14px; height: 14px; color: var(--teal); flex-shrink: 0; }
+    .filter-backdrop { display: none; }
+    .filter-title { position: relative; }
+    .filter-sheet-close { display: none; }
+    .filter-sheet-footer { display: none; }
+
     /* ── Listings ───────────────────────── */
     .listings-header {
       display: flex; align-items: center; justify-content: space-between;

@@ -4,318 +4,87 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="../../assets/img/image.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HomeSure – Help & Support</title>
+  <title>HomeSure – Seller Help & Support Center</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/seller/seller-dashboard.css" />
   <link rel="stylesheet" href="../../assets/css/seller/seller.css" />
   <link rel="stylesheet" href="../../assets/css/chatbot-widget.css" />
   <link rel="stylesheet" href="../../assets/css/responsive.css" />
   <style>
-    /* Override widget styles for full-page mode */
-    body, html {
-      height: 100vh;
-      overflow: hidden;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #1E293B; --card: #253347; --card2: #2c3d55; --border: rgba(255, 255, 255, 0.08);
+      --text: #f1f5f9; --muted: rgba(255, 255, 255, 0.45); --muted2: rgba(255, 255, 255, 0.7);
+      --teal: #00c9a7; --teal-faint: rgba(0, 201, 167, 0.12); --teal-mid: rgba(0, 201, 167, 0.25);
+      --radius: 14px;
     }
+    [data-theme="light"] {
+      --bg: #f8fafc; --card: #ffffff; --card2: #f1f5f9; --border: rgba(0, 0, 0, 0.08);
+      --text: #0f172a; --muted: rgba(0, 0, 0, 0.5); --muted2: rgba(0, 0, 0, 0.7);
+      --teal-faint: rgba(0, 201, 167, 0.10); --teal-mid: rgba(0, 201, 167, 0.20);
+    }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
+    .layout { display: flex; height: 100vh; }
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+    .content { flex: 1; overflow-y: auto; padding: 26px 32px 60px; }
+    .content::-webkit-scrollbar { width: 5px; }
+    .content::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #1fc8b4, #0a5e53); border-radius: 99px; }
 
-    .layout {
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
-    }
+    .page-header { margin-bottom: 24px; }
+    .page-title { font-size: 24px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 10px; }
+    .page-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
 
-    .main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      min-width: 0;
+    .hero-search-card {
+      background: linear-gradient(135deg, rgba(0, 201, 167, 0.15) 0%, rgba(37, 51, 71, 0.8) 100%);
+      border: 1px solid var(--teal-mid); border-radius: var(--radius);
+      padding: 24px 28px; margin-bottom: 24px; display: flex; flex-direction: column; gap: 14px;
     }
+    .hero-search-title { font-size: 18px; font-weight: 800; color: var(--text); }
+    .hero-search-sub { font-size: 13px; color: var(--muted2); line-height: 1.5; }
+    .hero-search-input-wrap { position: relative; max-width: 600px; width: 100%; }
+    .hero-search-input-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--muted); pointer-events: none; }
+    .hero-search-input {
+      width: 100%; background: var(--card); border: 1.5px solid var(--border); border-radius: 12px;
+      padding: 12px 16px 12px 42px; font-size: 13.5px; color: var(--text); font-family: inherit; outline: none; transition: all 0.2s;
+    }
+    .hero-search-input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(0, 201, 167, 0.15); }
 
-    .chatbot-bubble {
-      display: none !important;
+    /* User Guides Grid */
+    .guides-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 28px; }
+    @media (max-width: 900px) { .guides-grid { grid-template-columns: 1fr; } }
+    .guide-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 22px; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; gap: 10px;
     }
+    .guide-card:hover { transform: translateY(-2px); border-color: var(--teal); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+    .guide-header { display: flex; align-items: center; gap: 12px; }
+    .guide-icon { width: 42px; height: 42px; border-radius: 10px; background: var(--teal-faint); color: var(--teal); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .guide-icon svg { width: 20px; height: 20px; }
+    .guide-title { font-size: 15px; font-weight: 700; color: var(--text); }
+    .guide-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+    .guide-steps-list { display: none; margin-top: 10px; padding-left: 20px; font-size: 13px; color: var(--muted2); line-height: 1.7; border-top: 1px solid var(--border); padding-top: 12px; }
+    .guide-card.open .guide-steps-list { display: block; }
+    .guide-card.open { border-color: var(--teal); }
 
-    .help-container {
-      flex: 1;
-      padding: 26px 30px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
+    /* FAQ Section */
+    .section-headline { font-size: 16px; font-weight: 800; color: var(--text); margin: 24px 0 14px; display: flex; align-items: center; justify-content: space-between; }
+    .faq-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+    .faq-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .faq-card.open { border-color: var(--teal-mid); }
+    .faq-header { padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; user-select: none; }
+    .faq-q { font-size: 13.5px; font-weight: 700; color: var(--text); }
+    .faq-arrow { width: 18px; height: 18px; color: var(--muted); transition: transform 0.2s; }
+    .faq-card.open .faq-arrow { transform: rotate(180deg); color: var(--teal); }
+    .faq-answer { display: none; padding: 12px 20px 16px; font-size: 13px; color: var(--muted2); line-height: 1.6; border-top: 1px solid var(--border); }
+    .faq-card.open .faq-answer { display: block; }
 
-    .page-header {
-      margin-bottom: 24px;
-      flex-shrink: 0;
-    }
-
-    .page-title {
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .page-sub {
-      font-size: 13px;
-      color: var(--muted2);
-    }
-
-    .chatbot-window {
-      position: static !important;
-      width: 100% !important;
-      height: auto !important;
-      flex: 1;
-      min-height: 0;
-      border-radius: 16px !important;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
-      display: flex !important;
-      flex-direction: column;
-      background: var(--card);
-      border: 1px solid var(--border);
-      overflow: hidden;
-    }
-
-    .chatbot-header {
-      flex-shrink: 0;
-      background: linear-gradient(135deg, #00c9a7 0%, #0F766E 100%);
-      padding: 20px 24px;
-      border-bottom: none;
-    }
-
-    .chatbot-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(10px);
-    }
-
-    .chatbot-avatar svg {
-      width: 24px;
-      height: 24px;
-      color: #fff;
-    }
-
-    .chatbot-header-info {
-      flex: 1;
-    }
-
-    .chatbot-header-title {
-      font-size: 17px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 4px;
-    }
-
-    .chatbot-header-status {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.9);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .chatbot-status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #fff;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-
-    .chatbot-messages {
-      flex: 1 !important;
-      min-height: 0 !important;
-      overflow-y: auto !important;
-      padding: 24px;
-      background: var(--bg);
-    }
-
-    .chatbot-messages::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .chatbot-messages::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .chatbot-messages::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border-radius: 99px;
-    }
-
-    .chatbot-messages::-webkit-scrollbar-thumb:hover {
-      background: var(--muted);
-    }
-
-    /* Message bubbles */
-    .chat-message {
-      margin-bottom: 16px;
-      display: flex;
-      gap: 12px;
-      animation: slideUp 0.3s ease;
-    }
-
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .chat-message.bot .message-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #00c9a7, #0F766E);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .chat-message.bot .message-avatar svg {
-      width: 16px;
-      height: 16px;
-      color: #fff;
-    }
-
-    .chat-message.bot .message-bubble {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      border-top-left-radius: 4px;
-      padding: 14px 18px;
-      max-width: 70%;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    }
-
-    .chat-message.user {
-      justify-content: flex-end;
-    }
-
-    .chat-message.user .message-bubble {
-      background: linear-gradient(135deg, #00c9a7, #0F766E);
-      color: #fff;
-      border-radius: 16px;
-      border-top-right-radius: 4px;
-      padding: 14px 18px;
-      max-width: 70%;
-      box-shadow: 0 2px 12px rgba(0, 201, 167, 0.3);
-    }
-
-    .message-text {
-      font-size: 13.5px;
-      line-height: 1.6;
-      margin-bottom: 8px;
-    }
-
-    .message-text:last-child {
-      margin-bottom: 0;
-    }
-
-    .quick-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    .quick-action-btn {
-      background: var(--card);
-      border: 1.5px solid var(--border);
-      border-radius: 20px;
-      padding: 8px 16px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text);
-      cursor: pointer;
-      transition: all 0.2s;
-      font-family: inherit;
-    }
-
-    .quick-action-btn:hover {
-      background: var(--teal);
-      border-color: var(--teal);
-      color: #fff;
-      transform: translateY(-1px);
-    }
-
-    .chatbot-input-area {
-      flex-shrink: 0;
-      padding: 20px;
-      background: var(--card);
-      border-top: 1px solid var(--border);
-    }
-
-    .chatbot-input-wrap {
-      display: flex;
-      gap: 10px;
-      align-items: flex-end;
-    }
-
-    .chatbot-input {
-      flex: 1;
-      background: var(--bg);
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 16px;
-      font-size: 13.5px;
-      color: var(--text);
-      font-family: inherit;
-      resize: none;
-      outline: none;
-      transition: border-color 0.2s;
-      max-height: 120px;
-    }
-
-    .chatbot-input:focus {
-      border-color: var(--teal);
-    }
-
-    .chatbot-input::placeholder {
-      color: var(--muted);
-    }
-
-    .chatbot-send-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #00c9a7, #0F766E);
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-      flex-shrink: 0;
-    }
-
-    .chatbot-send-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 201, 167, 0.4);
-    }
-
-    .chatbot-send-btn:active {
-      transform: translateY(0);
-    }
-
-    .chatbot-send-btn svg {
-      width: 20px;
-      height: 20px;
-      color: #fff;
-    }
+    /* Contact Card */
+    .contact-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px; display: flex; flex-direction: column; gap: 14px; }
+    .contact-items { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (max-width: 640px) { .contact-items { grid-template-columns: 1fr; } }
+    .contact-item { background: var(--card2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 12px; }
+    .contact-icon { width: 34px; height: 34px; border-radius: 8px; background: var(--teal-faint); color: var(--teal); display: flex; align-items: center; justify-content: center; }
+    .contact-icon svg { width: 16px; height: 16px; }
   </style>
 </head>
 <body>
@@ -323,52 +92,175 @@
   <div id="hs-sidebar"></div>
   <div class="main">
     <div id="hs-topbar"></div>
+    <div class="content">
 
-    <div class="help-container">
+      <!-- ── PAGE HEADER ── -->
       <div class="page-header">
-        <div class="page-title">Help & Support</div>
-        <div class="page-sub">Get instant help from our AI assistant or connect with support</div>
+        <h1 class="page-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" width="26" height="26" style="color:var(--teal)">
+            <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          Seller Help & Support Center
+        </h1>
+        <p class="page-sub">Find comprehensive seller user guides, title verification guidelines, and viewing management procedures.</p>
       </div>
 
-      <!-- Chat Window (Full Page) -->
-      <div class="chatbot-window open" id="chatbotWindow">
-        <div class="chatbot-header">
-          <div class="chatbot-avatar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 2a4 4 0 0 1 4 4v2h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2h2V6a4 4 0 0 1 4-4z"/>
-              <circle cx="12" cy="14" r="2"/>
-            </svg>
+      <!-- ── HERO SEARCH ── -->
+      <div class="hero-search-card">
+        <div>
+          <h2 class="hero-search-title">How can we help you today?</h2>
+          <p class="hero-search-sub">Explore step-by-step user guides, verification rules, safe payments, and local property policies in Sta. Maria, Bulacan.</p>
+        </div>
+        <div class="hero-search-input-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input
+            type="text"
+            id="faqSearchInput"
+            class="hero-search-input"
+            placeholder="Search guides &amp; FAQs (e.g., verification, viewing, escrow, Google Maps, rent)..."
+            oninput="filterHelpContent(this.value)"
+          />
+        </div>
+      </div>
+
+      <!-- ── SECTION: USER GUIDES ── -->
+      <div class="section-headline">
+        <span>📚 Official User Guides</span>
+        <span style="font-size:12px;color:var(--teal);font-weight:600;">Click any guide to expand steps</span>
+      </div>
+
+      <div class="guides-grid" id="guidesGrid">
+        
+          <div class="guide-card" onclick="toggleGuide(this)" data-keywords="how to post & list a property step-by-step guide to publishing properties with verified details, photos, and google maps pin in sta. maria, bulacan.">
+            <div class="guide-header">
+              <div class="guide-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+              <div>
+                <div class="guide-title">How to Post & List a Property</div>
+              </div>
+            </div>
+            <div class="guide-desc">Step-by-step guide to publishing properties with verified details, photos, and Google Maps pin in Sta. Maria, Bulacan.</div>
+            <ol class="guide-steps-list">
+              <li>Navigate to <strong>Post a Property</strong> in your sidebar.</li><li>Fill in the property type (House, Apartment, Commercial, Lot) and set the listing price (Sale or Rent).</li><li>Select the exact Barangay in Sta. Maria, enter the full street address, and pin the location on Google Maps.</li><li>Upload clear, well-lit photos (front exterior, interior rooms, amenities).</li><li>Submit required property documents (Deed of Sale / TCT title and Tax Declaration) for admin verification.</li><li>Once reviewed (typically 1–2 business days), your listing will go live to all verified buyers!</li>
+            </ol>
           </div>
-          <div class="chatbot-header-info">
-            <div class="chatbot-header-title">HomeSure Assistant</div>
-            <div class="chatbot-header-status">
-              <span class="chatbot-status-dot"></span>
-              Online - Always here to help
+        
+          <div class="guide-card" onclick="toggleGuide(this)" data-keywords="landowner & title verification learn about required ownership proof, lra title verification, and how to maintain verified seller status.">
+            <div class="guide-header">
+              <div class="guide-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+              <div>
+                <div class="guide-title">Landowner & Title Verification</div>
+              </div>
+            </div>
+            <div class="guide-desc">Learn about required ownership proof, LRA title verification, and how to maintain verified seller status.</div>
+            <ol class="guide-steps-list">
+              <li>Go to <strong>Verification</strong> in your seller dashboard.</li><li>Upload your government-issued ID (Passport, UMID, Driver's License, or National ID).</li><li>Take a live selfie verification to ensure account ownership.</li><li>Upload the Transfer Certificate of Title (TCT) or Condominium Certificate of Title (CCT) under your name.</li><li>Our compliance team cross-checks records with the Sta. Maria Registry of Deeds and LRA database.</li><li>Your verified seller badge will appear across all your listings for 12 months.</li>
+            </ol>
+          </div>
+        
+          <div class="guide-card" onclick="toggleGuide(this)" data-keywords="managing viewing requests & inquiries how to communicate with interested buyers, confirm site appointments, and negotiate safely on homesure.">
+            <div class="guide-header">
+              <div class="guide-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+              <div>
+                <div class="guide-title">Managing Viewing Requests & Inquiries</div>
+              </div>
+            </div>
+            <div class="guide-desc">How to communicate with interested buyers, confirm site appointments, and negotiate safely on HomeSure.</div>
+            <ol class="guide-steps-list">
+              <li>When a buyer requests a viewing, you will receive an in-app notification and email alert.</li><li>Open <strong>Viewing Requests</strong> to view buyer contact details, preferred date, and time slot.</li><li>Click <strong>Approve</strong> or propose an alternate schedule.</li><li>Use the built-in <strong>Messages</strong> channel for all pre-viewing communications.</li><li>Always conduct in-person property viewings during daytime for mutual safety.</li>
+            </ol>
+          </div>
+        
+          <div class="guide-card" onclick="toggleGuide(this)" data-keywords="rent collection & escrow payouts understand automated rent payments via xendit, security deposit holding, and landlord disbursement schedules.">
+            <div class="guide-header">
+              <div class="guide-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+              <div>
+                <div class="guide-title">Rent Collection & Escrow Payouts</div>
+              </div>
+            </div>
+            <div class="guide-desc">Understand automated rent payments via Xendit, security deposit holding, and landlord disbursement schedules.</div>
+            <ol class="guide-steps-list">
+              <li>Tenants pay their monthly rent and security deposits through HomeSure's Xendit integration (GCash, Maya, Bank Transfer).</li><li>Security deposits are held in insured escrow under contractual lease conditions.</li><li>Confirmed rent payments are credited directly to your registered bank account or GCash.</li><li>Track all payment history, invoices, and deduction logs in the <strong>Payments</strong> tab.</li>
+            </ol>
+          </div>
+        
+      </div>
+
+      <!-- ── SECTION: FAQS ── -->
+      <div class="section-headline">
+        <span>Frequently Asked Questions</span>
+      </div>
+
+      <div class="faq-list" id="faqList">
+        
+          <div class="faq-card" data-keywords="how long does property listing approval take? property listings are reviewed by our verification team within 24 to 48 business hours. we verify that land titles (tct/cct) match the owner's verified name before publishing.">
+            <div class="faq-header" onclick="toggleFaq(this)">
+              <div class="faq-q">How long does property listing approval take?</div>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="faq-answer">Property listings are reviewed by our verification team within 24 to 48 business hours. We verify that land titles (TCT/CCT) match the owner's verified name before publishing.</div>
+          </div>
+        
+          <div class="faq-card" data-keywords="can i pin my property location on google maps? yes! when creating or editing a listing in the post a property section, use the google maps locator to pin your exact street address or neighborhood in sta. maria, bulacan.">
+            <div class="faq-header" onclick="toggleFaq(this)">
+              <div class="faq-q">Can I pin my property location on Google Maps?</div>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="faq-answer">Yes! When creating or editing a listing in the Post a Property section, use the Google Maps locator to pin your exact street address or neighborhood in Sta. Maria, Bulacan.</div>
+          </div>
+        
+          <div class="faq-card" data-keywords="how do i collect rent from tenants? tenants receive automated rent reminders and pay through homesure's xendit integration. funds are disbursed automatically to your registered bank account or e-wallet.">
+            <div class="faq-header" onclick="toggleFaq(this)">
+              <div class="faq-q">How do I collect rent from tenants?</div>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="faq-answer">Tenants receive automated rent reminders and pay through HomeSure's Xendit integration. Funds are disbursed automatically to your registered bank account or e-wallet.</div>
+          </div>
+        
+          <div class="faq-card" data-keywords="what happens if a tenant requests a refund or security deposit deduction? you can submit documented damage claims with photo evidence through the payments overview. homesure handles escrow disputes transparently according to standard tenancy agreements.">
+            <div class="faq-header" onclick="toggleFaq(this)">
+              <div class="faq-q">What happens if a tenant requests a refund or security deposit deduction?</div>
+              <svg class="faq-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="faq-answer">You can submit documented damage claims with photo evidence through the Payments overview. HomeSure handles escrow disputes transparently according to standard tenancy agreements.</div>
+          </div>
+        
+      </div>
+
+      <!-- ── SECTION: CONTACT SUPPORT ── -->
+      <div class="contact-card">
+        <div style="font-size:15px;font-weight:800;color:var(--text);">Still need assistance? Contact Our Helpdesk</div>
+        <div class="contact-items">
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;">Email Support</div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);margin-top:2px;">support@homesure.ph</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;">Hotline / WhatsApp</div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);margin-top:2px;">+63 (2) 8920-1234</div>
+            </div>
+          </div>
+          <div class="contact-item" style="cursor:pointer;" onclick="if(window.HomeSureCustomerService) window.HomeSureCustomerService.open()">
+            <div class="contact-icon" style="background:rgba(0,201,167,0.15);color:var(--teal);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--teal);font-weight:700;text-transform:uppercase;">AI Customer Care</div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);margin-top:2px;">Live AI Chat (Hugging Face) &rarr;</div>
             </div>
           </div>
         </div>
-
-        <div class="chatbot-messages" id="chatbotMessages"></div>
-
-        <div class="chatbot-input-area">
-          <div class="chatbot-input-wrap">
-            <textarea
-              class="chatbot-input"
-              id="chatbotInput"
-              placeholder="Type your message..."
-              rows="1"
-              onkeydown="ChatbotWidget.handleKeyDown(event)"
-            ></textarea>
-            <button class="chatbot-send-btn" id="chatbotSendBtn" onclick="ChatbotWidget.sendMessage()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="22" y1="2" x2="11" y2="13"/>
-                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-              </svg>
-            </button>
-          </div>
-        </div>
       </div>
-    </div>
+
+    </div><!-- /content -->
   </div>
 </div>
 
@@ -377,15 +269,36 @@
 <script src="../../assets/js/session.js"></script>
 <script src="../../assets/js/data.js"></script>
 <script src="../../components/sidebar.js"></script>
+<script src="../../components/customer-service.js"></script>
 <script src="../../components/topbar.js"></script>
-<script src="../../assets/js/chatbot-widget.js"></script>
 <script>
-  // Initialize sidebar
   HomeSureSidebar.init({ activePage: 'help' });
-  HomeSureTopbar.init({ placeholder: 'Search help articles...' });
+  HomeSureTopbar.init({ placeholder: 'Search help & user guides...' });
 
-  // Initialize chatbot (full-page mode)
-  ChatbotWidget.initFullPage();
+  function toggleGuide(card) {
+    card.classList.toggle('open');
+  }
+
+  function toggleFaq(header) {
+    const card = header.closest('.faq-card');
+    card.classList.toggle('open');
+  }
+
+  function filterHelpContent(val) {
+    const q = val.toLowerCase().trim();
+
+    // Filter user guides
+    document.querySelectorAll('.guide-card').forEach(card => {
+      const kw = (card.dataset.keywords || '') + ' ' + card.innerText.toLowerCase();
+      card.style.display = !q || kw.includes(q) ? 'flex' : 'none';
+    });
+
+    // Filter FAQs
+    document.querySelectorAll('.faq-card').forEach(card => {
+      const kw = (card.dataset.keywords || '') + ' ' + card.innerText.toLowerCase();
+      card.style.display = !q || kw.includes(q) ? 'block' : 'none';
+    });
+  }
 </script>
 </body>
 </html>

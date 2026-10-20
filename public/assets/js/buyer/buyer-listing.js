@@ -240,6 +240,25 @@
 
         ${amenitiesHtml ? `<div class="amenities-wrap">${amenitiesHtml}</div>` : ""}
 
+        
+        <div class="detail-section-title" style="display:flex;align-items:center;gap:8px;margin-top:24px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="color:var(--teal)">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+          <span>Property Location &amp; Map</span>
+        </div>
+        <div class="property-map-container" style="width:100%;height:320px;border-radius:12px;overflow:hidden;border:1px solid var(--border);margin:12px 0 24px;box-shadow:0 4px 16px rgba(0,0,0,0.15);background:#1e293b;">
+          <iframe
+            width="100%"
+            height="100%"
+            style="border:0"
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://maps.google.com/maps?q=${listing.lat && listing.lng ? (listing.lat + ',' + listing.lng) : encodeURIComponent((listing.address || '') + (listing.barangay ? ', ' + listing.barangay : '') + ', Sta. Maria, Bulacan, Philippines')}&z=15&output=embed">
+          </iframe>
+        </div>
+
         <div class="seller-card">
           <div>
             <div class="seller-label">Listed by</div>

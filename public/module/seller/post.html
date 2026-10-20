@@ -223,6 +223,48 @@
             </div>
           </div>
 
+          
+          <!-- ── SECTION: Pin Property Location on Google Map ── -->
+          <div class="section-card">
+            <div class="section-header">
+              <div class="section-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div>
+                <div class="section-title">Pin Property Location (Google Map)</div>
+                <div class="section-sub">Locate and pin your property on Google Maps for buyers</div>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="field">
+                <label>Search Address / Landmark in Sta. Maria</label>
+                <div style="display:flex;gap:10px;">
+                  <input type="text" id="mapAddressSearch" placeholder="e.g., Poblacion, Sta. Maria, Bulacan" style="flex:1;" />
+                  <button type="button" class="btn-primary" style="padding:10px 18px;font-size:13px;white-space:nowrap;" onclick="pinLocationOnMap()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Locate on Map
+                  </button>
+                </div>
+              </div>
+
+              <div id="sellerMapWrapper" style="width:100%;height:300px;border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-top:14px;background:#1e293b;position:relative;">
+                <iframe
+                  id="sellerMapIframe"
+                  width="100%"
+                  height="100%"
+                  style="border:0"
+                  loading="lazy"
+                  src="https://maps.google.com/maps?q=Santa+Maria+Bulacan+Philippines&z=13&output=embed">
+                </iframe>
+              </div>
+              <input type="hidden" id="pinnedLat" value="" />
+              <input type="hidden" id="pinnedLng" value="" />
+              <div id="mapStatusText" style="font-size:12px;color:var(--muted);margin-top:8px;">
+                Tip: Enter your subdivision or street name and click Locate on Map to verify your location.
+              </div>
+            </div>
+          </div>
+
           <!-- ── SECTION 3: Property Photos ── -->
           <div class="section-card">
             <div class="section-header">

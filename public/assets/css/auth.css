@@ -98,6 +98,33 @@ body.light {
 }
 .eye-btn:hover { color: #1fc8b4; }
 
+/* "+63" as its own fixed segment rather than text inside the input's value — a prefix living in
+   the value itself has to fight the user over backspace and cursor position to stay put. This way
+   it just can't be deleted, because it was never part of what they're typing. auth.js strips
+   anything that isn't a digit as they type, so no dash or space can get entered either. */
+.phone-input {
+  display: flex; align-items: stretch;
+  background: var(--input-bg); border: 1.5px solid var(--input-border);
+  border-radius: 8px; overflow: hidden;
+  transition: border-color 0.2s;
+}
+.phone-input:focus-within { border-color: #1a9e8f; }
+/* .field-input.error normally colors the input's own border; this input's border is none (the
+   wrapper draws it instead), so the wrapper has to pick up the error color itself. */
+.phone-input:has(.field-input.error) { border-color: #ef4444; }
+.phone-prefix {
+  display: flex; align-items: center;
+  padding: 10px 0 10px 14px;
+  color: var(--text-muted); font-size: 14px; font-weight: 600;
+  user-select: none;
+}
+.phone-input .field-input {
+  flex: 1; min-width: 0;
+  border: none; background: transparent;
+  padding-left: 6px;
+}
+.phone-input .field-input:focus { border-color: transparent; }
+
 /* ── ROLE TOGGLE ── */
 .role-toggle { display: flex; background: var(--card); border-radius: 10px; padding: 4px; gap: 4px; }
 .role-btn {
@@ -175,8 +202,15 @@ body.light {
 .footer-links a { color: var(--footer-link); text-decoration: none; transition: color 0.2s; }
 .footer-links a:hover { color: #1fc8b4; }
 .theme-toggle {
+  /* Was a rounded square (6px) — every other theme toggle on the public-facing pages is a circle
+     now; this is the one that got left out. Width/height/box-sizing/padding forced explicitly:
+     a <button> picked up UA-default padding once before that inflated it past its own set height
+     despite the CSS saying otherwise (see .nav-theme-btn in index.css for the same fix). */
+  box-sizing: border-box;
+  width: 40px; height: 40px; min-width: 40px; min-height: 40px;
+  padding: 0; margin: 0; line-height: 1;
   background: var(--card); border: 1px solid var(--input-border);
-  border-radius: 6px; width: 32px; height: 32px;
+  border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; color: var(--text-muted); transition: all 0.2s;
 }
@@ -267,6 +301,12 @@ blockquote {
   .auth-title  { font-size: 22px; }
   .auth-sub    { font-size: 13px; margin-bottom: 22px; }
   .name-row    { flex-wrap: wrap; }
+  /* These two used to sit after the password-reveal rules below, outside any media query, with a
+     stray extra closing brace after them — meant to be mobile-only but applying at every width
+     instead (and the stray brace was a dangling syntax error, harmless only because nothing
+     followed it). Moved to where they were clearly meant to be. */
+  .name-row .field-input.mi { flex: 0 0 72px; }
+  .role-btn    { font-size: 12px; padding: 8px 10px; }
 }
 
 /* ── Hide browser's default password reveal button ── */
@@ -279,6 +319,193 @@ input[type="password"]::-webkit-textfield-decoration-container {
   visibility: hidden;
   pointer-events: none;
 }
-  .name-row .field-input.mi { flex: 0 0 72px; }
-  .role-btn    { font-size: 12px; padding: 8px 10px; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Card-centered auth page — signin.html and signup.html only.
+   forgot-password.html keeps the old .auth-layout/.auth-left styles above untouched; nothing here
+   removes or renames those, so it is unaffected by this section.
+
+   Replaces the old 40/60 split (a form panel plus a panel with a hardcoded stock photo and a fake
+   testimonial attributed to a made-up person) with a single floating card over a full-bleed
+   background. That background is a real, randomly-picked photo from an actual approved listing
+   (data.js's randomListingPhoto(), wired up in auth.js) rather than a fixed file that never
+   changed no matter what was actually listed — dimmed enough that it reads as atmosphere, not a
+   photo someone is meant to look at directly, with the same dark-navy-to-teal-glow language the
+   rest of the site already uses rather than borrowing another brand's gold.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.auth-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 90px 24px 32px;
+  background: linear-gradient(160deg, #0a1628 0%, #0d2235 55%, #0a1f2e 100%);
+}
+body.light .auth-page {
+  background: linear-gradient(160deg, #f4faf9 0%, #eef7f5 55%, #f7faf9 100%);
+}
+
+/* The real listing photo. Loaded via JS (randomListingPhoto()); this element sits behind
+   everything else and stays empty (just the gradient above shows through) until a photo arrives,
+   so a slow connection or an empty database never shows a broken image. */
+.auth-bg-photo {
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  background-size: cover;
+  opacity: 0;
+  filter: blur(18px) saturate(115%);
+  transform: scale(1.08);  /* covers the edge softening the blur would otherwise reveal */
+  transition: opacity 0.6s ease;
+}
+.auth-bg-photo.loaded { opacity: 0.4; }
+body.light .auth-bg-photo.loaded { opacity: 0.22; }
+
+.auth-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(10,22,40,0.82) 0%, rgba(10,22,40,0.55) 55%, rgba(10,22,40,0.82) 100%);
+}
+body.light .auth-bg-overlay {
+  background: linear-gradient(160deg, rgba(244,250,249,0.88) 0%, rgba(244,250,249,0.6) 55%, rgba(244,250,249,0.88) 100%);
+}
+
+/* Soft decorative glow circles, teal rather than the gold a reference for this used — this is
+   still HomeSure, with its own established glow colour, not a borrowed palette. */
+.auth-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(0,201,167,0.16) 0%, transparent 70%);
+}
+.auth-glow-1 { width: 520px; height: 520px; top: -160px; left: -140px; }
+.auth-glow-2 { width: 420px; height: 420px; bottom: -140px; right: -100px; }
+
+
+/* Shown only on wide screens, to the left of the card — mirrors the reference's large marketing
+   line, but in HomeSure's own words rather than someone else's product promise, and nothing
+   attributed to a made-up person the way the testimonial it replaces was. */
+.auth-tagline {
+  display: none;
+  z-index: 2;
+  max-width: 360px;
+  margin-right: 64px;
+}
+.auth-tagline h2 {
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.auth-tagline h2 em {
+  font-style: normal;
+  color: var(--teal, #00c9a7);
+}
+body.light .auth-tagline h2 { color: #0d1b2a; }
+.auth-tagline p {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.65);
+}
+body.light .auth-tagline p { color: rgba(13,27,42,0.6); }
+
+.auth-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 420px;
+  background: rgba(13,27,42,0.6);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 22px;
+  padding: 36px 32px 30px;
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+body.light .auth-card {
+  background: rgba(255,255,255,0.82);
+  border-color: rgba(13,27,42,0.08);
+  box-shadow: 0 24px 64px rgba(13,27,42,0.12), inset 0 1px 0 rgba(255,255,255,0.6);
+}
+
+.auth-card-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 22px;
+  color: #fff;
+  font-weight: 800;
+  font-size: 17px;
+  text-decoration: none;
+  /* The "Back to Home" link was removed — this logo already goes home, and having both said the
+     same thing twice. The press animation is what tells you it is clickable now that it is the
+     only way back. */
+  transition: transform 0.15s ease;
+  /* Without this, mobile browsers flash their own default blue tap-highlight rectangle over the
+     whole link the instant you touch it, on top of the scale/rotate animation — two animations
+     fighting each other. outline-color keeps a visible ring for keyboard focus (Tab key), since
+     removing that outright would be an accessibility regression just to kill an unrelated effect. */
+  -webkit-tap-highlight-color: transparent;
+  outline-color: #1fc8b4;
+}
+body.light .auth-card-brand { color: #0d1b2a; }
+.auth-card-brand img {
+  display: block !important;
+  width: 26px !important;
+  height: 26px !important;
+  max-width: 26px !important;
+  max-height: 26px !important;
+  transition: transform 0.15s ease;
+}
+.auth-card-brand:hover img { transform: scale(1.06); }
+.auth-card-brand:active { transform: scale(0.96); }
+.auth-card-brand:active img { transform: scale(0.94) rotate(-4deg); }
+
+.auth-page .auth-form-wrap {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+.auth-page .auth-title { text-align: center; font-size: 24px; }
+.auth-page .auth-sub   { text-align: center; }
+
+.auth-page .auth-page-footer {
+  /* Was a single justify-content: space-between row at every width — fine with room to spare, but
+     squeezed on a phone: copyright text, two links and the round theme toggle all competing for
+     one line. Stacked instead below 1040px, each piece centered with real breathing room, so
+     nothing fights for the same horizontal space. */
+  position: relative;
+  z-index: 2;
+  max-width: 420px;
+  width: 100%;
+  margin-top: 28px;
+  border-top: none;
+  padding: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+.auth-page .auth-page-footer .footer-links { gap: 22px; }
+
+@media (min-width: 1040px) {
+  .auth-page { flex-direction: row; padding: 24px 64px; }
+  .auth-tagline { display: block; }
+  .auth-page .auth-page-footer {
+    position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+    flex-direction: row; gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-card { padding: 28px 22px 24px; border-radius: 18px; }
+  .auth-glow-1, .auth-glow-2 { opacity: 0.6; }
 }

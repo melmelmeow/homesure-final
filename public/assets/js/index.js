@@ -1,113 +1,29 @@
 // ── Data ──────────────────────────────────────────────────────────────────────
 
-const properties = [
-  {
-    title: "House for Sale",
-    location: "Pulong Buhangin, Sta. Maria, Bulacan",
-    price: "₱10,000",
-    period: "/month",
-    verified: true,
-    image:
-      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=400&q=80",
-  },
-  {
-    title: "Cozy Studio Apartment",
-    location: "Poblacion, Sta. Maria, Bulacan",
-    price: "₱8,000",
-    period: "/month",
-    verified: true,
-    image:
-      "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=400&q=80",
-  },
-  {
-    title: "Modern 2BR Apartment",
-    location: "Poblacion, Sta. Maria, Bulacan",
-    price: "₱12,000",
-    period: "/month",
-    verified: true,
-    image:
-      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&q=80",
-  },
-  {
-    title: "Spacious Family Home",
-    location: "Bagbaguin, Sta. Maria, Bulacan",
-    price: "₱15,000",
-    period: "/month",
-    verified: true,
-    image:
-      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&q=80",
-  },
-  {
-    title: "Studio Loft Unit",
-    location: "Pulong Buhangin, Sta. Maria",
-    price: "₱6,500",
-    period: "/month",
-    verified: false,
-    image:
-      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&q=80",
-  },
-  {
-    title: "Townhouse for Rent",
-    location: "Tumana, Sta. Maria, Bulacan",
-    price: "₱10,500",
-    period: "/month",
-    verified: true,
-    image:
-      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&q=80",
-  },
-];
-
-const bentoListings = [
-  {
-    badge:'For Sale', badgeType:'sale',
-    price:'₱4,500,000', name:'4BR Modern House', barangay:'Pulong Buhangin',
-    beds:4, baths:3,
-    img:'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=900&q=80',
-  },
-  {
-    badge:'For Rent', badgeType:'rent',
-    price:'₱15,000/mo', name:'2BR Apartment', barangay:'Poblacion',
-    beds:2, baths:1,
-    img:'https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?w=600&q=80',
-  },
-  {
-    badge:'For Sale', badgeType:'sale',
-    price:'₱2,800,000', name:'3BR Townhouse', barangay:'Guyong',
-    beds:3, baths:2,
-    img:'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80',
-  },
-  {
-    badge:'For Rent', badgeType:'rent',
-    price:'₱8,000/mo', name:'Studio Unit', barangay:'Bagbaguin',
-    beds:1, baths:1,
-    img:'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&q=80',
-  },
-  {
-    badge:'New', badgeType:'new',
-    price:'₱1,900,000', name:'2BR Condo Unit', barangay:'Tumana',
-    beds:2, baths:1,
-    img:'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80',
-  },
-];
-
+// Counts used to come from fixed numbers here (342, 218, 97) that were never real — see
+// useTypeCounts() below for what replaced them. `types` lists which property_type values each
+// card adds together; the schema (006_frontend_alignment.sql) only has 'house' | 'apartment' |
+// 'condo' | 'commercial' | 'lot', so there is no single real type called "Townhouses" — that card
+// now covers everything that isn't a house or an apartment instead of claiming a type that
+// doesn't exist.
 const categories = [
   {
     name: "Houses",
-    count: "342 listings",
+    types: ["house"],
     color: "#1a9e8f",
     bg: "rgba(26,158,143,0.15)",
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
   },
   {
     name: "Apartments",
-    count: "218 listings",
+    types: ["apartment"],
     color: "#6c63ff",
     bg: "rgba(108,99,255,0.15)",
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="8" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="16" y2="21"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="2" y1="15" x2="22" y2="15"/></svg>`,
   },
   {
-    name: "Townhouses",
-    count: "97 listings",
+    name: "Other Properties",
+    types: ["condo", "commercial", "lot"],
     color: "#f59e0b",
     bg: "rgba(245,158,11,0.15)",
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><path d="M1 22h22"/><path d="M5 22V7l7-5 7 5v15"/><path d="M9 22V12h6v10"/></svg>`,
@@ -228,6 +144,54 @@ function useBarangayCounts() {
   return counts;
 }
 
+// Same caching pattern as useBarangayCounts, for the "Browse by Type" cards. Keyed by
+// property_type ('house' | 'apartment' | 'condo' | 'commercial' | 'lot').
+let typeCountsPromise = null;
+
+function useTypeCounts() {
+  const [counts, setCounts] = useState(null);
+
+  useEffect(() => {
+    if (typeof HS === 'undefined' || !HS.listingCountsByType) return;
+    if (!typeCountsPromise) typeCountsPromise = HS.listingCountsByType();
+
+    let cancelled = false;
+    typeCountsPromise
+      .then((c) => { if (!cancelled) setCounts(c); })
+      .catch((err) => {
+        console.error('Could not load the listing count per property type:', err);
+        typeCountsPromise = null;
+      });
+    return () => { cancelled = true; };
+  }, []);
+
+  return counts;
+}
+
+// Real approved listings for the "Featured Properties" carousel, read once and shared — it used
+// to be six hardcoded placeholder cards that never changed no matter what was actually listed.
+let featuredListingsPromise = null;
+
+function useFeaturedListings() {
+  const [listings, setListings] = useState(null);
+
+  useEffect(() => {
+    if (typeof HS === 'undefined' || !HS.featuredListings) return;
+    if (!featuredListingsPromise) featuredListingsPromise = HS.featuredListings();
+
+    let cancelled = false;
+    featuredListingsPromise
+      .then((rows) => { if (!cancelled) setListings(rows); })
+      .catch((err) => {
+        console.error('Could not load featured listings:', err);
+        featuredListingsPromise = null;
+      });
+    return () => { cancelled = true; };
+  }, []);
+
+  return listings;
+}
+
 function browseBarangay(name) {
   window.location.href = 'browse.html?barangay=' + encodeURIComponent(name);
 }
@@ -299,7 +263,9 @@ function TypingText() {
 
 // Hero Wheel — center is fixed, only arms orbit clockwise
 function HeroCards() {
-  const cards = properties.slice(0, 3);
+  const listings = useFeaturedListings();
+  const cards = listings ? listings.slice(0, 3) : [];
+  if (!cards.length) return null;  // nothing to show yet (still loading, or no approved listings)
   return React.createElement(
     'div', { className: 'hero-cards' },
     cards.map((prop, i) =>
@@ -518,7 +484,7 @@ function Navbar() {
       "a",
       { className: "nav-logo", href: "#" },
       React.createElement("span", { className: "nav-catstone-wrap" },
-        React.createElement("img", { src: "assets/img/CatsTone Logo.png", alt: "CatsTone", className: "nav-catstone-img" }),
+        React.createElement("img", { src: "assets/img/CatsTone Logo.svg", alt: "CatsTone", className: "nav-catstone-img" }),
       ),
       React.createElement("span", { className: "nav-logo-divider" }),
       React.createElement("img", { src: LOGO_SRC, alt: "HomeSure", height: 30, style: { display: "block" } }),
@@ -547,25 +513,31 @@ const bedSVG  = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" str
 const bathSVG = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6L9 2"/><path d="M4 6h16v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M4 6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2"/><line x1="4" y1="14" x2="20" y2="14"/></svg>`;
 
 function HeroBento() {
+  const listings = useFeaturedListings();
+  const tiles = listings ? listings.slice(0, 5) : [];
+  if (!tiles.length) return null;  // still loading, or nothing approved yet
+
   return React.createElement('div', { className:'hero-bento-wrap' },
     // ── Live ping badge ──
+    // Used to claim a specific count ("3 new listings today") that was never real. Nothing here
+    // counts how many were added today, so this says something true instead of an invented number.
     React.createElement('div', { className:'bento-ping' },
       React.createElement('span', { className:'bento-ping-dot' }),
-      '3 new listings today',
+      'New listings added regularly',
     ),
     // ── Bento grid ──
     React.createElement('div', { className:'hero-bento' },
-      bentoListings.map((l, i) =>
+      tiles.map((l, i) =>
         React.createElement('div', {
-          key: i,
+          key: l.id || i,
           className: `bento-tile${i === 0 ? ' bento-featured' : ''}`,
-          style: { backgroundImage:`url(${l.img})` },
+          style: { backgroundImage:`url(${l.image})` },
         },
           React.createElement('div', { className:'bento-grad' }),
           React.createElement('div', { className:'bento-content' },
             React.createElement('span', { className:`bento-badge bento-badge-${l.badgeType}` }, l.badge),
             React.createElement('div', { className:'bento-info' },
-              React.createElement('div', { className:'bento-price' }, l.price),
+              React.createElement('div', { className:'bento-price' }, l.price + l.period),
               React.createElement('div', { className:'bento-name' }, l.name),
               React.createElement('div', { className:'bento-loc' }, l.barangay),
               React.createElement('div', { className:'bento-meta' },
@@ -904,6 +876,7 @@ function Hero() {
 // Categories
 function Categories() {
   const [ref, visible] = useReveal();
+  const typeCounts = useTypeCounts();
   return React.createElement(
     "section",
     { className: `section reveal-section${visible ? ' in-view' : ''}`, ref },
@@ -925,8 +898,11 @@ function Categories() {
     React.createElement(
       "div",
       { className: "categories-grid" },
-      categories.map((c, i) =>
-        React.createElement(
+      categories.map((c, i) => {
+        // null while still loading — say nothing definite yet rather than flash a wrong number.
+        const n = typeCounts && c.types.reduce((sum, t) => sum + (typeCounts[t] || 0), 0);
+        const countLabel = typeCounts == null ? ' ' : n === 1 ? '1 listing' : `${n} listings`;
+        return React.createElement(
           "div",
           { key: i, className: "cat-card" },
           React.createElement(
@@ -938,9 +914,9 @@ function Categories() {
             }),
           ),
           React.createElement("div", { className: "cat-name" }, c.name),
-          React.createElement("div", { className: "cat-count" }, c.count),
-        ),
-      ),
+          React.createElement("div", { className: "cat-count" }, countLabel),
+        );
+      }),
     ),
   );
 }
@@ -948,23 +924,44 @@ function Categories() {
 // Spotlight Carousel
 function Carousel() {
   const [ref, visible] = useReveal();
-  const len = properties.length;
+  const listings = useFeaturedListings();
+  const len = listings ? listings.length : 0;
   const [idx, setIdx] = useState(0);
   const [autoKey, setAutoKey] = useState(0);
 
   useEffect(() => {
+    if (!len) return;
     const t = setInterval(() => setIdx((i) => (i + 1) % len), 3500);
     return () => clearInterval(t);
-  }, [autoKey]);
+  }, [autoKey, len]);
 
   const go = (next) => {
     setIdx((next + len) % len);
     setAutoKey((k) => k + 1);
   };
 
-  const leftProp = properties[(idx - 1 + len) % len];
-  const centerProp = properties[idx];
-  const rightProp = properties[(idx + 1) % len];
+  // Still loading, or genuinely nothing approved yet — either way there is nothing to spin through.
+  // listings === null means "not back yet"; [] means "asked, got zero" — both skip the carousel
+  // rather than divide by a length of 0, which the index math above would do with NaN.
+  if (!listings || !listings.length) {
+    return React.createElement(
+      "section",
+      { className: `section-alt reveal-section${visible ? ' in-view' : ''}`, ref },
+      React.createElement("span", { className: "section-label" }, "Featured Properties"),
+      React.createElement("h2", { className: "section-title" }, "Curated Listings Near You"),
+      React.createElement(
+        "p",
+        { className: "section-sub" },
+        listings === null
+          ? "Loading listings…"
+          : "No approved listings yet — check back soon, or be the first to list.",
+      ),
+    );
+  }
+
+  const leftProp = listings[(idx - 1 + len) % len];
+  const centerProp = listings[idx];
+  const rightProp = listings[(idx + 1) % len];
 
   const SideCard = (prop) =>
     React.createElement(
@@ -1107,7 +1104,7 @@ function Carousel() {
     React.createElement(
       "div",
       { className: "dots" },
-      properties.map((_, i) =>
+      listings.map((_, i) =>
         React.createElement("button", {
           key: i,
           className: "dot" + (i === idx ? " active" : ""),
@@ -1644,6 +1641,20 @@ function Footer() {
   const supportLinks = ["Help & Support", "Contact Us", "Report a Listing"];
   const legalLinks = ["Privacy Policy", "Terms of Service"];
 
+  // Most of these were "#" — dead links that went nowhere. Browse and About are genuinely public
+  // pages, so they go straight there; Help & Support already pointed at the public FAQ page
+  // correctly. List Your Property, Contact Us and Report a Listing have no public page to land
+  // on yet (reporting needs to know who is reporting; listing needs an account either way), so
+  // those go to sign in instead of doing nothing.
+  const footerHref = {
+    "Browse Listings": "browse.html",
+    "List Your Property": "auth/signup.html",
+    "About Us": "about.html",
+    "Help & Support": "faqs.html",
+    "Contact Us": "auth/signin.html",
+    "Report a Listing": "auth/signin.html",
+  };
+
   return React.createElement(
     "footer",
     null,
@@ -1684,7 +1695,7 @@ function Footer() {
             {
               key: l,
               className: "footer-link",
-              href: l === "About Us" ? "about.html" : "#",
+              href: footerHref[l],
             },
             l,
           ),
@@ -1704,7 +1715,7 @@ function Footer() {
             {
               key: l,
               className: "footer-link",
-              href: l === "Help & Support" ? "faqs.html" : "#"
+              href: footerHref[l],
             },
             l,
           ),

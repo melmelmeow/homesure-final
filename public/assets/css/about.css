@@ -27,13 +27,18 @@ nav {
 }
 .nav-btns { display: flex; gap: 10px; align-items: center; }
 .nav-logo-divider { width: 1px; height: 22px; background: rgba(255,255,255,0.12); flex-shrink: 0; }
-.nav-catstone-wrap { display: flex; align-items: center; width: 28px; height: 28px; overflow: hidden; flex-shrink: 0; }
-.nav-catstone-img { width: 130%; height: 130%; object-fit: cover; object-position: center; margin: -15%; }
+.nav-catstone-wrap { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; overflow: hidden; flex-shrink: 0; }
+.nav-catstone-img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
 
 .nav-logo > img { width: 26px; height: 26px; object-fit: contain; }
 
 .nav-theme-btn {
-  width: 36px; height: 36px; border-radius: 9px;
+  /* Same fix as index.css's copy: a <button> can measure taller than its own height because of
+     UA-default padding/line-height, so those are reset explicitly rather than assumed zero. */
+  box-sizing: border-box;
+  width: 40px; height: 40px; min-width: 40px; min-height: 40px;
+  padding: 0; margin: 0; line-height: 1;
+  border-radius: 50%;
   background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
   color: rgba(255,255,255,0.65); cursor: pointer;
   display: flex; align-items: center; justify-content: center;

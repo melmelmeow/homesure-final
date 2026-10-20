@@ -489,12 +489,15 @@
     if (logoutBtn) {
       logoutBtn.addEventListener('click', async () => {
         logoutBtn.disabled = true;
+        // hsSignOut() only clears the session — it never redirected on its own despite the old
+        // comment here claiming it did, so the page just sat there, signed out, with no visible
+        // change until you navigated yourself. Landing page now, matching the topbar's logout.
         if (typeof hsSignOut === 'function') {
-          await hsSignOut();            // clears the Supabase session, then redirects
-        } else {
-          if (typeof clearSession === 'function') clearSession();
-          window.location.href = '../../auth/signin.html';
+          await hsSignOut();
+        } else if (typeof clearSession === 'function') {
+          clearSession();
         }
+        window.location.href = '../../index.html';
       });
     }
 

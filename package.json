@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "check-email": "node scripts/check-email.mjs"
+    "check-email": "node scripts/check-email.mjs",
+    "seed": "node scripts/seed-sample-listings.mjs",
+    "seed-accounts": "node scripts/seed-test-accounts.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.4",

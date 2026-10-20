@@ -16,17 +16,26 @@
   let AUDIT = [];
 
   // Everything below adds up these rows. Load them once; RLS decides what this account may see.
-  try {
-    LISTINGS = await HS.listings.all();
-    USERS    = await HS.admin.users();
-    REPORTS_DATA = await HS.reports.list();
-    ADMINS   = await HS.admin.admins();
-    AUDIT    = await HS.audit.list(50);
-  } catch (err) {
-    console.error('Could not load dashboard data:', err);
-    hsToast('Could not load the dashboard data. Please refresh.', 'error');
-    return;
-  }
+    // Safe independent fetching with Promise.allSettled so one error does not break dashboard
+  const [lRes, uRes, rRes, aRes, audRes] = await Promise.allSettled([
+    HS.listings.all(),
+    HS.admin.users(),
+    HS.reports.list(),
+    HS.admin.admins(),
+    HS.audit.list(50)
+  ]);
+
+  LISTINGS     = lRes.status === 'fulfilled' && Array.isArray(lRes.value) ? lRes.value : [];
+  USERS        = uRes.status === 'fulfilled' && Array.isArray(uRes.value) ? uRes.value : [];
+  REPORTS_DATA = rRes.status === 'fulfilled' && Array.isArray(rRes.value) ? rRes.value : [];
+  ADMINS       = aRes.status === 'fulfilled' && Array.isArray(aRes.value) ? aRes.value : [];
+  AUDIT        = audRes.status === 'fulfilled' && Array.isArray(audRes.value) ? audRes.value : [];
+
+  if (lRes.status === 'rejected') console.warn('Listings fetch error:', lRes.reason);
+  if (uRes.status === 'rejected') console.warn('Users fetch error:', uRes.reason);
+  if (rRes.status === 'rejected') console.warn('Reports fetch error:', rRes.reason);
+  if (aRes.status === 'rejected') console.warn('Admins fetch error:', aRes.reason);
+  if (audRes.status === 'rejected') console.warn('Audit fetch error:', audRes.reason);
 
 
   document.getElementById('dashTitle').textContent =

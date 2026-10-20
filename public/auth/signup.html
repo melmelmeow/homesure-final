@@ -12,19 +12,22 @@
   <link rel="stylesheet" href="../assets/css/responsive.css" />
 </head>
 <body class="dark">
-  <div class="auth-layout">
-    <!-- LEFT PANEL -->
-    <div class="auth-left">
-      <header class="auth-header">
-        <a class="nav-logo" href="../index.html">
-          <img src="../assets/img/image.png" alt="HomeSure" height="30" style="display:block" />
-          HomeSure
-        </a>
-        <a class="back-link" href="../index.html">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-          Back to Home
-        </a>
-      </header>
+  <div class="auth-page">
+    <div class="auth-bg-photo" id="authBgPhoto"></div>
+    <div class="auth-bg-overlay"></div>
+    <span class="auth-glow auth-glow-1"></span>
+    <span class="auth-glow auth-glow-2"></span>
+
+    <div class="auth-tagline">
+      <h2>Find your home,<br><em>the verified way.</em></h2>
+      <p>Every seller is ID-checked and every listing is reviewed before it ever reaches browse.</p>
+    </div>
+
+    <div class="auth-card">
+      <a class="auth-card-brand" href="../index.html">
+        <img src="../assets/img/image.png" alt="HomeSure" />
+        HomeSure
+      </a>
 
       <div class="auth-form-wrap">
         <h1 class="auth-title">Create an account</h1>
@@ -60,7 +63,10 @@
 
         <div class="field-group">
           <label class="field-label">Phone Number</label>
-          <input class="field-input full" type="tel" placeholder="+63 9XX – XXX – XXXX" />
+          <div class="phone-input">
+            <span class="phone-prefix">+63</span>
+            <input class="field-input" type="tel" id="phoneLocal" inputmode="numeric" maxlength="10" placeholder="9000000000" />
+          </div>
         </div>
 
         <div class="field-group">
@@ -114,32 +120,12 @@
           <a href="signin.html" class="auth-link">Sign in</a>
         </p>
       </div>
-
-      <footer class="auth-page-footer">
-        <span>© 2026 HomeSure.com</span>
-        <div class="footer-links"><a href="../terms.html">Terms</a><a href="../privacy-policy.html">Privacy</a></div>
-        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
-          <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        </button>
-      </footer>
     </div>
 
-    <!-- RIGHT PANEL -->
-    <div class="auth-right">
-      <div class="auth-right-bg"></div>
-      <div class="auth-right-overlay"></div>
-      <div class="auth-testimonial">
-        <div class="stars">★★★★<span style="opacity:0.4">★</span></div>
-        <blockquote>"Finding my first home was overwhelming until I discovered HomeSure. Everything was transparent and easy."</blockquote>
-        <div class="testimonial-author">
-          <div class="author-avatar">AL</div>
-          <div>
-            <div class="author-name">Angela Lim</div>
-            <div class="author-role">First-time buyer in Poblacion</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <footer class="auth-page-footer">
+      <span>© 2026 HomeSure.site</span>
+      <div class="footer-links"><a href="../terms.html">Terms</a><a href="../privacy-policy.html">Privacy</a></div>
+    </footer>
   </div>
 
   <!-- Verify Email Modal -->

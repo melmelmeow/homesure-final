@@ -515,3 +515,25 @@
 
     showToast('success', 'Photo removed');
   };
+
+  // ── Google Map Pin Location ────────────────────────────────────────────────
+  window.pinLocationOnMap = function() {
+    const searchVal = document.getElementById('mapAddressSearch').value.trim() ||
+                      document.getElementById('listingAddress').value.trim() ||
+                      document.getElementById('listingBarangay').value.trim();
+    if (!searchVal) {
+      showToast('error', 'Please enter an address or barangay first.');
+      return;
+    }
+
+    const query = encodeURIComponent(searchVal + ', Santa Maria, Bulacan, Philippines');
+    const iframe = document.getElementById('sellerMapIframe');
+    if (iframe) {
+      iframe.src = `https://maps.google.com/maps?q=${query}&z=16&output=embed`;
+    }
+
+    const statusEl = document.getElementById('mapStatusText');
+    if (statusEl) {
+      statusEl.innerHTML = `<span style="color:var(--teal)">✓ Pinned on map: <strong>${searchVal}, Sta. Maria, Bulacan</strong></span>`;
+    }
+  };

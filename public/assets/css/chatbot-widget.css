@@ -107,7 +107,9 @@
 .chatbot-avatar {
   width: 40px;
   height: 40px;
-  background: rgba(255, 255, 255, 0.2);
+  /* Was 20% opacity — fine for a plain white stroke icon, but the new logo is teal-gradient on a
+     teal header, so it barely showed up against it. Solid white gives it something to stand on. */
+  background: #fff;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -115,10 +117,12 @@
   flex-shrink: 0;
 }
 
-.chatbot-avatar svg {
-  width: 22px;
-  height: 22px;
+.chatbot-avatar svg,
+.chatbot-avatar img {
+  width: 28px;
+  height: 28px;
   color: #fff;
+  display: block;
 }
 
 .chatbot-header-info {
@@ -232,6 +236,15 @@
   justify-content: center;
   font-size: 12px;
   font-weight: 700;
+  overflow: hidden;
+}
+/* Only the "ME" initials avatar has text content now — the bot's is an <img>, which has no
+   intrinsic size to speak of without this (it would render at its full 512x512 source size). */
+.chatbot-message-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .chatbot-message.bot .chatbot-message-avatar {
@@ -402,6 +415,14 @@
   height: 40px;
   transition: all 0.2s;
 }
+/* The textarea is scrollable by default even at a fixed height, and Windows renders that
+   scrollbar with its own tiny up/down arrow buttons at each end — not a resize handle (that part
+   was already off), just the plain scroll track. Narrowed to a thin, button-less bar instead of
+   hidden outright, since a long pasted message can still genuinely need to scroll. */
+.chatbot-input::-webkit-scrollbar { width: 4px; }
+.chatbot-input::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+.chatbot-input::-webkit-scrollbar-track { background: transparent; }
+.chatbot-input::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
 .chatbot-input:focus {
   outline: none;

@@ -144,6 +144,36 @@
     }).join('');
   }
 
+  // ── Mobile filter sheet ──────────────────────────────────────────────────
+  // On mobile the panel above is hidden by default (see responsive.css) and opens as a bottom
+  // sheet instead, the way Shopee's filter does — a small trigger button, not the full panel,
+  // greeting you before you've even seen a listing. Desktop never calls any of these three; the
+  // panel just sits there as it always did.
+
+  function resetFilters() {
+    document.getElementById('filterBarangay').value = '';
+    document.getElementById('filterType').value = '';
+    document.getElementById('filterMin').value = '';
+    document.getElementById('filterMax').value = '';
+    renderListings();
+  }
+
+  function openFilterSheet() {
+    document.getElementById('filterPanel').classList.add('sheet-open');
+    document.getElementById('filterBackdrop').classList.add('open');
+    document.querySelector('.content').style.overflow = 'hidden';
+  }
+
+  function closeFilterSheet() {
+    document.getElementById('filterPanel').classList.remove('sheet-open');
+    document.getElementById('filterBackdrop').classList.remove('open');
+    document.querySelector('.content').style.overflow = '';
+  }
+
+  window.resetFilters     = resetFilters;
+  window.openFilterSheet  = openFilterSheet;
+  window.closeFilterSheet = closeFilterSheet;
+
   async function loadListings() {
     const grid = document.getElementById('listingsGrid');
     grid.innerHTML = '<div class="empty-state">Loading properties…</div>';

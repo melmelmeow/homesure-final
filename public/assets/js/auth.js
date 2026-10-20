@@ -13,6 +13,25 @@ const sunIcon  = `<svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24"
 const moonIcon = `<svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
 
 // ──────────────────────────────────────────────────────────────────────────────
+// Phone number — digits only, "+63" lives outside the input entirely (see .phone-prefix
+// in auth.css), so there's nothing for the user to delete and nothing to re-insert.
+// A PH mobile number is always +63 9XX XXX XXXX — the digit right after +63 is always 9 — so
+// anything typed before a 9 appears is dropped rather than accepted and flagged later. Re-checked
+// on every edit, not just the first keystroke: deleting the leading 9 later leaves whatever was
+// next in that spot, and that gets dropped the same way.
+// signup.html only; quietly does nothing elsewhere.
+// ──────────────────────────────────────────────────────────────────────────────
+(function () {
+  const el = document.getElementById('phoneLocal');
+  if (!el) return;
+  el.addEventListener('input', () => {
+    let digits = el.value.replace(/\D/g, '');
+    while (digits.length && digits[0] !== '9') digits = digits.slice(1);
+    el.value = digits.slice(0, 10);
+  });
+})();
+
+// ──────────────────────────────────────────────────────────────────────────────
 // togglePw() — Show/Hide Password
 // "Did I type 'password123' or 'passw0rd123'?" - Everyone, always
 // ──────────────────────────────────────────────────────────────────────────────
@@ -22,6 +41,26 @@ function togglePw(id, btn) {
   input.type = isPassword ? 'text' : 'password';
   btn.innerHTML = isPassword ? eyeOff : eyeOpen;
 }
+
+// ──────────────────────────────────────────────────────────────────────────────
+// loadAuthBackgroundPhoto() — a real listing's photo behind the sign-in/sign-up card
+//
+// Replaces what used to be a single hardcoded stock photo (house_image.jpg) on every visit. Runs
+// on signin.html/signup.html only — the element it needs doesn't exist on forgot-password.html, so
+// it quietly does nothing there rather than erroring.
+// ──────────────────────────────────────────────────────────────────────────────
+(function loadAuthBackgroundPhoto() {
+  const el = document.getElementById('authBgPhoto');
+  if (!el || typeof HS === 'undefined' || !HS.randomListingPhoto) return;
+
+  HS.randomListingPhoto()
+    .then((url) => {
+      if (!url) return;  // no approved listing has a photo yet — the gradient background stays
+      el.style.backgroundImage = `url("${url}")`;
+      el.classList.add('loaded');
+    })
+    .catch((err) => console.error('Could not load a listing photo for the auth background:', err));
+})();
 
 // ──────────────────────────────────────────────────────────────────────────────
 // applyAuthTheme() — Apply Light or Dark Mode
@@ -131,7 +170,7 @@ function validateSignup() {
   const surname   = document.querySelector('input[placeholder="Surname"]');
   const firstName = document.querySelector('input[placeholder="First Name"]');
   const email     = document.querySelector('input[type="email"]');
-  const phone     = document.querySelector('input[type="tel"]');
+  const phone     = document.getElementById('phoneLocal');
   const pw1       = document.getElementById('pw1');
   const pw2       = document.getElementById('pw2');
 
@@ -144,7 +183,13 @@ function validateSignup() {
     showError(email, 'Enter a valid email address'); valid = false;
   } else { clearError(email); }
 
-  if (!phone.value.trim()) { showError(phone, 'Phone number is required'); valid = false; } else clearError(phone);
+  // 10 digits after +63 — a PH mobile number (09XX XXX XXXX) with the leading 0 dropped, since
+  // the +63 already stands in for it.
+  if (!phone.value.trim()) {
+    showError(phone, 'Phone number is required'); valid = false;
+  } else if (phone.value.trim().length !== 10) {
+    showError(phone, 'Enter a 10-digit mobile number'); valid = false;
+  } else { clearError(phone); }
 
   if (!pw1.value) {
     showError(pw1, 'Password is required'); valid = false;
@@ -182,7 +227,7 @@ async function openVerifyModal() {
   const firstName = document.querySelector('input[placeholder="First Name"]').value.trim();
   const emailEl   = document.querySelector('input[type="email"]');
   const email     = emailEl.value.trim();
-  const phone     = document.querySelector('input[type="tel"]').value.trim();
+  const phone     = '+63' + document.getElementById('phoneLocal').value.trim();
   const password  = document.getElementById('pw1').value;
   const role      = document.getElementById('sellerBtn').classList.contains('active') ? 'seller' : 'buyer';
 

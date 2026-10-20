@@ -133,6 +133,69 @@
 
 
 
+<input type="file" id="chatFileInput" style="display:none;" onchange="handleFileSelect(event)" />
+
+<!-- ── Buyer Refund Request Modal ─────────────────────────────────── -->
+<div class="modal-backdrop" id="buyerRefundModal" style="display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)closeBuyerRefundModal()">
+  <div style="background:#253347;border:1px solid rgba(255,255,255,0.07);border-radius:18px;width:100%;max-width:440px;overflow:hidden;animation:fadeUp .22s ease both;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:20px 22px 16px;border-bottom:1px solid rgba(255,255,255,0.07);">
+      <div>
+        <div style="font-size:16px;font-weight:800;color:#f1f5f9;">Request a Refund</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:3px;" id="refundPropertyName">—</div>
+      </div>
+      <button type="button" onclick="closeBuyerRefundModal()" style="background:rgba(255,255,255,0.06);border:none;border-radius:8px;width:30px;height:30px;cursor:pointer;color:rgba(255,255,255,0.5);display:flex;align-items:center;justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="15" height="15"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <form onsubmit="submitRefundRequest(event)" style="padding:20px 22px;display:flex;flex-direction:column;gap:14px;max-height:calc(90vh - 150px);overflow-y:auto;">
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="font-size:11.5px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.05em;">Payment to Refund</label>
+        <select id="refundPaymentSelect" required onchange="onRefundPaymentChange()"
+          style="background:#2c3d55;border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:10px 14px;color:#f1f5f9;font-family:inherit;font-size:13px;outline:none;width:100%;cursor:pointer;">
+          <option value="">Select payment to refund</option>
+        </select>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="font-size:11.5px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.05em;">Refund Amount (₱)</label>
+        <input id="refundAmount" type="number" min="1" required
+          style="background:#2c3d55;border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:10px 14px;color:#f1f5f9;font-family:inherit;font-size:13.5px;outline:none;width:100%;" />
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="font-size:11.5px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.05em;">Payout Method (Destination Bank/E-Wallet)</label>
+        <select id="refundBankCode" required
+          style="background:#2c3d55;border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:10px 14px;color:#f1f5f9;font-family:inherit;font-size:13px;outline:none;width:100%;cursor:pointer;">
+          <option value="PH_GCASH">GCash</option>
+          <option value="PH_PAYMAYA">Maya</option>
+          <option value="PH_BPI">BPI (Bank of the Philippine Islands)</option>
+          <option value="PH_BDO">BDO Unibank</option>
+          <option value="PH_UNIONBANK">UnionBank of the Philippines</option>
+          <option value="PH_METROBANK">Metrobank</option>
+        </select>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="font-size:11.5px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.05em;">Account / Mobile Number</label>
+        <input id="refundAccountNo" type="text" placeholder="e.g. 09171234567 or Bank Acct #" required
+          style="background:#2c3d55;border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:10px 14px;color:#f1f5f9;font-family:inherit;font-size:13px;outline:none;width:100%;" />
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="font-size:11.5px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.05em;">Reason for Refund</label>
+        <textarea id="refundReason" rows="2" placeholder="e.g. Cancelled reservation / overpayment" required
+          style="background:#2c3d55;border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:10px 14px;color:#f1f5f9;font-family:inherit;font-size:13px;outline:none;width:100%;resize:none;"></textarea>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;padding-top:8px;border-top:1px solid rgba(255,255,255,0.07);">
+        <button type="button" onclick="closeBuyerRefundModal()"
+          style="background:transparent;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 18px;color:rgba(255,255,255,0.6);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;">
+          Cancel
+        </button>
+        <button type="submit" id="refundSubmitBtn"
+          style="background:#fbbf24;border:none;border-radius:10px;padding:10px 22px;color:#1e293b;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:6px;">
+          Submit Refund Request
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0/dist/umd/supabase.js"></script>
 <script src="../../assets/js/config.js"></script>
 <script src="../../assets/js/session.js"></script>

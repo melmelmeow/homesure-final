@@ -1,5 +1,14 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* Mobile browsers flash their own default blue rectangle over any link or button the instant you
+   touch it — the nav's Sign In/Sign Up, the theme toggle, the hero buttons, all of it. Fixed once
+   here for the whole page instead of chasing it element by element, same as the auth pages. A
+   visible outline is kept for keyboard Tab focus, so this isn't an accessibility trade-off. */
+a, button {
+  -webkit-tap-highlight-color: transparent;
+  outline-color: var(--teal);
+}
+
 /* ── Design tokens — DARK (default) ── */
 :root {
   --bg:      #0d1b2a;
@@ -94,13 +103,15 @@ nav {
   white-space: nowrap;
   flex-shrink: 0;
 }
-/* :not() on purpose. This rule also matched .nav-catstone-img and outranked it — (0,1,1) against
-   (0,1,0) — so the CatsTone mark was forced to 26x26 while keeping the margin: -15% that its own
-   rule pairs with a 130% size. That dragged it up and left, and its wrapper clips overflow, so the
-   left edge was sliced off. */
+/* :not() on purpose. This rule also matched .nav-catstone-img and outranked it, so its own sizing
+   below would have lost the fight. */
 .nav-logo img:not(.nav-catstone-img) {
-  width: 28px;
-  height: 28px;
+  /* Same box size as .nav-catstone-img (28px) read as smaller next to it — not actually a size
+     mismatch, but CatsTone is solid filled pixel art while this is a thin-stroke outline icon with
+     a lot of empty space inside its own canvas, so it carries less visual weight at an equal box
+     size. Bumped up rather than matched exactly, to compensate for that rather than the number. */
+  width: 32px;
+  height: 32px;
   border-radius: 6px;
   display: block;
   object-fit: contain;
@@ -115,10 +126,11 @@ nav {
   overflow: hidden; flex-shrink: 0;
   border-radius: 6px;
 }
+/* The mark is a pixel-art SVG, already cropped tight to its own viewBox, so it just fits the
+   wrapper instead of the zoom-and-crop the old PNG needed to hide its internal padding. */
 .nav-catstone-img {
-  width: 130%; height: 130%;
-  object-fit: cover; object-position: center;
-  margin: -15%;
+  width: 100%; height: 100%;
+  object-fit: contain; object-position: center;
 }
 .nav-tagline {
   position: absolute; left: 50%; transform: translateX(-50%);
@@ -128,7 +140,16 @@ nav {
 .nav-btns { display: flex; gap: 10px; align-items: center; }
 
 .nav-theme-btn {
-  width: 36px; height: 36px; border-radius: 9px;
+  /* DevTools measured this at 36x40 despite width/height both saying 36px — a <button> carries
+     UA-default padding and line-height that can inflate it past an explicit height, so those are
+     reset here explicitly rather than trusted to already be zero. box-sizing is forced too, in
+     case anything between this and the global border-box reset ever changes it. 40x40 rather than
+     36x36: it was measuring 40 tall already, and a bigger tap target is the right direction on a
+     touch screen regardless. */
+  box-sizing: border-box;
+  width: 40px; height: 40px; min-width: 40px; min-height: 40px;
+  padding: 0; margin: 0; line-height: 1;
+  border-radius: 50%;
   background: var(--card); border: 1px solid var(--border);
   color: var(--muted2); cursor: pointer;
   display: flex; align-items: center; justify-content: center;
@@ -137,25 +158,38 @@ nav {
 .nav-theme-btn:hover { border-color: var(--teal); color: var(--teal); }
 .nav-theme-btn svg { width: 16px; height: 16px; }
 
+/* Swapped on request, same as the hero's mobile Sign In/Up pair: Sign In (.btn-outline) is now the
+   solid, glowing button and Sign Up (.btn-solid) is the glass one. */
 .btn-outline {
-  background: #1e293b; border: 1px solid #334155;
-  color: #fff; padding: 7px 20px; border-radius: 8px;
+  /* Border set to transparent rather than removed, and padding matched to .btn-solid's: .btn-solid
+     has a real 1px border eating into its box, so equal padding alone still left this one smaller
+     by the width of that border, on top of the padding itself being 1px tighter before this fix. */
+  background: var(--teal); border: 1px solid transparent;
+  color: #fff; padding: 8px 22px; border-radius: 999px;
   font-weight: 700; font-size: 13.5px; cursor: pointer;
   transition: all 0.18s; font-family: inherit;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 20px rgba(0,201,167,0.5), 0 4px 12px rgba(0,201,167,0.28);
 }
-.btn-outline:hover { border-color: #475569; }
+.btn-outline:hover {
+  opacity: 0.88; transform: translateY(-1px);
+  box-shadow: 0 0 26px rgba(0,201,167,0.65), 0 6px 16px rgba(0,201,167,0.32);
+}
 .btn-solid {
-  background: var(--teal); border: none; color: #fff;
-  padding: 8px 22px; border-radius: 8px;
+  background: transparent; border: 1px solid #52617a; color: #fff;
+  padding: 8px 22px; border-radius: 999px;
   font-weight: 700; font-size: 13.5px; cursor: pointer;
   transition: all 0.18s; font-family: inherit;
   display: flex; align-items: center; gap: 7px;
 }
-.btn-solid:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-solid:hover { border-color: #7487a6; }
 
 /* Light mode nav overrides */
-[data-theme="light"] .btn-solid { background: var(--teal); }
-[data-theme="light"] .btn-solid:hover { opacity: 0.88; }
+[data-theme="light"] .btn-solid { background: #f1f5f9; border-color: #cbd5e1; color: #0f172a; }
+[data-theme="light"] .btn-solid:hover { background: #e2e8f0; border-color: #94a3b8; }
+
+/* .btn-outline (Sign In) stays solid teal in both themes — it does not need a light variant,
+   the glow reads fine on a white background too. */
 
 /* ── HERO ── */
 /* ── PROMOTIONAL BANNER ── */
@@ -224,6 +258,15 @@ nav {
   width: 100%;
   height: 100%;
   display: block;
+}
+
+/* In dark theme a solid, fully-saturated badge against a dark card reads as a deliberate accent.
+   The same solid fill against light theme's near-white card is just glare — no breathing room
+   between the color and the white around it. Softened to a pale tint of the same color, with the
+   icon drawn in the color itself instead of white, the way .verify-icon already does elsewhere. */
+[data-theme="light"] .feature-card-icon {
+  background: color-mix(in srgb, var(--feature-color) 14%, white);
+  color: var(--feature-color);
 }
 
 .feature-card-badge {
@@ -532,21 +575,21 @@ nav {
 [data-theme="light"] .hero-btn-primary { background: var(--teal); box-shadow: none; }
 [data-theme="light"] .hero-btn-primary:hover { background: var(--teal); opacity: 0.88; box-shadow: 0 8px 24px rgba(0,201,167,0.3); }
 
+/* Hardcoded, not var(--text)/var(--border): on desktop the hero keeps its dark gradient in both
+   themes (see .hero above — no [data-theme="light"] override at this width), so this button must
+   not follow the global text colour, which flips to near-black in light mode and would go almost
+   invisible on a background that never actually lightens. */
 .hero-btn-secondary {
-  background: transparent; color: var(--text);
-  border: 1.5px solid var(--border); padding: 12px 24px;
+  background: transparent; color: rgba(255,255,255,0.92);
+  border: 1.5px solid rgba(255,255,255,0.3); padding: 12px 24px;
   border-radius: 10px; font-size: 14.5px; font-weight: 700;
   cursor: pointer; font-family: inherit; transition: all 0.18s;
   display: flex; align-items: center; gap: 8px;
 }
-.hero-btn-secondary:hover { border-color: var(--text); transform: translateY(-1px); }
-[data-theme="light"] .hero-btn-secondary {
-  border-color: #cbd5e1;
-  color: #0f172a;
-}
-[data-theme="light"] .hero-btn-secondary:hover {
-  border-color: #94a3b8;
-  background: rgba(0,0,0,0.02);
+.hero-btn-secondary:hover {
+  border-color: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.04);
+  transform: translateY(-1px);
 }
 
 /* Mobile-only Sign In/Up buttons (hidden on desktop) */
@@ -554,7 +597,30 @@ nav {
 .hero-btn-mobile-signup {
   display: none;
 }
+/* Swapped on request: Sign In is now the solid, glowing one (it is the more likely action — most
+   visitors already have an account) and Sign Up is the glass one. */
 .hero-btn-mobile-signin {
+  background: var(--teal);
+  color: #fff;
+  border: none;
+  padding: 13px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.18s;
+  justify-content: center;
+  text-decoration: none;
+  align-items: center;
+  box-shadow: 0 0 22px rgba(0,201,167,0.55), 0 4px 14px rgba(0,201,167,0.3);
+}
+.hero-btn-mobile-signin:hover {
+  opacity: 0.88;
+  transform: translateY(-2px);
+  box-shadow: 0 0 28px rgba(0,201,167,0.7), 0 6px 18px rgba(0,201,167,0.35);
+}
+.hero-btn-mobile-signup {
   background: transparent;
   color: #ffffff !important;
   border: 1.5px solid rgba(255,255,255,0.3);
@@ -569,28 +635,9 @@ nav {
   text-decoration: none;
   align-items: center;
 }
-.hero-btn-mobile-signin:hover {
+.hero-btn-mobile-signup:hover {
   border-color: rgba(255,255,255,0.6);
   background: rgba(255,255,255,0.05);
-}
-.hero-btn-mobile-signup {
-  background: var(--teal);
-  color: #fff;
-  border: none;
-  padding: 13px 20px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: inherit;
-  transition: all 0.18s;
-  justify-content: center;
-  text-decoration: none;
-  align-items: center;
-}
-.hero-btn-mobile-signup:hover {
-  opacity: 0.88;
-  transform: translateY(-2px);
 }
 /* Light mode mobile buttons - moved to mobile media query below */
 
@@ -1777,12 +1824,13 @@ footer {
     color: #475569;
   }
 
-  /* Light mode mobile buttons - MOBILE ONLY */
-  [data-theme="light"] .hero-btn-mobile-signin {
+  /* Light mode mobile buttons - MOBILE ONLY. Sign In stays solid teal in both themes (it does not
+     need a light variant); Sign Up is the glass one now, so it is the one that needs this. */
+  [data-theme="light"] .hero-btn-mobile-signup {
     border-color: #cbd5e1;
-    color: #0f172a;
+    color: #0f172a !important;  /* the base rule's color is !important too, so this has to match */
   }
-  [data-theme="light"] .hero-btn-mobile-signin:hover {
+  [data-theme="light"] .hero-btn-mobile-signup:hover {
     border-color: #94a3b8;
     background: rgba(0,0,0,0.02);
   }

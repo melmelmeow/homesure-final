@@ -50,6 +50,55 @@
   .search-wrap input  { width: 100% !important; }
   /* Buyer 4-col filter panel */
   .filter-row { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* ── 4b. Buyer's filter panel becomes a bottom sheet ──────────────────────
+     Was always inline above the listings — the "palagay bumubungad" complaint. Scoped to
+     #filterPanel (buyer.html's own id), not .filter-panel generally: seller.html uses that same
+     class for an unrelated panel that has no trigger/backdrop/open-close JS to go with this. */
+  .mobile-filter-trigger { display: flex !important; }
+  #filterPanel { display: none; }
+  #filterPanel.sheet-open {
+    display: block !important;
+    position: fixed !important; z-index: 300;
+    left: 0; right: 0; bottom: 0;
+    max-height: 82vh; overflow-y: auto;
+    margin: 0 !important;
+    border-radius: 18px 18px 0 0 !important;
+    box-shadow: 0 -12px 40px rgba(0,0,0,0.4);
+    animation: filterSheetUp 0.22s ease-out;
+  }
+  @keyframes filterSheetUp {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+  .filter-backdrop.open {
+    display: block !important;
+    position: fixed; inset: 0; z-index: 299;
+    background: rgba(0,0,0,0.5);
+  }
+  #filterPanel.sheet-open .filter-title { padding-right: 32px; margin-bottom: 18px; }
+  #filterPanel.sheet-open .filter-sheet-close {
+    display: flex !important;
+    position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+    width: 26px; height: 26px; align-items: center; justify-content: center;
+    background: none; border: none; color: var(--muted); cursor: pointer;
+  }
+  #filterPanel.sheet-open .filter-row { grid-template-columns: 1fr !important; gap: 14px; }
+  #filterPanel.sheet-open .filter-sheet-footer {
+    display: flex !important;
+    gap: 10px; margin-top: 20px;
+  }
+  #filterPanel.sheet-open .filter-sheet-reset,
+  #filterPanel.sheet-open .filter-sheet-apply {
+    flex: 1; padding: 12px; border-radius: 8px;
+    font-family: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer;
+  }
+  #filterPanel.sheet-open .filter-sheet-reset {
+    background: transparent; border: 1.5px solid var(--border); color: var(--text);
+  }
+  #filterPanel.sheet-open .filter-sheet-apply {
+    background: var(--teal); border: none; color: #fff;
+  }
 }
 @media (max-width: 480px) {
   .filter-row  { grid-template-columns: 1fr !important; }
@@ -395,7 +444,7 @@
   }
   .hero-left {
     max-width: 100% !important;
-    padding: 60px 24px 44px !important;
+    padding: 96px 24px 44px !important;
     align-items: center !important;
     text-align: center !important;
   }
@@ -498,7 +547,7 @@
 
 @media (max-width: 480px) {
   .hero-left {
-    padding: 40px 16px 32px !important;
+    padding: 76px 16px 32px !important;
   }
   .hero-title {
     font-size: clamp(24px, 7vw, 32px) !important;
@@ -839,18 +888,25 @@
     height: 18px !important;
   }
   .nav-btns {
-    gap: 6px !important;
+    gap: 10px !important;
     flex-shrink: 0 !important;
   }
-  /* Hide Sign In/Up buttons on mobile (use hero buttons instead) */
-  .btn-outline,
+  /* Sign Up stays hidden on mobile — the hero's own pill buttons cover it, and the nav only has
+     room for one. Sign In stays visible: scrolling away from the hero used to mean scrolling all
+     the way back up just to sign in, so it needs to be reachable from the nav at any scroll
+     position, not only at the top. */
   .btn-solid {
     display: none !important;
   }
-  .nav-theme-btn {
-    width: 32px !important;
-    height: 32px !important;
+  .btn-outline {
+    display: flex !important;
+    padding: 7px 14px !important;
+    font-size: 12.5px !important;
   }
+  /* The theme toggle used to shrink here and again below (36px -> 32px -> 30px). It is a tap
+     target, and nothing else competes for space next to it once Sign In/Up are hidden, so on
+     request it now stays the same size everywhere rather than getting smaller exactly where a
+     smaller target is harder to hit. */
 
   /* Footer mobile */
   footer {
@@ -922,14 +978,14 @@
   .nav-logo-divider {
     height: 16px !important;
   }
-  .btn-outline, .btn-primary {
+  /* .btn-primary was a typo for .btn-solid, the real class on the nav's Sign Up button — still
+     unreachable, .btn-solid stays display: none at this width (see the 768px block above).
+     .btn-outline (Sign In) is reachable now, so its own size here is real. */
+  .btn-outline, .btn-solid {
     padding: 6px 10px !important;
     font-size: 11px !important;
   }
-  .nav-theme-btn {
-    width: 30px !important;
-    height: 30px !important;
-  }
+  /* Used to shrink to 30px here — removed, see the 768px block above for why. */
 }
 
 @media (max-width: 375px) {
@@ -947,10 +1003,16 @@
     width: 24px !important;
     height: 24px !important;
   }
+  /* Sign In used to disappear entirely below 375px. Kept visible on request — it is the only way
+     to reach sign-in while scrolled away from the hero, so losing it here left the smallest
+     phones with no way to sign in without scrolling back to the top. Shrunk instead. */
   .btn-outline {
-    display: none !important; /* Hide Sign In on very small screens */
+    padding: 5px 9px !important;
+    font-size: 10.5px !important;
   }
-  .btn-primary {
+  /* .btn-primary was a typo for .btn-solid, same as above — fixed, though still unreachable here
+     for the same reason: both nav buttons are already display: none at this width. */
+  .btn-solid {
     padding: 6px 12px !important;
     font-size: 11px !important;
   }

@@ -21,11 +21,22 @@
     <!-- Page content -->
     <div class="content">
 
+      <!-- Mobile only: opens the filter panel as a bottom sheet instead of it sitting inline
+           above every listing. Hidden on desktop, where the panel is just always visible. -->
+      <button class="mobile-filter-trigger" id="mobileFilterTrigger" onclick="openFilterSheet()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        Filter Properties
+      </button>
+      <div class="filter-backdrop" id="filterBackdrop" onclick="closeFilterSheet()"></div>
+
       <!-- Filter Panel -->
-      <div class="filter-panel">
+      <div class="filter-panel" id="filterPanel">
         <div class="filter-title">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
           Filter Properties
+          <button class="filter-sheet-close" id="filterSheetClose" onclick="closeFilterSheet()" aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
         </div>
         <div class="filter-row">
           <div class="filter-group">
@@ -51,6 +62,11 @@
             <label>Max Price</label>
             <input class="filter-input" type="text" id="filterMax" placeholder="No limit" oninput="renderListingsSoon()" />
           </div>
+        </div>
+        <!-- Mobile only: desktop applies filters live via onchange/oninput above, same as before -->
+        <div class="filter-sheet-footer">
+          <button class="filter-sheet-reset" onclick="resetFilters()">Reset</button>
+          <button class="filter-sheet-apply" onclick="closeFilterSheet()">Search</button>
         </div>
       </div>
 

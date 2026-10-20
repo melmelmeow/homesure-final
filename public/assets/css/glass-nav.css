@@ -47,8 +47,7 @@ body.dark {
    header sits inside a split column with nothing scrolling behind it, so frosting it
    would blur nothing and just look muddy. */
 nav,
-.browse-nav,
-.policy-header {
+.browse-nav {
   position: sticky;
   top: 0;
   z-index: 100;
@@ -78,15 +77,12 @@ nav,
    tokens, and its contents have to follow — dark text on a dark panel would be unreadable.
    glass-nav.js adds and removes this class as you scroll. */
 nav.over-hero,
-.browse-nav.over-hero,
-.policy-header.over-hero {
-  /* No blur here, and this is a performance decision rather than a visual one.
-     backdrop-filter re-blurs whatever is behind the bar on every frame that anything back there
-     moves — and the hero never stops moving: a full-screen particle layer plus six markers each
-     running two infinite animations. That is a full-width blur recomputed 60 times a second, for
-     the whole time someone is looking at the top of the page.
-     Over the hero the bar is a dark panel on a dark panel, so the blur was buying almost nothing.
-     Below the hero, where the page is still and the content behind is light, it stays. */
+.browse-nav.over-hero {
+  /* No blur here for .browse-nav — a performance decision, not a visual one;
+     backdrop-filter recomputes every frame anything behind it moves. For nav.over-hero on
+     index.html/about.html specifically, this is moot: the pill rule further down
+     (nav:not(.browse-nav):not(.toc-nav)) has higher specificity and restores the blur there,
+     on request, to match a reference that wanted the headline visibly blurred through it. */
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   --glass-bg:     rgba(10, 22, 40, 0.72);
@@ -99,7 +95,7 @@ nav.over-hero,
 
 /* Somebody who has asked their system for less motion should not be paying for any of it. */
 @media (prefers-reduced-motion: reduce) {
-  nav, .browse-nav, .policy-header {
+  nav, .browse-nav {
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
     background-color: var(--glass-solid);
@@ -128,13 +124,17 @@ nav.over-hero .nav-theme-btn:hover {
   color: var(--teal);
 }
 
+/* Sign In (.btn-outline) is the solid, glowing teal button now — index.css's base rule already
+   gives it that everywhere, over the hero included, so it needs no override here. Sign Up
+   (.btn-solid) is the glass one instead; its default dark-navy border already reads fine over the
+   hero without changes either, so this file has nothing left to override for either button. */
+
 /* Safari ≤ 8 and Firefox with backdrop-filter disabled show no blur at all. Without this
    the bar would be a half-transparent panel with the page legible straight through it,
    and the links would be unreadable. Fall back to near-solid instead. */
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   nav,
-  .browse-nav,
-  .policy-header {
+  .browse-nav {
     background-color: var(--glass-solid);
   }
 }
@@ -142,8 +142,7 @@ nav.over-hero .nav-theme-btn:hover {
 /* Someone who has asked for less motion still gets the glass, just no cross-fade. */
 @media (prefers-reduced-motion: reduce) {
   nav,
-  .browse-nav,
-  .policy-header {
+  .browse-nav {
     transition: none;
   }
 }
@@ -152,14 +151,17 @@ nav.over-hero .nav-theme-btn:hover {
    The bar stops being a strip across the top and becomes a rounded panel sitting ON the page,
    with the hero running underneath it.
 
-   Only index.html and about.html use a bare <nav>. browse.html's bar is .browse-nav and the
-   policy pages use .policy-header; both of those sit above dense content with nothing worth
-   seeing behind them, so they stay full width.
+   Only index.html and about.html use a bare <nav>. browse.html's bar is .browse-nav and stays
+   full width — it sits above dense listing content with nothing worth seeing behind it. The
+   policy pages' .policy-header gets its own pill, defined in policy.css rather than here, since
+   it is simple enough (logo and a theme toggle, nothing else) not to need this file's over-hero
+   handling at all.
 
-   There is no backdrop-filter here, and that is deliberate. The hero behind this never stops
-   moving — a full-screen particle layer and six animated markers — and a blur over moving
-   content is recomputed every frame. The panel is translucent instead, which is what makes the
-   headline read through it. */
+   This used to skip backdrop-filter here on purpose — the hero behind it never stops moving (a
+   particle layer, six animated markers), and blurring moving content is recomputed every frame.
+   Restored on request to match a reference that wanted the headline visibly blurred through the
+   pill, not just dimmed. If this turns out to cost real frame time on a weaker phone, the fix is
+   to drop back to the translucent-only version above, not to fight the browser over it. */
 nav:not(.browse-nav):not(.toc-nav) {
   position: fixed;
   top: 14px;
@@ -178,16 +180,17 @@ nav:not(.browse-nav):not(.toc-nav) {
     inset 0 1px 0 rgba(255, 255, 255, 0.10),
     0 8px 32px rgba(0, 0, 0, 0.28);
 
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
   transition: background 0.3s ease, box-shadow 0.3s ease, max-width 0.3s ease;
 }
 
 /* Once the hero is behind you the page is still, so the blur costs nothing and the panel can
-   tighten up and settle against the content. */
+   tighten up and settle against the content. Kept at the same max-width as the over-hero state on
+   request — it was reading as the bar shrinking while scrolling, not settling. */
 nav:not(.browse-nav):not(.toc-nav):not(.over-hero) {
   background: var(--glass-bg);
-  max-width: 1060px;
+  max-width: 1180px;
   -webkit-backdrop-filter: blur(16px) saturate(160%);
   backdrop-filter: blur(16px) saturate(160%);
   box-shadow:
@@ -208,7 +211,7 @@ nav:not(.browse-nav):not(.toc-nav).over-hero {
     top: 10px;
     width: calc(100% - 20px);
     height: 54px !important;
-    padding: 0 8px 0 14px !important;
+    padding: 0 12px 0 14px !important;
     border-radius: 999px;
   }
 }
@@ -218,6 +221,6 @@ nav:not(.browse-nav):not(.toc-nav).over-hero {
     top: 8px;
     width: calc(100% - 16px);
     height: 52px !important;
-    padding: 0 6px 0 12px !important;
+    padding: 0 10px 0 12px !important;
   }
 }

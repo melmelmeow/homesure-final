@@ -1,7 +1,10 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'DM Sans', sans-serif;
+  /* Was 'DM Sans' — every other page on the site uses Plus Jakarta Sans, so these two legal pages
+     read as visually disconnected from the rest of HomeSure. DM Serif Display stays for the
+     headings below; that's a deliberate editorial accent for a legal document, not a mismatch. */
+  font-family: 'Plus Jakarta Sans', sans-serif;
   /* The page background belongs here, not only on .policy-main. A background on <body>
      propagates to the canvas; one on an inner <div> does not, so the area behind the sticky
      header stayed white. */
@@ -56,29 +59,58 @@ body.light {
   --footer-muted:   #5a7a8a;
 }
 
-/* ── HEADER ── */
+/* ── HEADER ──
+   Floating glass pill, matching index.html/about.html's nav rather than the plain full-width
+   sticky bar this used to be. glass-nav.css no longer styles .policy-header at all (it used to,
+   sharing rules meant for a bar that scrolls over a moving hero — this page has no hero, and is
+   simple enough — logo plus a theme toggle — to just define its own pill here instead).
+   tokens (--glass-bg etc.) come from glass-nav.css's body.dark/body.light blocks, loaded before
+   this file takes over styling the element itself. */
 .policy-header {
-  position: sticky; top: 0; z-index: 100;
+  position: fixed;
+  top: 14px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  width: calc(100% - 28px);
+  max-width: 1180px;
+  height: 58px;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 48px; height: 60px;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(8px);
+  padding: 0 18px 0 22px;
+  border-radius: 999px;
+  background: var(--glass-bg, var(--surface));
+  border: 1px solid var(--glass-border, var(--border));
+  -webkit-backdrop-filter: var(--glass-blur, blur(16px));
+  backdrop-filter: var(--glass-blur, blur(16px));
+  box-shadow: inset 0 1px 0 var(--glass-edge, transparent), 0 8px 28px rgba(0,0,0,0.18);
 }
+/* Document flow no longer has a header to push content down (position: fixed removes it from
+   flow entirely) — .policy-main's own top padding is what creates that clearance now; see below. */
 .nav-logo {
   display: flex; align-items: center; gap: 10px;
   color: var(--text); font-weight: 700; font-size: 17px; text-decoration: none;
 }
 .theme-toggle {
+  /* Same fix as auth.css's copy: forced to a true circle with explicit box-sizing/padding so a
+     <button>'s own UA defaults can't inflate it past its set size. */
+  box-sizing: border-box;
+  width: 40px; height: 40px; min-width: 40px; min-height: 40px;
+  padding: 0; margin: 0; line-height: 1;
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: 6px; width: 32px; height: 32px;
+  border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; color: var(--muted); transition: all 0.2s;
 }
 .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
 
 /* ── MAIN & LAYOUT ── */
-.policy-main { background: var(--bg); min-height: calc(100vh - 60px); padding: 52px 32px 80px; }
+/* Top padding was 52px, sized for the header when it was position: sticky and still took up its
+   own space in the document flow. Fixed positioning takes it out of flow entirely, so this is now
+   the only thing standing between the pill and the content underneath it — sized for the pill's
+   14px top offset + 58px height + room to breathe, the same way the landing page's hero-left
+   padding was sized for its own floating pill nav. This is also the actual fix for the TOC
+   overlapping the header: that was never really a TOC bug, the header just had nothing pushing
+   content down once it stopped being part of the flow. */
+.policy-main { background: var(--bg); min-height: 100vh; padding: 112px 32px 80px; }
 
 .policy-layout {
   max-width: 1080px; margin: 0 auto;
@@ -134,8 +166,11 @@ body.light {
   color: var(--accent); margin-bottom: 18px;
 }
 .policy-doc-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 34px; font-weight: 400; color: var(--text);
+  /* Was DM Serif Display, kept as a deliberate accent at first — but it read as one more
+     inconsistency rather than an intentional touch, so it's gone: Plus Jakarta Sans, same as
+     every heading on the rest of the site, just heavier. */
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 34px; font-weight: 800; color: var(--text);
   margin-bottom: 8px; letter-spacing: -0.5px; line-height: 1.1;
 }
 .policy-doc-meta { font-size: 12px; color: var(--muted); margin-bottom: 22px; }
@@ -155,8 +190,8 @@ body.light {
   text-transform: uppercase; color: var(--muted); margin-bottom: 7px;
 }
 .section-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 20px; font-weight: 400; color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 20px; font-weight: 800; color: var(--text);
   margin-bottom: 18px; padding-bottom: 12px;
   border-bottom: 1px solid var(--border);
   letter-spacing: -0.3px; line-height: 1.25;
@@ -373,14 +408,19 @@ body.light {
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
+  /* Dropped entirely on request rather than kept stacked and restyled — a 14-entry list fighting
+     for space above the actual document was the crowding complaint in the first place. The
+     sections are still in the same order underneath; this just removes the jump-to-section index,
+     not any content. */
+  .policy-toc-sidebar { display: none; }
   .policy-layout { grid-template-columns: 1fr; gap: 0; }
-  .policy-toc-sidebar { position: static; max-height: none; margin-bottom: 36px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
-  .toc-nav { flex-direction: row; flex-wrap: wrap; gap: 4px; }
-  .toc-link { border-left: none; border-radius: 6px; padding: 5px 10px; }
-  .toc-link.active { border-left: none; background: var(--accent-dim); }
 }
 @media (max-width: 768px) {
-  .policy-main { padding: 32px 16px 60px; }
+  /* This used to drop straight to 32px, undoing the desktop rule's clearance for the fixed pill
+     header — on a phone, exactly where you were actually testing. That override is almost
+     certainly the overlap you kept seeing: the pill never moved, this just stopped leaving room
+     for it. */
+  .policy-main { padding: 104px 16px 60px; }
   .policy-header { padding: 0 20px; }
   .policy-doc-title { font-size: 26px; }
   .rights-grid { grid-template-columns: 1fr; }

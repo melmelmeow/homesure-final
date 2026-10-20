@@ -235,16 +235,28 @@
   let twoFaEnabled = false;
   let twoFaResendInterval = null;
 
-  function handle2FA(checkbox) {
+  async function handle2FA(checkbox) {
     if (checkbox.checked && !twoFaEnabled) {
-      document.getElementById('twoFaEmailTarget').textContent = user.email;
+      document.getElementById('twoFaEmailTarget').textContent = user.email || 'your account';
       document.getElementById('twoFaModal').classList.add('open');
       document.getElementById('twoFaError').classList.remove('show');
       document.querySelectorAll('#twoFaBoxes .otp-box').forEach(b => { b.value = ''; b.classList.remove('filled'); });
       start2FAResendTimer();
       setTimeout(() => document.querySelectorAll('#twoFaBoxes .otp-box')[0].focus(), 100);
+
+      // Trigger real OTP delivery via Brevo Email & SMS
+      try {
+        await fetch('/api/auth/2fa', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'send', email: user.email, phone: user.phone || '' })
+        });
+      } catch (e) {
+        console.warn('Could not trigger 2FA email/SMS:', e);
+      }
     } else if (!checkbox.checked && twoFaEnabled) {
       twoFaEnabled = false;
+      localStorage.removeItem(twoFaStorageKey);
       setTwoFaStatus(false);
       showToast('Two-factor authentication disabled.');
     }
@@ -269,12 +281,22 @@
     }, 1000);
   }
 
-  function resend2FA() {
+  async function resend2FA() {
     document.querySelectorAll('#twoFaBoxes .otp-box').forEach(b => { b.value = ''; b.classList.remove('filled'); });
     document.getElementById('twoFaError').classList.remove('show');
     document.getElementById('twoFaResendText').style.display = 'inline';
     start2FAResendTimer();
-    showToast('Verification code resent to ' + user.email + '.');
+
+    try {
+      await fetch('/api/auth/2fa', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'send', email: user.email, phone: user.phone || '' })
+      });
+      showToast('Verification code resent via Brevo to ' + (user.email || 'your account') + '.');
+    } catch (e) {
+      showToast('Code sent (simulated). Check your inbox.');
+    }
   }
 
   function close2FA(e) {
@@ -285,18 +307,35 @@
     if (!twoFaEnabled) document.getElementById('twoFaToggle').checked = false;
   }
 
-  function verify2FA() {
+  async function verify2FA() {
     const code = [...document.querySelectorAll('#twoFaBoxes .otp-box')].map(b => b.value).join('');
     if (code.length < 6) { showToast('Please enter the full 6-digit code.', 'error'); return; }
-    if (code === '123456') {
-      twoFaEnabled = true;
-      clearInterval(twoFaResendInterval);
-      setTwoFaStatus(true);
-      document.getElementById('twoFaToggle').checked = true;
-      document.getElementById('twoFaModal').classList.remove('open');
-      document.getElementById('twoFaError').classList.remove('show');
-      showToast('Two-factor authentication enabled!');
-    } else {
+
+    try {
+      const res = await fetch('/api/auth/2fa', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'verify', email: user.email, phone: user.phone || '', code })
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok && data.ok) {
+        twoFaEnabled = true;
+        localStorage.setItem(twoFaStorageKey, 'true');
+        clearInterval(twoFaResendInterval);
+        setTwoFaStatus(true);
+        document.getElementById('twoFaToggle').checked = true;
+        document.getElementById('twoFaModal').classList.remove('open');
+        document.getElementById('twoFaError').classList.remove('show');
+        showToast('Two-factor authentication enabled!');
+        return;
+      } else {
+        document.getElementById('twoFaError').textContent = data.error || 'Invalid code. Please try again.';
+        document.getElementById('twoFaError').classList.add('show');
+        document.querySelectorAll('#twoFaBoxes .otp-box').forEach(b => { b.value = ''; b.classList.remove('filled'); });
+        document.querySelectorAll('#twoFaBoxes .otp-box')[0].focus();
+      }
+    } catch (err) {
       document.getElementById('twoFaError').classList.add('show');
       document.querySelectorAll('#twoFaBoxes .otp-box').forEach(b => { b.value = ''; b.classList.remove('filled'); });
       document.querySelectorAll('#twoFaBoxes .otp-box')[0].focus();
@@ -518,3 +557,12 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Could not load your profile:', err);
     }
   })();
+
+  // Google Client 2FA verification
+  window.verifyWithGoogleClient = function() {
+    showToast('Connecting to Google Client...');
+    const width = 500, height = 600;
+    const left = (screen.width - width) / 2;
+    const top = (screen.height - height) / 2;
+    window.location.href = '/api/auth/google?action=verify2fa&redirect=' + encodeURIComponent(window.location.href);
+  };

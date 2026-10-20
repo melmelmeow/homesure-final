@@ -1,17 +1,22 @@
 -- ═════════════════════════════════════════════════════════════════════════════
 -- 010_barangays_sta_maria.sql
 --
--- The barangays table was filled in by hand and holds 30 rows. Sta. Maria, Bulacan has 24.
+-- On the original database, the barangays table was filled in by hand and held 30 rows. Sta.
+-- Maria, Bulacan has 24.
 --
--- Nine of the rows belong to other municipalities (Lawa, Linya, Loke, Magaslaw, Pulong Yantok,
--- Santo Cristo, Santo Niño, Simbol, Tungkong Mangga), one is spelt without its space (Caypombo),
--- and three real barangays are missing entirely (Mag-asawang Sapa, Tabing Bakod, Tumana).
+-- Nine of the rows belonged to other municipalities (Lawa, Linya, Loke, Magaslaw, Pulong Yantok,
+-- Santo Cristo, Santo Niño, Simbol, Tungkong Mangga), one was spelt without its space (Caypombo),
+-- and three real barangays were missing entirely (Mag-asawang Sapa, Tabing Bakod, Tumana).
+--
+-- 006_frontend_alignment.sql only creates this table — nothing seeds it — so on a fresh database
+-- it starts empty, and this migration is what gives it its 24 rows from nothing. On the old,
+-- hand-filled database it instead patches what is already there. Same migration, both cases.
 --
 -- This matters in two places a panel can see:
 --   • post-a-listing reads this table for its barangay dropdown, so a seller can currently file a
 --     property under a barangay that is not in Sta. Maria — and the hero map, which draws only the
 --     real 24, would never show that listing;
---   • the landing page counts this table, so it would claim "30 Barangays Covered".
+--   • the landing page counts this table, so it would claim the wrong number of barangays covered.
 --
 -- Safe to re-run. It renames rather than deletes where it can, so existing barangay_id values
 -- keep working, and it refuses to delete a row a listing still points at.
@@ -21,10 +26,18 @@
 -- A rename keeps id 7, so any listing already filed under it stays correct.
 UPDATE barangays SET name = 'Cay Pombo' WHERE name = 'Caypombo';
 
--- ── 2. The three that were never there ───────────────────────────────────────
+-- ── 2. Every canonical barangay that is not already there ───────────────────
+-- On the hand-filled database this adds only the three that were missing. On an empty database
+-- (nothing seeded it yet) this is what adds all 24.
 INSERT INTO barangays (name, municipality, province)
 SELECT v.name, 'Santa Maria', 'Bulacan'
-FROM (VALUES ('Mag-asawang Sapa'), ('Tabing Bakod'), ('Tumana')) AS v(name)
+FROM (VALUES
+  ('Bagbaguin'),('Balasing'),('Buenavista'),('Bulac'),('Camangyanan'),('Catmon'),
+  ('Cay Pombo'),('Caysio'),('Guyong'),('Lalakhan'),('Mag-asawang Sapa'),
+  ('Mahabang Parang'),('Manggahan'),('Parada'),('Poblacion'),('Pulong Buhangin'),
+  ('San Gabriel'),('San Jose Patag'),('San Vicente'),('Santa Clara'),('Santa Cruz'),
+  ('Silangan'),('Tabing Bakod'),('Tumana')
+) AS v(name)
 WHERE NOT EXISTS (SELECT 1 FROM barangays b WHERE b.name = v.name);
 
 -- ── 3. The rows that belong to other municipalities ──────────────────────────

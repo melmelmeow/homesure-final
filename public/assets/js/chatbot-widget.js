@@ -29,13 +29,10 @@ const ChatbotWidget = (function() {
       <div class="chatbot-window" id="chatbotWindow">
         <div class="chatbot-header">
           <div class="chatbot-avatar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 2a4 4 0 0 1 4 4v2h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2h2V6a4 4 0 0 1 4-4z"/>
-              <circle cx="12" cy="14" r="2"/>
-            </svg>
+            <img src="/assets/img/homesure-cat.svg" alt="Meowrie" />
           </div>
           <div class="chatbot-header-info">
-            <div class="chatbot-header-title">HomeSure Assistant</div>
+            <div class="chatbot-header-title">Meowrie</div>
             <div class="chatbot-header-status">
               <span class="chatbot-status-dot"></span>
               Online
@@ -75,7 +72,7 @@ const ChatbotWidget = (function() {
 
     // Send welcome message
     setTimeout(() => {
-      addBotMessage('Hi! 👋 I\'m your HomeSure assistant. How can I help you today?', true);
+      addBotMessage('Hi! 👋 I\'m Meowrie, your HomeSure assistant. How can I help you today?', true);
     }, 500);
   }
 
@@ -167,7 +164,6 @@ const ChatbotWidget = (function() {
 
         return `
           <div class="chatbot-message bot">
-            <div class="chatbot-message-avatar">🏠</div>
             <div>
               <div class="chatbot-message-bubble">${msg.text}</div>
               ${quickActionsHTML}
@@ -186,7 +182,6 @@ const ChatbotWidget = (function() {
     const container = document.getElementById('chatbotMessages');
     container.insertAdjacentHTML('beforeend', `
       <div class="chatbot-typing" id="chatbotTyping">
-        <div class="chatbot-message-avatar">🏠</div>
         <div class="chatbot-message-bubble">
           <div class="chatbot-typing-dot"></div>
           <div class="chatbot-typing-dot"></div>
@@ -274,7 +269,7 @@ const ChatbotWidget = (function() {
     const container = document.getElementById('chatbotMessages');
     container.insertAdjacentHTML('beforeend', `
       <div class="chatbot-message bot">
-        <div class="chatbot-message-avatar">🏠</div>
+        <div class="chatbot-message-avatar"><img src="/assets/img/homesure-cat.svg" alt="" /></div>
         <div style="max-width:75%;">
           <div class="chatbot-escalation">
             <div class="chatbot-escalation-text">
@@ -326,7 +321,7 @@ const ChatbotWidget = (function() {
   function initFullPage() {
     // Send welcome message for full-page mode
     setTimeout(() => {
-      addBotMessage('Hi! 👋 I\'m your HomeSure assistant. How can I help you today?', true);
+      addBotMessage('Hi! 👋 I\'m Meowrie, your HomeSure assistant. How can I help you today?', true);
     }, 500);
 
     // Focus input

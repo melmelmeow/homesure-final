@@ -853,9 +853,11 @@
         } else if (action === 'reverify') {
           if (typeof global._hsOpenReverify === 'function') global._hsOpenReverify();
         } else if (action === 'logout') {
-          const logoutPath = p.includes('/module/') ? '../../auth/signin.html'
-            : p.includes('/auth/') ? '../auth/signin.html'
-            : 'auth/signin.html';
+          // Was auth/signin.html — logging out should land on the public landing page, not
+          // straight back at a sign-in form.
+          const logoutPath = p.includes('/module/') ? '../../index.html'
+            : p.includes('/auth/') ? '../index.html'
+            : 'index.html';
           // Sign out of Supabase too (not just the cached copy), then leave.
           const done = () => { window.location.href = logoutPath; };
           if (typeof hsSignOut === 'function') hsSignOut().then(done, done);

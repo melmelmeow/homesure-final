@@ -3,6 +3,16 @@
   <head>
     <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="assets/img/image.png" />
+    <!-- "Add to Home Screen" on iOS looks only for apple-touch-icon, never the regular favicon
+         above — without it, iOS falls back to generating its own icon: a plain square with the
+         page's first letter, which is the dark "H" tile this fixes.
+         apple-touch-icon.png is generated (not the raw logo file) at Apple's recommended 180x180,
+         logo centred at ~61% with padding on every side like other apps' icons, on a solid navy
+         background — the source logo has transparent pixels, and iOS renders those as black
+         rather than true transparency, which is why the icon looked edge-to-edge and oddly dark
+         before any padding was added at all. -->
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="HomeSure" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HomeSure</title>
 
