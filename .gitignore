@@ -42,7 +42,3 @@ next-env.d.ts
 
 # local-only Claude Code notes — not meant to be pushed
 CLAUDE.md
-
-# Choya's Gemini/Antigravity notes, local only
-.gemini/
-GEMINI.md
