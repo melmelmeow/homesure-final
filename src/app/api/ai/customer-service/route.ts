@@ -78,7 +78,8 @@ export async function POST(req: NextRequest) {
     const userName = user?.name || user?.email || 'HomeSure User';
     const userRole = role === 'seller' || role === 'landlord' ? 'seller' : 'buyer';
 
-    const hfApiKey = process.env.HUGGINGFACE_API_KEY || process.env.HF_TOKEN || '';
+    const rawApiKey = process.env.HUGGINGFACE_API_KEY || process.env['HUGGINGFACE_API_KEY '] || process.env.HF_TOKEN || '';
+    const hfApiKey = rawApiKey.trim();
     const hfModel = process.env.HUGGINGFACE_MODEL || 'mistralai/Mistral-7B-Instruct-v0.3';
 
     // System prompt tailored to HomeSure customer service

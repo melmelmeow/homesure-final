@@ -255,7 +255,7 @@
             loading="lazy"
             allowfullscreen
             referrerpolicy="no-referrer-when-downgrade"
-            src="https://maps.google.com/maps?q=${listing.lat && listing.lng ? (listing.lat + ',' + listing.lng) : encodeURIComponent((listing.address || '') + (listing.barangay ? ', ' + listing.barangay : '') + ', Sta. Maria, Bulacan, Philippines')}&z=15&output=embed">
+            src="https://maps.google.com/maps?q=${listing.lat && listing.lng ? (listing.lat + ',' + listing.lng) : encodeURIComponent((listing.address || '') + (listing.barangay ? ', ' + listing.barangay : '') + ', Sta. Maria, Bulacan, Philippines')}&z=17&output=embed">
           </iframe>
         </div>
 
