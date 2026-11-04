@@ -53,16 +53,29 @@
   // Avatar upload
   const avatarInput = document.getElementById('avatarInput');
   document.getElementById('avatarEditBtn').addEventListener('click', () => avatarInput.click());
-  avatarInput.addEventListener('change', function () {
+  avatarInput.addEventListener('change', async function () {
     const file = this.files[0];
     if (!file) return;
+
+    // Show preview immediately
     const reader = new FileReader();
     reader.onload = e => {
       session.avatar = e.target.result;
-      saveSession(session);
       renderSellerAvatar();
     };
     reader.readAsDataURL(file);
+
+    try {
+      const url = await HS.storage.uploadAvatar(file);
+      await HS.profiles.updateMe({ avatar: url });
+      session.avatar = url;
+      saveSession(session);
+      renderSellerAvatar();
+      hsToast('Profile photo updated successfully!', 'success');
+    } catch (err) {
+      console.error('Failed to upload avatar:', err);
+      hsToast('Could not save your photo: ' + err.message, 'error');
+    }
   });
 
   document.getElementById('profileName').textContent =

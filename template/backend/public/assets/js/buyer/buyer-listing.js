@@ -15,10 +15,11 @@
       const iconFlag = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>`;
       const iconHeart = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
 
-      // ── Save / unsave ──────────────────────────────────────────────────────────
+      // ── Save / unsave (favorites table) ────────────────────────────────────────
+      let savedIds = [];
+
       function updateSaveBtn(listingId) {
-        const cu = getSession();
-        const isSaved = (cu.savedListings || []).includes(listingId);
+        const isSaved = savedIds.includes(listingId);
         const btn = document.getElementById("saveBtn");
         if (!btn) return;
         if (isSaved) {
@@ -38,19 +39,18 @@
         return true;
       }
 
-      function toggleSave(listingId) {
+      async function toggleSave(listingId) {
         if (!isBuyerVerified()) {
           window.location.href = 'verification.html';
           return;
         }
-        const cu = getSession();
-        const saved = cu.savedListings || [];
-        const idx = saved.indexOf(listingId);
-        if (idx === -1) saved.push(listingId);
-        else saved.splice(idx, 1);
-        cu.savedListings = saved;
-        saveSession(cu);
-        updateSaveBtn(listingId);
+        try {
+          const nowSaved = await HS.favorites.toggle(listingId);
+          savedIds = nowSaved ? savedIds.concat(listingId) : savedIds.filter((id) => id !== listingId);
+          updateSaveBtn(listingId);
+        } catch (err) {
+          toast(err.message);
+        }
       }
 
       // ── Thumbnail swap ─────────────────────────────────────────────────────────
@@ -74,18 +74,10 @@
         document.getElementById("reportModal").classList.remove("open");
       }
 
-      function submitReport() {
-        const reason = document.getElementById("reportReason").value;
-        const err = document.getElementById("reportReasonErr");
-        if (!reason) {
-          err.style.display = "block";
-          return;
-        }
-        err.style.display = "none";
-        closeReportModal();
-        const toast = document.createElement("div");
-        toast.textContent = "Report submitted. Thank you.";
-        Object.assign(toast.style, {
+      function toast(text) {
+        const el = document.createElement("div");
+        el.textContent = text;
+        Object.assign(el.style, {
           position: "fixed",
           bottom: "24px",
           left: "50%",
@@ -102,11 +94,31 @@
           opacity: "1",
           fontFamily: "'Plus Jakarta Sans', sans-serif",
         });
-        document.body.appendChild(toast);
+        document.body.appendChild(el);
         setTimeout(() => {
-          toast.style.opacity = "0";
+          el.style.opacity = "0";
         }, 2200);
-        setTimeout(() => toast.remove(), 2700);
+        setTimeout(() => el.remove(), 2700);
+      }
+
+      async function submitReport() {
+        const select = document.getElementById("reportReason");
+        const reason = select.value;
+        const err = document.getElementById("reportReasonErr");
+        if (!reason) {
+          err.style.display = "block";
+          return;
+        }
+        err.style.display = "none";
+        const details = document.getElementById("reportDetails").value.trim();
+        const label = select.options[select.selectedIndex].textContent.trim();
+        try {
+          await HS.reports.file(listing.id, reason, details ? label + ": " + details : label);
+          closeReportModal();
+          toast("Report submitted. Thank you.");
+        } catch (e) {
+          toast("Could not submit the report: " + e.message);
+        }
       }
 
       document
@@ -125,12 +137,24 @@
         backBtn.onclick = () => (window.location.href = "saved.html");
       }
 
-      // ── Load listing ───────────────────────────────────────────────────────────
-      const listing = FAKE_LISTINGS.find((l) => l.id === params.get("id"));
-      const seller = listing
-        ? FAKE_USERS.find((u) => u.id === listing.sellerId)
-        : null;
+      // ── Load listing (from the database; RLS decides whether this user may see it) ──
+      let listing = null;
+      let seller = null;
       const detail = document.getElementById("listingDetail");
+
+      async function loadListing() {
+        detail.innerHTML = `<p style="color:var(--muted);text-align:center;padding:60px 0">Loading…</p>`;
+        try {
+          listing = await HS.listings.get(params.get("id"));
+          if (listing) {
+            seller = await HS.profiles.publicById(listing.sellerId);
+            savedIds = await HS.favorites.ids();
+          }
+        } catch (err) {
+          console.error(err);
+          detail.innerHTML = `<p style="color:var(--muted);text-align:center;padding:60px 0">Could not load this listing. Please try again.</p>`;
+          return;
+        }
 
       if (!listing) {
         detail.innerHTML = `<p style="color:var(--muted);text-align:center;padding:60px 0">Listing not found.</p>`;
@@ -138,18 +162,21 @@
         const isRent = listing.listingFor === "rent";
         const price = "₱" + listing.price.toLocaleString("en-PH");
         const bedsLabel =
-          listing.bedrooms === 0
-            ? "Studio"
-            : listing.bedrooms +
-              " Bedroom" +
-              (listing.bedrooms !== 1 ? "s" : "");
+          listing.bedrooms === null || listing.bedrooms === undefined
+            ? ""
+            : listing.bedrooms === 0
+              ? "Studio"
+              : listing.bedrooms +
+                " Bedroom" +
+                (listing.bedrooms !== 1 ? "s" : "");
         const bathLabel =
-          listing.bathrooms +
-          " Bathroom" +
-          (listing.bathrooms !== 1 ? "s" : "");
-        const sellerName = seller
-          ? seller.firstName + " " + seller.lastName
-          : "Unknown Seller";
+          listing.bathrooms === null || listing.bathrooms === undefined
+            ? ""
+            : listing.bathrooms +
+              " Bathroom" +
+              (listing.bathrooms !== 1 ? "s" : "");
+        const areaLabel = listing.floorArea || listing.lotArea;
+        const sellerName = seller ? seller.name : "Unknown Seller";
         const amenitiesHtml = (listing.amenities || [])
           .map((a) => `<span class="amenity-tag">${a}</span>`)
           .join("");
@@ -170,7 +197,7 @@
 
         detail.innerHTML = `
       <div class="detail-img-wrap">
-        <img id="mainImg" src="${listing.images[0]}" alt="${listing.title}" />
+        <img id="mainImg" src="${HS.cover(listing)}" alt="${listing.title}" />
         <span class="badge-tl ${isRent ? "badge-rent" : "badge-sale"}">${isRent ? "For Rent" : "For Sale"}</span>
         ${listing.negotiable ? `<span class="badge-negotiable-img">Negotiable</span>` : ""}
         <span class="badge-avail">Available</span>
@@ -203,15 +230,34 @@
         </div>
 
         <div class="detail-specs">
-          <div class="spec-item">${iconBed} ${bedsLabel}</div>
-          <div class="spec-item">${iconBath} ${bathLabel}</div>
-          <div class="spec-item">${iconArea} ${listing.floorArea} sqm</div>
+          ${bedsLabel ? `<div class="spec-item">${iconBed} ${bedsLabel}</div>` : ""}
+          ${bathLabel ? `<div class="spec-item">${iconBath} ${bathLabel}</div>` : ""}
+          ${areaLabel ? `<div class="spec-item">${iconArea} ${areaLabel} sqm</div>` : ""}
         </div>
 
         <div class="detail-section-title">Description</div>
         <div class="detail-desc">${listing.description}</div>
 
         ${amenitiesHtml ? `<div class="amenities-wrap">${amenitiesHtml}</div>` : ""}
+
+        
+        <div class="detail-section-title" style="display:flex;align-items:center;gap:8px;margin-top:24px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="color:var(--teal)">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+          <span>Property Location &amp; Map</span>
+        </div>
+        <div class="property-map-container" style="width:100%;height:320px;border-radius:12px;overflow:hidden;border:1px solid var(--border);margin:12px 0 24px;box-shadow:0 4px 16px rgba(0,0,0,0.15);background:#1e293b;">
+          <iframe
+            width="100%"
+            height="100%"
+            style="border:0"
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://maps.google.com/maps?q=${listing.lat && listing.lng ? (listing.lat + ',' + listing.lng) : encodeURIComponent((listing.address || '') + (listing.barangay ? ', ' + listing.barangay : '') + ', Sta. Maria, Bulacan, Philippines')}&z=17&output=embed">
+          </iframe>
+        </div>
 
         <div class="seller-card">
           <div>
@@ -222,7 +268,7 @@
                   ? `window.location.href='../seller/profile.html'`
                   : `window.location.href='seller-profile.html?id=${listing.sellerId}'`}
               ">${sellerName}</span>
-              <span class="verified-sm">${iconCheck} Verified</span>
+              ${seller && seller.verified ? `<span class="verified-sm">${iconCheck} Verified</span>` : ""}
             </div>
           </div>
           <div class="seller-actions">
@@ -253,6 +299,9 @@
           .getElementById("saveBtn")
           .addEventListener("click", () => toggleSave(listing.id));
       }
+      }
+
+      loadListing();
 
       function handleMessageSeller() {
         if (!isBuyerVerified()) {
@@ -287,7 +336,7 @@
         document.getElementById('scheduleModal').classList.remove('active');
       };
 
-      window.submitSchedule = function() {
+      window.submitSchedule = async function() {
         const date = document.getElementById('viewingDate').value;
         const time = document.getElementById('viewingTime').value;
         const notes = document.getElementById('viewingNotes').value;
@@ -327,62 +376,18 @@
         const hour12 = hour % 12 || 12;
         const formattedTime = `${hour12}:${minutes} ${ampm}`;
 
-        // Create viewing request
-        const user = getSession();
-        const buyer = FAKE_USERS.find(u => u.id === user.id);
-        const seller = FAKE_USERS.find(u => u.id === listing.sellerId);
-
-        const newRequest = {
-          id: 'view-' + Date.now(),
-          listingId: listing.id,
-          listingTitle: listing.title,
-          buyerId: user.id,
-          buyerName: `${buyer.firstName} ${buyer.lastName}`,
-          sellerId: listing.sellerId,
-          sellerName: `${seller.firstName} ${seller.lastName}`,
-          status: 'pending',
-          requestedDate: date,
-          requestedTime: time,
-          proposedDate: null,
-          proposedTime: null,
-          buyerNotes: notes || null,
-          sellerNotes: null,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        };
-
-        // Add to fake data
-        FAKE_VIEWING_REQUESTS.push(newRequest);
-        window.FAKE_VIEWING_REQUESTS = FAKE_VIEWING_REQUESTS;
-
-        // Create message in chat
-        const conversationId = `conv-${user.id}-${listing.sellerId}`;
-        const newMessage = {
-          id: 'msg-' + Date.now(),
-          conversationId: conversationId,
-          senderId: user.id,
-          senderName: `${buyer.firstName} ${buyer.lastName}`,
-          receiverId: listing.sellerId,
-          receiverName: `${seller.firstName} ${seller.lastName}`,
-          type: 'viewing-request',
-          message: null,
-          viewingRequestId: newRequest.id,
-          viewingData: {
-            listingId: listing.id,
+        // Create the viewing request (and the chat card for the seller) in the database
+        try {
+          await HS.viewing.request({
+            propertyId: listing.id,
+            sellerId: listing.sellerId,
             listingTitle: listing.title,
-            requestedDate: date,
-            requestedTime: time,
-            buyerNotes: notes || null
-          },
-          timestamp: new Date().toISOString(),
-          read: false,
-          status: 'pending'
-        };
-
-        // Add message to FAKE_MESSAGES
-        if (!window.FAKE_MESSAGES) window.FAKE_MESSAGES = [];
-        FAKE_MESSAGES.push(newMessage);
-        window.FAKE_MESSAGES = FAKE_MESSAGES;
+            date, time, notes,
+          });
+        } catch (err) {
+          toast("Could not send your request: " + err.message);
+          return;
+        }
 
         // Close modal
         closeScheduleModal();
@@ -394,7 +399,7 @@
 
         // Show success notification
         showSuccessNotification(
-          `Your viewing request for <strong>${formattedDate} at ${formattedTime}</strong> has been sent to ${seller.firstName} ${seller.lastName}. They will review and respond soon!`
+          `Your viewing request for <strong>${formattedDate} at ${formattedTime}</strong> has been sent to ${seller ? seller.name : "the seller"}. They will review and respond soon!`
         );
       };
 

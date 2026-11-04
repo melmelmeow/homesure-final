@@ -205,16 +205,20 @@ const HS = (function () {
   }
 
   function mapMessage(r) {
+    const vd = r.viewing_data || {};
+    const effectiveType = vd.messageType || r.type;
     return {
       id: r.id,
       senderId: r.sender_id,
       receiverId: r.receiver_id,
-      type: r.type,                       // 'text' | 'viewing-request' | 'viewing-response'
+      type: effectiveType,                       // 'text' | 'viewing-request' | 'viewing-response' | 'payment-request' | 'payment-proof' | 'refund-request' | 'file-attachment'
+      rawType: r.type,
       text: r.body,
       listingId: r.property_id || null,
       viewingRequestId: r.viewing_request_id || null,
       viewingData: r.viewing_data || null,
-      status: r.status || null,
+      paymentData: vd.payment || ((effectiveType.startsWith('payment') || effectiveType === 'refund-request') ? vd : null),
+      status: r.status || vd.status || null,
       read: !!r.read,
       timestamp: r.created_at,
     };
@@ -725,14 +729,30 @@ const HS = (function () {
       }).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
     },
 
-    async send({ to, body, propertyId }) {
+    async send({ to, body, propertyId, data, status, viewingRequestId }) {
       const me = await needUserId();
       if (!to) throw new Error('No recipient');
       if (to === me) throw new Error('You cannot message yourself');
-      const row = unwrap(await sb.from('messages').insert({
-        sender_id: me, receiver_id: to, type: 'text',
-        body: body, property_id: propertyId || null,
-      }).select('*').single());
+      const payload = {
+        sender_id: me,
+        receiver_id: to,
+        type: 'text',
+        body: body || '',
+        property_id: propertyId || null,
+      };
+      if (data) payload.viewing_data = data;
+      if (status) payload.status = status;
+      if (viewingRequestId) payload.viewing_request_id = viewingRequestId;
+      const row = unwrap(await sb.from('messages').insert(payload).select('*').single());
+      return mapMessage(row);
+    },
+
+    async updateMessage(messageId, { status, data, body }) {
+      const patch = {};
+      if (status !== undefined) patch.status = status;
+      if (data !== undefined) patch.viewing_data = data;
+      if (body !== undefined) patch.body = body;
+      const row = unwrap(await sb.from('messages').update(patch).eq('id', messageId).select('*').single());
       return mapMessage(row);
     },
 
@@ -921,6 +941,24 @@ const HS = (function () {
     async reject(paymentId, reason) {
       const { payment } = await api('/api/payments/confirm', { paymentId, action: 'reject', reason });
       return mapPayment(payment);
+    },
+  };
+
+  // ── Refunds ─────────────────────────────────────────────────────────────────
+  const refunds = {
+    async request({ paymentId, propertyId, amount, destinationAccountNo, destinationBankCode, reason }) {
+      return api('/api/refunds/request', {
+        paymentId, propertyId, amount, destinationAccountNo, destinationBankCode, reason,
+      });
+    },
+    async forPayment(paymentId) {
+      const rows = unwrap(await sb.from('refunds').select('*').eq('payment_id', paymentId).order('created_at', { ascending: false }));
+      return rows || [];
+    },
+    async mine() {
+      const id = await needUserId();
+      const rows = unwrap(await sb.from('refunds').select('*, payments(*, properties(title, landowner_id))').eq('requested_by', id).order('created_at', { ascending: false }));
+      return rows || [];
     },
   };
 

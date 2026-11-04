@@ -70,19 +70,43 @@
     setTimeout(() => t.classList.remove('show'), 3000);
   }
 
-  function savePersonal() {
+    async function savePersonal() {
     const fn = document.getElementById('firstName').value.trim();
     const ln = document.getElementById('lastName').value.trim();
     if (!fn || !ln) { showToast('Please fill in both name fields.', 'error'); return; }
-    user.firstName = fn; user.lastName = ln;
-    saveSession(user);
-    document.getElementById('identityName').textContent = fn + ' ' + ln;
-    showToast('Profile updated successfully.');
+
+    try {
+      await HS.profiles.updateMe({ firstName: fn, lastName: ln });
+      user.firstName = fn;
+      user.lastName = ln;
+      saveSession(user);
+      document.getElementById('identityName').textContent = fn + ' ' + ln;
+      showToast('Profile updated successfully.');
+    } catch (err) {
+      console.error('Error saving personal info:', err);
+      showToast('Could not save profile: ' + err.message, 'error');
+    }
   }
 
-  function savePhone() {
+  async function savePhone() {
     const ph = document.getElementById('phone').value.trim();
     if (!ph) { showToast('Please enter a phone number.', 'error'); return; }
+
+    try {
+      await HS.profiles.updateMe({ phone: ph });
+      user.phone = ph;
+      saveSession(user);
+      document.getElementById('phoneStatus').textContent = ph;
+      showToast('Phone number saved.');
+    } catch (err) {
+      console.error('Error saving phone:', err);
+      showToast('Could not save phone: ' + err.message, 'error');
+    }
+  }
+
+  window.savePersonal = savePersonal;
+  window.savePhone = savePhone;
+  window.showToast = showToast;
     user.phone = ph;
     saveSession(user);
     document.getElementById('phoneStatus').textContent = ph;

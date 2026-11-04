@@ -23,6 +23,42 @@ const NOTIFICATIONS = [
     msg: 'Welcome to HomeSure! Your seller account has been created. Submit your documents to get verified.' },
 ];
 
+
+  const roleName = 'seller';
+  const notifStorageKey = 'hs_read_notifs_' + roleName + '_' + (user ? user.id : 'anon');
+
+  function getReadIds() {
+    try {
+      const arr = JSON.parse(localStorage.getItem(notifStorageKey) || '[]');
+      return new Set(Array.isArray(arr) ? arr : []);
+    } catch (_) {
+      return new Set();
+    }
+  }
+
+  function saveReadIds(readSet) {
+    try {
+      localStorage.setItem(notifStorageKey, JSON.stringify([...readSet]));
+    } catch (_) {}
+    syncTopbarDot();
+  }
+
+  function syncTopbarDot() {
+    const hasUnread = NOTIFICATIONS.some(n => n.unread);
+    const topbarDot = document.querySelector('#hsNotifDot') || document.querySelector('.hs-notif-dot');
+    if (topbarDot) {
+      topbarDot.style.display = hasUnread ? 'block' : 'none';
+    }
+  }
+
+  // Restore persistent read status
+  const savedReadIds = getReadIds();
+  NOTIFICATIONS.forEach(n => {
+    if (savedReadIds.has(n.id)) {
+      n.unread = false;
+    }
+  });
+
 const TYPE_BADGE = {
   listing: { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>`, cls: 'badge-teal' },
   message: { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`, cls: 'badge-blue' },
@@ -71,15 +107,27 @@ function notifRow(n) {
 }
 
 function markRead(id) {
-  const n = NOTIFICATIONS.find(x => x.id === id);
-  if (n) n.unread = false;
-  render(currentTab);
-}
+    const n = NOTIFICATIONS.find(x => x.id === id);
+    if (n) {
+      n.unread = false;
+      const readSet = getReadIds();
+      readSet.add(id);
+      saveReadIds(readSet);
+    }
+    render(currentTab);
+    syncTopbarDot();
+  }
 
 function markAllRead() {
-  NOTIFICATIONS.forEach(n => n.unread = false);
-  render(currentTab);
-}
+    const readSet = getReadIds();
+    NOTIFICATIONS.forEach(n => {
+      n.unread = false;
+      readSet.add(n.id);
+    });
+    saveReadIds(readSet);
+    render(currentTab);
+    syncTopbarDot();
+  }
 
 function switchTab(btn, tab) {
   document.querySelectorAll('.notif-tab').forEach(t => t.classList.remove('active'));

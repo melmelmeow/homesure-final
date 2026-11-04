@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="../../assets/img/image.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HomeSure – Help & Support</title>
+  <title>HomeSure – Buyer Help & Support Center</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <!-- buyer.css itself says "Requires: dashboard.css" — this page never actually linked it, so
        every CSS variable it and the <style> block below reference (--text, --muted2, --card…)
@@ -406,7 +406,8 @@
           </div>
         </div>
       </div>
-    </div>
+
+    </div><!-- /content -->
   </div>
 </div>
 
@@ -415,12 +416,16 @@
 <script src="../../assets/js/session.js"></script>
 <script src="../../assets/js/data.js"></script>
 <script src="../../components/sidebar.js"></script>
+<script src="../../components/customer-service.js"></script>
 <script src="../../components/topbar.js"></script>
-<script src="../../assets/js/chatbot-widget.js"></script>
 <script>
   // Initialize sidebar
   HomeSureSidebar.init({ activePage: 'help' });
-  HomeSureTopbar.init({ placeholder: 'Search help articles...' });
+  HomeSureTopbar.init({ placeholder: 'Search help & user guides...' });
+
+  function toggleGuide(card) {
+    card.classList.toggle('open');
+  }
 
   // Initialize chatbot (full-page mode)
   ChatbotWidget.initFullPage();
