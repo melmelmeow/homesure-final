@@ -32,7 +32,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   display: flex; flex-direction: column; gap: 6px;
   transition: transform .18s, box-shadow .18s;
 }
-.stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+.stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgb(var(--shade-rgb) / min(0.2, var(--shadow-cap, 1))); }
 .stat-icon {
   width: 36px; height: 36px; border-radius: 9px;
   display: flex; align-items: center; justify-content: center; margin-bottom: 4px;
@@ -79,7 +79,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   display: flex; align-items: center; gap: 16px;
   margin-bottom: 12px; transition: box-shadow .18s;
 }
-.pending-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+.pending-card:hover { box-shadow: 0 4px 20px rgb(var(--shade-rgb) / min(0.2, var(--shadow-cap, 1))); }
 .avatar {
   width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
@@ -149,7 +149,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   text-align: left; padding: 12px 16px;
   font-size: 11px; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.06em; color: var(--muted);
-  background: rgba(255,255,255,0.02);
+  background: rgb(var(--wash-rgb) / 0.02);
   border-bottom: 1px solid var(--border);
 }
 .pay-table td {
@@ -157,7 +157,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   vertical-align: middle;
 }
 .pay-table tbody tr:last-child td { border-bottom: none; }
-.pay-table tbody tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
+.pay-table tbody tr:nth-child(even) td { background: rgb(var(--wash-rgb) / 0.015); }
 .pay-table tbody tr:hover td { background: rgb(var(--primary-rgb) / 0.04); }
 .table-empty td {
   text-align: center; color: var(--muted); padding: 40px 16px !important;
@@ -239,7 +239,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   color: var(--muted2); font-family: inherit; font-size: 13.5px; font-weight: 700;
   cursor: pointer; transition: background .18s, color .18s, border-color .18s;
 }
-.btn-ghost:hover { background: rgba(255,255,255,0.05); color: var(--text); border-color: rgba(255,255,255,0.15); }
+.btn-ghost:hover { background: rgb(var(--wash-rgb) / 0.05); color: var(--text); border-color: rgb(var(--wash-rgb) / 0.15); }
 
 .btn-file-damage {
   background: transparent; border: 1px solid var(--teal-mid);
@@ -252,7 +252,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 /* ── Modal ── */
 .modal-backdrop {
   position: fixed; inset: 0; z-index: 800;
-  background: rgba(0,0,0,0.65); backdrop-filter: blur(4px);
+  background: rgb(var(--shade-rgb) / var(--overlay-a, 0.65)); backdrop-filter: blur(4px);
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
 }
@@ -271,11 +271,11 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .modal-sub   { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
 .modal-close-btn {
   width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
-  background: rgba(255,255,255,0.06); border: none; cursor: pointer;
+  background: rgb(var(--wash-rgb) / 0.06); border: none; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   color: var(--muted2); transition: background .18s;
 }
-.modal-close-btn:hover { background: rgba(255,255,255,0.12); color: var(--text); }
+.modal-close-btn:hover { background: rgb(var(--wash-rgb) / 0.12); color: var(--text); }
 .modal-close-btn svg { width: 15px; height: 15px; }
 .modal-body { padding: 22px 24px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 14px; }
 .modal-footer {
@@ -304,7 +304,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   border-radius: 12px; padding: 13px 20px;
   display: flex; align-items: center; gap: 11px;
   font-size: 13px; font-weight: 600; color: var(--text);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  box-shadow: 0 8px 30px rgb(var(--shade-rgb) / min(0.4, var(--shadow-cap, 1)));
   opacity: 0; pointer-events: none;
   transition: opacity 0.3s, transform 0.3s; z-index: 9999;
   white-space: normal; text-align: center; max-width: calc(100vw - 40px);
@@ -319,7 +319,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 [data-theme="light"] body { background: var(--bg); }
 [data-theme="light"] .filter-select option,
 [data-theme="light"] .form-select option { background: var(--surface); color: var(--text); }
-[data-theme="light"] .toast { box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+[data-theme="light"] .toast { box-shadow: 0 8px 24px rgb(var(--k-ink-rgb) / 0.1); }
 
 /* ── Responsive ── */
 @media (max-width: 1100px) { .stat-row { grid-template-columns: repeat(2, 1fr); } }
@@ -453,7 +453,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255,255,255,0.1);
+  background: rgb(var(--wash-rgb) / 0.1);
   border-radius: 24px;
   transition: 0.3s;
 }
@@ -501,8 +501,8 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 
 .payment-input {
   width: 100%;
-  background: rgba(0,0,0,0.2);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgb(var(--shade-rgb) / 0.2);
+  border: 1px solid rgb(var(--wash-rgb) / 0.1);
   border-radius: 8px;
   padding: 10px 14px;
   font-size: 13px;
@@ -543,14 +543,17 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 
 [data-theme="light"] .settings-card {
   background: var(--surface);
-  border-color: rgba(0,0,0,0.1);
+  border-color: var(--border);
 }
 
 [data-theme="light"] .payment-input {
   background: var(--surface-soft);
-  border-color: rgba(0,0,0,0.1);
+  border-color: var(--border);
 }
 
 [data-theme="light"] .btn-save-payment {
   color: var(--on-primary);
 }
+
+/* Light: the switch knob uses the surface tone rather than pure white. */
+[data-theme="light"] .toggle-track::before { background: var(--surface); }

@@ -38,7 +38,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   padding: 6px 15px; border-radius: 7px; cursor: pointer;
   transition: all 0.18s; white-space: nowrap;
 }
-.filter-tab:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.filter-tab:hover { color: var(--text); background: rgb(var(--wash-rgb) / 0.04); }
 .filter-tab.active { background: var(--teal-faint); color: var(--teal); }
 
 .filter-search-wrap { position: relative; display: flex; align-items: center; }
@@ -69,7 +69,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   cursor: pointer;
 }
 .report-row:last-child { border-bottom: none; }
-.report-row:hover { background: rgba(255,255,255,0.03); }
+.report-row:hover { background: rgb(var(--wash-rgb) / 0.03); }
 .report-row.high   { border-left-color: rgb(var(--danger-rgb) / 0.55); }
 .report-row.medium { border-left-color: rgb(var(--warning-rgb) / 0.55); }
 .report-row.low    { border-left-color: rgb(var(--info-rgb) / 0.55); }
@@ -136,7 +136,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .action-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
 .action-btn.danger  { background: rgb(var(--danger-rgb) / 0.1);   color: var(--danger); border-color: rgb(var(--danger-rgb) / 0.18); }
 .action-btn.warning { background: rgb(var(--warning-rgb) / 0.1);  color: var(--warning); border-color: rgb(var(--warning-rgb) / 0.18); }
-.action-btn.neutral { background: rgba(255,255,255,0.04); color: var(--muted2); border-color: var(--border); }
+.action-btn.neutral { background: rgb(var(--wash-rgb) / 0.04); color: var(--muted2); border-color: var(--border); }
 
 .action-result {
   display: flex; align-items: center; gap: 9px; margin-bottom: 6px;
@@ -164,14 +164,14 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   padding: 12px 24px; border-radius: 12px; z-index: 9999;
   opacity: 0; transition: opacity 0.3s, transform 0.3s;
   pointer-events: none; white-space: nowrap;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 ;
+  box-shadow: 0 4px 20px rgb(var(--shade-rgb) / min(0.4, var(--shadow-cap, 1))), 0 ;
 }
 .hs-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* ── Modal ── */
 .modal-backdrop {
   display: none; position: fixed; inset: 0;
-  background: rgba(0,0,0,0.65); backdrop-filter: blur(6px);
+  background: rgb(var(--shade-rgb) / var(--overlay-a, 0.65)); backdrop-filter: blur(6px);
   z-index: 999; align-items: center; justify-content: center;
 }
 .modal-backdrop.open { display: flex; }
@@ -213,14 +213,14 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 
 .modal-text {
   font-size: 13.5px; color: var(--muted2); line-height: 1.68;
-  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  background: rgb(var(--wash-rgb) / 0.03); border: 1px solid var(--border);
   border-radius: 11px; padding: 14px 16px; margin-bottom: 4px;
 }
 
 .modal-detail {
   display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
   margin-top: 18px; margin-bottom: 4px;
-  padding: 16px; background: rgba(255,255,255,0.02);
+  padding: 16px; background: rgb(var(--wash-rgb) / 0.02);
   border: 1px solid var(--border); border-radius: 11px;
 }
 .modal-detail-item label {
@@ -232,7 +232,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .modal-actions {
   display: flex; gap: 8px; justify-content: flex-end;
   padding: 16px 26px; border-top: 1px solid var(--border);
-  background: rgba(255,255,255,0.015);
+  background: rgb(var(--wash-rgb) / 0.015);
 }
 .btn-modal {
   font-size: 13px; font-weight: 700; padding: 9px 20px; border-radius: 9px;
@@ -242,7 +242,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .btn-modal:hover { transform: translateY(-1px); opacity: 0.86; }
 .btn-modal.resolve { background: var(--teal); color: var(--on-primary); }
 .btn-modal.review  { background: rgb(var(--info-rgb) / 0.12); color: var(--info); border-color: rgb(var(--info-rgb) / 0.22); }
-.btn-modal.close   { background: rgba(255,255,255,0.06); color: var(--muted2); border-color: var(--border); }
+.btn-modal.close   { background: rgb(var(--wash-rgb) / 0.06); color: var(--muted2); border-color: var(--border); }
 
 /* ── Assignment Section ── */
 .assignment-row {
@@ -255,7 +255,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .assign-dropdown {
   flex: 1;
   padding: 10px 14px;
-  background: rgba(255,255,255,0.03);
+  background: rgb(var(--wash-rgb) / 0.03);
   border: 1px solid var(--border);
   border-radius: 9px;
   color: var(--text);
@@ -339,7 +339,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 }
 
 .comment-item {
-  background: rgba(255,255,255,0.03);
+  background: rgb(var(--wash-rgb) / 0.03);
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 12px 14px;
@@ -379,7 +379,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   padding: 24px;
   color: var(--muted);
   font-size: 13px;
-  background: rgba(255,255,255,0.02);
+  background: rgb(var(--wash-rgb) / 0.02);
   border: 1px dashed var(--border);
   border-radius: 10px;
   margin-bottom: 14px;
@@ -394,7 +394,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .comment-textarea {
   width: 100%;
   padding: 12px 14px;
-  background: rgba(255,255,255,0.03);
+  background: rgb(var(--wash-rgb) / 0.03);
   border: 1px solid var(--border);
   border-radius: 9px;
   color: var(--text);
@@ -449,9 +449,9 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 }
 [data-theme="light"] body { background: var(--bg); }
 [data-theme="light"] .filter-search { background: var(--surface); }
-[data-theme="light"] .report-row:hover { background: rgba(0,0,0,0.02); }
-[data-theme="light"] .modal-text { background: rgba(0,0,0,0.02); }
-[data-theme="light"] .modal-detail { background: rgba(0,0,0,0.02); }
-[data-theme="light"] .action-btn.neutral { background: rgba(0,0,0,0.04); }
-[data-theme="light"] .modal-actions { background: rgba(0,0,0,0.02); }
+[data-theme="light"] .report-row:hover { background: rgb(var(--k-ink-rgb) / 0.02); }
+[data-theme="light"] .modal-text { background: rgb(var(--k-ink-rgb) / 0.02); }
+[data-theme="light"] .modal-detail { background: rgb(var(--k-ink-rgb) / 0.02); }
+[data-theme="light"] .action-btn.neutral { background: rgb(var(--k-ink-rgb) / 0.04); }
+[data-theme="light"] .modal-actions { background: rgb(var(--k-ink-rgb) / 0.02); }
 [data-theme="light"] .hs-toast { background: var(--surface); }

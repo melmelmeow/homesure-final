@@ -32,7 +32,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   display: flex; flex-direction: column; gap: 8px;
   transition: transform .18s, box-shadow .18s;
 }
-.stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+.stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgb(var(--shade-rgb) / min(0.2, var(--shadow-cap, 1))); }
 .stat-icon {
   width: 38px; height: 38px; border-radius: 10px;
   display: flex; align-items: center; justify-content: center; margin-bottom: 4px;
@@ -111,7 +111,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   text-align: left; padding: 12px 16px;
   font-size: 11px; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.06em; color: var(--muted);
-  background: rgba(255,255,255,0.02);
+  background: rgb(var(--wash-rgb) / 0.02);
   border-bottom: 1px solid var(--border);
 }
 .pay-table td {
@@ -119,7 +119,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   vertical-align: middle;
 }
 .pay-table tbody tr:last-child td { border-bottom: none; }
-.pay-table tbody tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
+.pay-table tbody tr:nth-child(even) td { background: rgb(var(--wash-rgb) / 0.015); }
 .pay-table tbody tr:hover td { background: rgb(var(--primary-rgb) / 0.04); }
 .table-empty td {
   text-align: center; color: var(--muted); padding: 40px 16px !important;
@@ -146,7 +146,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .deposit-card-header {
   display: flex; align-items: center; justify-content: space-between;
   padding: 20px 24px; border-bottom: 1px solid var(--border);
-  background: rgba(255,255,255,0.015);
+  background: rgb(var(--wash-rgb) / 0.015);
 }
 .deposit-card-title { font-size: 15px; font-weight: 700; }
 .deposit-card-status {
@@ -168,7 +168,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 /* ── Progress Bar ── */
 .progress-wrap { margin-top: 4px; }
 .progress-label-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 11.5px; color: var(--muted2); }
-.progress-bar { height: 8px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden; }
+.progress-bar { height: 8px; background: rgb(var(--wash-rgb) / 0.08); border-radius: 99px; overflow: hidden; }
 .progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--teal), var(--primary)); transition: width .4s ease; }
 
 /* ── Deduction List ── */
@@ -204,12 +204,12 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   color: var(--muted2); font-family: inherit; font-size: 13.5px; font-weight: 700;
   cursor: pointer; transition: background .18s, color .18s, border-color .18s;
 }
-.btn-ghost:hover { background: rgba(255,255,255,0.05); color: var(--text); border-color: rgba(255,255,255,0.15); }
+.btn-ghost:hover { background: rgb(var(--wash-rgb) / 0.05); color: var(--text); border-color: rgb(var(--wash-rgb) / 0.15); }
 
 /* ── Modal ── */
 .modal-backdrop {
   position: fixed; inset: 0; z-index: 800;
-  background: rgba(0,0,0,0.65); backdrop-filter: blur(4px);
+  background: rgb(var(--shade-rgb) / var(--overlay-a, 0.65)); backdrop-filter: blur(4px);
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
 }
@@ -228,11 +228,11 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .modal-sub   { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
 .modal-close-btn {
   width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
-  background: rgba(255,255,255,0.06); border: none; cursor: pointer;
+  background: rgb(var(--wash-rgb) / 0.06); border: none; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   color: var(--muted2); transition: background .18s;
 }
-.modal-close-btn:hover { background: rgba(255,255,255,0.12); color: var(--text); }
+.modal-close-btn:hover { background: rgb(var(--wash-rgb) / 0.12); color: var(--text); }
 .modal-close-btn svg { width: 15px; height: 15px; }
 .modal-body { padding: 22px 24px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 14px; }
 .modal-footer {
@@ -294,7 +294,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   transition: border-color .18s, background .18s, transform .15s;
   font-family: inherit; color: var(--text);
 }
-.method-card:hover { border-color: rgba(255,255,255,0.18); transform: translateY(-2px); }
+.method-card:hover { border-color: rgb(var(--wash-rgb) / 0.18); transform: translateY(-2px); }
 .method-card.selected { border-color: var(--teal); background: var(--teal-faint); }
 .method-card.gcash.selected   { border-color: var(--k-gcash-sky); background: rgb(var(--k-gcash-rgb) / 0.08); }
 .method-card.maya.selected    { border-color: var(--k-maya-deep); background: rgb(var(--k-maya-rgb) / 0.08); }
@@ -332,10 +332,10 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .status-step.active { color: var(--teal); }
 .status-step-dot {
   width: 10px; height: 10px; border-radius: 50%;
-  background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.2);
+  background: rgb(var(--wash-rgb) / 0.15); border: 2px solid rgb(var(--wash-rgb) / 0.2);
 }
 .status-step.active .status-step-dot { background: var(--teal); border-color: var(--teal); }
-.status-step-dot.pending { background: rgba(255,255,255,0.08); }
+.status-step-dot.pending { background: rgb(var(--wash-rgb) / 0.08); }
 .status-step-line { flex: 1; height: 2px; background: var(--border); margin-bottom: 18px; }
 
 .method-logo { width: 38px; height: 38px; margin-bottom: 6px; }
@@ -418,7 +418,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   border-radius: 12px; padding: 13px 20px;
   display: flex; align-items: center; gap: 11px;
   font-size: 13px; font-weight: 600; color: var(--text);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  box-shadow: 0 8px 30px rgb(var(--shade-rgb) / min(0.4, var(--shadow-cap, 1)));
   opacity: 0; pointer-events: none;
   transition: opacity 0.3s, transform 0.3s; z-index: 9999;
   white-space: normal; text-align: center; max-width: calc(100vw - 40px);
@@ -599,7 +599,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 }
 [data-theme="light"] body { background: var(--bg); }
 [data-theme="light"] .form-select option { background: var(--surface); color: var(--text); }
-[data-theme="light"] .toast { box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+[data-theme="light"] .toast { box-shadow: 0 8px 24px rgb(var(--k-ink-rgb) / 0.1); }
 
 /* ── Responsive ── */
 @media (max-width: 900px) {

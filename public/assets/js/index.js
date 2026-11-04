@@ -1837,10 +1837,12 @@ function App() {
     null,
     React.createElement(Navbar),
     React.createElement(Hero),
+    // Listings first, so the first scroll shows homes and it reads as a listing site;
+    // the trust sections follow.
+    React.createElement(Carousel),
+    React.createElement(Categories),
     React.createElement(FeatureHighlights),
     React.createElement(TrustBanner),
-    React.createElement(Categories),
-    React.createElement(Carousel),
     React.createElement(PlatformFeatures),
     React.createElement(HowItWorks),
     React.createElement(HowWeVerify),

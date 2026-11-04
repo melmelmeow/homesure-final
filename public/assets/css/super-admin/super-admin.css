@@ -77,7 +77,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .section-head {
   display: flex; align-items: flex-start; justify-content: space-between;
   padding: 20px 24px; border-bottom: 1px solid var(--border);
-  background: rgba(255,255,255,0.015);
+  background: rgb(var(--wash-rgb) / 0.015);
 }
 .section-title { font-size: 14.5px; font-weight: 800; color: var(--text); margin-bottom: 3px; }
 .section-sub   { font-size: 12px; color: var(--muted); }
@@ -106,7 +106,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .filter-tabs {
   display: flex; gap: 4px; padding: 14px 20px;
   border-bottom: 1px solid var(--border);
-  background: rgba(255,255,255,0.01);
+  background: rgb(var(--wash-rgb) / 0.01);
 }
 .filter-tab {
   font-size: 12.5px; font-weight: 600; padding: 5px 14px;
@@ -114,7 +114,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   background: transparent; color: var(--muted2);
   font-family: inherit; transition: all 0.18s;
 }
-.filter-tab:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+.filter-tab:hover { background: rgb(var(--wash-rgb) / 0.05); color: var(--text); }
 .filter-tab.active { background: var(--primary); color: var(--on-primary); }
 
 /* ── Data Table ── */
@@ -124,11 +124,11 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   padding: 11px 20px; text-align: left;
   font-size: 10.5px; font-weight: 700; color: var(--muted);
   text-transform: uppercase; letter-spacing: 0.07em;
-  background: rgba(255,255,255,0.015);
+  background: rgb(var(--wash-rgb) / 0.015);
 }
 .data-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
 .data-table tbody tr:last-child { border-bottom: none; }
-.data-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+.data-table tbody tr:hover { background: rgb(var(--wash-rgb) / 0.03); }
 .data-table td { padding: 13px 20px; font-size: 13px; color: var(--text); }
 
 /* ── User Cell ── */
@@ -166,41 +166,41 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 /* ── Add Admin Modal ── */
 .modal-backdrop {
   display: none; position: fixed; inset: 0;
-  background: rgba(0,0,0,0.65); backdrop-filter: blur(6px);
+  background: rgb(var(--shade-rgb) / var(--overlay-a, 0.65)); backdrop-filter: blur(6px);
   z-index: 999; align-items: center; justify-content: center;
 }
 .modal {
   background: var(--card); border: 1px solid var(--border);
   border-radius: 18px; width: 460px; max-width: 94vw;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+  box-shadow: 0 24px 60px rgb(var(--shade-rgb) / min(0.5, var(--shadow-cap, 1)));
   overflow: hidden;
 }
 .modal-header {
   display: flex; align-items: center; justify-content: space-between;
   padding: 20px 24px; border-bottom: 1px solid var(--border);
-  background: rgba(255,255,255,0.015);
+  background: rgb(var(--wash-rgb) / 0.015);
 }
 .modal-title { font-size: 15px; font-weight: 800; color: var(--text); }
 .modal-close {
   width: 30px; height: 30px; border-radius: 8px; border: none;
-  background: rgba(255,255,255,0.06); color: var(--muted2);
+  background: rgb(var(--wash-rgb) / 0.06); color: var(--muted2);
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; transition: background 0.18s;
 }
-.modal-close:hover { background: rgba(255,255,255,0.12); }
+.modal-close:hover { background: rgb(var(--wash-rgb) / 0.12); }
 .modal-close svg { width: 14px; height: 14px; }
 .modal-body { padding: 22px 24px; display: flex; flex-direction: column; gap: 16px; }
 .modal-footer {
   display: flex; align-items: center; justify-content: flex-end; gap: 10px;
   padding: 16px 24px; border-top: 1px solid var(--border);
-  background: rgba(255,255,255,0.015);
+  background: rgb(var(--wash-rgb) / 0.015);
 }
 
 .field-group { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .field { display: flex; flex-direction: column; gap: 7px; }
 .field label { font-size: 12px; font-weight: 700; color: var(--muted2); }
 .field input {
-  background: rgba(0,0,0,0.25); border: 1px solid var(--border);
+  background: rgb(var(--shade-rgb) / 0.25); border: 1px solid var(--border);
   border-radius: 9px; padding: 10px 13px;
   font-size: 13px; color: var(--text); font-family: inherit; outline: none;
   transition: border-color 0.2s;
@@ -226,10 +226,10 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 /* ── Light Mode ── */
 [data-theme="light"] {
 }
-[data-theme="light"] .data-table th { background: rgba(0,0,0,0.02); }
-[data-theme="light"] .data-table tbody tr:hover { background: rgba(0,0,0,0.02); }
-[data-theme="light"] .section-head  { background: rgba(0,0,0,0.02); }
-[data-theme="light"] .modal-header  { background: rgba(0,0,0,0.02); }
-[data-theme="light"] .modal-footer  { background: rgba(0,0,0,0.02); }
+[data-theme="light"] .data-table th { background: rgb(var(--k-ink-rgb) / 0.02); }
+[data-theme="light"] .data-table tbody tr:hover { background: rgb(var(--k-ink-rgb) / 0.02); }
+[data-theme="light"] .section-head  { background: rgb(var(--k-ink-rgb) / 0.02); }
+[data-theme="light"] .modal-header  { background: rgb(var(--k-ink-rgb) / 0.02); }
+[data-theme="light"] .modal-footer  { background: rgb(var(--k-ink-rgb) / 0.02); }
 [data-theme="light"] .field input   { background: var(--surface-soft); }
-[data-theme="light"] .filter-tabs   { background: rgba(0,0,0,0.01); }
+[data-theme="light"] .filter-tabs   { background: rgb(var(--k-ink-rgb) / 0.01); }

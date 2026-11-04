@@ -2,7 +2,7 @@
 .table-scroll { overflow-x: auto; }
 .table-scroll::-webkit-scrollbar { height: 4px; }
 .table-scroll::-webkit-scrollbar-track { background: transparent; }
-.table-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 99px; }
+.table-scroll::-webkit-scrollbar-thumb { background: rgb(var(--wash-rgb) / 0.1); border-radius: 99px; }
 .table-scroll::-webkit-scrollbar-thumb:hover { background: rgb(var(--primary-rgb) / 0.4); }
 
 /* ── Period Dropdown ── */
@@ -22,7 +22,7 @@
   position: absolute; top: calc(100% + 6px); right: 0;
   background: var(--card2); border: 1px solid var(--border);
   border-radius: 10px; padding: 5px; min-width: 120px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 24px rgb(var(--shade-rgb) / min(0.3, var(--shadow-cap, 1)));
   opacity: 0; pointer-events: none; transform: translateY(-6px);
   transition: opacity 0.18s, transform 0.18s; z-index: 50;
 }
@@ -74,7 +74,7 @@
 .section-head {
   display: flex; align-items: center; justify-content: space-between;
   padding: 16px 20px; border-bottom: 1px solid var(--border);
-  background: rgba(255,255,255,0.015); flex-wrap: wrap; gap: 10px;
+  background: rgb(var(--wash-rgb) / 0.015); flex-wrap: wrap; gap: 10px;
 }
 
 /* ── Category badges ── */

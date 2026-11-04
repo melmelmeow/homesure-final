@@ -66,13 +66,13 @@
 
 <style>
   .chat-method-card {
-    background: var(--surface-soft); border: 2px solid rgba(255,255,255,0.07);
+    background: var(--surface-soft); border: 2px solid rgb(var(--wash-rgb) / 0.07);
     border-radius: 12px; padding: 14px 12px; cursor: pointer;
     text-align: left; display: flex; flex-direction: column;
     font-family: inherit; color: var(--text);
     transition: border-color .18s, background .18s, transform .14s;
   }
-  .chat-method-card:hover { border-color: rgba(255,255,255,0.18); transform: translateY(-2px); }
+  .chat-method-card:hover { border-color: rgb(var(--wash-rgb) / 0.18); transform: translateY(-2px); }
   .chat-method-card.selected {
     border-color: var(--primary) !important;
     background: rgb(var(--primary-rgb) / 0.15) !important;
@@ -92,7 +92,7 @@
     color: var(--on-primary);
     padding: 16px 20px;
     border-radius: 12px;
-    box-shadow: 0 8px 24px rgb(var(--primary-rgb) / 0.4), 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 24px rgb(var(--primary-rgb) / 0.4), 0 2px 8px rgb(var(--shade-rgb) / min(0.2, var(--shadow-cap, 1)));
     display: flex;
     align-items: center;
     gap: 12px;
@@ -109,7 +109,7 @@
   .custom-notif-icon {
     width: 24px;
     height: 24px;
-    background: rgba(255,255,255,0.25);
+    background: rgb(var(--wash-rgb) / 0.25);
     border-radius: 50%;
     display: flex;
     align-items: center;

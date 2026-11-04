@@ -204,7 +204,7 @@
       position: fixed;
       inset: 0;
       z-index: 1000;
-      background: rgba(0,0,0,0.7);
+      background: rgb(var(--shade-rgb) / var(--overlay-a, 0.7));
       backdrop-filter: blur(6px);
       align-items: center;
       justify-content: center;
@@ -234,7 +234,7 @@
       color: var(--text);
     }
     .modal-close {
-      background: rgba(255,255,255,0.06);
+      background: rgb(var(--wash-rgb) / 0.06);
       border: none;
       border-radius: 8px;
       width: 32px;
@@ -286,7 +286,7 @@
       cursor: pointer;
     }
     .star-rating .star {
-      color: rgba(255,255,255,0.2);
+      color: rgb(var(--wash-rgb) / 0.2);
       transition: color 0.2s;
     }
     .star-rating .star.active,

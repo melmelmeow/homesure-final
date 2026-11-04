@@ -14,7 +14,7 @@
       position: fixed;
       inset: 0;
       z-index: 9999;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgb(var(--shade-rgb) / var(--overlay-a, 0.8));
       backdrop-filter: blur(8px);
       align-items: center;
       justify-content: center;
@@ -35,7 +35,7 @@
       padding: 0;
       overflow: hidden;
       animation: reviewSlideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 20px 60px rgb(var(--shade-rgb) / min(0.6, var(--shadow-cap, 1)));
       position: relative;
     }
 
@@ -64,7 +64,7 @@
     }
     .review-prompt-subtitle {
       font-size: 14px;
-      color: rgba(255, 255, 255, 0.6);
+      color: rgb(var(--wash-rgb) / 0.6);
       line-height: 1.5;
     }
 
@@ -100,7 +100,7 @@
     }
     .review-star {
       font-size: 48px;
-      color: rgba(255, 255, 255, 0.15);
+      color: rgb(var(--wash-rgb) / 0.15);
       cursor: pointer;
       transition: all 0.2s ease;
       user-select: none;
@@ -126,7 +126,7 @@
     .review-prompt-textarea {
       width: 100%;
       background: var(--surface);
-      border: 1.5px solid rgba(255, 255, 255, 0.1);
+      border: 1.5px solid rgb(var(--wash-rgb) / 0.1);
       border-radius: 12px;
       padding: 14px 16px;
       color: var(--text);
@@ -142,7 +142,7 @@
       border-color: rgb(var(--primary-rgb) / 0.4);
     }
     .review-prompt-textarea::placeholder {
-      color: rgba(255, 255, 255, 0.3);
+      color: rgb(var(--wash-rgb) / 0.3);
     }
 
     /* Actions */
@@ -151,7 +151,7 @@
       grid-template-columns: 1fr 1fr;
       gap: 12px;
       padding: 24px;
-      background: rgba(0, 0, 0, 0.2);
+      background: rgb(var(--shade-rgb) / 0.2);
     }
     .review-prompt-btn {
       padding: 14px 20px;
@@ -169,12 +169,12 @@
     }
     .review-prompt-btn-later {
       background: transparent;
-      border: 1.5px solid rgba(255, 255, 255, 0.15);
-      color: rgba(255, 255, 255, 0.6);
+      border: 1.5px solid rgb(var(--wash-rgb) / 0.15);
+      color: rgb(var(--wash-rgb) / 0.6);
     }
     .review-prompt-btn-later:hover {
-      border-color: rgba(255, 255, 255, 0.3);
-      color: rgba(255, 255, 255, 0.8);
+      border-color: rgb(var(--wash-rgb) / 0.3);
+      color: rgb(var(--wash-rgb) / 0.8);
     }
     .review-prompt-btn-submit {
       background: linear-gradient(135deg, var(--primary), var(--primary));
@@ -213,7 +213,7 @@
     }
     .review-prompt-thanks-text {
       font-size: 14px;
-      color: rgba(255, 255, 255, 0.6);
+      color: rgb(var(--wash-rgb) / 0.6);
     }
 
     /* Animations */

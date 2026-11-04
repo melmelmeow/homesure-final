@@ -34,7 +34,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   padding: 6px 15px; border-radius: 7px; cursor: pointer;
   transition: all 0.18s; white-space: nowrap;
 }
-.filter-tab:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.filter-tab:hover { color: var(--text); background: rgb(var(--wash-rgb) / 0.04); }
 .filter-tab.active { background: var(--teal-faint); color: var(--teal); }
 
 .filter-search-wrap { position: relative; display: flex; align-items: center; }
@@ -62,14 +62,14 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .listings-table th {
   padding: 12px 16px; text-align: left; font-size: 11px; font-weight: 700;
   color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em;
-  white-space: nowrap; background: rgba(255,255,255,0.015);
+  white-space: nowrap; background: rgb(var(--wash-rgb) / 0.015);
 }
 .listings-table tbody tr {
   border-bottom: 1px solid var(--border);
   transition: background 0.18s;
 }
 .listings-table tbody tr:last-child { border-bottom: none; }
-.listings-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+.listings-table tbody tr:hover { background: rgb(var(--wash-rgb) / 0.03); }
 .listings-table td { padding: 13px 16px; font-size: 13px; color: var(--text); vertical-align: middle; }
 
 .thumb { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border); }
@@ -106,7 +106,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 /* ── Modal ── */
 .modal-backdrop {
   display: none; position: fixed; inset: 0;
-  background: rgba(0,0,0,0.65); backdrop-filter: blur(6px);
+  background: rgb(var(--shade-rgb) / var(--overlay-a, 0.65)); backdrop-filter: blur(6px);
   z-index: 999; align-items: center; justify-content: center;
 }
 .modal-backdrop.open { display: flex; }
@@ -128,7 +128,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 }
 .carousel-btn {
   position: absolute; top: 50%; transform: translateY(-50%);
-  background: rgba(0,0,0,0.5); color: var(--text); border: none;
+  background: rgba(0,0,0,0.5); color: var(--k-cream); border: none;
   font-size: 26px; line-height: 1; width: 36px; height: 36px;
   border-radius: 50%; cursor: pointer; display: flex; align-items: center;
   justify-content: center; transition: background 0.18s; z-index: 2;
@@ -138,7 +138,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .carousel-btn.next { right: 10px; }
 .carousel-counter {
   position: absolute; bottom: 10px; right: 12px;
-  background: rgba(0,0,0,0.55); color: var(--text);
+  background: rgb(var(--shade-rgb) / 0.55); color: var(--k-cream);
   font-size: 11.5px; font-weight: 600; padding: 2px 9px;
   border-radius: 99px; z-index: 2;
 }
@@ -183,7 +183,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 
 .modal-detail {
   display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-  padding: 16px; background: rgba(255,255,255,0.02);
+  padding: 16px; background: rgb(var(--wash-rgb) / 0.02);
   border: 1px solid var(--border); border-radius: 11px; margin-bottom: 0;
 }
 .modal-detail-item label {
@@ -195,7 +195,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .modal-actions {
   display: flex; gap: 8px; justify-content: flex-end;
   padding: 16px 26px; margin-top: 20px;
-  border-top: 1px solid var(--border); background: rgba(255,255,255,0.015);
+  border-top: 1px solid var(--border); background: rgb(var(--wash-rgb) / 0.015);
 }
 .btn-modal {
   font-size: 13px; font-weight: 700; padding: 9px 20px; border-radius: 9px;
@@ -204,7 +204,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .btn-modal:hover { transform: translateY(-1px); opacity: 0.86; }
 .btn-modal.approve { background: var(--teal); color: var(--on-primary); }
 .btn-modal.reject  { background: rgb(var(--danger-rgb) / 0.12); color: var(--danger); border-color: rgb(var(--danger-rgb) / 0.22); }
-.btn-modal.close   { background: rgba(255,255,255,0.06); color: var(--muted2); border-color: var(--border); }
+.btn-modal.close   { background: rgb(var(--wash-rgb) / 0.06); color: var(--muted2); border-color: var(--border); }
 
 /* ── Reject Reason Modal ── */
 .reject-modal {
@@ -215,16 +215,16 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .reject-modal-header {
   display: flex; align-items: center; justify-content: space-between;
   padding: 18px 22px; border-bottom: 1px solid var(--border);
-  background: rgba(255,255,255,0.015);
+  background: rgb(var(--wash-rgb) / 0.015);
 }
 .reject-modal-title { font-size: 15px; font-weight: 800; color: var(--text); }
 .reject-close-btn {
   width: 28px; height: 28px; border-radius: 7px; border: none;
-  background: rgba(255,255,255,0.06); color: var(--muted2);
+  background: rgb(var(--wash-rgb) / 0.06); color: var(--muted2);
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; transition: background 0.18s;
 }
-.reject-close-btn:hover { background: rgba(255,255,255,0.12); }
+.reject-close-btn:hover { background: rgb(var(--wash-rgb) / 0.12); }
 .reject-close-btn svg { width: 13px; height: 13px; }
 .reject-modal-body { padding: 20px 22px; display: flex; flex-direction: column; gap: 16px; }
 .reject-modal-sub { font-size: 12.5px; color: var(--muted); }
@@ -243,7 +243,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .reject-custom-wrap { display: flex; flex-direction: column; gap: 7px; }
 .reject-custom-label { font-size: 11.5px; font-weight: 700; color: var(--muted2); }
 .reject-textarea {
-  background: rgba(0,0,0,0.2); border: 1px solid var(--border);
+  background: rgb(var(--shade-rgb) / 0.2); border: 1px solid var(--border);
   border-radius: 9px; padding: 10px 13px; font-size: 13px;
   color: var(--text); font-family: inherit; outline: none; resize: vertical;
   transition: border-color 0.2s;
@@ -253,7 +253,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .reject-modal-footer {
   display: flex; align-items: center; justify-content: flex-end; gap: 10px;
   padding: 14px 22px; border-top: 1px solid var(--border);
-  background: rgba(255,255,255,0.015);
+  background: rgb(var(--wash-rgb) / 0.015);
 }
 
 /* ── Light mode ── */
@@ -261,7 +261,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 }
 [data-theme="light"] body { background: var(--bg); }
 [data-theme="light"] .filter-search { background: var(--surface); }
-[data-theme="light"] .listings-table th { background: rgba(0,0,0,0.02); }
-[data-theme="light"] .listings-table tbody tr:hover { background: rgba(0,0,0,0.02); }
-[data-theme="light"] .modal-detail { background: rgba(0,0,0,0.02); }
-[data-theme="light"] .modal-actions { background: rgba(0,0,0,0.02); }
+[data-theme="light"] .listings-table th { background: rgb(var(--k-ink-rgb) / 0.02); }
+[data-theme="light"] .listings-table tbody tr:hover { background: rgb(var(--k-ink-rgb) / 0.02); }
+[data-theme="light"] .modal-detail { background: rgb(var(--k-ink-rgb) / 0.02); }
+[data-theme="light"] .modal-actions { background: rgb(var(--k-ink-rgb) / 0.02); }

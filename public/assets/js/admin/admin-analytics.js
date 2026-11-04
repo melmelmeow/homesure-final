@@ -153,10 +153,10 @@
       return;
     }
     // Theme-aware colors because we're not savages
-    const gridColor = 'rgb(var(--text-rgb) / 0.08)';
-    const axisColor = 'rgb(var(--text-rgb) / 0.2)';
-    const textColor = 'rgb(var(--text-rgb) / 0.72)';
-    const labelColor = 'rgb(var(--text-rgb) / 0.78)';
+    const gridColor = 'var(--chart-grid, rgb(var(--text-rgb) / 0.08))';
+    const axisColor = 'var(--chart-axis, rgb(var(--text-rgb) / 0.2))';
+    const textColor = 'var(--chart-text, rgb(var(--text-rgb) / 0.72))';
+    const labelColor = 'var(--chart-text, rgb(var(--text-rgb) / 0.78))';
 
     const rawMax = Math.max(...items.map(i => i[1]), 1);
     const step   = Math.max(1, Math.ceil(rawMax / 4));
@@ -272,10 +272,10 @@
 
   function drawLineChart(data) {
     // Theme detection: are we in vampire mode or not?
-    const gridColor = 'rgb(var(--text-rgb) / 0.08)';
-    const axisColor = 'rgb(var(--text-rgb) / 0.2)';
-    const textColor = 'rgb(var(--text-rgb) / 0.72)';
-    const labelColor = 'rgb(var(--text-rgb) / 0.78)';
+    const gridColor = 'var(--chart-grid, rgb(var(--text-rgb) / 0.08))';
+    const axisColor = 'var(--chart-axis, rgb(var(--text-rgb) / 0.2))';
+    const textColor = 'var(--chart-text, rgb(var(--text-rgb) / 0.72))';
+    const labelColor = 'var(--chart-text, rgb(var(--text-rgb) / 0.78))';
 
     const { labels, values, title } = data;
     document.getElementById('trendChartTitle').textContent = title;

@@ -77,7 +77,7 @@
 .modal-backdrop {
   display: none;
   position: fixed; inset: 0;
-  background: rgba(0,0,0,0.55);
+  background: rgb(var(--shade-rgb) / var(--overlay-a, 0.55));
   z-index: 200;
   align-items: center;
   justify-content: center;
@@ -111,7 +111,7 @@
   border-radius: 7px; transition: background 0.18s;
 }
 .modal-close svg { width: 16px; height: 16px; }
-.modal-close:hover { background: rgba(255,255,255,0.07); color: var(--text); }
+.modal-close:hover { background: rgb(var(--wash-rgb) / 0.07); color: var(--text); }
 
 .modal-body {
   padding: 20px 24px;

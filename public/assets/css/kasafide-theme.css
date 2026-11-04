@@ -52,13 +52,14 @@
 :root[data-theme="light"] {
   color-scheme: light;
 
-  --bg:             #FBF6F0;
-  --surface:        #FFFFFF;
-  --surface-soft:   #F1E9F7;
-  --border:         #E3D8EE;
+  /* "Lavender mist": no pure white anywhere, so light mode is easy on the eyes. */
+  --bg:             #ECE4F4;
+  --surface:        #F7F2FB;
+  --surface-soft:   #DFD3EE;
+  --border:         #CDBFE0;
   --text:           #2B1B3D;
   --text-soft:      #4A3B5E;
-  --text-muted:     #6B5A80;
+  --text-muted:     #5F4F78;
   --primary:        #5B3A8E;
   --primary-hover:  #4A2E76;
   --on-primary:     #FBF6F0;
@@ -67,16 +68,16 @@
   --heading-accent: #5B3A8E;
   --focus-ring:     #5B3A8E;
 
-  --bg-rgb:      251 246 240;
-  --surface-rgb: 255 255 255;
+  --bg-rgb:      236 228 244;
+  --surface-rgb: 247 242 251;
   --text-rgb:    43 27 61;
   --primary-rgb: 91 58 142;
   --accent-rgb:  255 138 101;
 
-  /* Status. Standard hues, darkened until they clear 4.5:1 on --surface and --bg. */
-  --success:     #1E7A3C;  --success-rgb: 30 122 60;
-  --warning:     #94560A;  --warning-rgb: 148 86 10;
-  --danger:      #B42330;  --danger-rgb:  180 35 48;
+  /* Status. Standard hues, darkened until they clear 4.5:1 on --bg, --surface and --surface-soft. */
+  --success:     #1A6B34;  --success-rgb: 26 107 52;
+  --warning:     #7F4A08;  --warning-rgb: 127 74 8;
+  --danger:      #9C1D29;  --danger-rgb:  156 29 41;   /* dark enough to read on its own 10-15% tint */
   --info:        #6E46B0;  --info-rgb:    110 70 176;
 
   /* Dashboard sidebar: always a dark brand panel, so its items stay light in both themes. */
@@ -85,14 +86,29 @@
 
   /* Map */
   --map-stroke: #5B3A8E;
-  --map-fill:   #EDE3F7;
+  --map-fill:   #F7F2FB;
   --map-label:  #2B1B3D;
 
-  --overlay:   rgb(var(--k-ink-rgb) / 0.55);
-  --shadow:    0 2px 12px rgb(var(--k-ink-rgb) / 0.08);
+  --overlay:   rgb(var(--k-ink-rgb) / 0.45);
+  --shadow:    0 8px 24px rgb(var(--k-ink-rgb) / 0.10);
   --shadow-md: 0 8px 28px rgb(var(--k-ink-rgb) / 0.12);
   --dot:       rgb(var(--k-ink-rgb) / 0.04);
   --hairline:  rgb(var(--k-ink-rgb) / 0.10);
+
+  /* Shared rules (ones that apply in both themes) were written for the dark theme: they tint
+     with white and shadow with black. They now go through these, which are exactly white and
+     black in dark, so dark renders identically, and plum ink in light, where white glares and
+     black is harsh. */
+  --wash-rgb:   43 27 61;    /* was rgba(255,255,255,a) in a shared rule */
+  --shade-rgb:  43 27 61;    /* was rgba(0,0,0,a) in a shared rule */
+  /* Light-only values, always read with the dark value as fallback: var(--x, <dark value>).
+     The dark block sets them to initial, so the fallback wins there. */
+  --overlay-a:  0.45;        /* modal and drawer backdrops */
+  --shadow-cap: 0.12;        /* no shadow darker than this */
+  --chart-grid: var(--border);
+  --chart-axis: var(--border);
+  --chart-text: var(--text-muted);
+  --chart-track: var(--surface-soft);
 }
 
 /* 2. Semantic tokens — DARK */
@@ -137,6 +153,15 @@
   --shadow-md: 0 10px 32px rgb(var(--k-black-rgb) / 0.45);
   --dot:       rgb(var(--k-white-rgb) / 0.045);
   --hairline:  rgb(var(--k-white-rgb) / 0.10);
+
+  --wash-rgb:   255 255 255;
+  --shade-rgb:  0 0 0;
+  --overlay-a:  initial;
+  --shadow-cap: initial;
+  --chart-grid: initial;
+  --chart-axis: initial;
+  --chart-text: initial;
+  --chart-track: initial;
 }
 
 /* 3. Legacy names, resolved against whichever theme is active. */
@@ -193,6 +218,7 @@ html { background-color: var(--bg); }
   background: rgb(var(--primary-rgb) / 0.28);
   color: var(--text);
 }
+:root[data-theme="light"] ::selection { background: rgb(var(--primary-rgb) / 0.20); }
 
 * {
   scrollbar-width: thin;
@@ -200,6 +226,13 @@ html { background-color: var(--bg); }
 }
 ::-webkit-scrollbar-thumb { background: rgb(var(--primary-rgb) / 0.30); }
 ::-webkit-scrollbar-thumb:hover { background: rgb(var(--primary-rgb) / 0.50); }
+
+/* Light: scrollbars and placeholders. Specific enough to beat the page stylesheets' own rules. */
+:root[data-theme="light"] * { scrollbar-color: var(--border) var(--bg); }
+:root[data-theme="light"] *::-webkit-scrollbar-track { background: var(--bg); }
+:root[data-theme="light"] *::-webkit-scrollbar-thumb { background: var(--border); }
+:root[data-theme="light"] *::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+:root[data-theme="light"] ::placeholder { color: var(--text-muted); opacity: 1; }
 
 :focus-visible { outline-color: var(--focus-ring); }
 
@@ -216,4 +249,48 @@ html { background-color: var(--bg); }
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-weight: 800;
   white-space: nowrap;
+}
+
+/* Light: form controls all read as the same soft surface with a lavender border. Listed by
+   class rather than every <input>, so inputs that sit transparently inside a styled wrapper
+   (the phone field's number box, the chat composer) keep their wrapper's look.
+   :root[data-theme="light"] puts these above the page stylesheets' own input rules. */
+:root[data-theme="light"] :is(
+  .field-input, .field input, .field select, .field textarea,
+  .form-input, .form-select, .modal-input, .modal-select, .modal-textarea,
+  .filter-input, .filter-select, .adjust-avail-input, .chatbot-input,
+  .reject-textarea, .reject-modal-body textarea, .comment-textarea,
+  .search-wrap input, .faq-search-input, .conv-search, .chat-input,
+  .hs-phone-input, .hs-topbar-input
+) {
+  background-color: var(--surface);
+}
+/* Border only when the field is not showing an error, so the red error border still wins. */
+:root[data-theme="light"] :is(
+  .field-input, .field input, .field select, .field textarea,
+  .form-input, .form-select, .modal-input, .modal-select, .modal-textarea,
+  .filter-input, .filter-select, .adjust-avail-input, .chatbot-input,
+  .reject-textarea, .reject-modal-body textarea, .comment-textarea,
+  .search-wrap input, .faq-search-input, .conv-search, .chat-input,
+  .hs-phone-input, .hs-topbar-input
+):not(.error):not(.is-invalid):not(.invalid) {
+  border-color: var(--border);
+}
+:root[data-theme="light"] :is(
+  .field-input, .field input, .field select, .field textarea,
+  .form-input, .form-select, .modal-input, .modal-select, .modal-textarea,
+  .filter-input, .filter-select, .adjust-avail-input, .chatbot-input,
+  .reject-textarea, .reject-modal-body textarea, .comment-textarea,
+  .search-wrap input, .faq-search-input, .conv-search, .chat-input,
+  .hs-phone-input, .hs-topbar-input
+):is(:focus, :focus-within):not(.error):not(.is-invalid):not(.invalid) {
+  border-color: var(--focus-ring);
+}
+
+/* Light: chips and arrows that sit on top of listing photos. The shared rule darkens them with
+   --shade-rgb at about 0.5, which is plum ink in light and lets a bright photo show through too
+   much for the cream label (it measured 3.2:1). A denser backing in light only. */
+:root[data-theme="light"] :is(.badge-tr, .carousel-btn, .carousel-counter, .gallery-nav, .gallery-counter) {
+  background: rgb(var(--k-ink-rgb) / 0.72);
+  color: var(--k-cream);
 }

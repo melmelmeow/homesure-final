@@ -8,6 +8,26 @@ after pulling.
 
 ---
 
+## 2026-11-05
+
+### Light mode is softer ("Lavender mist"); dark mode unchanged
+
+**Front end only.** Branch `fix/soft-light-mode`. Colours and shadows only, no layout or copy.
+
+- Light tokens in `kasafide-theme.css`: lavender `--bg` #ECE4F4 and `--surface` #F7F2FB instead of
+  cream and pure white, softer `--border` and `--text-muted`. `--success`, `--warning` and
+  `--danger` darkened a step so they still clear 4.5:1 on the darker panels.
+- Rules shared by both themes were written for dark, tinting with white and shadowing with black.
+  They now use `--wash-rgb` / `--shade-rgb` (exactly white / black in dark, plum ink in light),
+  with light-only caps on shadows (`--shadow-cap`) and modal backdrops (`--overlay-a`, 0.45).
+  Dark mode was compared element by element before and after: no computed colour changed.
+- Light only: form controls on `--surface`, placeholders, scrollbars, selection, skeletons, chart
+  grid/axis/labels, the browser theme colour and the manifest background.
+
+**You need to:** nothing. No server restart, no migration.
+
+---
+
 ## 2026-11-04
 
 ### Rebrand: HomeSure is now Kasafide (name, Plum & Peach theme, logo, chatbot, map)

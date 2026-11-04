@@ -92,7 +92,7 @@
           borderRadius: "8px",
           fontSize: "13px",
           fontWeight: "600",
-          boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
+          boxShadow: "0 4px 20px rgb(var(--shade-rgb) / min(0.4, var(--shadow-cap, 1)))",
           zIndex: "9999",
           transition: "opacity 0.4s",
           opacity: "1",

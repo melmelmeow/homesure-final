@@ -218,7 +218,7 @@ blockquote {
 .testimonial-author { display: flex; align-items: center; gap: 12px; }
 .author-avatar {
   width: 44px; height: 44px; border-radius: 50%;
-  background: rgba(255,255,255,0.15);
+  background: rgb(var(--wash-rgb) / 0.15);
   display: flex; align-items: center; justify-content: center;
   font-weight: 700; font-size: 14px; color: var(--text); flex-shrink: 0;
 }
@@ -228,15 +228,15 @@ blockquote {
 /* ── VERIFY EMAIL MODAL ── */
 .modal-backdrop {
   display: none; position: fixed; inset: 0;
-  background: rgba(0,0,0,0.55); z-index: 300;
+  background: rgb(var(--shade-rgb) / var(--overlay-a, 0.55)); z-index: 300;
   align-items: center; justify-content: center; backdrop-filter: blur(2px);
 }
 .modal-backdrop.active { display: flex; }
 .modal-card {
-  background: var(--surface); border: 1px solid rgba(255,255,255,0.08);
+  background: var(--surface); border: 1px solid rgb(var(--wash-rgb) / 0.08);
   border-radius: 20px; padding: 40px 32px 32px;
   width: 360px; text-align: center; position: relative;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+  box-shadow: 0 24px 64px rgb(var(--shade-rgb) / min(0.5, var(--shadow-cap, 1)));
 }
 .modal-close {
   position: absolute; top: 14px; right: 16px;
@@ -355,7 +355,7 @@ body.light .auth-bg-photo.loaded { opacity: 0.22; }
   background: linear-gradient(160deg, rgb(var(--k-ink-rgb) / 0.82) 0%, rgb(var(--k-ink-rgb) / 0.55) 55%, rgb(var(--k-ink-rgb) / 0.82) 100%);
 }
 body.light .auth-bg-overlay {
-  background: linear-gradient(160deg, rgb(var(--k-cream-rgb) / 0.88) 0%, rgb(var(--k-cream-rgb) / 0.6) 55%, rgb(var(--k-cream-rgb) / 0.88) 100%);
+  background: linear-gradient(160deg, rgb(var(--bg-rgb) / 0.88) 0%, rgb(var(--bg-rgb) / 0.6) 55%, rgb(var(--bg-rgb) / 0.88) 100%);
 }
 
 /* Soft decorative glow circles, teal rather than the gold a reference for this used — this is
@@ -394,7 +394,7 @@ body.light .auth-tagline h2 { color: var(--text); }
 .auth-tagline p {
   font-size: 14.5px;
   line-height: 1.6;
-  color: rgba(255,255,255,0.65);
+  color: rgb(var(--wash-rgb) / 0.65);
 }
 body.light .auth-tagline p { color: rgb(var(--k-ink-rgb) / 0.6); }
 
@@ -404,17 +404,17 @@ body.light .auth-tagline p { color: rgb(var(--k-ink-rgb) / 0.6); }
   width: 100%;
   max-width: 420px;
   background: rgb(var(--k-ink-rgb) / 0.6);
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgb(var(--wash-rgb) / 0.1);
   border-radius: 22px;
   padding: 36px 32px 30px;
   backdrop-filter: blur(20px) saturate(160%);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
-  box-shadow: 0 24px 64px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08);
+  box-shadow: 0 24px 64px rgb(var(--shade-rgb) / min(0.4, var(--shadow-cap, 1))), inset 0 1px 0 rgb(var(--wash-rgb) / 0.08);
 }
 body.light .auth-card {
-  background: rgba(255,255,255,0.82);
+  background: rgb(var(--surface-rgb) / 0.82);
   border-color: rgb(var(--k-ink-rgb) / 0.08);
-  box-shadow: 0 24px 64px rgb(var(--k-ink-rgb) / 0.12), inset 0 1px 0 rgba(255,255,255,0.6);
+  box-shadow: 0 24px 64px rgb(var(--k-ink-rgb) / 0.12), inset 0 1px 0 rgb(var(--surface-rgb) / 0.6);
 }
 
 .auth-card-brand {

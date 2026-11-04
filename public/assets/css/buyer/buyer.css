@@ -6,7 +6,7 @@
 /* ── Filter Panel ──────────────────────────────────────────────────────────── */
 .filter-panel {
   background: var(--surface-soft);
-  border: 1px solid rgba(255,255,255,0.07);
+  border: 1px solid rgb(var(--wash-rgb) / 0.07);
   border-radius: 12px;
   padding: 16px 20px;
   margin-bottom: 24px;
@@ -29,7 +29,7 @@
   display: block;
   font-size: 10.5px;
   font-weight: 600;
-  color: rgba(255,255,255,0.4);
+  color: rgb(var(--wash-rgb) / 0.4);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin-bottom: 5px;
@@ -37,8 +37,8 @@
 .filter-select,
 .filter-input {
   width: 100%;
-  background: rgba(0,0,0,0.25);
-  border: 1px solid rgba(255,255,255,0.07);
+  background: rgb(var(--shade-rgb) / 0.25);
+  border: 1px solid rgb(var(--wash-rgb) / 0.07);
   border-radius: 8px;
   padding: 7px 10px;
   color: var(--text);
@@ -58,7 +58,7 @@
 .filter-select option { background: var(--surface); }
 .filter-select:focus,
 .filter-input:focus  { border-color: rgb(var(--primary-rgb) / 0.45); outline: none; }
-.filter-input::placeholder { color: rgba(255,255,255,0.3); }
+.filter-input::placeholder { color: rgb(var(--wash-rgb) / 0.3); }
 
 /* ── Listings Header ───────────────────────────────────────────────────────── */
 .listings-header {
@@ -75,17 +75,17 @@
   align-items: center;
   gap: 6px;
   background: var(--surface-soft);
-  border: 1px solid rgba(255,255,255,0.07);
+  border: 1px solid rgb(var(--wash-rgb) / 0.07);
   border-radius: 8px;
   padding: 6px 12px;
-  color: rgba(255,255,255,0.65);
+  color: rgb(var(--wash-rgb) / 0.65);
   font-size: 12.5px;
   font-weight: 500;
   cursor: pointer;
   font-family: 'Plus Jakarta Sans', sans-serif;
   transition: background 0.2s;
 }
-.sort-btn:hover { background: rgba(255,255,255,0.08); }
+.sort-btn:hover { background: rgb(var(--wash-rgb) / 0.08); }
 .sort-btn svg { width: 12px; height: 12px; }
 
 /* ── Property Grid ─────────────────────────────────────────────────────────── */
@@ -98,7 +98,7 @@
 /* ── Property Card ─────────────────────────────────────────────────────────── */
 .prop-card {
   background: var(--surface-soft);
-  border: 1px solid rgba(255,255,255,0.07);
+  border: 1px solid rgb(var(--wash-rgb) / 0.07);
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
@@ -108,7 +108,7 @@
 .prop-card:hover {
   transform: translateY(-4px);
   border-color: rgb(var(--primary-rgb) / 0.35);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+  box-shadow: 0 8px 30px rgb(var(--shade-rgb) / min(0.35, var(--shadow-cap, 1)));
 }
 
 .prop-img-wrap {
@@ -125,7 +125,7 @@
 .prop-img-wrap::after {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.38) 100%);
+  background: linear-gradient(180deg, rgb(var(--shade-rgb) / 0.08) 0%, rgb(var(--shade-rgb) / 0.38) 100%);
   pointer-events: none;
 }
 
@@ -144,7 +144,7 @@
   position: absolute; top: 10px; right: 10px; z-index: 1;
   padding: 3px 9px; border-radius: 20px;
   font-size: 9.5px; font-weight: 600; letter-spacing: 0.04em;
-  background: rgba(0,0,0,0.5); color: var(--text-muted);
+  background: rgb(var(--shade-rgb) / 0.5); color: var(--text-muted);
   backdrop-filter: blur(4px);
 }
 
@@ -168,7 +168,7 @@
 .verified-check svg { width: 9px; height: 9px; color: var(--text); display: block; }
 
 .prop-address {
-  font-size: 11px; color: rgba(255,255,255,0.4);
+  font-size: 11px; color: rgb(var(--wash-rgb) / 0.4);
   display: flex; align-items: flex-start; gap: 4px;
   margin-bottom: 11px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
@@ -181,15 +181,15 @@
 }
 .amenity {
   display: flex; align-items: center; gap: 4px;
-  font-size: 11px; color: rgba(255,255,255,0.65);
+  font-size: 11px; color: rgb(var(--wash-rgb) / 0.65);
 }
-.amenity svg { width: 12px; height: 12px; color: rgba(255,255,255,0.4); }
+.amenity svg { width: 12px; height: 12px; color: rgb(var(--wash-rgb) / 0.4); }
 
 .prop-footer {
   display: flex; align-items: flex-end; justify-content: space-between;
 }
 .prop-price { font-size: 15px; font-weight: 800; color: var(--text); line-height: 1.2; }
-.prop-price-per { font-size: 10.5px; color: rgba(255,255,255,0.4); font-weight: 400; }
+.prop-price-per { font-size: 10.5px; color: rgb(var(--wash-rgb) / 0.4); font-weight: 400; }
 
 .prop-badges {
   display: flex;
@@ -228,6 +228,6 @@
   grid-column: 1 / -1;
   text-align: center;
   padding: 60px 32px;
-  color: rgba(255,255,255,0.3);
+  color: rgb(var(--wash-rgb) / 0.3);
   font-size: 14px;
 }

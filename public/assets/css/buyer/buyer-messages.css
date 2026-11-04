@@ -41,7 +41,7 @@
     }
     .conv-search-icon svg { width: 13px; height: 13px; display: block; }
     .conv-search {
-      width: 100%; background: rgba(0,0,0,0.2);
+      width: 100%; background: rgb(var(--shade-rgb) / 0.2);
       border: 1px solid var(--border); border-radius: 8px;
       padding: 7px 10px 7px 32px;
       color: var(--text); font-family: inherit; font-size: 12.5px; outline: none;
@@ -60,7 +60,7 @@
       transition: background 0.18s;
       position: relative;
     }
-    .conv-item:hover { background: rgba(255,255,255,0.04); }
+    .conv-item:hover { background: rgb(var(--wash-rgb) / 0.04); }
     .conv-item.active { background: rgb(var(--primary-rgb) / 0.08); border-left: 3px solid var(--teal); padding-left: 13px; }
 
     .conv-avatar {
@@ -188,7 +188,7 @@
       display: flex; align-items: center; justify-content: center;
       transition: color 0.2s, background 0.2s; flex-shrink: 0;
     }
-    .chat-input-btn:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+    .chat-input-btn:hover { color: var(--text); background: rgb(var(--wash-rgb) / 0.06); }
     .chat-input-btn svg { width: 17px; height: 17px; }
     .chat-input {
       flex: 1; min-height: 36px; background: var(--card);
@@ -217,8 +217,8 @@
     [data-theme="light"] {
 }
     [data-theme="light"] body { background: var(--bg); }
-    [data-theme="light"] .conv-search { background: rgba(0,0,0,0.04); }
-    [data-theme="light"] .chat-input  { background: rgba(0,0,0,0.04); }
+    [data-theme="light"] .conv-search { background: rgb(var(--k-ink-rgb) / 0.04); }
+    [data-theme="light"] .chat-input  { background: rgb(var(--k-ink-rgb) / 0.04); }
     [data-theme="light"] .msg-row.buyer .msg-bubble { color: var(--text); }
 
     /* ── Send Payment Request button (seller chat toolbar) ── */
@@ -242,7 +242,7 @@
     [data-theme="light"] .payment-request-card {
       background: var(--surface);
       border: 1.5px solid rgb(var(--primary-rgb) / 0.2);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 8px rgb(var(--k-ink-rgb) / 0.08);
     }
     .pr-header {
       display: flex; align-items: center; gap: 8px;
@@ -265,7 +265,7 @@
     .pr-methods  { display: flex; gap: 6px; flex-wrap: wrap; }
     .pr-method-pill {
       font-size: 11px; font-weight: 600;
-      background: rgba(255,255,255,0.07); border: 1px solid var(--border);
+      background: rgb(var(--wash-rgb) / 0.07); border: 1px solid var(--border);
       border-radius: 100px; padding: 4px 10px; color: var(--muted2);
       display: inline-flex; align-items: center; gap: 5px;
     }
@@ -274,7 +274,7 @@
     }
     .pr-gcash { background: rgb(var(--k-gcash-rgb) / 0.15); border-color: rgb(var(--k-gcash-rgb) / 0.3); color: var(--k-gcash); }
     .pr-maya { background: rgb(var(--k-maya-rgb) / 0.15); border-color: rgb(var(--k-maya-rgb) / 0.3); color: var(--k-maya-leaf); }
-    .pr-bank { background: rgba(255,255,255,0.07); border-color: var(--border); color: var(--muted2); }
+    .pr-bank { background: rgb(var(--wash-rgb) / 0.07); border-color: var(--border); color: var(--muted2); }
 
     .pr-action { margin-top: 4px; }
     .pr-pay-btn {
@@ -300,13 +300,13 @@
       display: flex; justify-content: space-between; align-items: center;
       font-size: 12px; gap: 8px;
     }
-    .proof-detail-label { color: rgba(255,255,255,0.4); font-weight: 600; }
-    .proof-detail-val   { color: rgba(255,255,255,0.85); font-weight: 600; }
+    .proof-detail-label { color: rgb(var(--wash-rgb) / 0.4); font-weight: 600; }
+    .proof-detail-val   { color: rgb(var(--wash-rgb) / 0.85); font-weight: 600; }
     .proof-file-chip {
       display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+      background: rgb(var(--wash-rgb) / 0.07); border: 1px solid rgb(var(--wash-rgb) / 0.1);
       border-radius: 8px; padding: 5px 10px;
-      font-size: 11.5px; color: rgba(255,255,255,0.6);
+      font-size: 11.5px; color: rgb(var(--wash-rgb) / 0.6);
       font-weight: 600; margin-top: 2px;
     }
     .proof-actions { display: flex; gap: 8px; margin-top: 10px; }

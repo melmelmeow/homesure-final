@@ -12,7 +12,7 @@
   var root = document.documentElement;
 
   // Theme colours for the browser chrome (address bar on mobile). Same values as --bg.
-  var CHROME = { light: '#FBF6F0', dark: '#1E1230' };
+  var CHROME = { light: '#ECE4F4', dark: '#1E1230' };
 
   function read(store, k) { try { return store.getItem(k); } catch (e) { return null; } }
   function write(store, k, v) { try { store.setItem(k, v); } catch (e) { /* blocked */ } }

@@ -109,9 +109,9 @@
   // ────────────────────────────────────────────────────────────────────────
   function renderUserGrowthChart(period) {
     // Check if user is in "I hate my eyes" mode (light theme)
-    const gridColor = 'rgb(var(--text-rgb) / 0.05)';
-    const axisColor = 'rgb(var(--text-rgb) / 0.2)';
-    const labelColor = 'rgb(var(--text-rgb) / 0.78)';
+    const gridColor = 'var(--chart-grid, rgb(var(--text-rgb) / 0.05))';
+    const axisColor = 'var(--chart-axis, rgb(var(--text-rgb) / 0.2))';
+    const labelColor = 'var(--chart-text, rgb(var(--text-rgb) / 0.78))';
 
     const { labels, values, sub } = growthData[period];
     document.getElementById('userGrowthSub').textContent = sub;
@@ -196,7 +196,7 @@
       return el;
     });
     return `<svg viewBox="0 0 180 180" width="180" height="180">
-      <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="${stroke}"/>
+      <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke-width="${stroke}" style="stroke:var(--chart-track, rgb(var(--wash-rgb) / 0.05))"/>
       ${paths.join('')}
     </svg>`;
   }

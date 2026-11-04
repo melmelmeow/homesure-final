@@ -71,7 +71,7 @@
   height: 600px;
   background: var(--card);
   border-radius: 16px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 12px 40px rgb(var(--shade-rgb) / min(0.3, var(--shadow-cap, 1)));
   display: none;
   flex-direction: column;
   overflow: hidden;

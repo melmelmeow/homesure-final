@@ -148,7 +148,7 @@
          "Listings Management" — the longest label in any role — needs this much to fit. */
       .hs-sidebar:hover .hs-sidebar-panel {
         width: 228px;
-        box-shadow: 10px 0 32px rgba(0,0,0,0.3);
+        box-shadow: 10px 0 32px rgb(var(--shade-rgb) / min(0.3, var(--shadow-cap, 1)));
       }
 
       /* Labels: collapsed to zero width and faded out, then on hover each one slides in and fades
@@ -329,7 +329,7 @@
 
     .hs-divider {
       height: 1px;
-      background: rgba(255,255,255,0.09);
+      background: rgb(var(--wash-rgb) / 0.09);
       margin-bottom: 14px;
     }
 
@@ -386,7 +386,7 @@
       background: var(--k-cream);
       border-radius: 20px;
       transition: left 0.28s cubic-bezier(0.4,0,0.2,1);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+      box-shadow: 0 2px 6px rgb(var(--shade-rgb) / min(0.35, var(--shadow-cap, 1)));
       top: 50%;
       transform: translateY(-50%);
     }
@@ -422,7 +422,7 @@
     /* ── Mobile Drawer ── */
     .hs-sidebar-overlay {
       display: none; position: fixed; inset: 0; z-index: 490;
-      background: rgba(0,0,0,0.55); backdrop-filter: blur(2px);
+      background: rgb(var(--shade-rgb) / var(--overlay-a, 0.55)); backdrop-filter: blur(2px);
     }
     .hs-sidebar-overlay.active { display: block; }
 
@@ -475,6 +475,9 @@
       border-radius: 0 0 3px 3px;
     }
     .hs-bn-item:hover { color: rgba(255,255,255,0.88); }
+    /* Light: peach text on the plum bar is only about 3.7:1, too low for the 10px labels. The
+       active tab is cream instead, still marked by the indicator above it. Dark is unchanged. */
+    [data-theme="light"] .hs-bn-item.active { color: var(--k-cream); }
 
     @media (max-width: 768px) {
       .hs-sidebar { display: none !important; }

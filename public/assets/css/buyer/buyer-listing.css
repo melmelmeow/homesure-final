@@ -105,8 +105,8 @@
         inset: 0;
         background: linear-gradient(
           180deg,
-          rgba(0, 0, 0, 0.06) 0%,
-          rgba(0, 0, 0, 0.4) 100%
+          rgb(var(--shade-rgb) / 0.06) 0%,
+          rgb(var(--shade-rgb) / 0.4) 100%
         );
         pointer-events: none;
       }
@@ -346,8 +346,8 @@
         transition: fill 0.2s;
       }
       .save-btn:hover {
-        background: rgba(255, 255, 255, 0.05);
-        border-color: rgba(255, 255, 255, 0.18);
+        background: rgb(var(--wash-rgb) / 0.05);
+        border-color: rgb(var(--wash-rgb) / 0.18);
         color: var(--text);
         transform: translateY(-1px);
       }
@@ -540,7 +540,7 @@
         position: fixed;
         inset: 0;
         z-index: 999;
-        background: rgba(0, 0, 0, 0.6);
+        background: rgb(var(--shade-rgb) / var(--overlay-a, 0.6));
         backdrop-filter: blur(3px);
         align-items: center;
         justify-content: center;
@@ -575,7 +575,7 @@
       .success-icon {
         width: 48px;
         height: 48px;
-        background: rgba(255, 255, 255, 0.2);
+        background: rgb(var(--wash-rgb) / 0.2);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -619,7 +619,7 @@
 
       .modal-box {
         background: var(--surface-soft);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        border: 1px solid rgb(var(--wash-rgb) / 0.08);
         border-radius: 16px;
         padding: 28px 28px 24px;
         width: 100%;
@@ -647,7 +647,7 @@
       }
       .modal-close:hover {
         color: var(--text);
-        background: rgba(255, 255, 255, 0.07);
+        background: rgb(var(--wash-rgb) / 0.07);
       }
       .modal-close svg {
         width: 16px;
@@ -710,8 +710,8 @@
 
       .modal-textarea {
         width: 100%;
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgb(var(--shade-rgb) / 0.3);
+        border: 1px solid rgb(var(--wash-rgb) / 0.1);
         border-radius: 8px;
         padding: 10px 12px;
         color: var(--text);
@@ -745,8 +745,8 @@
         margin-top: 22px;
       }
       .modal-cancel {
-        background: rgba(255, 255, 255, 0.07);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgb(var(--wash-rgb) / 0.07);
+        border: 1px solid rgb(var(--wash-rgb) / 0.1);
         color: var(--muted2);
         border-radius: 8px;
         padding: 9px 18px;
@@ -757,7 +757,7 @@
         transition: background 0.2s;
       }
       .modal-cancel:hover {
-        background: rgba(255, 255, 255, 0.12);
+        background: rgb(var(--wash-rgb) / 0.12);
       }
       .modal-submit {
         background: var(--teal);
@@ -786,23 +786,28 @@
         color: var(--text);
       }
       [data-theme="light"] .content::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0, 0.12);
+        background: rgb(var(--k-ink-rgb) / 0.12);
       }
       [data-theme="light"] .modal-box {
         background: var(--surface);
-        border-color: rgba(0, 0, 0, 0.1);
+        border-color: var(--border);
       }
       [data-theme="light"] .modal-select,
       [data-theme="light"] .modal-textarea {
-        background: rgba(0, 0, 0, 0.04);
-        border-color: rgba(0, 0, 0, 0.12);
+        background: rgb(var(--k-ink-rgb) / 0.04);
+        border-color: var(--border);
       }
       [data-theme="light"] .modal-select option {
         background: var(--surface);
         color: var(--text);
       }
       [data-theme="light"] .modal-cancel {
-        background: rgba(0, 0, 0, 0.05);
-        border-color: rgba(0, 0, 0, 0.1);
+        background: rgb(var(--k-ink-rgb) / 0.05);
+        border-color: var(--border);
       }
     
+      /* Light: the request-viewing select is a form control on the modal, not a dark-glass chip. */
+      [data-theme="light"] .modal-select {
+        background: var(--surface);
+        border-color: var(--border);
+      }

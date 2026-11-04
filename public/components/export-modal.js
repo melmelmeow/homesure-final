@@ -14,7 +14,7 @@
       position: fixed;
       inset: 0;
       z-index: 1000;
-      background: rgba(0,0,0,0.7);
+      background: rgb(var(--shade-rgb) / var(--overlay-a, 0.7));
       backdrop-filter: blur(6px);
       align-items: center;
       justify-content: center;
@@ -28,13 +28,13 @@
     /* Export Modal */
     .hs-export-modal {
       background: var(--surface-soft);
-      border: 1.5px solid rgba(255,255,255,0.08);
+      border: 1.5px solid rgb(var(--wash-rgb) / 0.08);
       border-radius: 18px;
       width: 100%;
       max-width: 520px;
       overflow: hidden;
       animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      box-shadow: 0 20px 60px rgb(var(--shade-rgb) / min(0.5, var(--shadow-cap, 1)));
     }
 
     /* Header */
@@ -73,25 +73,25 @@
     }
     .hs-export-title-text p {
       font-size: 12px;
-      color: rgba(255,255,255,0.5);
+      color: rgb(var(--wash-rgb) / 0.5);
       margin: 2px 0 0;
     }
     .hs-export-close {
-      background: rgba(255,255,255,0.06);
+      background: rgb(var(--wash-rgb) / 0.06);
       border: none;
       border-radius: 8px;
       width: 32px;
       height: 32px;
       cursor: pointer;
-      color: rgba(255,255,255,0.5);
+      color: rgb(var(--wash-rgb) / 0.5);
       display: flex;
       align-items: center;
       justify-content: center;
       transition: all 0.2s;
     }
     .hs-export-close:hover {
-      background: rgba(255,255,255,0.12);
-      color: rgba(255,255,255,0.8);
+      background: rgb(var(--wash-rgb) / 0.12);
+      color: rgb(var(--wash-rgb) / 0.8);
     }
 
     /* Body */
@@ -106,7 +106,7 @@
     .hs-export-label {
       font-size: 11.5px;
       font-weight: 700;
-      color: rgba(255,255,255,0.5);
+      color: rgb(var(--wash-rgb) / 0.5);
       text-transform: uppercase;
       letter-spacing: 0.05em;
       margin-bottom: 10px;
@@ -119,7 +119,7 @@
     }
     .hs-export-format {
       background: var(--surface-soft);
-      border: 2px solid rgba(255,255,255,0.08);
+      border: 2px solid rgb(var(--wash-rgb) / 0.08);
       border-radius: 12px;
       padding: 16px 12px;
       cursor: pointer;
@@ -160,7 +160,7 @@
     }
     .hs-export-format-desc {
       font-size: 10.5px;
-      color: rgba(255,255,255,0.4);
+      color: rgb(var(--wash-rgb) / 0.4);
       line-height: 1.4;
     }
 
@@ -172,7 +172,7 @@
     }
     .hs-export-input {
       background: var(--surface-soft);
-      border: 1.5px solid rgba(255,255,255,0.08);
+      border: 1.5px solid rgb(var(--wash-rgb) / 0.08);
       border-radius: 10px;
       padding: 10px 14px;
       color: var(--text);
@@ -190,7 +190,7 @@
       display: flex;
       gap: 10px;
       padding: 18px 22px;
-      border-top: 1px solid rgba(255,255,255,0.07);
+      border-top: 1px solid rgb(var(--wash-rgb) / 0.07);
       background: var(--surface);
     }
     .hs-export-btn {
@@ -206,12 +206,12 @@
     }
     .hs-export-btn-cancel {
       background: transparent;
-      border: 1.5px solid rgba(255,255,255,0.12);
-      color: rgba(255,255,255,0.6);
+      border: 1.5px solid rgb(var(--wash-rgb) / 0.12);
+      color: rgb(var(--wash-rgb) / 0.6);
     }
     .hs-export-btn-cancel:hover {
-      border-color: rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.8);
+      border-color: rgb(var(--wash-rgb) / 0.2);
+      color: rgb(var(--wash-rgb) / 0.8);
     }
     .hs-export-btn-export {
       background: var(--primary);
@@ -259,7 +259,7 @@
     }
     .hs-export-loading-desc {
       font-size: 12px;
-      color: rgba(255,255,255,0.5);
+      color: rgb(var(--wash-rgb) / 0.5);
     }
 
     /* Success Notification */
@@ -271,7 +271,7 @@
       color: var(--on-primary);
       padding: 16px 20px;
       border-radius: 12px;
-      box-shadow: 0 8px 24px rgb(var(--primary-rgb) / 0.4), 0 2px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 24px rgb(var(--primary-rgb) / 0.4), 0 2px 8px rgb(var(--shade-rgb) / min(0.2, var(--shadow-cap, 1)));
       display: none;
       align-items: center;
       gap: 12px;
@@ -291,7 +291,7 @@
     .hs-export-notif-icon {
       width: 24px;
       height: 24px;
-      background: rgba(255,255,255,0.25);
+      background: rgb(var(--wash-rgb) / 0.25);
       border-radius: 50%;
       display: flex;
       align-items: center;

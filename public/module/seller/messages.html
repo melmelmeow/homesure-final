@@ -48,7 +48,7 @@
     -webkit-appearance: none;
     width: 18px;
     height: 18px;
-    border: 2px solid rgba(255,255,255,0.2);
+    border: 2px solid rgb(var(--wash-rgb) / 0.2);
     border-radius: 4px;
     background: transparent;
     cursor: pointer;
@@ -83,7 +83,7 @@
   }
 
   form::-webkit-scrollbar-track {
-    background: rgba(255,255,255,0.03);
+    background: rgb(var(--wash-rgb) / 0.03);
     border-radius: 10px;
   }
 
@@ -149,8 +149,8 @@
 </div>
 
 <!-- ── Reject Confirmation Modal ─────────────────────────────────── -->
-<div id="rejectConfirmModal" style="display:none;position:fixed;inset:0;z-index:950;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;">
-  <div style="background:var(--surface-soft);border:1.5px solid rgb(var(--danger-rgb) / 0.3);border-radius:18px;width:100%;max-width:480px;overflow:hidden;animation:fadeUp .25s ease both;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+<div id="rejectConfirmModal" style="display:none;position:fixed;inset:0;z-index:950;background:rgb(var(--shade-rgb) / 0.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;">
+  <div style="background:var(--surface-soft);border:1.5px solid rgb(var(--danger-rgb) / 0.3);border-radius:18px;width:100%;max-width:480px;overflow:hidden;animation:fadeUp .25s ease both;box-shadow:0 20px 60px rgb(var(--shade-rgb) / min(0.5, var(--shadow-cap, 1)));">
 
     <!-- Warning Header -->
     <div style="background:linear-gradient(135deg, rgb(var(--danger-rgb) / 0.15) 0%, rgb(var(--danger-rgb) / 0.1) 100%);padding:20px 22px;border-bottom:1px solid rgb(var(--danger-rgb) / 0.2);display:flex;align-items:center;gap:12px;">
@@ -173,18 +173,18 @@
         The buyer has already paid <strong style="color:var(--primary);">₱15,000</strong>.
       </div>
 
-      <div style="background:var(--surface);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;margin-bottom:16px;">
-        <div style="font-size:13px;color:rgba(255,255,255,0.85);font-weight:600;margin-bottom:10px;">If you REJECT this payment:</div>
+      <div style="background:var(--surface);border:1px solid rgb(var(--wash-rgb) / 0.08);border-radius:12px;padding:16px;margin-bottom:16px;">
+        <div style="font-size:13px;color:rgb(var(--wash-rgb) / 0.85);font-weight:600;margin-bottom:10px;">If you REJECT this payment:</div>
         <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;">
-          <li style="display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:rgba(255,255,255,0.7);">
+          <li style="display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:rgb(var(--wash-rgb) / 0.7);">
             <span style="color:var(--danger);flex-shrink:0;">•</span>
             Money will be <strong style="color:var(--danger);">AUTO-REFUNDED</strong> from escrow to buyer
           </li>
-          <li style="display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:rgba(255,255,255,0.7);">
+          <li style="display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:rgb(var(--wash-rgb) / 0.7);">
             <span style="color:var(--danger);flex-shrink:0;">•</span>
             Buyer will be notified to resubmit correct proof
           </li>
-          <li style="display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:rgba(255,255,255,0.7);">
+          <li style="display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:rgb(var(--wash-rgb) / 0.7);">
             <span style="color:var(--danger);flex-shrink:0;">•</span>
             Transaction will be marked as <strong>"Refund Pending"</strong>
           </li>
@@ -200,8 +200,8 @@
     </div>
 
     <!-- Action Buttons -->
-    <div style="display:flex;gap:10px;padding:18px 22px;border-top:1px solid rgba(255,255,255,0.07);background:var(--surface);">
-      <button onclick="closeRejectModal()" style="flex:1;background:transparent;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:12px 20px;color:rgba(255,255,255,0.6);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;">
+    <div style="display:flex;gap:10px;padding:18px 22px;border-top:1px solid rgb(var(--wash-rgb) / 0.07);background:var(--surface);">
+      <button onclick="closeRejectModal()" style="flex:1;background:transparent;border:1.5px solid rgb(var(--wash-rgb) / 0.12);border-radius:10px;padding:12px 20px;color:rgb(var(--wash-rgb) / 0.6);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;">
         Cancel
       </button>
       <button onclick="proceedReject()" style="flex:1;background:var(--danger);border:none;border-radius:10px;padding:12px 20px;color:var(--on-primary);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgb(var(--danger-rgb) / 0.3);">
@@ -213,22 +213,22 @@
 </div>
 
 <!-- ── Payment Request Modal ─────────────────────────────────── -->
-<div class="modal-backdrop" id="payReqModal" style="display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)closePayReqModal()">
-  <div style="background:var(--surface-soft);border:1px solid rgba(255,255,255,0.07);border-radius:18px;width:100%;max-width:420px;overflow:hidden;animation:fadeUp .22s ease both;">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:20px 22px 16px;border-bottom:1px solid rgba(255,255,255,0.07);">
+<div class="modal-backdrop" id="payReqModal" style="display:none;position:fixed;inset:0;z-index:900;background:rgb(var(--shade-rgb) / 0.65);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)closePayReqModal()">
+  <div style="background:var(--surface-soft);border:1px solid rgb(var(--wash-rgb) / 0.07);border-radius:18px;width:100%;max-width:420px;overflow:hidden;animation:fadeUp .22s ease both;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:20px 22px 16px;border-bottom:1px solid rgb(var(--wash-rgb) / 0.07);">
       <div>
         <div style="font-size:16px;font-weight:800;color:var(--text);">Send Payment Request</div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:3px;" id="prPropertyName">—</div>
+        <div style="font-size:12px;color:rgb(var(--wash-rgb) / 0.4);margin-top:3px;" id="prPropertyName">—</div>
       </div>
-      <button onclick="closePayReqModal()" style="background:rgba(255,255,255,0.06);border:none;border-radius:8px;width:30px;height:30px;cursor:pointer;color:rgba(255,255,255,0.5);display:flex;align-items:center;justify-content:center;">
+      <button onclick="closePayReqModal()" style="background:rgb(var(--wash-rgb) / 0.06);border:none;border-radius:8px;width:30px;height:30px;cursor:pointer;color:rgb(var(--wash-rgb) / 0.5);display:flex;align-items:center;justify-content:center;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
     <form onsubmit="sendPaymentRequest(event)" style="padding:20px 22px;display:flex;flex-direction:column;gap:14px;max-height:calc(90vh - 150px);overflow-y:auto;">
       <div style="display:flex;flex-direction:column;gap:6px;">
-        <label style="font-size:11.5px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.05em;">Payment Type</label>
+        <label style="font-size:11.5px;font-weight:700;color:rgb(var(--wash-rgb) / 0.5);text-transform:uppercase;letter-spacing:.05em;">Payment Type</label>
         <select id="prPaymentType" required
-          style="background:var(--surface-soft);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:10px 14px;color:var(--text);font-family:inherit;font-size:13.5px;outline:none;width:100%;cursor:pointer;">
+          style="background:var(--surface-soft);border:1px solid rgb(var(--wash-rgb) / 0.07);border-radius:10px;padding:10px 14px;color:var(--text);font-family:inherit;font-size:13.5px;outline:none;width:100%;cursor:pointer;">
           <option value="">Select payment type</option>
           <option value="security">Security Deposit</option>
           <option value="rent">Rent Payment</option>
@@ -236,24 +236,24 @@
         </select>
       </div>
       <div style="display:flex;flex-direction:column;gap:6px;">
-        <label style="font-size:11.5px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.05em;">Amount (₱)</label>
+        <label style="font-size:11.5px;font-weight:700;color:rgb(var(--wash-rgb) / 0.5);text-transform:uppercase;letter-spacing:.05em;">Amount (₱)</label>
         <input id="prAmount" type="number" min="1" required
-          style="background:var(--surface-soft);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:10px 14px;color:var(--text);font-family:inherit;font-size:13.5px;outline:none;width:100%;" />
+          style="background:var(--surface-soft);border:1px solid rgb(var(--wash-rgb) / 0.07);border-radius:10px;padding:10px 14px;color:var(--text);font-family:inherit;font-size:13.5px;outline:none;width:100%;" />
       </div>
       <div style="display:flex;flex-direction:column;gap:6px;">
-        <label style="font-size:11.5px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.05em;">Period / Month</label>
+        <label style="font-size:11.5px;font-weight:700;color:rgb(var(--wash-rgb) / 0.5);text-transform:uppercase;letter-spacing:.05em;">Period / Month</label>
         <input id="prPeriod" type="text" placeholder="e.g. June 2026" required
-          style="background:var(--surface-soft);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:10px 14px;color:var(--text);font-family:inherit;font-size:13.5px;outline:none;width:100%;" />
+          style="background:var(--surface-soft);border:1px solid rgb(var(--wash-rgb) / 0.07);border-radius:10px;padding:10px 14px;color:var(--text);font-family:inherit;font-size:13.5px;outline:none;width:100%;" />
       </div>
 
       <!-- Payment Methods Section -->
-      <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:14px;">
-        <label style="font-size:11.5px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;display:block;">Your Payment Receiving Methods</label>
+      <div style="border-top:1px solid rgb(var(--wash-rgb) / 0.07);padding-top:14px;">
+        <label style="font-size:11.5px;font-weight:700;color:rgb(var(--wash-rgb) / 0.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;display:block;">Your Payment Receiving Methods</label>
 
         <!-- E-Wallet Options -->
         <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px;">
           <!-- GCash -->
-          <div style="background:var(--surface-soft);border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 14px;">
+          <div style="background:var(--surface-soft);border:1.5px solid rgb(var(--wash-rgb) / 0.08);border-radius:10px;padding:12px 14px;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
               <input type="checkbox" id="enableGcash">
               <div style="width:24px;height:24px;background:var(--k-gcash);border-radius:6px;display:flex;align-items:center;justify-content:center;">
@@ -266,11 +266,11 @@
               <input id="gcashNumber" type="tel" inputmode="numeric" placeholder="9XX XXX XXXX" maxlength="10" />
             </div>
             <input id="gcashName" type="text" placeholder="Account Name"
-              style="background:var(--surface);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:8px 12px;color:var(--text);font-family:inherit;font-size:12.5px;outline:none;width:100%;margin-top:6px;display:none;" />
+              style="background:var(--surface);border:1px solid rgb(var(--wash-rgb) / 0.06);border-radius:8px;padding:8px 12px;color:var(--text);font-family:inherit;font-size:12.5px;outline:none;width:100%;margin-top:6px;display:none;" />
           </div>
 
           <!-- Maya -->
-          <div style="background:var(--surface-soft);border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 14px;">
+          <div style="background:var(--surface-soft);border:1.5px solid rgb(var(--wash-rgb) / 0.08);border-radius:10px;padding:12px 14px;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
               <input type="checkbox" id="enableMaya">
               <div style="width:24px;height:24px;background:var(--k-maya-leaf);border-radius:6px;display:flex;align-items:center;justify-content:center;">
@@ -283,11 +283,11 @@
               <input id="mayaNumber" type="tel" inputmode="numeric" placeholder="9XX XXX XXXX" maxlength="10" />
             </div>
             <input id="mayaName" type="text" placeholder="Account Name"
-              style="background:var(--surface);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:8px 12px;color:var(--text);font-family:inherit;font-size:12.5px;outline:none;width:100%;margin-top:6px;display:none;" />
+              style="background:var(--surface);border:1px solid rgb(var(--wash-rgb) / 0.06);border-radius:8px;padding:8px 12px;color:var(--text);font-family:inherit;font-size:12.5px;outline:none;width:100%;margin-top:6px;display:none;" />
           </div>
 
           <!-- Credit/Debit Card -->
-          <div style="background:var(--surface-soft);border:1.5px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 14px;">
+          <div style="background:var(--surface-soft);border:1.5px solid rgb(var(--wash-rgb) / 0.08);border-radius:10px;padding:12px 14px;">
             <div style="display:flex;align-items:center;gap:8px;">
               <input type="checkbox" id="enableCard" checked>
               <div style="width:24px;height:24px;background:var(--info);border-radius:6px;display:flex;align-items:center;justify-content:center;">
@@ -298,13 +298,13 @@
               </div>
               <label for="enableCard" style="font-size:13px;font-weight:700;color:var(--text);cursor:pointer;flex:1;">Credit/Debit Card</label>
             </div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:6px;padding-left:32px;">Manual bank deposit or online transfer</div>
+            <div style="font-size:11px;color:rgb(var(--wash-rgb) / 0.4);margin-top:6px;padding-left:32px;">Manual bank deposit or online transfer</div>
           </div>
         </div>
       </div>
-      <div style="display:flex;gap:10px;justify-content:flex-end;padding-top:8px;border-top:1px solid rgba(255,255,255,0.07);margin-top:4px;">
+      <div style="display:flex;gap:10px;justify-content:flex-end;padding-top:8px;border-top:1px solid rgb(var(--wash-rgb) / 0.07);margin-top:4px;">
         <button type="button" onclick="closePayReqModal()"
-          style="background:transparent;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 20px;color:rgba(255,255,255,0.6);font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;">
+          style="background:transparent;border:1.5px solid rgb(var(--wash-rgb) / 0.12);border-radius:10px;padding:10px 20px;color:rgb(var(--wash-rgb) / 0.6);font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;">
           Cancel
         </button>
         <button type="submit"

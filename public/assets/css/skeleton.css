@@ -7,9 +7,9 @@
 .skeleton {
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.04) 0%,
-    rgba(255, 255, 255, 0.08) 50%,
-    rgba(255, 255, 255, 0.04) 100%
+    rgb(var(--wash-rgb) / 0.04) 0%,
+    rgb(var(--wash-rgb) / 0.08) 50%,
+    rgb(var(--wash-rgb) / 0.04) 100%
   );
   background-size: 200% 100%;
   animation: skeleton-loading 1.5s ease-in-out infinite;
@@ -21,9 +21,9 @@
 [data-theme="light"] .skeleton {
   background: linear-gradient(
     90deg,
-    rgba(0, 0, 0, 0.06) 0%,
-    rgba(0, 0, 0, 0.12) 50%,
-    rgba(0, 0, 0, 0.06) 100%
+    var(--surface-soft) 0%,
+    var(--border) 50%,
+    var(--surface-soft) 100%
   );
 }
 
@@ -98,7 +98,7 @@
 /* Property Card Skeleton */
 .skeleton-property-card {
   background: var(--surface-soft);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgb(var(--wash-rgb) / 0.07);
   border-radius: 16px;
   padding: 0;
   overflow: hidden;
@@ -122,7 +122,7 @@
   align-items: center;
   gap: 12px;
   padding: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid rgb(var(--wash-rgb) / 0.07);
 }
 
 .skeleton-message-content {
@@ -138,14 +138,14 @@
   grid-template-columns: 2fr 1fr 1fr 1fr 80px;
   gap: 16px;
   padding: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid rgb(var(--wash-rgb) / 0.07);
   align-items: center;
 }
 
 /* Dashboard Card Skeleton */
 .skeleton-stat-card {
   background: var(--surface-soft);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgb(var(--wash-rgb) / 0.07);
   border-radius: 16px;
   padding: 20px;
   display: flex;
@@ -160,7 +160,7 @@
   gap: 16px;
   padding: 20px;
   background: var(--surface-soft);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgb(var(--wash-rgb) / 0.07);
   border-radius: 16px;
 }
 
@@ -174,7 +174,7 @@
 /* Payment Card Skeleton */
 .skeleton-payment-card {
   background: var(--surface-soft);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgb(var(--wash-rgb) / 0.07);
   border-radius: 16px;
   padding: 20px;
   display: flex;
@@ -188,7 +188,7 @@
   align-items: center;
   gap: 12px;
   padding: 14px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid rgb(var(--wash-rgb) / 0.07);
 }
 
 .skeleton-conv-info {

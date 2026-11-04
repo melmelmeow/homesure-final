@@ -60,17 +60,17 @@
     }
     .label-optional {
       font-size: 10px; font-weight: 600; color: var(--muted);
-      background: rgba(255,255,255,0.06); border-radius: 4px;
+      background: rgb(var(--wash-rgb) / 0.06); border-radius: 4px;
       padding: 1px 6px; text-transform: none; letter-spacing: 0;
     }
     .field input, .field select, .field textarea {
-      width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border);
+      width: 100%; background: rgb(var(--shade-rgb) / 0.2); border: 1px solid var(--border);
       border-radius: 9px; padding: 10px 14px;
       color: var(--text); font-family: inherit; font-size: 13px; outline: none;
       transition: border-color 0.2s, background 0.2s;
     }
     .field input:focus, .field select:focus, .field textarea:focus {
-      border-color: rgb(var(--primary-rgb) / 0.5); background: rgba(0,0,0,0.28);
+      border-color: rgb(var(--primary-rgb) / 0.5); background: rgb(var(--shade-rgb) / 0.28);
     }
     .field input::placeholder, .field textarea::placeholder { color: var(--muted); }
     .field select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.4)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 34px; }
@@ -141,14 +141,14 @@
     .toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
     .toggle-track {
       position: absolute; inset: 0; border-radius: 25px;
-      background: rgba(255,255,255,0.1); border: 1px solid var(--border);
+      background: rgb(var(--wash-rgb) / 0.1); border: 1px solid var(--border);
       cursor: pointer; transition: background 0.25s, border-color 0.25s;
     }
     .toggle-track::before {
       content: ''; position: absolute;
       width: 19px; height: 19px; border-radius: 50%;
       background: var(--surface); top: 2px; left: 2px;
-      transition: transform 0.25s; box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+      transition: transform 0.25s; box-shadow: 0 1px 4px rgb(var(--shade-rgb) / min(0.3, var(--shadow-cap, 1)));
     }
     .toggle input:checked + .toggle-track { background: var(--teal); border-color: var(--teal); }
     .toggle input:checked + .toggle-track::before { transform: translateX(19px); }
@@ -174,11 +174,11 @@
 
     /* ── Upload zone ── */
     .upload-zone {
-      border: 1.5px dashed rgba(255,255,255,0.18); border-radius: 11px;
+      border: 1.5px dashed rgb(var(--wash-rgb) / 0.18); border-radius: 11px;
       padding: 30px 20px;
       display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
       cursor: pointer; text-align: center;
-      background: rgba(255,255,255,0.02);
+      background: rgb(var(--wash-rgb) / 0.02);
       transition: border-color 0.2s, background 0.2s;
     }
     .upload-zone:hover { border-color: var(--teal-mid); background: var(--teal-faint); }
@@ -206,7 +206,7 @@
       width: 20px; height: 20px; border-radius: 50%;
       background: rgba(0,0,0,0.7); border: none; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      color: var(--text); font-size: 11px; font-weight: 700; transition: background 0.2s;
+      color: var(--k-cream); font-size: 11px; font-weight: 700; transition: background 0.2s;
     }
     .photo-thumb-remove:hover { background: var(--danger); }
 
@@ -220,11 +220,11 @@
     .doc-upload-desc { font-size: 12.5px; color: var(--muted2); line-height: 1.5; }
     .doc-upload-desc strong { color: var(--teal); }
     .doc-upload-box {
-      border: 1.5px dashed rgba(255,255,255,0.18); border-radius: 11px;
+      border: 1.5px dashed rgb(var(--wash-rgb) / 0.18); border-radius: 11px;
       padding: 20px 18px;
       display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 9px;
       cursor: pointer; text-align: center;
-      background: rgba(255,255,255,0.02);
+      background: rgb(var(--wash-rgb) / 0.02);
       transition: border-color 0.2s, background 0.2s;
     }
     .doc-upload-box:hover { border-color: var(--teal-mid); background: var(--teal-faint); }
@@ -315,7 +315,7 @@
       border-radius: 11px; padding: 13px 18px;
       display: flex; align-items: center; gap: 10px;
       font-size: 13px; font-weight: 600; color: var(--text);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+      box-shadow: 0 8px 30px rgb(var(--shade-rgb) / min(0.4, var(--shadow-cap, 1)));
       opacity: 0; transform: translateY(10px);
       transition: opacity 0.25s, transform 0.25s; pointer-events: none;
     }
@@ -328,7 +328,7 @@
     /* ── Success modal ── */
     .modal-backdrop {
       display: none; position: fixed; inset: 0; z-index: 9999;
-      background: rgba(0,0,0,0.65); backdrop-filter: blur(6px);
+      background: rgb(var(--shade-rgb) / var(--overlay-a, 0.65)); backdrop-filter: blur(6px);
       align-items: center; justify-content: center;
     }
     .modal-backdrop.open { display: flex; }
@@ -338,7 +338,7 @@
       width: calc(100% - 40px); max-width: 440px;
       display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px;
       animation: modalIn 0.35s ease both;
-      box-shadow: 0 24px 70px rgba(0,0,0,0.6);
+      box-shadow: 0 24px 70px rgb(var(--shade-rgb) / min(0.6, var(--shadow-cap, 1)));
     }
     .success-modal-icon {
       width: 72px; height: 72px; border-radius: 50%;
@@ -363,7 +363,7 @@
     [data-theme="light"] body { background: var(--bg); }
     [data-theme="light"] .field input,
     [data-theme="light"] .field select,
-    [data-theme="light"] .field textarea { background: rgba(0,0,0,0.04); }
+    [data-theme="light"] .field textarea { background: rgb(var(--k-ink-rgb) / 0.04); }
     [data-theme="light"] .field input:focus,
     [data-theme="light"] .field select:focus,
     [data-theme="light"] .field textarea:focus { background: var(--surface); }
@@ -375,26 +375,26 @@
       -webkit-text-fill-color: var(--text) !important;
       caret-color: var(--text);
     }
-    [data-theme="light"] .upload-zone { background: rgba(0,0,0,0.02); border-color: rgba(0,0,0,0.15); }
+    [data-theme="light"] .upload-zone { background: rgb(var(--k-ink-rgb) / 0.02); border-color: var(--border); }
     [data-theme="light"] .upload-zone:hover { background: var(--teal-faint); }
-    [data-theme="light"] .doc-upload-box { background: rgba(0,0,0,0.02); border-color: rgba(0,0,0,0.15); }
+    [data-theme="light"] .doc-upload-box { background: rgb(var(--k-ink-rgb) / 0.02); border-color: var(--border); }
     [data-theme="light"] .doc-upload-box:hover { background: var(--teal-faint); }
     [data-theme="light"] .doc-upload-box.has-file { background: var(--teal-faint); }
-    [data-theme="light"] .toggle-track { background: rgba(0,0,0,0.1); }
-    [data-theme="light"] .pill-toggle { background: rgba(0,0,0,0.03); color: var(--text); border-color: rgba(0,0,0,0.15); }
+    [data-theme="light"] .toggle-track { background: rgb(var(--k-ink-rgb) / 0.1); }
+    [data-theme="light"] .pill-toggle { background: rgb(var(--k-ink-rgb) / 0.03); color: var(--text); border-color: var(--border); }
     [data-theme="light"] .pill-toggle.active,
     .pill-toggle.active {
       background: var(--teal) !important;
       border-color: var(--teal) !important;
       color: var(--on-primary) !important;
     }
-    [data-theme="light"] .toast { box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
-    [data-theme="light"] .success-modal { box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+    [data-theme="light"] .toast { box-shadow: 0 8px 24px rgb(var(--k-ink-rgb) / 0.1); }
+    [data-theme="light"] .success-modal { box-shadow: 0 20px 60px rgb(var(--k-ink-rgb) / 0.12); }
     [data-theme="light"] .btn-primary {
       background: var(--primary);
     }
     [data-theme="light"] .content::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--primary), var(--primary)); }
-    [data-theme="light"] .label-optional { background: rgba(0,0,0,0.07); }
+    [data-theme="light"] .label-optional { background: rgb(var(--k-ink-rgb) / 0.07); }
 
     /* ══════════════════════════════════════════════════════════════════════════════
        DOCUMENT UPLOAD - CAMERA CAPTURE & MULTI-PHOTO
@@ -482,7 +482,7 @@
       bottom: 6px;
       left: 6px;
       background: rgba(0, 0, 0, 0.7);
-      color: var(--text);
+      color: var(--k-cream);
       font-size: 11px;
       font-weight: 600;
       padding: 3px 8px;
@@ -508,7 +508,7 @@
 
     [data-theme="light"] .doc-photo-item {
       background: var(--surface-soft);
-      border-color: rgba(0, 0, 0, 0.1);
+      border-color: var(--border);
     }
 
     /* ══════════════════════════════════════════════════════════════════════════════

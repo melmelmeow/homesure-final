@@ -32,7 +32,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   display: flex; flex-direction: column; gap: 6px;
   transition: transform .18s, box-shadow .18s;
 }
-.stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+.stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgb(var(--shade-rgb) / min(0.2, var(--shadow-cap, 1))); }
 .stat-icon {
   width: 36px; height: 36px; border-radius: 9px;
   display: flex; align-items: center; justify-content: center; margin-bottom: 4px;
@@ -75,7 +75,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 }
 .section-count {
   font-size: 12px; font-weight: 700; color: var(--muted);
-  background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+  background: rgb(var(--wash-rgb) / 0.06); border: 1px solid var(--border);
   padding: 3px 10px; border-radius: 99px;
 }
 .section-count:empty { display: none; }
@@ -92,7 +92,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   text-align: left; padding: 12px 16px;
   font-size: 11px; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.06em; color: var(--muted);
-  background: rgba(255,255,255,0.02);
+  background: rgb(var(--wash-rgb) / 0.02);
   border-bottom: 1px solid var(--border);
   white-space: nowrap;
 }
@@ -101,7 +101,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   vertical-align: middle;
 }
 .pay-table tbody tr:last-child td { border-bottom: none; }
-.pay-table tbody tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
+.pay-table tbody tr:nth-child(even) td { background: rgb(var(--wash-rgb) / 0.015); }
 .pay-table tbody tr:hover td { background: rgb(var(--primary-rgb) / 0.04); }
 .table-empty td {
   text-align: center; color: var(--muted); padding: 48px 16px !important;
@@ -146,7 +146,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   font-family: inherit; font-size: 12px; font-weight: 600;
   cursor: pointer; transition: background .18s, color .18s; white-space: nowrap;
 }
-.btn-view:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+.btn-view:hover { background: rgb(var(--wash-rgb) / 0.06); color: var(--text); }
 
 /* ── Toast ── */
 .toast {
@@ -155,7 +155,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   border-radius: 12px; padding: 13px 20px;
   display: flex; align-items: center; gap: 11px;
   font-size: 13px; font-weight: 600; color: var(--text);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  box-shadow: 0 8px 30px rgb(var(--shade-rgb) / min(0.4, var(--shadow-cap, 1)));
   opacity: 0; pointer-events: none;
   transition: opacity 0.3s, transform 0.3s; z-index: 9999;
   white-space: normal; text-align: center; max-width: calc(100vw - 40px);
@@ -202,7 +202,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgb(var(--shade-rgb) / var(--overlay-a, 0.7));
   backdrop-filter: blur(6px);
   z-index: 9000;
   align-items: center;
@@ -224,7 +224,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 60px rgb(var(--shade-rgb) / min(0.5, var(--shadow-cap, 1)));
   animation: slideUp 0.3s ease;
 }
 
@@ -339,7 +339,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 }
 
 .deduction-info {
-  background: rgba(255,255,255,0.03);
+  background: rgb(var(--wash-rgb) / 0.03);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 16px;
@@ -426,7 +426,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   color: var(--muted);
   font-style: italic;
   padding: 8px 12px;
-  background: rgba(255,255,255,0.02);
+  background: rgb(var(--wash-rgb) / 0.02);
   border-left: 3px solid var(--border);
   border-radius: 4px;
   margin-bottom: 12px;
@@ -494,7 +494,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 }
 [data-theme="light"] body { background: var(--bg); }
 [data-theme="light"] .filter-select option { background: var(--surface); color: var(--text); }
-[data-theme="light"] .toast { box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+[data-theme="light"] .toast { box-shadow: 0 8px 24px rgb(var(--k-ink-rgb) / 0.1); }
 
 /* ── Responsive ── */
 @media (max-width: 1100px) { .stat-row { grid-template-columns: repeat(2, 1fr); } }

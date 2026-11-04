@@ -100,18 +100,20 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 }
 .ki-change.positive { background: var(--primary); color: var(--on-primary); }
 .ki-change.neutral  { background: var(--text-muted); color: var(--text); }
+/* Light: ink on the muted fill was 2.2:1. A soft chip with muted text instead (5.1:1). */
+[data-theme="light"] .ki-change.neutral { background: var(--surface-soft); color: var(--text-muted); }
 
 .chart-card {
   background: var(--card); border: 1px solid var(--border);
   border-radius: var(--radius); overflow: hidden;
   box-shadow: var(--shadow); transition: border-color 0.2s;
 }
-.chart-card:hover { border-color: rgba(255,255,255,0.12); }
+.chart-card:hover { border-color: rgb(var(--wash-rgb) / 0.12); }
 
 .chart-header {
   display: flex; align-items: center; justify-content: space-between;
   padding: 16px 20px; border-bottom: 1px solid var(--border);
-  background: rgba(255,255,255,0.015);
+  background: rgb(var(--wash-rgb) / 0.015);
 }
 .chart-title { font-size: 13.5px; font-weight: 700; color: var(--text); }
 
@@ -129,7 +131,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .bar-item  { display: flex; flex-direction: column; gap: 5px; }
 .bar-item-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted2); }
 .bar-item-label span:last-child { font-weight: 700; color: var(--text); }
-.bar-track { height: 7px; background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden; }
+.bar-track { height: 7px; background: rgb(var(--wash-rgb) / 0.06); border-radius: 99px; overflow: hidden; }
 .bar-fill  { height: 100%; border-radius: 99px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
 
 /* ── Badges (used in table) ── */
@@ -147,7 +149,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .table-card-header {
   display: flex; align-items: center; justify-content: space-between;
   padding: 16px 20px; border-bottom: 1px solid var(--border);
-  background: rgba(255,255,255,0.015);
+  background: rgb(var(--wash-rgb) / 0.015);
 }
 .table-card-title { font-size: 13.5px; font-weight: 700; color: var(--text); }
 
@@ -156,13 +158,13 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .data-table th {
   padding: 12px 16px; text-align: left; font-size: 11px; font-weight: 700;
   color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em;
-  background: rgba(255,255,255,0.015);
+  background: rgb(var(--wash-rgb) / 0.015);
 }
 .data-table tbody tr {
   border-bottom: 1px solid var(--border); transition: background 0.18s;
 }
 .data-table tbody tr:last-child { border-bottom: none; }
-.data-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+.data-table tbody tr:hover { background: rgb(var(--wash-rgb) / 0.03); }
 .data-table td { padding: 12px 16px; font-size: 13px; color: var(--text); }
 .data-table td:first-child { font-weight: 600; }
 
@@ -183,7 +185,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   position: absolute; top: calc(100% + 6px); right: 0;
   background: var(--card2); border: 1px solid var(--border);
   border-radius: 10px; padding: 5px; min-width: 120px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 24px rgb(var(--shade-rgb) / min(0.3, var(--shadow-cap, 1)));
   opacity: 0; pointer-events: none; transform: translateY(-6px);
   transition: opacity 0.18s, transform 0.18s; z-index: 50;
 }
@@ -199,8 +201,8 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 [data-theme="light"] {
 }
 [data-theme="light"] body { background: var(--bg); }
-[data-theme="light"] .bar-track { background: rgba(0,0,0,0.06); }
-[data-theme="light"] .chart-header { background: rgba(0,0,0,0.02); }
-[data-theme="light"] .table-card-header { background: rgba(0,0,0,0.02); }
-[data-theme="light"] .data-table th { background: rgba(0,0,0,0.02); }
-[data-theme="light"] .data-table tbody tr:hover { background: rgba(0,0,0,0.02); }
+[data-theme="light"] .bar-track { background: rgb(var(--k-ink-rgb) / 0.06); }
+[data-theme="light"] .chart-header { background: rgb(var(--k-ink-rgb) / 0.02); }
+[data-theme="light"] .table-card-header { background: rgb(var(--k-ink-rgb) / 0.02); }
+[data-theme="light"] .data-table th { background: rgb(var(--k-ink-rgb) / 0.02); }
+[data-theme="light"] .data-table tbody tr:hover { background: rgb(var(--k-ink-rgb) / 0.02); }

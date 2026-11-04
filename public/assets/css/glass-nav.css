@@ -14,23 +14,23 @@
 /* Before the theme script runs there is no attribute yet, so start light — that is what
    every page falls back to anyway, and a flash of the wrong glass is very visible. */
 :root {
-  --glass-bg:        rgba(255, 255, 255, 0.55);
+  --glass-bg:        rgb(var(--wash-rgb) / 0.55);
   --glass-tint:      rgb(var(--primary-rgb) / 0.035);
-  --glass-edge:      rgba(255, 255, 255, 0.85);   /* the hairline along the top */
+  --glass-edge:      rgb(var(--wash-rgb) / 0.85);   /* the hairline along the top */
   --glass-border:    rgb(var(--k-ink-rgb) / 0.07);
-  --glass-shadow:    0 6px 28px rgb(var(--k-ink-rgb) / 0.07);
+  --glass-shadow:    0 6px 28px rgb(var(--k-ink-rgb) / min(0.07, var(--shadow-cap, 1)));
   --glass-blur:      blur(22px) saturate(175%);
-  --glass-solid:     rgba(255, 255, 255, 0.94);   /* used where blur is unavailable */
+  --glass-solid:     rgb(var(--wash-rgb) / 0.94);   /* used where blur is unavailable */
 }
 
 [data-theme="light"],
 body.light {
-  --glass-bg:     rgba(255, 255, 255, 0.55);
+  --glass-bg:     rgb(var(--surface-rgb) / 0.55);
   --glass-tint:   rgb(var(--primary-rgb) / 0.035);
-  --glass-edge:   rgba(255, 255, 255, 0.85);
+  --glass-edge:   var(--border);
   --glass-border: rgb(var(--k-ink-rgb) / 0.07);
   --glass-shadow: 0 6px 28px rgb(var(--k-ink-rgb) / 0.07);
-  --glass-solid:  rgba(255, 255, 255, 0.94);
+  --glass-solid:  rgb(var(--surface-rgb) / 0.94);
 }
 
 [data-theme="dark"],
@@ -196,7 +196,7 @@ nav:not(.browse-nav):not(.toc-nav):not(.over-hero) {
   backdrop-filter: blur(16px) saturate(160%);
   box-shadow:
     inset 0 1px 0 var(--glass-edge),
-    0 8px 28px rgba(0, 0, 0, 0.18);
+    0 8px 28px rgb(var(--shade-rgb) / min(0.18, var(--shadow-cap, 1)));
 }
 
 /* A pill cannot have a bottom border — it has no bottom edge. */

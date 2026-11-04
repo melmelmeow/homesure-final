@@ -7,7 +7,7 @@
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgb(var(--shade-rgb) / var(--overlay-a, 0.75));
   backdrop-filter: blur(4px);
   z-index: 2000;
   align-items: center;
@@ -25,7 +25,7 @@
   border-radius: 16px;
   width: 90%;
   max-width: 480px;
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 24px 48px rgb(var(--shade-rgb) / min(0.5, var(--shadow-cap, 1)));
   animation: slideUp 0.3s ease;
   overflow: hidden;
 }

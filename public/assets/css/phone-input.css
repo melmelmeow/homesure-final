@@ -7,7 +7,7 @@
 
 .hs-phone-input {
   display: flex; align-items: stretch;
-  background: rgba(0,0,0,0.2);
+  background: rgb(var(--shade-rgb) / 0.2);
   border: 1px solid var(--border);
   border-radius: 9px;
   overflow: hidden;
@@ -15,7 +15,7 @@
 }
 .hs-phone-input:focus-within {
   border-color: rgb(var(--primary-rgb) / 0.5);
-  background: rgba(0,0,0,0.28);
+  background: rgb(var(--shade-rgb) / 0.28);
 }
 .hs-phone-prefix {
   display: flex; align-items: center;
@@ -32,5 +32,5 @@
 .hs-phone-input input::placeholder { color: var(--muted); }
 .hs-phone-input input:disabled { opacity: 0.5; cursor: not-allowed; }
 
-[data-theme="light"] .hs-phone-input { background: rgba(0,0,0,0.03); }
-[data-theme="light"] .hs-phone-input:focus-within { background: rgba(0,0,0,0.05); }
+[data-theme="light"] .hs-phone-input { background: rgb(var(--k-ink-rgb) / 0.03); }
+[data-theme="light"] .hs-phone-input:focus-within { background: rgb(var(--k-ink-rgb) / 0.05); }

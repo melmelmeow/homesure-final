@@ -37,7 +37,7 @@
       transition: background 0.15s, color 0.15s;
     }
     .notif-tab.active { background: var(--teal); color: var(--on-primary); }
-    .notif-tab:not(.active):hover { background: rgba(255,255,255,0.07); color: var(--text); }
+    .notif-tab:not(.active):hover { background: rgb(var(--wash-rgb) / 0.07); color: var(--text); }
 
     /* ── Notifications list ── */
     .notif-list {
@@ -59,7 +59,7 @@
       transition: background 0.15s; position: relative;
     }
     .notif-item:last-child { border-bottom: none; }
-    .notif-item:hover { background: rgba(255,255,255,0.04); }
+    .notif-item:hover { background: rgb(var(--wash-rgb) / 0.04); }
     .notif-item.unread { background: rgb(var(--primary-rgb) / 0.05); }
     .notif-item.unread:hover { background: rgb(var(--primary-rgb) / 0.09); }
 
@@ -109,7 +109,7 @@
 }
     [data-theme="light"] body { background: var(--bg); }
     [data-theme="light"] .notif-item.unread { background: rgb(var(--primary-rgb) / 0.05); }
-    [data-theme="light"] .notif-item:hover { background: rgba(0,0,0,0.02); }
+    [data-theme="light"] .notif-item:hover { background: rgb(var(--k-ink-rgb) / 0.02); }
     [data-theme="light"] .notif-badge { border-color: var(--surface); }
     [data-theme="light"] .notif-item.unread .notif-msg { color: var(--text); }
   
