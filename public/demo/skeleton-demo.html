@@ -3,15 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HomeSure - Skeleton Loading Examples</title>
+  <script src="../assets/js/kasafide-theme.js"></script>
+  <script src="../assets/js/kasafide-logo.js"></script>
+  <link rel="stylesheet" href="../assets/css/kasafide-theme.css" />
+  <title>Kasafide - Skeleton Loading Examples</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="components/skeleton.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background: #1E293B;
-      color: #f1f5f9;
+      background: var(--surface);
+      color: var(--text);
       padding: 40px 20px;
     }
     .container {
@@ -22,7 +25,7 @@
       font-size: 32px;
       font-weight: 800;
       margin-bottom: 12px;
-      background: linear-gradient(135deg, #00c9a7, #00a88a);
+      background: linear-gradient(135deg, var(--primary), var(--primary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -31,7 +34,7 @@
       font-size: 20px;
       font-weight: 700;
       margin: 40px 0 20px;
-      color: #00c9a7;
+      color: var(--primary);
     }
     .grid {
       display: grid;
@@ -47,7 +50,7 @@
 <body>
   <div class="container">
     <h1>💀 Skeleton Loading Components</h1>
-    <p style="color: rgba(255,255,255,0.6); margin-bottom: 40px;">
+    <p style="color: rgb(var(--wash-rgb) / 0.6); margin-bottom: 40px;">
       Copy these examples to any page! Just add <code>skeleton</code> class while loading.
     </p>
 
@@ -96,7 +99,7 @@
 
     <!-- Message/Conversation Skeletons -->
     <h2>💬 Conversation List Skeletons</h2>
-    <div class="section" style="background: #253347; border-radius: 16px; overflow: hidden;">
+    <div class="section" style="background: var(--surface-soft); border-radius: 16px; overflow: hidden;">
       <div class="skeleton-conversation">
         <div class="skeleton skeleton-avatar"></div>
         <div class="skeleton-conv-info">
@@ -155,7 +158,7 @@
 
     <!-- Table Skeletons -->
     <h2>📋 Table Row Skeletons</h2>
-    <div class="section" style="background: #253347; border-radius: 16px; overflow: hidden;">
+    <div class="section" style="background: var(--surface-soft); border-radius: 16px; overflow: hidden;">
       <div class="skeleton-table-row">
         <div class="skeleton skeleton-text"></div>
         <div class="skeleton skeleton-text"></div>
@@ -213,9 +216,9 @@
     </div>
 
     <!-- Usage Guide -->
-    <div style="background: #253347; border: 1px solid rgba(0,201,167,0.3); border-radius: 16px; padding: 24px; margin-top: 60px;">
+    <div style="background: var(--surface-soft); border: 1px solid rgb(var(--primary-rgb) / 0.3); border-radius: 16px; padding: 24px; margin-top: 60px;">
       <h2 style="margin-top: 0;">📖 How to Use</h2>
-      <pre style="background: #1a2739; padding: 16px; border-radius: 8px; overflow-x: auto; color: #00c9a7; font-size: 13px; line-height: 1.6;">
+      <pre style="background: var(--surface); padding: 16px; border-radius: 8px; overflow-x: auto; color: var(--primary); font-size: 13px; line-height: 1.6;">
 <!-- 1. Add skeleton.css to your page -->
 &lt;link rel="stylesheet" href="components/skeleton.css"&gt;
 

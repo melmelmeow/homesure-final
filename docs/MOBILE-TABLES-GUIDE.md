@@ -31,7 +31,7 @@ Tables automatically convert to **card layout** on mobile (768px and below).
           <span>Andrea Villanueva</span>
         </div>
       </td>
-      <td data-label="Email">admin@homesure.com</td>
+      <td data-label="Email">admin@example.com</td>
       <td data-label="Status">
         <span class="status-badge active">Active</span>
       </td>
@@ -62,7 +62,7 @@ Tables automatically convert to **card layout** on mobile (768px and below).
 ```
 ┌───────────────────────────────────┐
 │ ADMIN:        Andrea Villanueva   │
-│ EMAIL:        admin@homesure.com  │
+│ EMAIL:        admin@example.com  │
 │ STATUS:       Active ✓            │
 │ DATE ADDED:   2025-08-15          │
 │ ADDED BY:     Ricardo Dela Cruz   │
@@ -70,7 +70,7 @@ Tables automatically convert to **card layout** on mobile (768px and below).
 
 ┌───────────────────────────────────┐
 │ ADMIN:        Jose Reyes          │
-│ EMAIL:        jose@homesure.com   │
+│ EMAIL:        jose@example.com   │
 │ STATUS:       Active ✓            │
 │ DATE ADDED:   2025-07-22          │
 │ ADDED BY:     Andrea Villanueva   │
@@ -107,7 +107,7 @@ Tables automatically convert to **card layout** on mobile (768px and below).
   <tbody>
     <tr>
       <td data-label="Admin">Andrea Villanueva</td>
-      <td data-label="Email">admin@homesure.com</td>
+      <td data-label="Email">admin@example.com</td>
       <td data-label="Status">
         <span class="badge badge-success">Active</span>
       </td>
@@ -188,12 +188,12 @@ Tables automatically convert to **card layout** on mobile (768px and below).
 
 ### ❌ **Missing data-label:**
 ```html
-<td>admin@homesure.com</td>  <!-- NO LABEL! -->
+<td>admin@example.com</td>  <!-- NO LABEL! -->
 ```
 
 ### ✅ **Correct:**
 ```html
-<td data-label="Email">admin@homesure.com</td>
+<td data-label="Email">admin@example.com</td>
 ```
 
 ### ❌ **Inconsistent labels:**

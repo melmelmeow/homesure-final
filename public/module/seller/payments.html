@@ -2,11 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/kasafide-favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../../assets/img/favicon-16.png" />
+  <link rel="apple-touch-icon" href="../../assets/img/apple-touch-icon.png" />
+  <link rel="manifest" href="../../site.webmanifest" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HomeSure – Payment Management</title>
+  <script src="../../assets/js/kasafide-theme.js"></script>
+  <script src="../../assets/js/kasafide-logo.js"></script>
+  <link rel="stylesheet" href="../../assets/css/kasafide-theme.css" />
+  <title>Kasafide – Payment Management</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../../assets/css/seller/seller-payments.css" />
+  <link rel="stylesheet" href="../../assets/css/phone-input.css" />
   <link rel="stylesheet" href="../../assets/css/close-listing-modal.css" />
   <link rel="stylesheet" href="../../assets/css/adjust-availability-modal.css" />
   <link rel="stylesheet" href="../../assets/css/responsive.css" />
@@ -116,7 +124,7 @@
             <!-- GCash -->
             <div class="payment-method-block">
               <div class="payment-method-header">
-                <div class="payment-method-icon" style="background:#007dfe;overflow:hidden;">
+                <div class="payment-method-icon" style="background:var(--k-gcash);overflow:hidden;">
                   <img loading="lazy" src="../../assets/img/gcashlogo.png" alt="GCash" style="width:100%;height:100%;object-fit:cover;" />
                 </div>
                 <div class="payment-method-info">
@@ -131,7 +139,10 @@
               <div class="payment-method-fields" id="gcashFieldsPay" style="display:none">
                 <div class="payment-field">
                   <label>GCash Number</label>
-                  <input type="tel" id="gcashNumberPay" placeholder="09XX XXX XXXX" maxlength="13" class="payment-input" />
+                  <div class="hs-phone-input">
+                    <span class="hs-phone-prefix">0</span>
+                    <input type="tel" inputmode="numeric" id="gcashNumberPay" maxlength="10" placeholder="9XX XXX XXXX" />
+                  </div>
                 </div>
                 <div class="payment-field">
                   <label>Account Name</label>
@@ -143,7 +154,7 @@
             <!-- Maya -->
             <div class="payment-method-block">
               <div class="payment-method-header">
-                <div class="payment-method-icon" style="background:#1a1a1a;overflow:hidden;">
+                <div class="payment-method-icon" style="background:var(--bg);overflow:hidden;">
                   <img loading="lazy" src="../../assets/img/mayalogo.png" alt="Maya" style="width:100%;height:100%;object-fit:cover;" />
                 </div>
                 <div class="payment-method-info">
@@ -158,7 +169,10 @@
               <div class="payment-method-fields" id="mayaFieldsPay" style="display:none">
                 <div class="payment-field">
                   <label>Maya Number</label>
-                  <input type="tel" id="mayaNumberPay" placeholder="09XX XXX XXXX" maxlength="13" class="payment-input" />
+                  <div class="hs-phone-input">
+                    <span class="hs-phone-prefix">0</span>
+                    <input type="tel" inputmode="numeric" id="mayaNumberPay" maxlength="10" placeholder="9XX XXX XXXX" />
+                  </div>
                 </div>
                 <div class="payment-field">
                   <label>Account Name</label>
@@ -170,7 +184,7 @@
             <!-- Bank Transfer -->
             <div class="payment-method-block">
               <div class="payment-method-header">
-                <div class="payment-method-icon" style="background:#6b7280">
+                <div class="payment-method-icon" style="background:var(--k-avatar-6)">
                   <div style="font-size:20px;font-weight:700;color:white;">₱</div>
                 </div>
                 <div class="payment-method-info">
@@ -252,70 +266,70 @@
 </div>
 
 <!-- ── Reject Payment Confirmation Modal ─────────────────────────────────── -->
-<div id="rejectPaymentModal" style="display:none;position:fixed;inset:0;z-index:950;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;">
-  <div style="background:#253347;border:1.5px solid rgba(248,113,113,0.3);border-radius:18px;width:100%;max-width:480px;overflow:hidden;animation:fadeUp .25s ease both;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+<div id="rejectPaymentModal" style="display:none;position:fixed;inset:0;z-index:950;background:rgb(var(--shade-rgb) / 0.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;">
+  <div style="background:var(--surface-soft);border:1.5px solid rgb(var(--danger-rgb) / 0.3);border-radius:18px;width:100%;max-width:480px;overflow:hidden;animation:fadeUp .25s ease both;box-shadow:0 20px 60px rgb(var(--shade-rgb) / min(0.5, var(--shadow-cap, 1)));">
 
     <!-- Warning Header -->
-    <div style="background:linear-gradient(135deg, rgba(248,113,113,0.15) 0%, rgba(220,38,38,0.1) 100%);padding:20px 22px;border-bottom:1px solid rgba(248,113,113,0.2);display:flex;align-items:center;gap:12px;">
-      <div style="width:40px;height:40px;background:rgba(248,113,113,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.5" width="22" height="22">
+    <div style="background:linear-gradient(135deg, rgb(var(--danger-rgb) / 0.15) 0%, rgb(var(--danger-rgb) / 0.1) 100%);padding:20px 22px;border-bottom:1px solid rgb(var(--danger-rgb) / 0.2);display:flex;align-items:center;gap:12px;">
+      <div style="width:40px;height:40px;background:rgb(var(--danger-rgb) / 0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" width="22" height="22" style="stroke:var(--danger)">
           <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
           <line x1="12" y1="9" x2="12" y2="13"/>
           <line x1="12" y1="17" x2="12.01" y2="17"/>
         </svg>
       </div>
       <div>
-        <div style="font-size:17px;font-weight:800;color:#f87171;">REJECT THIS PAYMENT?</div>
-        <div style="font-size:12px;color:rgba(248,113,113,0.7);margin-top:2px;">The buyer will be told it was not accepted</div>
+        <div style="font-size:17px;font-weight:800;color:var(--danger);">REJECT THIS PAYMENT?</div>
+        <div style="font-size:12px;color:rgb(var(--danger-rgb) / 0.7);margin-top:2px;">The buyer will be told it was not accepted</div>
       </div>
     </div>
 
     <!-- Warning Content -->
     <div style="padding:24px 22px;">
-      <div style="font-size:14px;color:#f1f5f9;font-weight:600;margin-bottom:16px;">
+      <div style="font-size:14px;color:var(--text);font-weight:600;margin-bottom:16px;">
         <span id="rejectTenantName">This buyer</span> says they sent
-        <strong style="color:#00c9a7;" id="rejectAmount">—</strong>.
+        <strong style="color:var(--primary);" id="rejectAmount">—</strong>.
       </div>
 
-      <div style="background:#1a2739;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;margin-bottom:16px;">
-        <div style="font-size:13px;color:rgba(255,255,255,0.85);font-weight:600;margin-bottom:10px;">If you reject it:</div>
+      <div style="background:var(--surface);border:1px solid rgb(var(--wash-rgb) / 0.08);border-radius:12px;padding:16px;margin-bottom:16px;">
+        <div style="font-size:13px;color:rgb(var(--wash-rgb) / 0.85);font-weight:600;margin-bottom:10px;">If you reject it:</div>
         <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;">
-          <li style="display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:rgba(255,255,255,0.7);">
-            <span style="color:#f87171;flex-shrink:0;">•</span>
-            The payment is marked <strong style="color:#f87171;">rejected</strong> and the buyer is notified
+          <li style="display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:rgb(var(--wash-rgb) / 0.7);">
+            <span style="color:var(--danger);flex-shrink:0;">•</span>
+            The payment is marked <strong style="color:var(--danger);">rejected</strong> and the buyer is notified
           </li>
-          <li style="display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:rgba(255,255,255,0.7);">
-            <span style="color:#f87171;flex-shrink:0;">•</span>
+          <li style="display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:rgb(var(--wash-rgb) / 0.7);">
+            <span style="color:var(--danger);flex-shrink:0;">•</span>
             They can submit new proof, and it comes back to this list
           </li>
-          <li style="display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:rgba(255,255,255,0.7);">
-            <span style="color:#f87171;flex-shrink:0;">•</span>
+          <li style="display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:rgb(var(--wash-rgb) / 0.7);">
+            <span style="color:var(--danger);flex-shrink:0;">•</span>
             The listing stays open and available
           </li>
         </ul>
       </div>
 
-      <label style="display:block;font-size:12px;color:rgba(255,255,255,0.65);font-weight:600;margin-bottom:6px;">
+      <label style="display:block;font-size:12px;color:rgb(var(--wash-rgb) / 0.65);font-weight:600;margin-bottom:6px;">
         Why are you rejecting it? The buyer sees this.
       </label>
       <textarea id="rejectReason" rows="3" placeholder="e.g. Nothing arrived in my GCash under that reference number"
-        style="width:100%;background:#1a2739;border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 12px;color:#f1f5f9;font-family:inherit;font-size:13px;resize:vertical;"></textarea>
+        style="width:100%;background:var(--surface);border:1px solid rgb(var(--wash-rgb) / 0.12);border-radius:10px;padding:10px 12px;color:var(--text);font-family:inherit;font-size:13px;resize:vertical;"></textarea>
 
-      <div style="display:flex;align-items:flex-start;gap:10px;padding:12px;margin-top:16px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:10px;">
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:12px;margin-top:16px;background:rgb(var(--warning-rgb) / 0.08);border:1px solid rgb(var(--warning-rgb) / 0.2);border-radius:10px;">
         <span style="font-size:16px;flex-shrink:0;">💡</span>
-        <div style="font-size:11.5px;color:rgba(251,191,36,0.95);font-weight:600;line-height:1.5;">
-          <strong>NOTE:</strong> A payment made outside HomeSure went straight to you, so rejecting it
+        <div style="font-size:11.5px;color:rgb(var(--warning-rgb) / 0.95);font-weight:600;line-height:1.5;">
+          <strong>NOTE:</strong> A payment made outside Kasafide went straight to you, so rejecting it
           here does not move any money. If the buyer really did send it, settle it between you.
         </div>
       </div>
     </div>
 
     <!-- Action Buttons -->
-    <div style="display:flex;gap:10px;padding:18px 22px;border-top:1px solid rgba(255,255,255,0.07);background:#1a2739;">
-      <button onclick="closeRejectPaymentModal()" style="flex:1;background:transparent;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:12px 20px;color:rgba(255,255,255,0.6);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;">
+    <div style="display:flex;gap:10px;padding:18px 22px;border-top:1px solid rgb(var(--wash-rgb) / 0.07);background:var(--surface);">
+      <button onclick="closeRejectPaymentModal()" style="flex:1;background:transparent;border:1.5px solid rgb(var(--wash-rgb) / 0.12);border-radius:10px;padding:12px 20px;color:rgb(var(--wash-rgb) / 0.6);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;">
         Cancel
       </button>
-      <button onclick="confirmRejectPayment()" style="flex:1;background:#dc2626;border:none;border-radius:10px;padding:12px 20px;color:#fff;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(220,38,38,0.3);">
+      <button onclick="confirmRejectPayment()" style="flex:1;background:var(--danger);border:none;border-radius:10px;padding:12px 20px;color:var(--on-primary);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgb(var(--danger-rgb) / 0.3);">
         Yes, Reject This Payment
       </button>
     </div>
@@ -334,6 +348,7 @@
 <script src="../../assets/js/config.js"></script>
 <script src="../../assets/js/session.js"></script>
 <script src="../../assets/js/data.js"></script>
+<script src="../../assets/js/phone-input.js"></script>
 <script src="../../components/sidebar.js"></script>
 <script src="../../components/topbar.js"></script>
 <script src="../../assets/js/payment-integration.js"></script>

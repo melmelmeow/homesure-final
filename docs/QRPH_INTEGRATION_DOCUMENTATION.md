@@ -15,7 +15,7 @@
 
 ## 🎯 Overview
 
-HomeSure integrates **QRPH** as its payment gateway to facilitate secure rental payments between tenants and landlords. QRPH is a licensed payment service provider in the Philippines that supports multiple payment methods including GCash, Maya (PayMaya), and credit/debit cards.
+Kasafide integrates **QRPH** as its payment gateway to facilitate secure rental payments between tenants and landlords. QRPH is a licensed payment service provider in the Philippines that supports multiple payment methods including GCash, Maya (PayMaya), and credit/debit cards.
 
 ### Why QRPH?
 - ✅ **Licensed in Philippines** - Compliant with BSP regulations
@@ -226,7 +226,7 @@ if (!isAuthenticated || !hasActiveRental) {
 ## 📁 File Structure
 
 ```
-HomeSure/
+Kasafide/
 ├── assets/
 │   ├── css/
 │   │   └── payment-modal.css          # Payment modal styles
@@ -289,7 +289,7 @@ HomeSure/
 7. **Check Transaction Storage**
    ```javascript
    // Open browser console and run:
-   localStorage.getItem('homesure_transactions');
+   localStorage.getItem('kasafide_transactions');
    ```
 
 ### Testing in Production (With Real QRPH)
@@ -510,7 +510,7 @@ const paymentIntent = await QRPH.paymentIntents.create({
       },
       currency: 'PHP',
       description: 'Rent Payment - 2BR Apt June 2026',
-      statement_descriptor: 'HomeSure Rent'
+      statement_descriptor: 'Kasafide Rent'
     }
   }
 });

@@ -2,13 +2,13 @@
   const user = getSession();
   if (!user || (user.role !== 'superadmin' && user.role !== 'super_duper_admin')) window.location.href = '../../auth/signin.html';
 
-  HomeSureSidebar.init({ activePage: '' });
-  HomeSureTopbar.init({ placeholder: 'Search...' });
+  KasafideSidebar.init({ activePage: '' });
+  KasafideTopbar.init({ placeholder: 'Search...' });
 
   document.getElementById('firstName').value = user.firstName || '';
   document.getElementById('lastName').value  = user.lastName  || '';
   document.getElementById('email').value     = user.email     || '';
-  document.getElementById('phone').value     = user.phone     || '';
+  document.getElementById('phone').value     = HSPhone.strip(user.phone);
 
   const avatarCircle = document.getElementById('avatarCircle');
 

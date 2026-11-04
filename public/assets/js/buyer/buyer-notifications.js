@@ -2,29 +2,8 @@
   const user = getSession();
   if (!user || user.role !== 'buyer') window.location.href = '../../auth/signin.html';
 
-  HomeSureSidebar.init({ activePage: 'notifications' });
-  HomeSureTopbar.init({ placeholder: 'Search notifications...' });
-
-  const AVATAR_COLORS = ['#0f766e','#3b82f6','#8b5cf6','#f59e0b','#ef4444','#06b6d4'];
-
-  const NOTIFICATIONS = [
-    { id: 1,  unread: true,  time: '2 minutes ago',   type: 'message', color: '#0f766e', initials: 'RC',
-      msg: '<strong>Ramon Cruz</strong> sent you a message about <strong>1-Bedroom Apartment near Town Proper</strong>.' },
-    { id: 2,  unread: true,  time: '18 minutes ago',  type: 'listing', color: '#3b82f6', initials: 'HS',
-      msg: '<strong>New listing</strong> in Poblacion matches your saved preferences — check it out.' },
-    { id: 3,  unread: true,  time: '1 hour ago',      type: 'price',   color: '#f59e0b', initials: 'LN',
-      msg: 'Price dropped on <strong>Studio Unit in Bagong Silang</strong> — now ₱5,500/month.' },
-    { id: 4,  unread: false, time: '3 hours ago',     type: 'message', color: '#0f766e', initials: 'RC',
-      msg: '<strong>Ramon Cruz</strong> replied to your inquiry about a property in Pulong Yantok.' },
-    { id: 5,  unread: false, time: 'Yesterday, 4:32 PM', type: 'system', color: '#8b5cf6', initials: 'HS',
-      msg: 'Your phone number has been successfully verified.' },
-    { id: 6,  unread: false, time: 'Yesterday, 11:00 AM', type: 'listing', color: '#3b82f6', initials: 'HS',
-      msg: '<strong>2 new listings</strong> in Sta. Maria match your saved search filters.' },
-    { id: 7,  unread: false, time: '2 days ago',      type: 'price',   color: '#f59e0b', initials: 'LN',
-      msg: 'Price reduced on a saved listing — <strong>3-Bedroom House in Pulong Yantok</strong>.' },
-    { id: 8,  unread: false, time: '3 days ago',      type: 'system',  color: '#8b5cf6', initials: 'HS',
-      msg: 'Welcome to HomeSure! Your account has been successfully created and verified.' },
-  ];
+  KasafideSidebar.init({ activePage: 'notifications' });
+  KasafideTopbar.init({ placeholder: 'Search notifications...' });
 
   
   const roleName = 'buyer';
@@ -69,7 +48,22 @@ const TYPE_BADGE = {
     system:  { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,                                                           cls: 'badge-purple' },
   };
 
+  let NOTIFICATIONS = [];
   let currentTab = 'all';
+
+  // ── "x minutes/hours/days ago", matching how old a notification actually is instead of a
+  // hand-picked fake timestamp. ───────────────────────────────────────────────────────────────
+  function timeAgo(iso) {
+    const minutes = Math.floor((Date.now() - new Date(iso).getTime()) / 60000);
+    if (minutes < 1) return 'Just now';
+    if (minutes < 60) return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+    const days = Math.floor(hours / 24);
+    if (days === 1) return 'Yesterday';
+    if (days < 7) return `${days} days ago`;
+    return new Date(iso).toLocaleDateString('en-PH', { month: 'short', day: 'numeric' });
+  }
 
   function render(tab) {
     const list = tab === 'unread' ? NOTIFICATIONS.filter(n => n.unread) : NOTIFICATIONS;
@@ -96,7 +90,6 @@ const TYPE_BADGE = {
     }
     container.innerHTML = html;
 
-    // Update unread count badge
     const unread = NOTIFICATIONS.filter(n => n.unread).length;
     document.getElementById('unreadCount').textContent = unread ? `(${unread})` : '';
   }
@@ -104,20 +97,20 @@ const TYPE_BADGE = {
   function notifRow(n) {
     const badge = TYPE_BADGE[n.type] || TYPE_BADGE.system;
     return `
-      <div class="notif-item ${n.unread ? 'unread' : ''}" onclick="markRead(${n.id})">
+      <div class="notif-item ${n.unread ? 'unread' : ''}" onclick="markRead('${n.id}')">
         <div class="notif-avatar-wrap">
-          <div class="notif-avatar" style="background:${n.color}">${n.initials}</div>
+          <div class="notif-avatar" style="background:var(--primary)">HS</div>
           <div class="notif-badge ${badge.cls}">${badge.icon}</div>
         </div>
         <div class="notif-content">
-          <div class="notif-msg">${n.msg}</div>
-          <div class="notif-time">${n.time}</div>
+          <div class="notif-msg">${n.title ? `<strong>${n.title}</strong> ` : ''}${n.body}</div>
+          <div class="notif-time">${timeAgo(n.createdAt)}</div>
         </div>
         ${n.unread ? '<div class="notif-unread-dot"></div>' : ''}
       </div>`;
   }
 
-  function markRead(id) {
+  async function markRead(id) {
     const n = NOTIFICATIONS.find(x => x.id === id);
     if (n) {
       n.unread = false;
@@ -147,4 +140,13 @@ const TYPE_BADGE = {
     render(tab);
   }
 
-  render('all');
+  async function loadNotifications() {
+    try {
+      NOTIFICATIONS = await HS.notifications.list();
+    } catch (err) {
+      console.error('Could not load notifications:', err);
+    }
+    render(currentTab);
+  }
+
+  loadNotifications();

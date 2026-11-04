@@ -135,7 +135,7 @@ const AdjustAvailabilityModal = (function() {
 
     // Validation
     if (isNaN(newAvailable) || newAvailable < 0 || newAvailable > currentListing.totalUnits) {
-      alert(`Please enter a valid number between 0 and ${currentListing.totalUnits}`);
+      hsToast(`Please enter a valid number between 0 and ${currentListing.totalUnits}`, 'error');
       return;
     }
 
@@ -143,7 +143,7 @@ const AdjustAvailabilityModal = (function() {
     try {
       await HS.listings.update(currentListing.listingId, { availableUnits: newAvailable });
     } catch (err) {
-      alert('Could not update availability: ' + err.message);
+      hsToast('Could not update availability: ' + err.message, 'error');
       return;
     }
 

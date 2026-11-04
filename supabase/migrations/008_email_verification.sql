@@ -1,4 +1,4 @@
--- 008: email verification HomeSure sends itself.
+-- 008: email verification Kasafide sends itself.
 -- Run AFTER 007. Safe to re-run.
 --
 -- Why this exists
@@ -7,7 +7,7 @@
 --   confirmation mail fails and signing up dies with "Error sending confirmation email".
 --   Changing that is a server setting we do not control.
 --
---   So HomeSure sends the mail. /api/auth/signup creates the account UNCONFIRMED through the admin
+--   So Kasafide sends the mail. /api/auth/signup creates the account UNCONFIRMED through the admin
 --   API (which sends nothing and therefore cannot fail), stores a token here, and emails the link
 --   itself. /api/auth/verify-email confirms the account when that link is opened.
 --

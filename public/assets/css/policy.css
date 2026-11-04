@@ -2,7 +2,7 @@
 
 body {
   /* Was 'DM Sans' — every other page on the site uses Plus Jakarta Sans, so these two legal pages
-     read as visually disconnected from the rest of HomeSure. DM Serif Display stays for the
+     read as visually disconnected from the rest of Kasafide. DM Serif Display stays for the
      headings below; that's a deliberate editorial accent for a legal document, not a mismatch. */
   font-family: 'Plus Jakarta Sans', sans-serif;
   /* The page background belongs here, not only on .policy-main. A background on <body>
@@ -13,51 +13,6 @@ body {
   transition: background 0.3s, color 0.3s;
 }
 
-/* ── THEMES ── */
-body.dark {
-  --bg:             #0d1b2a;
-  --surface:        #111f2e;
-  --surface2:       #162535;
-  --border:         rgba(255,255,255,0.07);
-  --text:           #e2ecf2;
-  --muted:          #5e8095;
-  --soft:           #8dafc2;
-  --accent:         #1fc8b4;
-  --accent-dim:     rgba(31,200,180,0.09);
-  --accent-border:  rgba(31,200,180,0.22);
-  --red-dim:        rgba(248,113,113,0.06);
-  --red-border:     rgba(248,113,113,0.2);
-  --red-text:       #f87171;
-  --amber-dim:      rgba(251,191,36,0.07);
-  --amber-border:   rgba(251,191,36,0.22);
-  --purple-dim:     rgba(167,139,250,0.07);
-  --purple-border:  rgba(167,139,250,0.2);
-  --purple-text:    #a78bfa;
-  --step-line:      rgba(31,200,180,0.2);
-  --footer-muted:   #3a5566;
-}
-body.light {
-  --bg:             #f5f7fa;
-  --surface:        #ffffff;
-  --surface2:       #edf2f7;
-  --border:         rgba(0,0,0,0.08);
-  --text:           #0d1b2a;
-  --muted:          #5a7a8a;
-  --soft:           #4a6272;
-  --accent:         #0f8f80;
-  --accent-dim:     rgba(15,143,128,0.07);
-  --accent-border:  rgba(15,143,128,0.22);
-  --red-dim:        rgba(220,38,38,0.04);
-  --red-border:     rgba(220,38,38,0.16);
-  --red-text:       #dc2626;
-  --amber-dim:      rgba(180,130,0,0.05);
-  --amber-border:   rgba(180,130,0,0.18);
-  --purple-dim:     rgba(109,40,217,0.05);
-  --purple-border:  rgba(109,40,217,0.15);
-  --purple-text:    #7c3aed;
-  --step-line:      rgba(15,143,128,0.2);
-  --footer-muted:   #5a7a8a;
-}
 
 /* ── HEADER ──
    Floating glass pill, matching index.html/about.html's nav rather than the plain full-width
@@ -81,7 +36,7 @@ body.light {
   border: 1px solid var(--glass-border, var(--border));
   -webkit-backdrop-filter: var(--glass-blur, blur(16px));
   backdrop-filter: var(--glass-blur, blur(16px));
-  box-shadow: inset 0 1px 0 var(--glass-edge, transparent), 0 8px 28px rgba(0,0,0,0.18);
+  box-shadow: inset 0 1px 0 var(--glass-edge, transparent), 0 8px 28px rgb(var(--shade-rgb) / min(0.18, var(--shadow-cap, 1)));
 }
 /* Document flow no longer has a header to push content down (position: fixed removes it from
    flow entirely) — .policy-main's own top padding is what creates that clearance now; see below. */
@@ -100,7 +55,7 @@ body.light {
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; color: var(--muted); transition: all 0.2s;
 }
-.theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.theme-toggle:hover { border-color: var(--primary); color: var(--primary); }
 
 /* ── MAIN & LAYOUT ── */
 /* Top padding was 52px, sized for the header when it was position: sticky and still took up its
@@ -144,15 +99,15 @@ body.light {
 }
 .toc-link:hover { color: var(--text); background: var(--surface2); border-left-color: var(--border); }
 .toc-link.active {
-  color: var(--accent); background: var(--accent-dim);
-  border-left-color: var(--accent); font-weight: 600;
+  color: var(--primary); background: var(--accent-dim);
+  border-left-color: var(--primary); font-weight: 600;
 }
 .toc-num {
   font-size: 9.5px; font-weight: 700; color: var(--muted);
   min-width: 16px; flex-shrink: 0; margin-top: 1px; opacity: 0.7;
   font-variant-numeric: tabular-nums;
 }
-.toc-link.active .toc-num { color: var(--accent); opacity: 1; }
+.toc-link.active .toc-num { color: var(--primary); opacity: 1; }
 
 /* ── CONTENT COLUMN ── */
 .policy-content { min-width: 0; }
@@ -163,7 +118,7 @@ body.light {
   width: 52px; height: 52px; border-radius: 14px;
   background: var(--accent-dim); border: 1px solid var(--accent-border);
   display: flex; align-items: center; justify-content: center;
-  color: var(--accent); margin-bottom: 18px;
+  color: var(--primary); margin-bottom: 18px;
 }
 .policy-doc-title {
   /* Was DM Serif Display, kept as a deliberate accent at first — but it read as one more
@@ -176,7 +131,7 @@ body.light {
 .policy-doc-meta { font-size: 12px; color: var(--muted); margin-bottom: 22px; }
 .policy-intro-box {
   background: var(--surface2); border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
+  border-left: 3px solid var(--primary);
   border-radius: 10px; padding: 16px 18px;
   font-size: 14px; color: var(--soft); line-height: 1.78;
 }
@@ -200,7 +155,7 @@ body.light {
 .subsection-title {
   font-size: 13.5px; font-weight: 600; color: var(--text);
   margin: 22px 0 10px; padding-left: 12px;
-  border-left: 2px solid var(--accent);
+  border-left: 2px solid var(--primary);
 }
 
 .policy-section p { font-size: 14px; color: var(--soft); line-height: 1.8; margin-bottom: 14px; }
@@ -219,7 +174,7 @@ body.light {
 .policy-list li::before {
   content: ''; position: absolute; left: 0; top: 9px;
   width: 5px; height: 5px; border-radius: 50%;
-  background: var(--accent); opacity: 0.65;
+  background: var(--primary); opacity: 0.65;
 }
 .policy-list li strong { color: var(--text); font-weight: 600; }
 
@@ -230,7 +185,7 @@ body.light {
   border-radius: 10px; padding: 14px 16px; margin-top: 18px;
   font-size: 13.5px; line-height: 1.65;
 }
-.policy-callout svg { flex-shrink: 0; margin-top: 2px; color: var(--accent); }
+.policy-callout svg { flex-shrink: 0; margin-top: 2px; color: var(--primary); }
 .policy-callout span { color: var(--soft); }
 
 .warn-callout {
@@ -239,7 +194,7 @@ body.light {
   border-radius: 10px; padding: 14px 16px; margin-top: 18px;
   font-size: 13.5px; line-height: 1.65;
 }
-.warn-callout svg { flex-shrink: 0; margin-top: 2px; color: #fbbf24; }
+.warn-callout svg { flex-shrink: 0; margin-top: 2px; color: var(--warning); }
 .warn-callout span { color: var(--soft); }
 
 .danger-callout {
@@ -266,7 +221,7 @@ body.light {
 }
 .consent-section .subsection-title { border-left-color: var(--purple-text); }
 .consent-section .policy-callout {
-  background: rgba(167,139,250,0.06); border-color: var(--purple-border);
+  background: rgb(var(--info-rgb) / 0.06); border-color: var(--purple-border);
 }
 .consent-section .policy-callout svg { color: var(--purple-text); }
 
@@ -283,10 +238,10 @@ body.light {
   font-size: 10.5px; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.06em; width: fit-content;
 }
-.role-badge.buyer     { background: rgba(59,130,246,0.12); color: #60a5fa; }
-.role-badge.seller    { background: rgba(31,200,180,0.12); color: #1fc8b4; }
-.role-badge.admin     { background: rgba(245,158,11,0.12); color: #fbbf24; }
-.role-badge.superadmin{ background: rgba(168,85,247,0.12); color: #c084fc; }
+.role-badge.buyer     { background: rgb(var(--info-rgb) / 0.12); color: var(--info); }
+.role-badge.seller    { background: rgb(var(--primary-rgb) / 0.12); color: var(--primary); }
+.role-badge.admin     { background: rgb(var(--warning-rgb) / 0.12); color: var(--warning); }
+.role-badge.superadmin{ background: rgb(var(--info-rgb) / 0.12); color: var(--info); }
 
 /* ── RIGHTS GRID ── */
 .rights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
@@ -297,7 +252,7 @@ body.light {
 }
 .right-icon {
   width: 34px; height: 34px; border-radius: 8px; flex-shrink: 0;
-  background: var(--accent-dim); color: var(--accent);
+  background: var(--accent-dim); color: var(--primary);
   display: flex; align-items: center; justify-content: center;
 }
 .right-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
@@ -312,7 +267,7 @@ body.light {
 }
 .doc-icon {
   width: 34px; height: 34px; border-radius: 8px; flex-shrink: 0;
-  background: var(--accent-dim); color: var(--accent);
+  background: var(--accent-dim); color: var(--primary);
   display: flex; align-items: center; justify-content: center;
 }
 .doc-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
@@ -333,7 +288,7 @@ body.light {
 }
 .step-num {
   width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
-  background: var(--accent-dim); color: var(--accent);
+  background: var(--accent-dim); color: var(--primary);
   border: 1px solid var(--accent-border);
   display: flex; align-items: center; justify-content: center;
   font-size: 11px; font-weight: 800; position: relative; z-index: 1;
@@ -357,7 +312,7 @@ body.light {
 /* ── PROHIBITED SUB-SECTIONS: red left accent ── */
 .prohibited-sub {
   padding-left: 14px;
-  border-left: 2px solid rgba(248,113,113,0.3);
+  border-left: 2px solid rgb(var(--danger-rgb) / 0.3);
   margin-bottom: 24px;
 }
 .prohibited-sub .subsection-title {
@@ -375,11 +330,11 @@ body.light {
   display: flex; align-items: center; gap: 12px;
   font-size: 14px; color: var(--soft);
 }
-.contact-row svg { color: var(--accent); flex-shrink: 0; }
+.contact-row svg { color: var(--primary); flex-shrink: 0; }
 .contact-row strong { color: var(--text); font-weight: 600; }
 
 /* ── LINK ── */
-.policy-link { color: var(--accent); text-decoration: none; font-weight: 500; }
+.policy-link { color: var(--primary); text-decoration: none; font-weight: 500; }
 .policy-link:hover { text-decoration: underline; }
 
 /* ── FOOTER NAV ── */
@@ -393,7 +348,7 @@ body.light {
   font-size: 13px; font-weight: 600; color: var(--muted);
   text-decoration: none; background: var(--surface); transition: all 0.2s;
 }
-.pfn-link:hover { color: var(--accent); border-color: var(--accent-border); }
+.pfn-link:hover { color: var(--primary); border-color: var(--accent-border); }
 
 /* ── PAGE FOOTER ── */
 .policy-page-footer {
@@ -404,7 +359,7 @@ body.light {
 }
 .footer-links { display: flex; gap: 16px; }
 .footer-links a { color: var(--footer-muted); text-decoration: none; transition: color 0.2s; }
-.footer-links a:hover { color: var(--accent); }
+.footer-links a:hover { color: var(--primary); }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {

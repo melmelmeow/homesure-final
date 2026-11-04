@@ -1,4 +1,4 @@
-# HomeSure — how the repo fits together
+# Kasafide — how the repo fits together
 
 One Next.js application. The front end and the backend live side by side in it, and the split is
 the top-level folder:
@@ -6,7 +6,7 @@ the top-level folder:
 ```
 public/   the front end   — 58 pages, plain HTML + CSS + JavaScript
 src/      the backend     — 12 API routes, TypeScript
-supabase/ the database    — 8 migrations, run in order, plus 3 read-only checks
+supabase/ the database    — 12 migrations, run in order, plus 3 read-only checks
 ```
 
 Both halves are served by the same process. `npm run dev` starts one server on
@@ -135,7 +135,7 @@ The Supabase auth server requires a confirmed email before anyone may sign in, b
 configured, and that server is not ours to change. Its own signup endpoint therefore fails every
 time with *"Error sending confirmation email"*.
 
-So HomeSure sends the mail:
+So Kasafide sends the mail:
 
 ```
 POST /api/auth/signup      creates the account UNCONFIRMED through the admin API
@@ -154,10 +154,10 @@ to the database directly.
 
 ## supabase/ — the database
 
-Eight migrations, `001` through `008`, run in numeric order in the Supabase SQL Editor.
+Twelve migrations, `001` through `012`, run in numeric order in the Supabase SQL Editor.
 
 Three more files are diagnostics that change nothing: `000_check_state.sql` reports which of the
-eight are still missing, and `000b` / `000c` dump the real shape of `profiles.role` and of the
+twelve are still missing, and `000b` / `000c` dump the real shape of `profiles.role` and of the
 whole schema when a migration complains about something that should already be there.
 
 | | |
@@ -167,7 +167,11 @@ whole schema when a migration complains about something that should already be t
 | `005` | roles: `landowner` → `seller`, adds `superadmin` |
 | `006` | everything the front end needs: moderation columns, messages, reviews, reports, notifications, audit logs, and the RLS fixes |
 | `007` | payment periods and proofs, security deposits, seller payment details |
-| `008` | the confirmation tokens HomeSure emails itself |
+| `008` | the confirmation tokens Kasafide emails itself |
+| `009` | indexes for the queries the front end actually runs |
+| `010` | the `barangays` lookup corrected to the real 24 of Sta. Maria, Bulacan — the hand-filled table had picked up 9 from other municipalities and was missing 3 real ones. Also what seeds all 24 on a database where nothing has inserted one yet, not just a patch for the old hand-filled table. |
+| `011` | restores the `anon`/`authenticated`/`service_role` table-level grants a fresh Supabase project doesn't bootstrap on its own — without it every table answers permission denied no matter how correct its RLS policies are, since GRANT is checked before RLS ever runs |
+| `012` | repoints foreign keys that were still aimed at a legacy pre-`001` `users` table instead of `profiles` — on a database that predates `001`, `CREATE TABLE IF NOT EXISTS` left those tables' original constraints untouched, so any account created since (signup, seed scripts) had no row in that old table and every insert referencing it failed with a foreign-key error even though the account was completely real |
 
 `005` onwards are safe to run more than once, and each checks the one before it rather than
 half-applying.

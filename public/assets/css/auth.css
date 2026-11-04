@@ -4,24 +4,8 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
 
 /* ── THEMES ── */
 body.dark {
-  --bg:           #0d1b2a;
-  --card:         #162535;
-  --input-bg:     #1c2f42;
-  --input-border: rgba(255,255,255,0.1);
-  --text:         #fff;
-  --text-muted:   #6b8fa0;
-  --divider:      rgba(255,255,255,0.1);
-  --footer-link:  #3a5566;
 }
 body.light {
-  --bg:           #f5f7fa;
-  --card:         #edf2f7;
-  --input-bg:     #fff;
-  --input-border: rgba(0,0,0,0.12);
-  --text:         #0d1b2a;
-  --text-muted:   #5a7a8a;
-  --divider:      rgba(0,0,0,0.1);
-  --footer-link:  #5a7a8a;
 }
 
 /* ── LAYOUT ── */
@@ -47,7 +31,7 @@ body.light {
   color: var(--text-muted); font-size: 13px; font-weight: 500;
   text-decoration: none; transition: color 0.2s;
 }
-.back-link:hover { color: #1fc8b4; }
+.back-link:hover { color: var(--primary); }
 
 /* ── FORM WRAP ── */
 .auth-form-wrap {
@@ -75,14 +59,14 @@ body.light {
   caret-color: var(--text);
   transition: background-color 5000s ease-in-out 0s;
 }
-.field-input:focus { border-color: #1a9e8f; }
-.field-input.error { border-color: #ef4444; }
+.field-input:focus { border-color: var(--primary); }
+.field-input.error { border-color: var(--danger); }
 .field-input.full  { width: 100%; }
 .field-hint { font-size: 12px; color: var(--text-muted); margin-top: 6px; display: block; }
-.field-error-msg { font-size: 12px; color: #ef4444; margin-top: 5px; display: block; }
+.field-error-msg { font-size: 12px; color: var(--danger); margin-top: 5px; display: block; }
 
 .field-row-end { display: flex; justify-content: flex-end; margin-top: 8px; }
-.forgot-link { font-size: 12px; font-weight: 600; color: #1fc8b4; text-decoration: none; }
+.forgot-link { font-size: 12px; font-weight: 600; color: var(--primary); text-decoration: none; }
 .forgot-link:hover { text-decoration: underline; }
 
 .name-row { display: flex; gap: 8px; }
@@ -96,7 +80,7 @@ body.light {
   background: none; border: none; cursor: pointer;
   color: var(--text-muted); padding: 0; display: flex; align-items: center;
 }
-.eye-btn:hover { color: #1fc8b4; }
+.eye-btn:hover { color: var(--primary); }
 
 /* "+63" as its own fixed segment rather than text inside the input's value — a prefix living in
    the value itself has to fight the user over backspace and cursor position to stay put. This way
@@ -108,10 +92,10 @@ body.light {
   border-radius: 8px; overflow: hidden;
   transition: border-color 0.2s;
 }
-.phone-input:focus-within { border-color: #1a9e8f; }
+.phone-input:focus-within { border-color: var(--primary); }
 /* .field-input.error normally colors the input's own border; this input's border is none (the
    wrapper draws it instead), so the wrapper has to pick up the error color itself. */
-.phone-input:has(.field-input.error) { border-color: #ef4444; }
+.phone-input:has(.field-input.error) { border-color: var(--danger); }
 .phone-prefix {
   display: flex; align-items: center;
   padding: 10px 0 10px 14px;
@@ -133,25 +117,25 @@ body.light {
   font-family: inherit; font-size: 13px; font-weight: 600;
   padding: 9px 16px; border-radius: 7px; cursor: pointer; transition: all 0.2s;
 }
-.role-btn.active { background: #1a9e8f; color: #fff; }
+.role-btn.active { background: var(--primary); color: var(--on-primary); }
 
 /* ── BUTTONS ── */
 .btn-primary {
-  background: #1a9e8f; color: #fff; border: none; width: 100%;
+  background: var(--primary); color: var(--on-primary); border: none; width: 100%;
   padding: 12px; border-radius: 8px; font-family: inherit;
   font-size: 15px; font-weight: 700; cursor: pointer;
   transition: background 0.2s; margin-top: 4px;
 }
-.btn-primary:hover { background: #148070; }
+.btn-primary:hover { background: var(--primary-hover); }
 
 .btn-google {
   display: flex; align-items: center; justify-content: center; gap: 10px;
-  background: #fff; border: 1.5px solid #e0e0e0; color: #1a1a1a;
+  background: var(--surface); border: 1.5px solid var(--border); color: var(--text);
   width: 100%; padding: 11px; border-radius: 8px;
   font-family: inherit; font-size: 14px; font-weight: 600;
   cursor: pointer; transition: border-color 0.2s;
 }
-.btn-google:hover { border-color: #aaa; }
+.btn-google:hover { border-color: var(--text-muted); }
 
 /* ── Agree to Terms checkbox ── */
 .agree-check {
@@ -167,19 +151,19 @@ body.light {
   transition: background .18s, border-color .18s;
 }
 .agree-check input:checked + .agree-box {
-  background: #1a9e8f; border-color: #1a9e8f;
+  background: var(--primary); border-color: var(--primary);
 }
 .agree-check input:checked + .agree-box::after {
   content: '';
   display: block; width: 10px; height: 6px;
-  border-left: 2px solid #fff; border-bottom: 2px solid #fff;
+  border-left: 2px solid var(--surface); border-bottom: 2px solid var(--surface);
   transform: translateY(-1px) rotate(-45deg);
 }
 .agree-text {
   font-size: 12.5px; color: var(--text-muted); line-height: 1.55;
 }
 .agree-text a {
-  color: #1fc8b4; font-weight: 600; text-decoration: none;
+  color: var(--primary); font-weight: 600; text-decoration: none;
 }
 .agree-text a:hover { text-decoration: underline; }
 
@@ -188,7 +172,7 @@ body.light {
 .divider span { font-size: 12px; color: var(--text-muted); }
 
 .auth-footer-text { text-align: center; font-size: 13px; color: var(--text-muted); margin-top: 20px; }
-.auth-link { color: #1fc8b4; font-weight: 600; text-decoration: none; }
+.auth-link { color: var(--primary); font-weight: 600; text-decoration: none; }
 .auth-link:hover { text-decoration: underline; }
 
 /* ── PAGE FOOTER ── */
@@ -200,7 +184,7 @@ body.light {
 }
 .footer-links { display: flex; gap: 16px; }
 .footer-links a { color: var(--footer-link); text-decoration: none; transition: color 0.2s; }
-.footer-links a:hover { color: #1fc8b4; }
+.footer-links a:hover { color: var(--primary); }
 .theme-toggle {
   /* Was a rounded square (6px) — every other theme toggle on the public-facing pages is a circle
      now; this is the one that got left out. Width/height/box-sizing/padding forced explicitly:
@@ -214,7 +198,7 @@ body.light {
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; color: var(--text-muted); transition: all 0.2s;
 }
-.theme-toggle:hover { border-color: #1a9e8f; color: #1fc8b4; }
+.theme-toggle:hover { border-color: var(--primary); color: var(--primary); }
 
 /* ── RIGHT PANEL ── */
 .auth-right-bg {
@@ -223,36 +207,36 @@ body.light {
 }
 .auth-right-overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(6,36,32,0.88) 0%, rgba(6,36,32,0.3) 45%, transparent 100%);
+  background: linear-gradient(to top, rgb(var(--k-ink-rgb) / 0.88) 0%, rgb(var(--k-ink-rgb) / 0.3) 45%, transparent 100%);
 }
 .auth-testimonial { position: absolute; bottom: 60px; left: 40px; right: 40px; z-index: 2; }
-.stars { font-size: 18px; margin-bottom: 14px; letter-spacing: 3px; color: #f59e0b; }
+.stars { font-size: 18px; margin-bottom: 14px; letter-spacing: 3px; color: var(--warning); }
 blockquote {
-  font-size: 17px; font-weight: 500; color: #fff;
+  font-size: 17px; font-weight: 500; color: var(--text);
   line-height: 1.6; margin-bottom: 22px; font-style: italic;
 }
 .testimonial-author { display: flex; align-items: center; gap: 12px; }
 .author-avatar {
   width: 44px; height: 44px; border-radius: 50%;
-  background: rgba(255,255,255,0.15);
+  background: rgb(var(--wash-rgb) / 0.15);
   display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 14px; color: #fff; flex-shrink: 0;
+  font-weight: 700; font-size: 14px; color: var(--text); flex-shrink: 0;
 }
-.author-name { font-weight: 700; font-size: 14px; color: #fff; }
+.author-name { font-weight: 700; font-size: 14px; color: var(--text); }
 .author-role { font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 2px; }
 
 /* ── VERIFY EMAIL MODAL ── */
 .modal-backdrop {
   display: none; position: fixed; inset: 0;
-  background: rgba(0,0,0,0.55); z-index: 300;
+  background: rgb(var(--shade-rgb) / var(--overlay-a, 0.55)); z-index: 300;
   align-items: center; justify-content: center; backdrop-filter: blur(2px);
 }
 .modal-backdrop.active { display: flex; }
 .modal-card {
-  background: #162535; border: 1px solid rgba(255,255,255,0.08);
+  background: var(--surface); border: 1px solid rgb(var(--wash-rgb) / 0.08);
   border-radius: 20px; padding: 40px 32px 32px;
   width: 360px; text-align: center; position: relative;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+  box-shadow: 0 24px 64px rgb(var(--shade-rgb) / min(0.5, var(--shadow-cap, 1)));
 }
 .modal-close {
   position: absolute; top: 14px; right: 16px;
@@ -264,7 +248,7 @@ blockquote {
 .modal-check {
   position: absolute; bottom: -4px; right: -4px;
   width: 22px; height: 22px; border-radius: 50%;
-  background: #1a9e8f; border: 2px solid #162535;
+  background: var(--primary); border: 2px solid var(--surface);
   display: flex; align-items: center; justify-content: center;
 }
 .modal-title  { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 10px; }
@@ -277,7 +261,7 @@ blockquote {
 /* ── FORGOT PASSWORD ── */
 .fp-icon-wrap {
   width: 72px; height: 72px; border-radius: 50%;
-  background: rgba(31,200,180,0.1); border: 1px solid rgba(31,200,180,0.2);
+  background: rgb(var(--primary-rgb) / 0.1); border: 1px solid rgb(var(--primary-rgb) / 0.2);
   display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;
 }
 .fp-success-wrap { text-align: center; }
@@ -285,7 +269,7 @@ blockquote {
 .fp-success-check {
   position: absolute; bottom: -4px; right: -4px;
   width: 22px; height: 22px; border-radius: 50%;
-  background: #1a9e8f; border: 2px solid var(--bg);
+  background: var(--primary); border: 2px solid var(--bg);
   display: flex; align-items: center; justify-content: center;
 }
 .fp-sent-email { font-size: 15px; font-weight: 700; color: var(--text); margin: 4px 0 16px; }
@@ -343,10 +327,10 @@ input[type="password"]::-webkit-textfield-decoration-container {
   justify-content: center;
   overflow: hidden;
   padding: 90px 24px 32px;
-  background: linear-gradient(160deg, #0a1628 0%, #0d2235 55%, #0a1f2e 100%);
+  background: linear-gradient(160deg, var(--bg) 0%, var(--surface) 55%, var(--bg) 100%);
 }
 body.light .auth-page {
-  background: linear-gradient(160deg, #f4faf9 0%, #eef7f5 55%, #f7faf9 100%);
+  background: linear-gradient(160deg, var(--bg) 0%, var(--surface-soft) 55%, var(--bg) 100%);
 }
 
 /* The real listing photo. Loaded via JS (randomListingPhoto()); this element sits behind
@@ -368,26 +352,26 @@ body.light .auth-bg-photo.loaded { opacity: 0.22; }
 .auth-bg-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(160deg, rgba(10,22,40,0.82) 0%, rgba(10,22,40,0.55) 55%, rgba(10,22,40,0.82) 100%);
+  background: linear-gradient(160deg, rgb(var(--k-ink-rgb) / 0.82) 0%, rgb(var(--k-ink-rgb) / 0.55) 55%, rgb(var(--k-ink-rgb) / 0.82) 100%);
 }
 body.light .auth-bg-overlay {
-  background: linear-gradient(160deg, rgba(244,250,249,0.88) 0%, rgba(244,250,249,0.6) 55%, rgba(244,250,249,0.88) 100%);
+  background: linear-gradient(160deg, rgb(var(--bg-rgb) / 0.88) 0%, rgb(var(--bg-rgb) / 0.6) 55%, rgb(var(--bg-rgb) / 0.88) 100%);
 }
 
 /* Soft decorative glow circles, teal rather than the gold a reference for this used — this is
-   still HomeSure, with its own established glow colour, not a borrowed palette. */
+   still Kasafide, with its own established glow colour, not a borrowed palette. */
 .auth-glow {
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
-  background: radial-gradient(circle, rgba(0,201,167,0.16) 0%, transparent 70%);
+  background: radial-gradient(circle, rgb(var(--primary-rgb) / 0.16) 0%, transparent 70%);
 }
 .auth-glow-1 { width: 520px; height: 520px; top: -160px; left: -140px; }
 .auth-glow-2 { width: 420px; height: 420px; bottom: -140px; right: -100px; }
 
 
 /* Shown only on wide screens, to the left of the card — mirrors the reference's large marketing
-   line, but in HomeSure's own words rather than someone else's product promise, and nothing
+   line, but in Kasafide's own words rather than someone else's product promise, and nothing
    attributed to a made-up person the way the testimonial it replaces was. */
 .auth-tagline {
   display: none;
@@ -399,38 +383,38 @@ body.light .auth-bg-overlay {
   font-size: 34px;
   font-weight: 800;
   line-height: 1.2;
-  color: #fff;
+  color: var(--text);
   margin-bottom: 14px;
 }
 .auth-tagline h2 em {
   font-style: normal;
-  color: var(--teal, #00c9a7);
+  color: var(--teal, var(--primary));
 }
-body.light .auth-tagline h2 { color: #0d1b2a; }
+body.light .auth-tagline h2 { color: var(--text); }
 .auth-tagline p {
   font-size: 14.5px;
   line-height: 1.6;
-  color: rgba(255,255,255,0.65);
+  color: rgb(var(--wash-rgb) / 0.65);
 }
-body.light .auth-tagline p { color: rgba(13,27,42,0.6); }
+body.light .auth-tagline p { color: rgb(var(--k-ink-rgb) / 0.6); }
 
 .auth-card {
   position: relative;
   z-index: 2;
   width: 100%;
   max-width: 420px;
-  background: rgba(13,27,42,0.6);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgb(var(--k-ink-rgb) / 0.6);
+  border: 1px solid rgb(var(--wash-rgb) / 0.1);
   border-radius: 22px;
   padding: 36px 32px 30px;
   backdrop-filter: blur(20px) saturate(160%);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
-  box-shadow: 0 24px 64px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08);
+  box-shadow: 0 24px 64px rgb(var(--shade-rgb) / min(0.4, var(--shadow-cap, 1))), inset 0 1px 0 rgb(var(--wash-rgb) / 0.08);
 }
 body.light .auth-card {
-  background: rgba(255,255,255,0.82);
-  border-color: rgba(13,27,42,0.08);
-  box-shadow: 0 24px 64px rgba(13,27,42,0.12), inset 0 1px 0 rgba(255,255,255,0.6);
+  background: rgb(var(--surface-rgb) / 0.82);
+  border-color: rgb(var(--k-ink-rgb) / 0.08);
+  box-shadow: 0 24px 64px rgb(var(--k-ink-rgb) / 0.12), inset 0 1px 0 rgb(var(--surface-rgb) / 0.6);
 }
 
 .auth-card-brand {
@@ -439,7 +423,7 @@ body.light .auth-card {
   justify-content: center;
   gap: 8px;
   margin-bottom: 22px;
-  color: #fff;
+  color: var(--text);
   font-weight: 800;
   font-size: 17px;
   text-decoration: none;
@@ -452,9 +436,9 @@ body.light .auth-card {
      fighting each other. outline-color keeps a visible ring for keyboard focus (Tab key), since
      removing that outright would be an accessibility regression just to kill an unrelated effect. */
   -webkit-tap-highlight-color: transparent;
-  outline-color: #1fc8b4;
+  outline-color: var(--primary);
 }
-body.light .auth-card-brand { color: #0d1b2a; }
+body.light .auth-card-brand { color: var(--text); }
 .auth-card-brand img {
   display: block !important;
   width: 26px !important;
@@ -508,4 +492,52 @@ body.light .auth-card-brand { color: #0d1b2a; }
 @media (max-width: 480px) {
   .auth-card { padding: 28px 22px 24px; border-radius: 18px; }
   .auth-glow-1, .auth-glow-2 { opacity: 0.6; }
+}
+
+/* ── Sign-up: wider card, fields in pairs, tighter rhythm ──────────────────────────────
+   The sign-up form has twice the fields of sign-in, so in a 420px single column the card grew
+   taller than a laptop screen: the page scrolled, and the footer below (absolutely placed on
+   desktop) ended up sitting inside the card. Here the card widens, Email/Phone and
+   Password/Confirm share a row, and the vertical spacing tightens so the whole form fits. */
+.auth-card--wide { max-width: 540px; padding: 28px 32px 24px; }
+.auth-card--wide .auth-card-brand { margin-bottom: 14px; }
+.auth-card--wide .auth-title { font-size: 22px; margin-bottom: 4px; }
+.auth-card--wide .auth-sub { margin-bottom: 18px; }
+.auth-card--wide .field-group { margin-bottom: 12px; }
+.auth-card--wide .field-label { margin-bottom: 6px; }
+.auth-card--wide .divider { margin: 12px 0; }
+.auth-card--wide .auth-footer-text { margin-top: 14px; }
+
+.field-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.field-pair .field-group { min-width: 0; }
+.field-hint--pair { margin: -4px 0 12px; }
+
+@media (max-width: 560px) {
+  .field-pair { grid-template-columns: 1fr; gap: 0; }
+}
+
+/* The footer was absolutely positioned at the bottom of the screen on desktop, which only works
+   while the card is shorter than the screen. It now wraps onto its own line under the card and
+   tagline instead, so it can never land on top of the form. */
+@media (min-width: 1040px) {
+  .auth-page { flex-wrap: wrap; align-content: center; }
+  .auth-page .auth-page-footer {
+    position: relative; bottom: auto; left: auto; transform: none;
+    flex-basis: 100%; max-width: none; justify-content: center;
+    margin-top: 22px;
+  }
+}
+
+/* Short laptop screens (about 690–760px of viewport): a little less air so the sign-up card and
+   the footer under it fit without scrolling. */
+@media (min-width: 1040px) and (max-height: 780px) {
+  .auth-page { padding-top: 10px; padding-bottom: 10px; }
+  .auth-page .auth-page-footer { margin-top: 10px; }
+  .auth-card--wide { padding: 20px 32px 18px; }
+  .auth-card--wide .auth-card-brand { margin-bottom: 8px; }
+  .auth-card--wide .auth-sub { margin-bottom: 12px; }
+  .auth-card--wide .field-group { margin-bottom: 9px; }
+  .auth-card--wide .field-hint--pair { margin-bottom: 9px; }
+  .auth-card--wide .divider { margin: 8px 0; }
+  .auth-card--wide .auth-footer-text { margin-top: 10px; }
 }

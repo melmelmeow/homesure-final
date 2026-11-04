@@ -79,7 +79,7 @@ function applyAuthTheme(mode) {
 // ──────────────────────────────────────────────────────────────────────────────
 function toggleTheme() {
   const next = document.body.classList.contains('light') ? 'dark' : 'light';
-  localStorage.setItem('hs-theme', next);
+  KasafideTheme.set(next);
   applyAuthTheme(next);
 }
 
@@ -349,9 +349,9 @@ async function resendEmail() {
   banner.style.cssText = `
     margin: 0 0 18px; padding: 12px 14px; border-radius: 10px;
     font-size: 13px; font-weight: 600; line-height: 1.5;
-    background: ${kind === 'ok' ? 'rgba(0,201,167,0.12)' : 'rgba(248,113,113,0.12)'};
-    border: 1px solid ${kind === 'ok' ? 'rgba(0,201,167,0.35)' : 'rgba(248,113,113,0.35)'};
-    color: ${kind === 'ok' ? '#0d8f7b' : '#b91c1c'};
+    background: ${kind === 'ok' ? 'rgb(var(--primary-rgb) / 0.12)' : 'rgb(var(--danger-rgb) / 0.12)'};
+    border: 1px solid ${kind === 'ok' ? 'rgb(var(--primary-rgb) / 0.35)' : 'rgb(var(--danger-rgb) / 0.35)'};
+    color: ${kind === 'ok' ? 'var(--success)' : 'var(--danger)'};
   `;
 
   const form = document.querySelector('form') || document.body.firstElementChild;
@@ -428,7 +428,7 @@ function showGoogleToast() {
 // ── Init ──────────────────────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
-  applyAuthTheme(localStorage.getItem('hs-theme') || 'dark');
+  applyAuthTheme(KasafideTheme.get());
 
   const backdrop = document.getElementById('verifyModal');
   if (backdrop) backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });

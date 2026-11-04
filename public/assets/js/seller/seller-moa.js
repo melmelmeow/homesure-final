@@ -1,4 +1,4 @@
-// HomeSure – Seller MOA
+// Kasafide – Seller MOA
 
 (async function () {
   const user = getSession();
@@ -7,11 +7,11 @@
     return;
   }
 
-  HomeSureSidebar.init({ activePage: 'moa' });
-  HomeSureTopbar.init({ placeholder: 'Memorandum of Agreement' });
+  KasafideSidebar.init({ activePage: 'moa' });
+  KasafideTopbar.init({ placeholder: 'Memorandum of Agreement' });
 
   // The signature is a column on the profile, not a localStorage flag. The page told the seller
-  // "a copy is kept on record by HomeSure", and until now nothing was.
+  // "a copy is kept on record by Kasafide", and until now nothing was.
   let fullUser = null;
   let signedAt = null;
 
@@ -37,13 +37,13 @@
   const MOA_SECTIONS = [
     {
       title: 'RECITALS',
-      body: `This Memorandum of Agreement ("MOA") is entered into by and between HomeSure Online Property Marketplace ("HomeSure" or "the Platform") and the undersigned registered seller ("the Seller") on the date of electronic acceptance below.
+      body: `This Memorandum of Agreement ("MOA") is entered into by and between Kasafide Online Property Marketplace ("Kasafide" or "the Platform") and the undersigned registered seller ("the Seller") on the date of electronic acceptance below.
 
-HomeSure is an online real estate marketplace that connects property sellers and landlords with prospective buyers and tenants within the Municipality of Sta. Maria, Bulacan. The Seller wishes to list one or more properties on HomeSure and agrees to the following terms and conditions.`,
+Kasafide is an online real estate marketplace that connects property sellers and landlords with prospective buyers and tenants within the Municipality of Sta. Maria, Bulacan. The Seller wishes to list one or more properties on Kasafide and agrees to the following terms and conditions.`,
     },
     {
       title: 'ARTICLE I — PURPOSE',
-      body: `The purpose of this MOA is to establish the rights, obligations, and responsibilities of HomeSure and the Seller with respect to the posting, management, and promotion of property listings on the HomeSure platform. This agreement promotes transparency, accountability, and a safe marketplace for all parties.`,
+      body: `The purpose of this MOA is to establish the rights, obligations, and responsibilities of Kasafide and the Seller with respect to the posting, management, and promotion of property listings on the Kasafide platform. This agreement promotes transparency, accountability, and a safe marketplace for all parties.`,
     },
     {
       title: 'ARTICLE II — OBLIGATIONS OF THE SELLER',
@@ -52,26 +52,26 @@ HomeSure is an online real estate marketplace that connects property sellers and
         'The Seller shall not post duplicate listings, fictitious properties, or listings that the Seller does not have the authority to sell or rent.',
         'The Seller shall ensure that all property photos submitted are genuine and accurately represent the property being listed.',
         'The Seller shall respond to buyer or tenant inquiries in a timely and professional manner.',
-        'The Seller shall immediately notify HomeSure of any changes in property status (e.g., property has been sold or rented).',
+        'The Seller shall immediately notify Kasafide of any changes in property status (e.g., property has been sold or rented).',
         'The Seller shall comply with all applicable local government ordinances, national laws, and regulations governing real estate transactions in the Philippines.',
-        "The Seller shall undergo and pass HomeSure's identity verification process before publishing active listings.",
+        "The Seller shall undergo and pass Kasafide's identity verification process before publishing active listings.",
         'The Seller shall not engage in any fraudulent, misleading, or deceptive practices on the platform.',
       ],
     },
     {
-      title: 'ARTICLE III — OBLIGATIONS OF HOMESURE',
+      title: 'ARTICLE III — OBLIGATIONS OF KASAFIDE',
       items: [
-        "HomeSure shall maintain the Seller's listings on the platform in accordance with these terms for the duration of the Seller's active account.",
-        'HomeSure shall provide the Seller with access to listing management tools, inquiry notifications, and analytics within the platform.',
-        'HomeSure shall handle all personal data provided by the Seller in compliance with the Data Privacy Act of 2012 (Republic Act No. 10173).',
-        'HomeSure shall process verification documents securely and use them solely for identity verification purposes.',
-        'HomeSure reserves the right to remove or suspend any listing found to be in violation of platform policies or applicable laws.',
-        'HomeSure shall notify the Seller prior to any material changes in platform policies that affect their listed properties.',
+        "Kasafide shall maintain the Seller's listings on the platform in accordance with these terms for the duration of the Seller's active account.",
+        'Kasafide shall provide the Seller with access to listing management tools, inquiry notifications, and analytics within the platform.',
+        'Kasafide shall handle all personal data provided by the Seller in compliance with the Data Privacy Act of 2012 (Republic Act No. 10173).',
+        'Kasafide shall process verification documents securely and use them solely for identity verification purposes.',
+        'Kasafide reserves the right to remove or suspend any listing found to be in violation of platform policies or applicable laws.',
+        'Kasafide shall notify the Seller prior to any material changes in platform policies that affect their listed properties.',
       ],
     },
     {
       title: 'ARTICLE IV — INTELLECTUAL PROPERTY',
-      body: `By submitting photos, descriptions, and other content to HomeSure, the Seller grants HomeSure a non-exclusive, royalty-free license to display, reproduce, and promote such content for the purpose of operating and marketing the platform. The Seller represents and warrants that they hold the necessary rights to all submitted content.`,
+      body: `By submitting photos, descriptions, and other content to Kasafide, the Seller grants Kasafide a non-exclusive, royalty-free license to display, reproduce, and promote such content for the purpose of operating and marketing the platform. The Seller represents and warrants that they hold the necessary rights to all submitted content.`,
     },
     {
       title: 'ARTICLE V — CONFIDENTIALITY',
@@ -79,9 +79,9 @@ HomeSure is an online real estate marketplace that connects property sellers and
     },
     {
       title: 'ARTICLE VI — TERM AND TERMINATION',
-      body: `This MOA shall be effective upon the Seller's electronic acceptance and shall remain in force for the duration of the Seller's active registration on the HomeSure platform.
+      body: `This MOA shall be effective upon the Seller's electronic acceptance and shall remain in force for the duration of the Seller's active registration on the Kasafide platform.
 
-Either party may terminate this agreement upon thirty (30) days' written or electronic notice. HomeSure reserves the right to immediately terminate this MOA and suspend the Seller's account in cases of fraud, gross negligence, or serious violation of platform policies.`,
+Either party may terminate this agreement upon thirty (30) days' written or electronic notice. Kasafide reserves the right to immediately terminate this MOA and suspend the Seller's account in cases of fraud, gross negligence, or serious violation of platform policies.`,
     },
     {
       title: 'ARTICLE VII — DISPUTE RESOLUTION',
@@ -116,7 +116,7 @@ Either party may terminate this agreement upon thirty (30) days' written or elec
           </div>
           <div>
             <div class="signed-title">MOA Successfully Signed</div>
-            <div class="signed-desc">You signed this Memorandum of Agreement on <strong>${fmtDate(signedAt)}</strong>. A copy is kept on record by HomeSure. You can review the full document below.</div>
+            <div class="signed-desc">You signed this Memorandum of Agreement on <strong>${fmtDate(signedAt)}</strong>. A copy is kept on record by Kasafide. You can review the full document below.</div>
           </div>
         </div>
 
@@ -127,14 +127,14 @@ Either party may terminate this agreement upon thirty (30) days' written or elec
             </div>
             <div>
               <div class="moa-doc-title">MEMORANDUM OF AGREEMENT</div>
-              <div class="moa-doc-subtitle">HomeSure Online Property Marketplace &amp; Property Seller</div>
+              <div class="moa-doc-subtitle">Kasafide Online Property Marketplace &amp; Property Seller</div>
             </div>
           </div>
           <div class="moa-body">${sectionsHtml}</div>
           <div class="moa-signature-block">
             <div class="sig-row">
               <div class="sig-item">
-                <div class="sig-name">HomeSure Platform</div>
+                <div class="sig-name">Kasafide Platform</div>
                 <div class="sig-line"></div>
                 <div class="sig-label">Authorized Representative</div>
                 <div class="sig-date">Date: ${fmtDate(signedAt)}</div>
@@ -173,7 +173,7 @@ Either party may terminate this agreement upon thirty (30) days' written or elec
             </div>
             <div>
               <div class="moa-doc-title">MEMORANDUM OF AGREEMENT</div>
-              <div class="moa-doc-subtitle">HomeSure Online Property Marketplace &amp; Property Seller</div>
+              <div class="moa-doc-subtitle">Kasafide Online Property Marketplace &amp; Property Seller</div>
             </div>
           </div>
           <div class="moa-body">${sectionsHtml}</div>

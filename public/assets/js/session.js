@@ -1,14 +1,24 @@
 // ─────────────────────────────────────────────────────────────────────────────
-//  HomeSure – Session helpers
+//  Kasafide – Session helpers
 //  Depends on: config.js (sb)
 //
-//  The real session lives in Supabase (localStorage, auto-refreshed). 'homesure_user' in
+//  The real session lives in Supabase (localStorage, auto-refreshed). 'kasafide_user' in
 //  sessionStorage is only a cached copy of the signed-in user's profile so pages can read
 //  it synchronously with getSession(). It is for UX (menus, redirects); the database never
 //  trusts it — Row Level Security decides what each request may do.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const SESSION_KEY = 'homesure_user';
+const SESSION_KEY = 'kasafide_user';
+
+// One-time move from the pre-rebrand key, so a tab that was signed in before the rename keeps
+// its cached profile instead of looking signed out until the next full sign-in.
+try {
+  const legacy = sessionStorage.getItem('homesure_user');
+  if (legacy !== null) {
+    if (sessionStorage.getItem(SESSION_KEY) === null) sessionStorage.setItem(SESSION_KEY, legacy);
+    sessionStorage.removeItem('homesure_user');
+  }
+} catch (e) { /* storage blocked: nothing to migrate */ }
 
 function saveSession(user) {
   const session = {
@@ -148,9 +158,9 @@ function hsToast(text, kind) {
   el.textContent = text;
   Object.assign(el.style, {
     position: 'fixed', bottom: '24px', left: '50%', transform: 'translateX(-50%)',
-    background: kind === 'error' ? '#b91c1c' : '#253347', color: '#f1f5f9',
+    background: kind === 'error' ? 'var(--danger)' : 'var(--surface-soft)', color: kind === 'error' ? 'var(--on-primary)' : 'var(--text)',
     padding: '10px 20px', borderRadius: '8px', fontSize: '13px', fontWeight: '600',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.4)', zIndex: '99999', transition: 'opacity 0.4s',
+    boxShadow: '0 4px 20px rgb(var(--shade-rgb) / min(0.4, var(--shadow-cap, 1)))', zIndex: '99999', transition: 'opacity 0.4s',
     opacity: '1', fontFamily: "'Plus Jakarta Sans', sans-serif", maxWidth: '90vw',
   });
   document.body.appendChild(el);

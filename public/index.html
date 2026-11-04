@@ -2,19 +2,32 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="assets/img/image.png" />
-    <!-- "Add to Home Screen" on iOS looks only for apple-touch-icon, never the regular favicon
-         above — without it, iOS falls back to generating its own icon: a plain square with the
-         page's first letter, which is the dark "H" tile this fixes.
-         apple-touch-icon.png is generated (not the raw logo file) at Apple's recommended 180x180,
-         logo centred at ~61% with padding on every side like other apps' icons, on a solid navy
-         background — the source logo has transparent pixels, and iOS renders those as black
-         rather than true transparency, which is why the icon looked edge-to-edge and oddly dark
-         before any padding was added at all. -->
-    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="HomeSure" />
+  <link rel="icon" type="image/svg+xml" href="assets/img/kasafide-favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png" />
+  <!-- "Add to Home Screen" on iOS looks only for apple-touch-icon, never the regular favicon
+       above. apple-touch-icon.png is generated at Apple's 180x180 with the logo padded on a solid
+       cream square: iOS renders transparent pixels as black, so the icon must not have any. -->
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+    <meta name="apple-mobile-web-app-title" content="Kasafide" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HomeSure</title>
+  <script src="assets/js/kasafide-theme.js"></script>
+  <script src="assets/js/kasafide-logo.js"></script>
+  <link rel="stylesheet" href="assets/css/kasafide-theme.css" />
+    <title>Kasafide</title>
+  <meta name="description" content="Kasafide is a verified housing rental and listing platform for Sta. Maria, Bulacan. Every seller is ID-checked and every listing is reviewed before it goes live." />
+  <meta property="og:site_name" content="Kasafide" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Kasafide" />
+  <meta property="og:description" content="Verified homes in Sta. Maria, Bulacan." />
+  <meta property="og:image" content="/assets/img/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Kasafide" />
+  <meta name="twitter:description" content="Verified homes in Sta. Maria, Bulacan." />
+  <meta name="twitter:image" content="/assets/img/og-image.png" />
 
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

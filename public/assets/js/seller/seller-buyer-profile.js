@@ -3,8 +3,8 @@
   const user = getSession();
   if (!user || user.role !== 'seller') window.location.href = '../../auth/signin.html';
 
-  HomeSureSidebar.init({ activePage: 'dashboard' });
-  HomeSureTopbar.init({ placeholder: 'Search properties...' });
+  KasafideSidebar.init({ activePage: 'dashboard' });
+  KasafideTopbar.init({ placeholder: 'Search properties...' });
 
   // ── Icons ──────────────────────────────────────────────────────────────────
   const iconCheck = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
@@ -17,11 +17,11 @@
     let stars = '';
     for (let i = 0; i < 5; i++) {
       if (i < fullStars) {
-        stars += `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="#fbbf24" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+        stars += `<svg width="${size}" height="${size}" viewBox="0 0 24 24" stroke="none" style="fill:var(--warning)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
       } else if (i === fullStars && hasHalf) {
-        stars += `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="url(#half-${rating})" stroke="none"><defs><linearGradient id="half-${rating}"><stop offset="50%" stop-color="#fbbf24"/><stop offset="50%" stop-color="#e5e7eb"/></linearGradient></defs><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+        stars += `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="url(#half-${rating})" stroke="none"><defs><linearGradient id="half-${rating}"><stop offset="50%" style="stop-color:var(--warning)"/><stop offset="50%" style="stop-color:var(--border)"/></linearGradient></defs><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
       } else {
-        stars += `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="#e5e7eb" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+        stars += `<svg width="${size}" height="${size}" viewBox="0 0 24 24" stroke="none" style="fill:var(--text-muted)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
       }
     }
     return stars;

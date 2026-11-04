@@ -1,6 +1,6 @@
-# Deploying HomeSure
+# Deploying Kasafide
 
-HomeSure is a Next.js application, not a static site. Twelve API routes — sign-up, email
+Kasafide is a Next.js application, not a static site. Twelve API routes — sign-up, email
 confirmation, payments, the Xendit webhook — run as server code. **Copying files is not a deploy.**
 
 Every deploy, whatever the method, is these four steps:

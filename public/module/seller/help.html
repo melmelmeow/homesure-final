@@ -6,13 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HomeSure – Seller Help & Support Center</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <!-- Same issue as buyer/help.html: seller.css says "Requires: dashboard.css" in its own header
-       comment, but this page never linked it, so every CSS variable and the base body font were
-       undefined. seller-dashboard.css carries the same tokens seller.html itself uses. -->
   <link rel="stylesheet" href="../../assets/css/seller/seller-dashboard.css" />
-  <link rel="stylesheet" href="../../assets/css/seller/seller.css" />
   <link rel="stylesheet" href="../../assets/css/chatbot-widget.css" />
-  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+  <script>
+    // seller-dashboard.css keys its dark/light tokens off [data-theme] on <html>. Normally
+    // sidebar.js's init() sets that as a side effect of building the sidebar — this page
+    // deliberately renders neither the sidebar nor the topbar (see the redesign note below), so
+    // that side effect never happens unless done here directly, and done before first paint so
+    // there's no flash of the wrong theme.
+    document.documentElement.setAttribute('data-theme', KasafideTheme.get());
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -81,306 +84,129 @@
     .faq-answer { display: none; padding: 12px 20px 16px; font-size: 13px; color: var(--muted2); line-height: 1.6; border-top: 1px solid var(--border); }
     .faq-card.open .faq-answer { display: block; }
 
-    .page-header {
-      margin-bottom: 24px;
-      flex-shrink: 0;
+    .ios-navbar-name { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.2; }
+    .ios-navbar-status {
+      font-size: 11px; color: var(--muted2);
+      display: flex; align-items: center; gap: 4px;
     }
-
-    .page-title {
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .page-sub {
-      font-size: 13px;
-      color: var(--muted2);
-    }
-
-    .chatbot-window {
-      position: static !important;
-      width: 100% !important;
-      height: auto !important;
-      flex: 1;
-      min-height: 0;
-      border-radius: 16px !important;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
-      display: flex !important;
-      flex-direction: column;
-      background: var(--card);
-      border: 1px solid var(--border);
-      overflow: hidden;
-    }
-
-    .chatbot-header {
-      flex-shrink: 0;
-      background: linear-gradient(135deg, #00c9a7 0%, #0F766E 100%);
-      padding: 20px 24px;
-      border-bottom: none;
-    }
-
-    .chatbot-avatar {
-      /* Was 20% opacity — same fix as the buyer version of this same page template: a
-         teal-gradient logo needs real contrast against the teal header, not a faint tint. */
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(10px);
-    }
-
-    .chatbot-avatar svg,
-    .chatbot-avatar img {
-      width: 36px;
-      height: 36px;
-      color: #fff;
-      display: block;
-    }
-
-    .chatbot-header-info {
-      flex: 1;
-    }
-
-    .chatbot-header-title {
-      font-size: 17px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 4px;
-    }
-
-    .chatbot-header-status {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.9);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .chatbot-status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #fff;
+    .ios-navbar-status .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--success);
       animation: pulse 2s infinite;
     }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
+    .ios-navbar-spacer { flex: 0 0 auto; min-width: 90px; }
 
+    /* ── Message thread — full-bleed, no boxed card ── */
     .chatbot-messages {
-      flex: 1 !important;
-      min-height: 0 !important;
-      overflow-y: auto !important;
-      padding: 24px;
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 14px 14px calc(10px + env(safe-area-inset-bottom, 0px));
       background: var(--bg);
     }
+    .chatbot-messages::-webkit-scrollbar { width: 5px; }
+    .chatbot-messages::-webkit-scrollbar-track { background: transparent; }
+    .chatbot-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
-    .chatbot-messages::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .chatbot-messages::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .chatbot-messages::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border-radius: 99px;
-    }
-
-    .chatbot-messages::-webkit-scrollbar-thumb:hover {
-      background: var(--muted);
-    }
-
-    /* Message bubbles */
-    .chat-message {
-      margin-bottom: 16px;
-      display: flex;
-      gap: 12px;
-      animation: slideUp 0.3s ease;
-    }
-
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .chat-message.bot .message-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #00c9a7, #0F766E);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .chat-message.bot .message-avatar svg {
-      width: 16px;
-      height: 16px;
-      color: #fff;
-    }
-
-    .chat-message.bot .message-bubble {
+    .chatbot-quick-actions { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 10px; }
+    .chatbot-quick-btn {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      border-top-left-radius: 4px;
-      padding: 14px 18px;
-      max-width: 70%;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    }
-
-    .chat-message.user {
-      justify-content: flex-end;
-    }
-
-    .chat-message.user .message-bubble {
-      background: linear-gradient(135deg, #00c9a7, #0F766E);
-      color: #fff;
-      border-radius: 16px;
-      border-top-right-radius: 4px;
-      padding: 14px 18px;
-      max-width: 70%;
-      box-shadow: 0 2px 12px rgba(0, 201, 167, 0.3);
-    }
-
-    .message-text {
-      font-size: 13.5px;
-      line-height: 1.6;
-      margin-bottom: 8px;
-    }
-
-    .message-text:last-child {
-      margin-bottom: 0;
-    }
-
-    .quick-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    .quick-action-btn {
-      background: var(--card);
-      border: 1.5px solid var(--border);
-      border-radius: 20px;
-      padding: 8px 16px;
-      font-size: 12px;
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 12.5px;
       font-weight: 600;
-      color: var(--text);
+      color: var(--teal);
       cursor: pointer;
-      transition: all 0.2s;
       font-family: inherit;
+      transition: background 0.15s, transform 0.1s;
     }
+    .chatbot-quick-btn:active { transform: scale(0.96); }
+    .chatbot-quick-btn:hover { background: var(--teal-faint, rgb(var(--primary-rgb) / 0.12)); }
 
-    .quick-action-btn:hover {
-      background: var(--teal);
-      border-color: var(--teal);
-      color: #fff;
-      transform: translateY(-1px);
-    }
-
-    .chatbot-input-area {
+    /* ── iOS Messages-style input bar ── */
+    .ios-input-bar {
       flex-shrink: 0;
-      padding: 20px;
-      background: var(--card);
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px));
+      background: color-mix(in srgb, var(--bg) 82%, transparent);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      backdrop-filter: blur(20px) saturate(180%);
       border-top: 1px solid var(--border);
     }
 
-    .chatbot-input-wrap {
-      display: flex;
-      gap: 10px;
-      align-items: flex-end;
-    }
-
-    .chatbot-input {
+    .ios-input {
       flex: 1;
-      background: var(--bg);
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 16px;
-      font-size: 13.5px;
-      color: var(--text);
+      min-height: 36px;
+      max-height: 110px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-size: 14.5px;
       font-family: inherit;
+      color: var(--text);
       resize: none;
       outline: none;
       transition: border-color 0.2s;
-      max-height: 120px;
     }
+    .ios-input:focus { border-color: var(--focus-ring); box-shadow: 0 0 0 2px rgb(var(--primary-rgb) / 0.25); }
+    .ios-input::placeholder { color: var(--muted); }
 
-    .chatbot-input:focus {
-      border-color: var(--teal);
-    }
-
-    .chatbot-input::placeholder {
-      color: var(--muted);
-    }
-
-    .chatbot-send-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #00c9a7, #0F766E);
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
+    .ios-send-btn {
       flex-shrink: 0;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: transform 0.12s, opacity 0.15s;
+    }
+    .ios-send-btn:active { transform: scale(0.9); }
+    .ios-send-btn svg { width: 17px; height: 17px; color: var(--on-primary); }
+
+    /* ── Message bubbles (kept — already close to iMessage) ── */
+    .chatbot-message { margin-bottom: 10px; display: flex; animation: slideUp 0.25s ease; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .chatbot-message.bot { justify-content: flex-start; }
+    .chatbot-message.user { justify-content: flex-end; }
+
+    .chatbot-message-bubble {
+      max-width: 78%;
+      padding: 10px 14px;
+      font-size: 14.5px;
+      line-height: 1.45;
+      border-radius: 18px;
+    }
+    .chatbot-message.bot .chatbot-message-bubble {
+      background: var(--surface-soft);
+      color: var(--text);
+      border-bottom-left-radius: 5px;
+    }
+    .chatbot-message.user .chatbot-message-bubble {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-bottom-right-radius: 5px;
     }
 
-    .chatbot-send-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 201, 167, 0.4);
+    .chatbot-typing { display: flex; margin-bottom: 10px; }
+    .chatbot-typing .chatbot-message-bubble {
+      background: var(--surface-soft); border-bottom-left-radius: 5px;
+      display: flex; gap: 4px; padding: 13px 16px;
     }
-
-    .chatbot-send-btn:active {
-      transform: translateY(0);
+    .chatbot-typing-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--muted2);
+      animation: typingBounce 1.2s infinite;
     }
-
-    .chatbot-send-btn svg {
-      width: 20px;
-      height: 20px;
-      color: #fff;
-    }
-
-    /* Same fix as buyer/help.html — no mobile handling existed at all, so the fixed mobile bottom
-       nav (.hs-bottom-nav, sidebar.js, 62px tall) sat on top of the chat input. */
-    @media (max-width: 768px) {
-      .help-container {
-        padding: 16px 14px;
-        padding-bottom: calc(62px + env(safe-area-inset-bottom, 0px));
-      }
-      .page-header { margin-bottom: 14px; }
-      .page-title { font-size: 19px; }
-      .page-sub { font-size: 12px; }
-      .chatbot-header { padding: 14px 16px; }
-      .chatbot-avatar { width: 46px; height: 46px; }
-      .chatbot-avatar svg, .chatbot-avatar img { width: 38px; height: 38px; }
-      .chatbot-header-title { font-size: 15px; }
-      .chatbot-messages { padding: 16px; }
-      .chat-message .message-bubble,
-      .chatbot-message-bubble { max-width: 85%; }
-      .chatbot-input-area { padding: 12px; }
-      .quick-actions { gap: 6px; }
-      .quick-action-btn { padding: 6px 12px; font-size: 11.5px; }
-    }
+    .chatbot-typing-dot:nth-child(2) { animation-delay: 0.15s; }
+    .chatbot-typing-dot:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes typingBounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-4px); opacity: 1; } }
   </style>
 </head>
 <body>
@@ -400,6 +226,8 @@
         </h1>
         <p class="page-sub">Find comprehensive seller user guides, title verification guidelines, and viewing management procedures.</p>
       </div>
+      <div class="ios-navbar-spacer"></div>
+    </header>
 
       <!-- Chat Window (Full Page) -->
       <div class="chatbot-window open" id="chatbotWindow">
@@ -419,11 +247,16 @@
 
     </div><!-- /content -->
   </div>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0/dist/umd/supabase.js"></script>
 <script src="../../assets/js/config.js"></script>
 <script src="../../assets/js/session.js"></script>
+<script>
+  // Same guard every other seller page has (seller-dashboard.js:4) — this page never had one, so
+  // it could be reached directly without signing in at all.
+  const session = getSession();
+  if (!session || session.role !== 'seller') window.location.href = '../../auth/signin.html';
+</script>
 <script src="../../assets/js/data.js"></script>
 <script src="../../components/sidebar.js"></script>
 <script src="../../components/customer-service.js"></script>

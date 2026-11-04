@@ -3,15 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HomeSure - Mobile Table Demo</title>
+  <script src="../assets/js/kasafide-theme.js"></script>
+  <script src="../assets/js/kasafide-logo.js"></script>
+  <link rel="stylesheet" href="../assets/css/kasafide-theme.css" />
+  <title>Kasafide - Mobile Table Demo</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/responsive.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background: #1E293B;
-      color: #f1f5f9;
+      background: var(--surface);
+      color: var(--text);
       padding: 20px;
     }
     .container {
@@ -22,19 +25,19 @@
       font-size: 28px;
       font-weight: 800;
       margin-bottom: 12px;
-      background: linear-gradient(135deg, #00c9a7, #00a88a);
+      background: linear-gradient(135deg, var(--primary), var(--primary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
     .subtitle {
-      color: rgba(255,255,255,0.6);
+      color: rgb(var(--wash-rgb) / 0.6);
       margin-bottom: 32px;
       font-size: 14px;
     }
     .section {
-      background: #253347;
-      border: 1.5px solid rgba(255,255,255,0.08);
+      background: var(--surface-soft);
+      border: 1.5px solid rgb(var(--wash-rgb) / 0.08);
       border-radius: 16px;
       padding: 24px;
       margin-bottom: 24px;
@@ -42,7 +45,7 @@
     .section-title {
       font-size: 18px;
       font-weight: 700;
-      color: #00c9a7;
+      color: var(--primary);
       margin-bottom: 16px;
     }
     .data-table {
@@ -50,24 +53,24 @@
       border-collapse: collapse;
     }
     .data-table th {
-      background: rgba(0,201,167,0.08);
-      color: rgba(255,255,255,0.7);
+      background: rgb(var(--primary-rgb) / 0.08);
+      color: rgb(var(--wash-rgb) / 0.7);
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       padding: 12px 16px;
       text-align: left;
-      border-bottom: 1.5px solid rgba(255,255,255,0.08);
+      border-bottom: 1.5px solid rgb(var(--wash-rgb) / 0.08);
     }
     .data-table td {
       padding: 14px 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      color: rgba(255,255,255,0.9);
+      border-bottom: 1px solid rgb(var(--wash-rgb) / 0.05);
+      color: rgb(var(--wash-rgb) / 0.9);
       font-size: 13px;
     }
     .data-table tr:hover {
-      background: rgba(0,201,167,0.03);
+      background: rgb(var(--primary-rgb) / 0.03);
     }
     .user-cell {
       display: flex;
@@ -79,7 +82,7 @@
       height: 32px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid rgba(0,201,167,0.3);
+      border: 2px solid rgb(var(--primary-rgb) / 0.3);
     }
     .status-badge {
       display: inline-flex;
@@ -93,14 +96,14 @@
       letter-spacing: 0.5px;
     }
     .status-badge.active {
-      background: rgba(34,197,94,0.15);
-      color: #22c55e;
-      border: 1px solid rgba(34,197,94,0.3);
+      background: rgb(var(--success-rgb) / 0.15);
+      color: var(--success);
+      border: 1px solid rgb(var(--success-rgb) / 0.3);
     }
     .status-badge.pending {
-      background: rgba(251,191,36,0.15);
-      color: #fbbf24;
-      border: 1px solid rgba(251,191,36,0.3);
+      background: rgb(var(--warning-rgb) / 0.15);
+      color: var(--warning);
+      border: 1px solid rgb(var(--warning-rgb) / 0.3);
     }
     .badge {
       display: inline-block;
@@ -111,14 +114,14 @@
       text-transform: uppercase;
     }
     .badge-admin {
-      background: rgba(99,102,241,0.15);
-      color: #6366f1;
-      border: 1px solid rgba(99,102,241,0.3);
+      background: rgb(var(--info-rgb) / 0.15);
+      color: var(--info);
+      border: 1px solid rgb(var(--info-rgb) / 0.3);
     }
     .badge-super-admin {
-      background: rgba(168,85,247,0.15);
-      color: #a855f7;
-      border: 1px solid rgba(168,85,247,0.3);
+      background: rgb(var(--info-rgb) / 0.15);
+      color: var(--info);
+      border: 1px solid rgb(var(--info-rgb) / 0.3);
     }
     .action-btns {
       display: flex;
@@ -135,30 +138,30 @@
       transition: all 0.2s;
     }
     .btn-primary {
-      background: #00c9a7;
-      color: white;
+      background: var(--primary);
+      color: var(--on-primary);
     }
     .btn-outline {
       background: transparent;
-      border: 1.5px solid rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.7);
+      border: 1.5px solid rgb(var(--wash-rgb) / 0.2);
+      color: rgb(var(--wash-rgb) / 0.7);
     }
     .info-box {
-      background: rgba(0,201,167,0.08);
-      border: 1.5px solid rgba(0,201,167,0.3);
+      background: rgb(var(--primary-rgb) / 0.08);
+      border: 1.5px solid rgb(var(--primary-rgb) / 0.3);
       border-radius: 12px;
       padding: 16px;
       margin-bottom: 24px;
     }
     .info-box h3 {
       font-size: 14px;
-      color: #00c9a7;
+      color: var(--primary);
       margin-bottom: 8px;
       font-weight: 700;
     }
     .info-box p {
       font-size: 13px;
-      color: rgba(255,255,255,0.7);
+      color: rgb(var(--wash-rgb) / 0.7);
       line-height: 1.6;
     }
     @media (max-width: 768px) {
@@ -203,7 +206,7 @@
                 <span>Andrea Villanueva</span>
               </div>
             </td>
-            <td data-label="Email">admin@homesure.com</td>
+            <td data-label="Email">admin@example.com</td>
             <td data-label="Status">
               <span class="status-badge active">Active</span>
             </td>
@@ -217,7 +220,7 @@
                 <span>Jose Reyes</span>
               </div>
             </td>
-            <td data-label="Email">jose@homesure.com</td>
+            <td data-label="Email">jose@example.com</td>
             <td data-label="Status">
               <span class="status-badge active">Active</span>
             </td>
@@ -231,7 +234,7 @@
                 <span>Maria Santos</span>
               </div>
             </td>
-            <td data-label="Email">maria@homesure.com</td>
+            <td data-label="Email">maria@example.com</td>
             <td data-label="Status">
               <span class="status-badge pending">Pending</span>
             </td>

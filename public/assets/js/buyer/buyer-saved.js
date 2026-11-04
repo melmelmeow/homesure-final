@@ -2,8 +2,8 @@
   const user = getSession();
   if (!user || user.role !== 'buyer') window.location.href = '../../auth/signin.html';
 
-  HomeSureSidebar.init({ activePage: 'saved' });
-  HomeSureTopbar.init({ placeholder: 'Search saved properties...' });
+  KasafideSidebar.init({ activePage: 'saved' });
+  KasafideTopbar.init({ placeholder: 'Search saved properties...' });
 
   // ── Icons ──────────────────────────────────────────────────────────────────
   const iconPin  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
@@ -46,7 +46,7 @@
           <div class="saved-img-wrap"><img class="saved-img" src="${HS.cover(l)}" alt="${l.title}" loading="lazy" /></div>
           <div class="saved-body">
             <div class="saved-title">${l.title}</div>
-            <div class="saved-location">${iconPin} ${l.address}</div>
+            <div class="saved-location">${iconPin} <span>${l.address}</span></div>
             <div class="saved-desc">${l.description}</div>
             <div class="saved-specs">
               <span>${bedsLabel}</span>

@@ -4,8 +4,8 @@
   if (!session || session.role !== 'seller') window.location.href = '../../auth/signin.html';
 
   // ── Init components ───────────────────────────────────────────────────────
-  HomeSureSidebar.init({ activePage: 'dashboard' });
-  HomeSureTopbar.init({
+  KasafideSidebar.init({ activePage: 'dashboard' });
+  KasafideTopbar.init({
     placeholder: 'Search by property, location, or seller...',
     onSearch: renderListings,
   });
@@ -18,10 +18,12 @@
     isVerified = fullUser.accountStatus === 'verified';
     const isPending = fullUser.accountStatus === 'pending';
 
+    // Verified sellers don't get a badge here at all — once there's nothing to act on, it's just
+    // clutter next to the page title. Pending/unverified sellers still need the nudge, and an
+    // expiring-soon verified seller already gets the separate expiry banner below.
     const badge = document.getElementById('verifyBadge');
     if (isVerified) {
-      badge.textContent = '✓ Verified';
-      badge.className = 'verify-badge verified';
+      badge.classList.add('is-hidden');
     } else if (isPending) {
       badge.textContent = '⏳ Pending Review';
       badge.className = 'verify-badge pending';
@@ -30,7 +32,7 @@
       badge.className = 'verify-badge unverified';
     }
 
-    if (!isVerified) document.getElementById('verifyBanner').style.display = 'flex';
+    document.getElementById('verifyBanner').classList.toggle('is-hidden', isVerified);
 
     // Show expiry banner on dashboard only when near expiry (≤30 days) or expired
     if (isVerified && fullUser.verificationExpiry) {
@@ -45,7 +47,7 @@
         banner.innerHTML = `
           <div class="expiry-banner danger">
             <div class="expiry-icon">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--danger)"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
             </div>
             <div class="expiry-body">
               <div class="expiry-title">Verification Expired</div>
@@ -58,7 +60,7 @@
         banner.innerHTML = `
           <div class="expiry-banner warn">
             <div class="expiry-icon">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--warning)"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </div>
             <div class="expiry-body">
               <div class="expiry-title">Verification Expiring in ${daysLeft} Day${daysLeft !== 1 ? 's' : ''}</div>
@@ -68,18 +70,6 @@
           </div>`;
       }
     }
-
-
-    const addBtn = document.getElementById('addListingBtn');
-    if (!isVerified) {
-      addBtn.disabled = true;
-      addBtn.title = 'Complete identity verification to post listings';
-    }
-  }
-
-  function handleAddListing() {
-    if (!isVerified) return;
-    window.location.href = 'post.html';
   }
 
   // ── Populate barangay dropdown (once the listings are in) ─────────────────
@@ -126,6 +116,33 @@
   // Only the search box uses this. renderListings() itself stays immediate, so the first render and
   // every call from code are unaffected.
   window.renderListingsSoon = hsDebounce(() => window.renderListings(), 200);
+
+  // ── Mobile filter sheet ───────────────────────────────────────────────────
+  // Same pattern as buyer-dashboard.js's #filterPanel: on mobile the Marketplace filters open as
+  // a bottom sheet instead of sitting inline above the listings.
+  function resetFilters() {
+    document.getElementById('filterBarangay').value = '';
+    document.getElementById('filterType').value = '';
+    document.getElementById('filterMin').value = '';
+    document.getElementById('filterMax').value = '';
+    renderListings();
+  }
+
+  function openFilterSheet() {
+    document.getElementById('sellerFilterPanel').classList.add('sheet-open');
+    document.getElementById('filterBackdrop').classList.add('open');
+    document.querySelector('.content').style.overflow = 'hidden';
+  }
+
+  function closeFilterSheet() {
+    document.getElementById('sellerFilterPanel').classList.remove('sheet-open');
+    document.getElementById('filterBackdrop').classList.remove('open');
+    document.querySelector('.content').style.overflow = '';
+  }
+
+  window.resetFilters     = resetFilters;
+  window.openFilterSheet  = openFilterSheet;
+  window.closeFilterSheet = closeFilterSheet;
 
   function renderListings() {
     const q        = (document.getElementById('hsSearch') || {}).value || '';

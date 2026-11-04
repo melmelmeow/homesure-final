@@ -14,7 +14,7 @@
   border-radius: 10px; padding: 9px 14px;
   transition: border-color 0.2s;
 }
-.search-wrap:focus-within { border-color: #00c9a7; }
+.search-wrap:focus-within { border-color: var(--primary); }
 .search-wrap svg { width: 14px; height: 14px; color: var(--muted); flex-shrink: 0; }
 .search-wrap input {
   background: transparent; border: none; outline: none;
@@ -23,4 +23,4 @@
 }
 .search-wrap input::placeholder { color: var(--muted); }
 
-[data-theme="light"] .search-wrap { background: #fff; }
+[data-theme="light"] .search-wrap { background: var(--surface); }

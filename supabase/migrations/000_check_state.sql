@@ -56,5 +56,5 @@ SELECT * FROM (
   UNION ALL
   SELECT 8, '008_email_verification',
          CASE WHEN has_email_verification THEN 'APPLIED' ELSE 'RUN THIS' END,
-         'confirmation links HomeSure emails itself' FROM state
+         'confirmation links Kasafide emails itself' FROM state
 ) rows ORDER BY n;

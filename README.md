@@ -1,4 +1,4 @@
-# HomeSure
+# Kasafide
 
 One repo, one server. `npm run dev` serves the front end **and** the API on `http://localhost:3000`.
 

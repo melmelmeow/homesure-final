@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
-//  HomeSure – Export Modal Component
+//  Kasafide – Export Modal Component
 //  Complete export system with format selection, loading, and success notification
-//  Usage: HomeSureExport.show({ title: 'Export Payments', onExport: (format, dateRange) => {...} })
+//  Usage: KasafideExport.show({ title: 'Export Payments', onExport: (format, dateRange) => {...} })
 // ─────────────────────────────────────────────────────────────────────────────
 
 (function (global) {
@@ -14,7 +14,7 @@
       position: fixed;
       inset: 0;
       z-index: 1000;
-      background: rgba(0,0,0,0.7);
+      background: rgb(var(--shade-rgb) / var(--overlay-a, 0.7));
       backdrop-filter: blur(6px);
       align-items: center;
       justify-content: center;
@@ -27,21 +27,21 @@
 
     /* Export Modal */
     .hs-export-modal {
-      background: #253347;
-      border: 1.5px solid rgba(255,255,255,0.08);
+      background: var(--surface-soft);
+      border: 1.5px solid rgb(var(--wash-rgb) / 0.08);
       border-radius: 18px;
       width: 100%;
       max-width: 520px;
       overflow: hidden;
       animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      box-shadow: 0 20px 60px rgb(var(--shade-rgb) / min(0.5, var(--shadow-cap, 1)));
     }
 
     /* Header */
     .hs-export-header {
-      background: linear-gradient(135deg, rgba(0,201,167,0.15) 0%, rgba(15,118,110,0.1) 100%);
+      background: linear-gradient(135deg, rgb(var(--primary-rgb) / 0.15) 0%, rgb(var(--primary-rgb) / 0.1) 100%);
       padding: 20px 22px;
-      border-bottom: 1px solid rgba(0,201,167,0.2);
+      border-bottom: 1px solid rgb(var(--primary-rgb) / 0.2);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -54,7 +54,7 @@
     .hs-export-icon {
       width: 40px;
       height: 40px;
-      background: rgba(0,201,167,0.2);
+      background: rgb(var(--primary-rgb) / 0.2);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -63,35 +63,35 @@
     .hs-export-icon svg {
       width: 20px;
       height: 20px;
-      color: #00c9a7;
+      color: var(--primary);
     }
     .hs-export-title-text h3 {
       font-size: 17px;
       font-weight: 800;
-      color: #f1f5f9;
+      color: var(--text);
       margin: 0;
     }
     .hs-export-title-text p {
       font-size: 12px;
-      color: rgba(255,255,255,0.5);
+      color: rgb(var(--wash-rgb) / 0.5);
       margin: 2px 0 0;
     }
     .hs-export-close {
-      background: rgba(255,255,255,0.06);
+      background: rgb(var(--wash-rgb) / 0.06);
       border: none;
       border-radius: 8px;
       width: 32px;
       height: 32px;
       cursor: pointer;
-      color: rgba(255,255,255,0.5);
+      color: rgb(var(--wash-rgb) / 0.5);
       display: flex;
       align-items: center;
       justify-content: center;
       transition: all 0.2s;
     }
     .hs-export-close:hover {
-      background: rgba(255,255,255,0.12);
-      color: rgba(255,255,255,0.8);
+      background: rgb(var(--wash-rgb) / 0.12);
+      color: rgb(var(--wash-rgb) / 0.8);
     }
 
     /* Body */
@@ -106,7 +106,7 @@
     .hs-export-label {
       font-size: 11.5px;
       font-weight: 700;
-      color: rgba(255,255,255,0.5);
+      color: rgb(var(--wash-rgb) / 0.5);
       text-transform: uppercase;
       letter-spacing: 0.05em;
       margin-bottom: 10px;
@@ -118,8 +118,8 @@
       gap: 10px;
     }
     .hs-export-format {
-      background: #2c3d55;
-      border: 2px solid rgba(255,255,255,0.08);
+      background: var(--surface-soft);
+      border: 2px solid rgb(var(--wash-rgb) / 0.08);
       border-radius: 12px;
       padding: 16px 12px;
       cursor: pointer;
@@ -128,20 +128,20 @@
       position: relative;
     }
     .hs-export-format:hover {
-      border-color: rgba(0,201,167,0.3);
+      border-color: rgb(var(--primary-rgb) / 0.3);
       transform: translateY(-2px);
     }
     .hs-export-format.selected {
-      border-color: #00c9a7;
-      background: rgba(0,201,167,0.08);
+      border-color: var(--primary);
+      background: rgb(var(--primary-rgb) / 0.08);
     }
     .hs-export-format.recommended::after {
       content: 'BEST';
       position: absolute;
       top: 6px;
       right: 6px;
-      background: #00c9a7;
-      color: white;
+      background: var(--primary);
+      color: var(--on-primary);
       font-size: 9px;
       font-weight: 900;
       padding: 2px 6px;
@@ -155,12 +155,12 @@
     .hs-export-format-name {
       font-size: 13px;
       font-weight: 700;
-      color: #f1f5f9;
+      color: var(--text);
       margin-bottom: 4px;
     }
     .hs-export-format-desc {
       font-size: 10.5px;
-      color: rgba(255,255,255,0.4);
+      color: rgb(var(--wash-rgb) / 0.4);
       line-height: 1.4;
     }
 
@@ -171,18 +171,18 @@
       gap: 12px;
     }
     .hs-export-input {
-      background: #2c3d55;
-      border: 1.5px solid rgba(255,255,255,0.08);
+      background: var(--surface-soft);
+      border: 1.5px solid rgb(var(--wash-rgb) / 0.08);
       border-radius: 10px;
       padding: 10px 14px;
-      color: #f1f5f9;
+      color: var(--text);
       font-family: inherit;
       font-size: 13px;
       outline: none;
       transition: border-color 0.2s;
     }
     .hs-export-input:focus {
-      border-color: rgba(0,201,167,0.4);
+      border-color: rgb(var(--primary-rgb) / 0.4);
     }
 
     /* Footer */
@@ -190,8 +190,8 @@
       display: flex;
       gap: 10px;
       padding: 18px 22px;
-      border-top: 1px solid rgba(255,255,255,0.07);
-      background: #1a2739;
+      border-top: 1px solid rgb(var(--wash-rgb) / 0.07);
+      background: var(--surface);
     }
     .hs-export-btn {
       flex: 1;
@@ -206,26 +206,26 @@
     }
     .hs-export-btn-cancel {
       background: transparent;
-      border: 1.5px solid rgba(255,255,255,0.12);
-      color: rgba(255,255,255,0.6);
+      border: 1.5px solid rgb(var(--wash-rgb) / 0.12);
+      color: rgb(var(--wash-rgb) / 0.6);
     }
     .hs-export-btn-cancel:hover {
-      border-color: rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.8);
+      border-color: rgb(var(--wash-rgb) / 0.2);
+      color: rgb(var(--wash-rgb) / 0.8);
     }
     .hs-export-btn-export {
-      background: #00c9a7;
-      color: white;
+      background: var(--primary);
+      color: var(--on-primary);
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      box-shadow: 0 4px 12px rgba(0,201,167,0.3);
+      box-shadow: 0 4px 12px rgb(var(--primary-rgb) / 0.3);
     }
     .hs-export-btn-export:hover {
-      background: #00b394;
+      background: var(--primary);
       transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(0,201,167,0.4);
+      box-shadow: 0 6px 16px rgb(var(--primary-rgb) / 0.4);
     }
     .hs-export-btn-export:disabled {
       opacity: 0.5;
@@ -245,8 +245,8 @@
     .hs-export-spinner {
       width: 48px;
       height: 48px;
-      border: 4px solid rgba(0,201,167,0.2);
-      border-top-color: #00c9a7;
+      border: 4px solid rgb(var(--primary-rgb) / 0.2);
+      border-top-color: var(--primary);
       border-radius: 50%;
       margin: 0 auto 20px;
       animation: spin 1s linear infinite;
@@ -254,12 +254,12 @@
     .hs-export-loading-text {
       font-size: 15px;
       font-weight: 700;
-      color: #f1f5f9;
+      color: var(--text);
       margin-bottom: 8px;
     }
     .hs-export-loading-desc {
       font-size: 12px;
-      color: rgba(255,255,255,0.5);
+      color: rgb(var(--wash-rgb) / 0.5);
     }
 
     /* Success Notification */
@@ -267,11 +267,11 @@
       position: fixed;
       top: 20px;
       right: 20px;
-      background: linear-gradient(135deg, #00c9a7 0%, #00a88a 100%);
-      color: white;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary) 100%);
+      color: var(--on-primary);
       padding: 16px 20px;
       border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0,201,167,0.4), 0 2px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 24px rgb(var(--primary-rgb) / 0.4), 0 2px 8px rgb(var(--shade-rgb) / min(0.2, var(--shadow-cap, 1)));
       display: none;
       align-items: center;
       gap: 12px;
@@ -291,7 +291,7 @@
     .hs-export-notif-icon {
       width: 24px;
       height: 24px;
-      background: rgba(255,255,255,0.25);
+      background: rgb(var(--wash-rgb) / 0.25);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -358,7 +358,7 @@
                 <p>${subtitle}</p>
               </div>
             </div>
-            <button class="hs-export-close" onclick="HomeSureExport.close()">
+            <button class="hs-export-close" onclick="KasafideExport.close()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16">
                 <line x1="18" y1="6" x2="6" y2="18"/>
                 <line x1="6" y1="6" x2="18" y2="18"/>
@@ -372,17 +372,17 @@
             <div class="hs-export-section">
               <label class="hs-export-label">Export Format</label>
               <div class="hs-export-formats">
-                <div class="hs-export-format recommended selected" data-format="excel" onclick="HomeSureExport.selectFormat('excel')">
+                <div class="hs-export-format recommended selected" data-format="excel" onclick="KasafideExport.selectFormat('excel')">
                   <div class="hs-export-format-icon">📊</div>
                   <div class="hs-export-format-name">Excel</div>
                   <div class="hs-export-format-desc">With styling</div>
                 </div>
-                <div class="hs-export-format" data-format="csv" onclick="HomeSureExport.selectFormat('csv')">
+                <div class="hs-export-format" data-format="csv" onclick="KasafideExport.selectFormat('csv')">
                   <div class="hs-export-format-icon">📄</div>
                   <div class="hs-export-format-name">CSV</div>
                   <div class="hs-export-format-desc">Plain text</div>
                 </div>
-                <div class="hs-export-format" data-format="pdf" onclick="HomeSureExport.selectFormat('pdf')">
+                <div class="hs-export-format" data-format="pdf" onclick="KasafideExport.selectFormat('pdf')">
                   <div class="hs-export-format-icon">📑</div>
                   <div class="hs-export-format-name">PDF</div>
                   <div class="hs-export-format-desc">Print ready</div>
@@ -411,10 +411,10 @@
 
           <!-- Footer -->
           <div class="hs-export-footer">
-            <button class="hs-export-btn hs-export-btn-cancel" onclick="HomeSureExport.close()">
+            <button class="hs-export-btn hs-export-btn-cancel" onclick="KasafideExport.close()">
               Cancel
             </button>
-            <button class="hs-export-btn hs-export-btn-export" onclick="HomeSureExport.export()">
+            <button class="hs-export-btn hs-export-btn-export" onclick="KasafideExport.export()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                 <polyline points="7 10 12 15 17 10"/>
@@ -429,7 +429,7 @@
       <!-- Success Notification -->
       <div class="hs-export-notification" id="hsExportNotification">
         <div class="hs-export-notif-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+          <svg viewBox="0 0 24 24" fill="none" style="stroke:var(--on-primary)" stroke-width="3">
             <polyline points="20 6 9 17 4 12"/>
           </svg>
         </div>
@@ -505,7 +505,7 @@
       footer.style.display = 'flex';
 
       // Trigger actual download (simulation)
-      const filename = `homesure-export-${Date.now()}.${currentFormat === 'excel' ? 'xlsx' : currentFormat}`;
+      const filename = `kasafide-export-${Date.now()}.${currentFormat === 'excel' ? 'xlsx' : currentFormat}`;
       console.log(`📥 Downloading: ${filename}`, { format: currentFormat, dateFrom, dateTo });
 
       // In production, you would trigger actual file download here
@@ -529,7 +529,7 @@
   }
 
   // Public API
-  global.HomeSureExport = {
+  global.KasafideExport = {
     show,
     close,
     selectFormat,

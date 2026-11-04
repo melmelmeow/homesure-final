@@ -2,9 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="assets/img/image.png" />
+  <link rel="icon" type="image/svg+xml" href="assets/img/kasafide-favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png" />
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About Us – HomeSure</title>
+  <script src="assets/js/kasafide-theme.js"></script>
+  <script src="assets/js/kasafide-logo.js"></script>
+  <link rel="stylesheet" href="assets/css/kasafide-theme.css" />
+  <title>About Us – Kasafide</title>
+  <meta name="description" content="Kasafide is a verified housing rental and listing platform for Sta. Maria, Bulacan. Every seller is ID-checked and every listing is reviewed before it goes live." />
+  <meta property="og:site_name" content="Kasafide" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="About Us – Kasafide" />
+  <meta property="og:description" content="Verified homes in Sta. Maria, Bulacan." />
+  <meta property="og:image" content="/assets/img/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="About Us – Kasafide" />
+  <meta name="twitter:description" content="Verified homes in Sta. Maria, Bulacan." />
+  <meta name="twitter:image" content="/assets/img/og-image.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -13,7 +32,7 @@
   <link rel="stylesheet" href="assets/css/glass-nav.css" />
   <script>
     (function() {
-      var t = localStorage.getItem('hs-theme') || 'dark';
+      var t = KasafideTheme.get();
       document.documentElement.setAttribute('data-theme', t);
     })();
   </script>
@@ -27,8 +46,8 @@
         <img src="assets/img/CatsTone Logo.svg" alt="CatsTone" class="nav-catstone-img" />
       </span>
       <span class="nav-logo-divider"></span>
-      <img src="assets/img/image.png" alt="HomeSure" height="30" style="display:block;border-radius:6px;" />
-      HomeSure
+      <span class="kf-logo" data-size="30" role="img" aria-label="Kasafide logo"></span>
+      Kasafide
     </a>
     <div class="nav-btns">
       <button class="nav-theme-btn" id="themeBtn" title="Toggle theme"></button>
@@ -46,7 +65,7 @@
         <span class="accent">getting started.</span>
       </h1>
       <p class="about-hero-sub">
-        HomeSure is a fresh face web-based on housing
+        Kasafide is a fresh face web-based on housing
         rental and listing platform designed to connect to
         verified property owners.
       </p>
@@ -55,7 +74,7 @@
       <img
         class="about-hero-img"
         src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=700&q=80"
-        alt="HomeSure Team"
+        alt="Kasafide Team"
       />
     </div>
   </section>
@@ -95,7 +114,7 @@
     <div class="story-right">
       <p class="story-body">
         The search for a home should be exciting, but too often, it's riddled with anxiety. We
-        developed HomeSure in direct response to a growing epidemic in online real estate: a
+        developed Kasafide in direct response to a growing epidemic in online real estate: a
         flood of misleading and unverified property listings found on traditional marketplaces.
       </p>
       <p class="story-body">
@@ -109,13 +128,13 @@
         <strong>accountability.</strong>"
       </blockquote>
       <p class="story-body">
-        To address these critical issues, we conceptualized HomeSure as a centralized, secure
+        To address these critical issues, we conceptualized Kasafide as a centralized, secure
         platform. By making strict identity verification, structured data management, and
         secure communication our foundational pillars, we transformed the chaotic
         property hunt into a safer, more organized environment.
       </p>
       <p class="story-body">
-        Today, HomeSure stands as the bridge connecting verified property owners with
+        Today, Kasafide stands as the bridge connecting verified property owners with
         genuine buyers and renters, ensuring that what you see online is exactly what you get
         in reality.
       </p>
@@ -163,7 +182,7 @@
     <div class="principles-left">
       <span class="section-eyebrow">Our Approach</span>
       <h2 class="principles-title">Guiding Principles</h2>
-      <p class="principles-sub">These fundamental rules govern every feature we build and every decision we make for the HomeSure platform.</p>
+      <p class="principles-sub">These fundamental rules govern every feature we build and every decision we make for the Kasafide platform.</p>
     </div>
     <div class="principles-list">
       <div class="principle-item">
@@ -313,12 +332,12 @@
   <!-- ── JOIN CTA ── -->
   <section class="hiring-section">
     <div class="hiring-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#1fc8b4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--primary)"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     </div>
     <h2 class="hiring-title">Your next home starts here.</h2>
     <p class="hiring-sub">
       Whether you're looking for a place to call home or a verified platform to list your
-      property, HomeSure connects you with the right people — safely, transparently, and
+      property, Kasafide connects you with the right people — safely, transparently, and
       without the guesswork.
     </p>
     <div class="hiring-btns">
@@ -332,8 +351,8 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="footer-logo">
-          <img src="assets/img/image.png" alt="HomeSure" height="28" />
-          HomeSure
+          <span class="kf-logo" data-size="28" role="img" aria-label="Kasafide logo"></span>
+          Kasafide
         </div>
         <p class="footer-tagline">A verified housing platform for secure property rentals and purchases.</p>
       </div>
@@ -359,7 +378,7 @@
         </a>
       </div>
     </div>
-    <div class="footer-bottom">© 2026 HomeSure. All rights reserved.</div>
+    <div class="footer-bottom">© 2026 Kasafide. All rights reserved.</div>
   </footer>
 
   <script>
@@ -375,7 +394,7 @@
     _btn.addEventListener('click', function() {
       const next = (document.documentElement.getAttribute('data-theme') || 'dark') === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('hs-theme', next);
+      KasafideTheme.set(next);
       _updateBtn();
     });
   </script>

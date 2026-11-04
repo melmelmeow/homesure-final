@@ -5,8 +5,8 @@
   if (!session || session.role !== 'buyer') window.location.href = '../../auth/signin.html';
 
   // ── Init shared components ──────────────────────────────────────────────────
-  HomeSureSidebar.init({ activePage: 'profile' });
-  HomeSureTopbar.init({ placeholder: 'Search properties...' });
+  KasafideSidebar.init({ activePage: 'profile' });
+  KasafideTopbar.init({ placeholder: 'Search properties...' });
 
   // ── Load the real profile, reviews and payments ─────────────────────────────
   const buyer = await HS.profiles.me();
@@ -181,11 +181,11 @@
     let stars = '';
     for (let i = 0; i < 5; i++) {
       if (i < fullStars) {
-        stars += `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="#fbbf24" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+        stars += `<svg width="${size}" height="${size}" viewBox="0 0 24 24" stroke="none" style="fill:var(--warning)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
       } else if (i === fullStars && hasHalf) {
-        stars += `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="url(#half-${rating})" stroke="none"><defs><linearGradient id="half-${rating}"><stop offset="50%" stop-color="#fbbf24"/><stop offset="50%" stop-color="#e5e7eb"/></linearGradient></defs><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+        stars += `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="url(#half-${rating})" stroke="none"><defs><linearGradient id="half-${rating}"><stop offset="50%" style="stop-color:var(--warning)"/><stop offset="50%" style="stop-color:var(--border)"/></linearGradient></defs><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
       } else {
-        stars += `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="#e5e7eb" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+        stars += `<svg width="${size}" height="${size}" viewBox="0 0 24 24" stroke="none" style="fill:var(--text-muted)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
       }
     }
     return stars;
@@ -240,7 +240,7 @@
       </div>
       <div class="reviews-list">
         ${buyerReviews.sort((a,b) => new Date(b.reviewDate) - new Date(a.reviewDate)).map(rev => {
-          const sellerName = rev.reviewerName || 'HomeSure user';
+          const sellerName = rev.reviewerName || 'Kasafide user';
           const sellerInitials = sellerName.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase() || '?';
           const reviewDate = new Date(rev.reviewDate).toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' });
           return `
@@ -271,7 +271,7 @@
     // Populate modal with current values
     document.getElementById('editFirstName').value = buyer.firstName || '';
     document.getElementById('editLastName').value = buyer.lastName || '';
-    document.getElementById('editPhone').value = buyer.phone || '';
+    document.getElementById('editPhone').value = HSPhone.strip(buyer.phone);
     document.getElementById('editEmail').value = buyer.email || '';
 
     // Show modal
@@ -285,11 +285,11 @@
   window.saveProfile = async function() {
     const firstName = document.getElementById('editFirstName').value.trim();
     const lastName = document.getElementById('editLastName').value.trim();
-    const phone = document.getElementById('editPhone').value.trim();
+    const phone = HSPhone.full('+63', document.getElementById('editPhone').value);
 
     // Validation
     if (!firstName || !lastName) {
-      alert('Please enter both first and last name');
+      hsToast('Please enter both first and last name', 'error');
       return;
     }
 
@@ -297,13 +297,16 @@
     try {
       await HS.profiles.updateMe({ firstName, lastName, phone });
     } catch (err) {
-      alert('Could not save your profile: ' + err.message);
+      hsToast('Could not save your profile: ' + err.message, 'error');
       return;
     }
 
     closeEditModal();
-    alert('✅ Profile updated successfully!');
-    location.reload();
+    hsToast('Profile updated successfully!');
+    // alert() used to block here until dismissed, so the reload only ever happened after you'd
+    // actually seen the message. hsToast doesn't block, so without this delay the page would
+    // reload instantly and the toast would never be on screen long enough to read.
+    setTimeout(() => location.reload(), 1200);
   };
 
 

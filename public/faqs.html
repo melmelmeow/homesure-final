@@ -2,9 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="assets/img/image.png" />
+  <link rel="icon" type="image/svg+xml" href="assets/img/kasafide-favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png" />
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HomeSure – FAQs</title>
+  <script src="assets/js/kasafide-theme.js"></script>
+  <script src="assets/js/kasafide-logo.js"></script>
+  <link rel="stylesheet" href="assets/css/kasafide-theme.css" />
+  <title>Kasafide – FAQs</title>
+  <meta name="description" content="Kasafide is a verified housing rental and listing platform for Sta. Maria, Bulacan. Every seller is ID-checked and every listing is reviewed before it goes live." />
+  <meta property="og:site_name" content="Kasafide" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Kasafide – FAQs" />
+  <meta property="og:description" content="Verified homes in Sta. Maria, Bulacan." />
+  <meta property="og:image" content="/assets/img/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Kasafide – FAQs" />
+  <meta name="twitter:description" content="Verified homes in Sta. Maria, Bulacan." />
+  <meta name="twitter:image" content="/assets/img/og-image.png" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     * {
@@ -13,15 +32,6 @@
       box-sizing: border-box;
     }
 
-    :root {
-      --bg: #1a1f2e;
-      --card: #252d3d;
-      --text: #e2e8f0;
-      --muted: #94a3b8;
-      --border: rgba(255, 255, 255, 0.1);
-      --teal: #00c9a7;
-      --accent: #6366f1;
-    }
 
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
@@ -32,7 +42,7 @@
 
     /* Header */
     .faq-header {
-      background: #0F766E;
+      background: var(--primary);
       padding: 16px 24px;
       display: flex;
       align-items: center;
@@ -54,16 +64,16 @@
     .faq-logo-text {
       font-size: 17px;
       font-weight: 800;
-      color: #ffffff;
+      color: var(--on-primary);
       letter-spacing: -0.02em;
     }
 
     .faq-back-btn {
       padding: 8px 16px;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgb(var(--k-white-rgb) / 0.15);
+      border: 1px solid rgb(var(--k-white-rgb) / 0.3);
       border-radius: 8px;
-      color: #fff;
+      color: var(--on-primary);
       text-decoration: none;
       font-size: 13px;
       font-weight: 600;
@@ -134,7 +144,7 @@
     .faq-search-input:focus {
       outline: none;
       border-color: var(--teal);
-      background: rgba(0, 201, 167, 0.05);
+      background: rgb(var(--primary-rgb) / 0.05);
     }
 
     .faq-search-input::placeholder {
@@ -166,7 +176,7 @@
     .faq-category-btn.active {
       background: var(--teal);
       border-color: var(--teal);
-      color: #fff;
+      color: var(--on-primary);
     }
 
     /* FAQ Items */
@@ -200,7 +210,7 @@
     }
 
     .faq-item:hover {
-      border-color: rgba(0, 201, 167, 0.3);
+      border-color: rgb(var(--primary-rgb) / 0.3);
     }
 
     .faq-question {
@@ -250,7 +260,7 @@
 
     /* Help CTA */
     .faq-help-cta {
-      background: linear-gradient(135deg, var(--teal) 0%, #00a388 100%);
+      background: linear-gradient(135deg, var(--teal) 0%, var(--primary) 100%);
       border-radius: 16px;
       padding: 32px;
       text-align: center;
@@ -260,7 +270,7 @@
     .faq-help-cta-title {
       font-size: 22px;
       font-weight: 700;
-      color: #fff;
+      color: var(--text);
       margin-bottom: 8px;
     }
 
@@ -272,7 +282,7 @@
 
     .faq-help-btn {
       padding: 12px 24px;
-      background: #fff;
+      background: var(--surface);
       color: var(--teal);
       border: none;
       border-radius: 10px;
@@ -287,7 +297,7 @@
 
     .faq-help-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 6px 20px rgb(var(--shade-rgb) / min(0.2, var(--shadow-cap, 1)));
     }
 
     @media (max-width: 768px) {
@@ -305,8 +315,8 @@
   <!-- Header -->
   <div class="faq-header">
     <a href="index.html" class="faq-logo">
-      <img src="assets/img/image.png" alt="HomeSure" />
-      <span class="faq-logo-text">HomeSure</span>
+      <span class="kf-logo" data-size="28" role="img" aria-label="Kasafide logo"></span>
+      <span class="faq-logo-text">Kasafide</span>
     </a>
     <a href="index.html" class="faq-back-btn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
@@ -320,7 +330,7 @@
   <div class="faq-container">
     <div class="faq-hero">
       <div class="faq-title">Frequently Asked Questions</div>
-      <div class="faq-subtitle">Find answers to common questions about HomeSure's property rental and purchase platform</div>
+      <div class="faq-subtitle">Find answers to common questions about Kasafide's property rental and purchase platform</div>
     </div>
 
     <!-- Search -->
@@ -355,14 +365,14 @@
 
         <div class="faq-item">
           <div class="faq-question" onclick="toggleFaq(this)">
-            <div class="faq-question-text">What is HomeSure?</div>
+            <div class="faq-question-text">What is Kasafide?</div>
             <svg class="faq-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"/>
             </svg>
           </div>
           <div class="faq-answer">
             <div class="faq-answer-content">
-              HomeSure is a verified housing platform for secure property rentals and purchases in Sta. Maria, Bulacan. We provide identity verification, secure payments via QRPH, and admin-approved listings to ensure safe transactions for both buyers and sellers.
+              Kasafide is a verified housing platform for secure property rentals and purchases in Sta. Maria, Bulacan. We provide identity verification, secure payments via QRPH, and admin-approved listings to ensure safe transactions for both buyers and sellers.
             </div>
           </div>
         </div>
@@ -383,7 +393,7 @@
 
         <div class="faq-item">
           <div class="faq-question" onclick="toggleFaq(this)">
-            <div class="faq-question-text">Is HomeSure free to use?</div>
+            <div class="faq-question-text">Is Kasafide free to use?</div>
             <svg class="faq-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"/>
             </svg>
@@ -468,7 +478,7 @@
           </div>
           <div class="faq-answer">
             <div class="faq-answer-content">
-              HomeSure uses QRPH for secure payments. Sellers send payment requests via Messages, buyers pay using GCash, Maya (PayMaya), or Credit/Debit Card. Payments are confirmed instantly and sellers receive notifications.
+              Kasafide uses QRPH for secure payments. Sellers send payment requests via Messages, buyers pay using GCash, Maya (PayMaya), or Credit/Debit Card. Payments are confirmed instantly and sellers receive notifications.
             </div>
           </div>
         </div>

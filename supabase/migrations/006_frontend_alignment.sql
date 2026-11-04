@@ -1,4 +1,4 @@
--- 006: align the database with the HomeSure front end, and close the security holes found on the way.
+-- 006: align the database with the Kasafide front end, and close the security holes found on the way.
 -- Run AFTER 005. Safe to re-run.
 --
 -- The live database was not built from 001 — it has its own (better) shape: a `barangays` lookup,

@@ -1,27 +1,10 @@
-// HomeSure – Seller Notifications
+// Kasafide – Seller Notifications
 
 const user = getSession();
 if (!user || user.role !== 'seller') window.location.href = '../../auth/signin.html';
 
-HomeSureSidebar.init({ activePage: 'notifications' });
-HomeSureTopbar.init({ placeholder: 'Search notifications...' });
-
-const NOTIFICATIONS = [
-  { id: 1, unread: true,  time: '5 minutes ago',      type: 'listing', color: '#00c9a7', initials: 'HS',
-    msg: 'Your listing <strong>Studio-Type Apartment in Balasing</strong> has been submitted and is now pending review.' },
-  { id: 2, unread: true,  time: '1 hour ago',          type: 'listing', color: '#f59e0b', initials: 'HS',
-    msg: 'Your listing <strong>2-Bedroom Bungalow in Catanghalan</strong> was rejected. Please review the reason and resubmit.' },
-  { id: 3, unread: true,  time: '3 hours ago',         type: 'message', color: '#3b82f6', initials: 'MS',
-    msg: '<strong>Maria Santos</strong> sent you an inquiry about <strong>1-Bedroom Apartment near Town Proper</strong>.' },
-  { id: 4, unread: false, time: 'Yesterday, 2:00 PM',  type: 'listing', color: '#00c9a7', initials: 'HS',
-    msg: 'Your listing <strong>House for Rent near Highway</strong> has been approved and is now visible to buyers.' },
-  { id: 5, unread: false, time: 'Yesterday, 9:00 AM',  type: 'verif',   color: '#8b5cf6', initials: 'HS',
-    msg: 'Your seller verification is expiring on <strong>April 20, 2026</strong>. Please submit new documents to stay verified.' },
-  { id: 6, unread: false, time: '3 days ago',          type: 'message', color: '#3b82f6', initials: 'JR',
-    msg: '<strong>Jose Reyes</strong> is interested in viewing <strong>Family House with Garden</strong>.' },
-  { id: 7, unread: false, time: '5 days ago',          type: 'system',  color: '#8b5cf6', initials: 'HS',
-    msg: 'Welcome to HomeSure! Your seller account has been created. Submit your documents to get verified.' },
-];
+KasafideSidebar.init({ activePage: 'notifications' });
+KasafideTopbar.init({ placeholder: 'Search notifications...' });
 
 
   const roleName = 'seller';
@@ -66,7 +49,22 @@ const TYPE_BADGE = {
   system:  { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`, cls: 'badge-purple' },
 };
 
+let NOTIFICATIONS = [];
 let currentTab = 'all';
+
+// ── "x minutes/hours/days ago", matching how old a notification actually is instead of a
+// hand-picked fake timestamp. ───────────────────────────────────────────────────────────────
+function timeAgo(iso) {
+  const minutes = Math.floor((Date.now() - new Date(iso).getTime()) / 60000);
+  if (minutes < 1) return 'Just now';
+  if (minutes < 60) return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+  const days = Math.floor(hours / 24);
+  if (days === 1) return 'Yesterday';
+  if (days < 7) return `${days} days ago`;
+  return new Date(iso).toLocaleDateString('en-PH', { month: 'short', day: 'numeric' });
+}
 
 function render(tab) {
   const list         = tab === 'unread' ? NOTIFICATIONS.filter(n => n.unread) : NOTIFICATIONS;
@@ -86,21 +84,21 @@ function render(tab) {
   if (newItems.length)     { html += `<div class="notif-section-label">New</div>`;     html += newItems.map(notifRow).join(''); }
   if (earlierItems.length) { html += `<div class="notif-section-label">Earlier</div>`; html += earlierItems.map(notifRow).join(''); }
   container.innerHTML = html;
-  document.getElementById('unreadCount').textContent = NOTIFICATIONS.filter(n => n.unread).length
-    ? `(${NOTIFICATIONS.filter(n => n.unread).length})` : '';
+  const unread = NOTIFICATIONS.filter(n => n.unread).length;
+  document.getElementById('unreadCount').textContent = unread ? `(${unread})` : '';
 }
 
 function notifRow(n) {
   const badge = TYPE_BADGE[n.type] || TYPE_BADGE.system;
   return `
-    <div class="notif-item ${n.unread ? 'unread' : ''}" onclick="markRead(${n.id})">
+    <div class="notif-item ${n.unread ? 'unread' : ''}" onclick="markRead('${n.id}')">
       <div class="notif-avatar-wrap">
-        <div class="notif-avatar" style="background:${n.color}">${n.initials}</div>
+        <div class="notif-avatar" style="background:var(--primary)">HS</div>
         <div class="notif-badge ${badge.cls}">${badge.icon}</div>
       </div>
       <div class="notif-content">
-        <div class="notif-msg">${n.msg}</div>
-        <div class="notif-time">${n.time}</div>
+        <div class="notif-msg">${n.title ? `<strong>${n.title}</strong> ` : ''}${n.body}</div>
+        <div class="notif-time">${timeAgo(n.createdAt)}</div>
       </div>
       ${n.unread ? '<div class="notif-unread-dot"></div>' : ''}
     </div>`;
@@ -136,4 +134,13 @@ function switchTab(btn, tab) {
   render(tab);
 }
 
-render('all');
+async function loadNotifications() {
+  try {
+    NOTIFICATIONS = await HS.notifications.list();
+  } catch (err) {
+    console.error('Could not load notifications:', err);
+  }
+  render(currentTab);
+}
+
+loadNotifications();

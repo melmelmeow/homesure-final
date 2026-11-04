@@ -1,5 +1,5 @@
 // FILE: assets/js/seller/seller-reviews.js
-// HomeSure – Seller Reviews
+// Kasafide – Seller Reviews
 //
 // What buyers have written about this seller. Reviews are public to read, so no filtering is done
 // here beyond asking for the ones about me — RLS already limits what anyone may write.
@@ -11,8 +11,8 @@
     return;
   }
 
-  HomeSureSidebar.init({ activePage: 'dashboard' });
-  HomeSureTopbar.init({ placeholder: 'Search reviews...' });
+  KasafideSidebar.init({ activePage: 'dashboard' });
+  KasafideTopbar.init({ placeholder: 'Search reviews...' });
 
   let REVIEWS = [];
   let filter = 'all';
@@ -28,7 +28,7 @@
     return String(name || '?').trim().split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
   }
 
-  const AVATAR_COLORS = ['#0f766e', '#7c3aed', '#b45309', '#1d4ed8', '#be123c', '#047857'];
+  const AVATAR_COLORS = ['var(--k-avatar-1)', 'var(--k-avatar-3)', 'var(--k-avatar-2)', 'var(--k-avatar-6)', 'var(--k-avatar-4)', 'var(--k-avatar-5)'];
   function avatarColor(name) {
     let hash = 0;
     for (const ch of String(name || '')) hash = (hash * 31 + ch.charCodeAt(0)) % 9973;
@@ -137,13 +137,13 @@
     }
 
     listEl.innerHTML = shown.map((r) => {
-      const name = r.reviewerName || 'HomeSure user';
+      const name = r.reviewerName || 'Kasafide user';
       const title = r.listingId ? listingTitles[r.listingId] : null;
       return `
       <div class="review-card">
         <div class="review-header">
           <div class="review-avatar" style="background:${avatarColor(name)};display:flex;
-               align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:14px;">
+               align-items:center;justify-content:center;font-weight:800;color:var(--text);font-size:14px;">
             ${esc(initials(name))}
           </div>
           <div class="review-user-info">

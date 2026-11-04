@@ -1,14 +1,14 @@
-// HomeSure – Public Browse Listings
+// Kasafide – Public Browse Listings
 
 (function () {
   // ── Theme ───────────────────────────────────────────────────────────────────
   function applyTheme(mode) {
     document.documentElement.setAttribute('data-theme', mode);
-    localStorage.setItem('hs-theme', mode);
+    KasafideTheme.set(mode);
   }
 
   function getTheme() {
-    return localStorage.getItem('hs-theme') || 'dark';
+    return KasafideTheme.get();
   }
 
   window.toggleTheme = function () {
@@ -60,6 +60,15 @@
     }
   }
 
+  // ?type=lot etc., from the landing page's "Browse by Type" cards. Only a value the dropdown
+  // actually offers is applied — the type list is fixed, unlike the barangay one above.
+  function applyTypeFromURL() {
+    const wanted = new URLSearchParams(window.location.search).get('type');
+    if (!wanted) return;
+    const select = document.getElementById('filterType');
+    if ([...select.options].some(o => o.value === wanted)) select.value = wanted;
+  }
+
   async function loadListings() {
     try {
       allListings = await HS.listings.approved();
@@ -70,6 +79,7 @@
     }
     fillBarangays();
     applyBarangayFromURL();
+    applyTypeFromURL();
     applyFilters();
   }
 

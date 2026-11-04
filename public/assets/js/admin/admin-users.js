@@ -1,4 +1,4 @@
-// HomeSure – Admin Users Management
+// Kasafide – Admin Users Management
 
 (function () {
   const user = getSession();
@@ -7,15 +7,15 @@
     return;
   }
 
-  HomeSureSidebar.init({ activePage: 'users' });
-  HomeSureTopbar.init({ placeholder: 'Search users...', onSearch: renderUsers });
+  KasafideSidebar.init({ activePage: 'users' });
+  KasafideTopbar.init({ placeholder: 'Search users...', onSearch: renderUsers });
 
   // Only buyers and sellers are shown here (loaded from the database; admins can read every profile)
   let users = [];
   let activeFilter = 'all';
 
   const avatarColors = {
-    buyer: '#3b82f6', seller: '#8b5cf6',
+    buyer: 'var(--k-avatar-1)', seller: 'var(--k-avatar-3)',
   };
 
   // ── Render Table ─────────────────────────────────────────────────────────────
@@ -38,7 +38,7 @@
 
     tbody.innerHTML = filtered.map(u => {
       const initials  = (((u.firstName || '')[0] || '') + ((u.lastName || '')[0] || '')).toUpperCase() || '?';
-      const avatarBg  = avatarColors[u.role] || '#6b7280';
+      const avatarBg  = avatarColors[u.role] || 'var(--k-avatar-6)';
       const roleBadge = u.role === 'buyer'
         ? `<span class="badge buyer-role">Buyer</span>`
         : `<span class="badge seller-role">Seller</span>`;
@@ -239,7 +239,7 @@
     const selected = document.querySelector('input[name="verifRejectReason"]:checked');
     const custom   = document.getElementById('verifRejectCustom').value.trim();
     const reason   = custom || (selected ? VERIF_REJECT_REASONS[selected.value] : null);
-    if (!reason) { alert('Please select or write a rejection reason.'); return; }
+    if (!reason) { hsToast('Please select or write a rejection reason.', 'error'); return; }
     closeVerifRejectModal();
     resolveVerif('rejected', reason);
   };

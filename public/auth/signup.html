@@ -2,9 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="../assets/img/image.png" />
+  <link rel="icon" type="image/svg+xml" href="../assets/img/kasafide-favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png" />
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png" />
+  <link rel="manifest" href="../site.webmanifest" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HomeSure – Create an Account</title>
+  <script src="../assets/js/kasafide-theme.js"></script>
+  <script src="../assets/js/kasafide-logo.js"></script>
+  <link rel="stylesheet" href="../assets/css/kasafide-theme.css" />
+  <title>Kasafide – Create an Account</title>
+  <meta name="description" content="Kasafide is a verified housing rental and listing platform for Sta. Maria, Bulacan. Every seller is ID-checked and every listing is reviewed before it goes live." />
+  <meta property="og:site_name" content="Kasafide" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Kasafide – Create an Account" />
+  <meta property="og:description" content="Verified homes in Sta. Maria, Bulacan." />
+  <meta property="og:image" content="/assets/img/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Kasafide – Create an Account" />
+  <meta name="twitter:description" content="Verified homes in Sta. Maria, Bulacan." />
+  <meta name="twitter:image" content="/assets/img/og-image.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -23,15 +42,15 @@
       <p>Every seller is ID-checked and every listing is reviewed before it ever reaches browse.</p>
     </div>
 
-    <div class="auth-card">
+    <div class="auth-card auth-card--wide">
       <a class="auth-card-brand" href="../index.html">
-        <img src="../assets/img/image.png" alt="HomeSure" />
-        HomeSure
+        <span class="kf-logo" data-size="28" role="img" aria-label="Kasafide logo"></span>
+        Kasafide
       </a>
 
       <div class="auth-form-wrap">
         <h1 class="auth-title">Create an account</h1>
-        <p class="auth-sub">Join HomeSure to find your dream property.</p>
+        <p class="auth-sub">Join Kasafide to find your dream property.</p>
 
         <div class="field-group">
           <label class="field-label">I am registering as a…</label>
@@ -56,45 +75,49 @@
           </div>
         </div>
 
-        <div class="field-group">
-          <label class="field-label">Email</label>
-          <input class="field-input full" type="email" placeholder="Enter your email" />
-        </div>
+        <div class="field-pair">
+          <div class="field-group">
+            <label class="field-label">Email</label>
+            <input class="field-input full" type="email" placeholder="Enter your email" />
+          </div>
 
-        <div class="field-group">
-          <label class="field-label">Phone Number</label>
-          <div class="phone-input">
-            <span class="phone-prefix">+63</span>
-            <input class="field-input" type="tel" id="phoneLocal" inputmode="numeric" maxlength="10" placeholder="9000000000" />
+          <div class="field-group">
+            <label class="field-label">Phone Number</label>
+            <div class="phone-input">
+              <span class="phone-prefix">+63</span>
+              <input class="field-input" type="tel" id="phoneLocal" inputmode="numeric" maxlength="10" placeholder="9000000000" />
+            </div>
           </div>
         </div>
 
-        <div class="field-group">
-          <label class="field-label">Password</label>
-          <div class="input-eye">
-            <input class="field-input full" type="password" id="pw1" placeholder="Create a strong password" />
-            <button class="eye-btn" onclick="togglePw('pw1', this)">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            </button>
+        <div class="field-pair">
+          <div class="field-group">
+            <label class="field-label">Password</label>
+            <div class="input-eye">
+              <input class="field-input full" type="password" id="pw1" placeholder="Create password" />
+              <button class="eye-btn" onclick="togglePw('pw1', this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
           </div>
-          <span class="field-hint">Must be at least 8 characters long.</span>
-        </div>
 
-        <div class="field-group">
-          <label class="field-label">Confirm Password</label>
-          <div class="input-eye">
-            <input class="field-input full" type="password" id="pw2" placeholder="Create a strong password" />
-            <button class="eye-btn" onclick="togglePw('pw2', this)">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            </button>
+          <div class="field-group">
+            <label class="field-label">Confirm Password</label>
+            <div class="input-eye">
+              <input class="field-input full" type="password" id="pw2" placeholder="Re-enter password" />
+              <button class="eye-btn" onclick="togglePw('pw2', this)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
           </div>
         </div>
+        <span class="field-hint field-hint--pair">Must be at least 8 characters long.</span>
 
         <label class="agree-check">
           <input type="checkbox" id="agreeCheck" onchange="toggleSignupBtn()" />
           <span class="agree-box"></span>
           <span class="agree-text">
-            I have read and agree to HomeSure's
+            I have read and agree to Kasafide's
             <a href="../terms.html" target="_blank">Terms of Service</a>
             and
             <a href="../privacy-policy.html" target="_blank">Privacy Policy</a>.
@@ -123,7 +146,7 @@
     </div>
 
     <footer class="auth-page-footer">
-      <span>© 2026 HomeSure.site</span>
+      <span>© 2026 Kasafide</span>
       <div class="footer-links"><a href="../terms.html">Terms</a><a href="../privacy-policy.html">Privacy</a></div>
     </footer>
   </div>
@@ -133,12 +156,12 @@
     <div class="modal-card">
       <button class="modal-close" onclick="closeModal()">&times;</button>
       <div class="modal-icon-wrap">
-        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#1fc8b4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--primary)">
           <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
           <polyline points="22,6 12,13 2,6"/>
         </svg>
         <div class="modal-check">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="stroke:var(--on-primary)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
       </div>
       <h2 class="modal-title">Verify Your Email</h2>

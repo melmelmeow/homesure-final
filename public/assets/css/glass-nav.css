@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────────────────────────────────────────
-   HomeSure — frosted-glass top bar
+   Kasafide — frosted-glass top bar
    Load this AFTER the page's own stylesheet so it wins.
 
    The public pages were each written with their own theme switch, and there are three
@@ -14,33 +14,33 @@
 /* Before the theme script runs there is no attribute yet, so start light — that is what
    every page falls back to anyway, and a flash of the wrong glass is very visible. */
 :root {
-  --glass-bg:        rgba(255, 255, 255, 0.55);
-  --glass-tint:      rgba(0, 201, 167, 0.035);
-  --glass-edge:      rgba(255, 255, 255, 0.85);   /* the hairline along the top */
-  --glass-border:    rgba(15, 23, 42, 0.07);
-  --glass-shadow:    0 6px 28px rgba(15, 23, 42, 0.07);
+  --glass-bg:        rgb(var(--wash-rgb) / 0.55);
+  --glass-tint:      rgb(var(--primary-rgb) / 0.035);
+  --glass-edge:      rgb(var(--wash-rgb) / 0.85);   /* the hairline along the top */
+  --glass-border:    rgb(var(--k-ink-rgb) / 0.07);
+  --glass-shadow:    0 6px 28px rgb(var(--k-ink-rgb) / min(0.07, var(--shadow-cap, 1)));
   --glass-blur:      blur(22px) saturate(175%);
-  --glass-solid:     rgba(255, 255, 255, 0.94);   /* used where blur is unavailable */
+  --glass-solid:     rgb(var(--wash-rgb) / 0.94);   /* used where blur is unavailable */
 }
 
 [data-theme="light"],
 body.light {
-  --glass-bg:     rgba(255, 255, 255, 0.55);
-  --glass-tint:   rgba(0, 201, 167, 0.035);
-  --glass-edge:   rgba(255, 255, 255, 0.85);
-  --glass-border: rgba(15, 23, 42, 0.07);
-  --glass-shadow: 0 6px 28px rgba(15, 23, 42, 0.07);
-  --glass-solid:  rgba(255, 255, 255, 0.94);
+  --glass-bg:     rgb(var(--surface-rgb) / 0.55);
+  --glass-tint:   rgb(var(--primary-rgb) / 0.035);
+  --glass-edge:   var(--border);
+  --glass-border: rgb(var(--k-ink-rgb) / 0.07);
+  --glass-shadow: 0 6px 28px rgb(var(--k-ink-rgb) / 0.07);
+  --glass-solid:  rgb(var(--surface-rgb) / 0.94);
 }
 
 [data-theme="dark"],
 body.dark {
-  --glass-bg:     rgba(13, 27, 42, 0.52);
-  --glass-tint:   rgba(0, 201, 167, 0.05);
+  --glass-bg:     rgb(var(--k-ink-rgb) / 0.52);
+  --glass-tint:   rgb(var(--primary-rgb) / 0.05);
   --glass-edge:   rgba(255, 255, 255, 0.11);
   --glass-border: rgba(255, 255, 255, 0.07);
   --glass-shadow: 0 6px 28px rgba(0, 0, 0, 0.3);
-  --glass-solid:  rgba(13, 27, 42, 0.93);
+  --glass-solid:  rgb(var(--k-ink-rgb) / 0.93);
 }
 
 /* The four floating bars across the public pages. auth.css is left out on purpose: its
@@ -72,12 +72,13 @@ nav,
 }
 
 /* ─── While the bar sits on top of the hero ────────────────────────────────────
-   The hero is dark on desktop in both themes, so in light mode a white bar on top of it looked
-   like a separate strip rather than part of the page. Over the hero the bar borrows the dark
+   In dark mode the hero is the darkest thing on the page, so a lighter bar on top of it looked
+   like a separate strip rather than part of the page. In light mode the hero follows the page
+   and the ordinary light glass already blends in, so this only applies under data-theme="dark". Over the hero the bar borrows the dark
    tokens, and its contents have to follow — dark text on a dark panel would be unreadable.
    glass-nav.js adds and removes this class as you scroll. */
-nav.over-hero,
-.browse-nav.over-hero {
+:root[data-theme="dark"] nav.over-hero,
+:root[data-theme="dark"] .browse-nav.over-hero {
   /* No blur here for .browse-nav — a performance decision, not a visual one;
      backdrop-filter recomputes every frame anything behind it moves. For nav.over-hero on
      index.html/about.html specifically, this is moot: the pill rule further down
@@ -85,12 +86,12 @@ nav.over-hero,
      on request, to match a reference that wanted the headline visibly blurred through it. */
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
-  --glass-bg:     rgba(10, 22, 40, 0.72);
-  --glass-tint:   rgba(0, 201, 167, 0.06);
+  --glass-bg:     rgb(var(--k-ink-rgb) / 0.72);
+  --glass-tint:   rgb(var(--primary-rgb) / 0.06);
   --glass-edge:   rgba(255, 255, 255, 0.12);
   --glass-border: rgba(255, 255, 255, 0.08);
   --glass-shadow: none;
-  --glass-solid:  rgba(10, 22, 40, 0.92);
+  --glass-solid:  rgb(var(--k-ink-rgb) / 0.92);
 }
 
 /* Somebody who has asked their system for less motion should not be paying for any of it. */
@@ -104,22 +105,22 @@ nav.over-hero,
 
 /* The logo, the divider and the theme button are all themed off the page, so they need pulling
    back to light here. The Sign in / Sign up buttons already read on a dark panel. */
-nav.over-hero .nav-logo,
-nav.over-hero .nav-logo-text {
-  color: #f1f5f9;
+:root[data-theme="dark"] nav.over-hero .nav-logo,
+:root[data-theme="dark"] nav.over-hero .nav-logo-text {
+  color: var(--text);
 }
-nav.over-hero .nav-logo-divider {
+:root[data-theme="dark"] nav.over-hero .nav-logo-divider {
   background: rgba(255, 255, 255, 0.18);
 }
-nav.over-hero .nav-tagline {
+:root[data-theme="dark"] nav.over-hero .nav-tagline {
   color: rgba(255, 255, 255, 0.55);
 }
-nav.over-hero .nav-theme-btn {
+:root[data-theme="dark"] nav.over-hero .nav-theme-btn {
   background: rgba(255, 255, 255, 0.07);
   border-color: rgba(255, 255, 255, 0.14);
   color: rgba(255, 255, 255, 0.7);
 }
-nav.over-hero .nav-theme-btn:hover {
+:root[data-theme="dark"] nav.over-hero .nav-theme-btn:hover {
   border-color: var(--teal);
   color: var(--teal);
 }
@@ -173,12 +174,12 @@ nav:not(.browse-nav):not(.toc-nav) {
   padding: 0 10px 0 20px;
   border-radius: 999px;
 
-  background: rgba(10, 22, 40, 0.58);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.10),
-    0 8px 32px rgba(0, 0, 0, 0.28);
+    inset 0 1px 0 var(--glass-edge),
+    var(--glass-shadow);
 
   -webkit-backdrop-filter: blur(16px) saturate(160%);
   backdrop-filter: blur(16px) saturate(160%);
@@ -195,11 +196,12 @@ nav:not(.browse-nav):not(.toc-nav):not(.over-hero) {
   backdrop-filter: blur(16px) saturate(160%);
   box-shadow:
     inset 0 1px 0 var(--glass-edge),
-    0 8px 28px rgba(0, 0, 0, 0.18);
+    0 8px 28px rgb(var(--shade-rgb) / min(0.18, var(--shadow-cap, 1)));
 }
 
 /* A pill cannot have a bottom border — it has no bottom edge. */
-nav:not(.browse-nav):not(.toc-nav).over-hero {
+:root[data-theme="dark"] nav:not(.browse-nav):not(.toc-nav).over-hero {
+  background: rgb(var(--k-ink-rgb) / 0.58);
   border-color: rgba(255, 255, 255, 0.10);
 }
 

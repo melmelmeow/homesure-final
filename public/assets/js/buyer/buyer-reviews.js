@@ -1,5 +1,5 @@
 // FILE: assets/js/buyer/buyer-reviews.js
-// HomeSure – Buyer Reviews
+// Kasafide – Buyer Reviews
 //
 // The reviews this buyer has written, and the form for writing another.
 //
@@ -14,8 +14,8 @@
     return;
   }
 
-  HomeSureSidebar.init({ activePage: 'reviews' });
-  HomeSureTopbar.init({ placeholder: 'Search reviews...' });
+  KasafideSidebar.init({ activePage: 'reviews' });
+  KasafideTopbar.init({ placeholder: 'Search reviews...' });
 
   let REVIEWS = [];
   let REVIEWABLE = [];          // { propertyId, sellerId, title }
@@ -33,7 +33,7 @@
     return String(name || '?').trim().split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
   }
 
-  const AVATAR_COLORS = ['#0f766e', '#7c3aed', '#b45309', '#1d4ed8', '#be123c', '#047857'];
+  const AVATAR_COLORS = ['var(--k-avatar-1)', 'var(--k-avatar-3)', 'var(--k-avatar-2)', 'var(--k-avatar-6)', 'var(--k-avatar-4)', 'var(--k-avatar-5)'];
   function avatarColor(name) {
     let hash = 0;
     for (const ch of String(name || '')) hash = (hash * 31 + ch.charCodeAt(0)) % 9973;
@@ -60,14 +60,14 @@
 
   // ── Load ────────────────────────────────────────────────────────────────────
   const listEl = document.getElementById('reviewsList');
-  if (listEl) listEl.innerHTML = `<div class="review-card" style="text-align:center;color:#94a3b8">Loading…</div>`;
+  if (listEl) listEl.innerHTML = `<div class="review-card" style="text-align:center;color:var(--text-muted)">Loading…</div>`;
 
   try {
     REVIEWS = await HS.reviews.by(user.id);
   } catch (err) {
     console.error('Could not load reviews:', err);
     if (listEl) {
-      listEl.innerHTML = `<div class="review-card" style="text-align:center;color:#94a3b8">
+      listEl.innerHTML = `<div class="review-card" style="text-align:center;color:var(--text-muted)">
         Could not load your reviews. Please refresh the page.</div>`;
     }
     return;
@@ -130,7 +130,7 @@
       listEl.innerHTML = `
         <div class="review-card" style="text-align:center;padding:48px 24px;">
           <div style="font-size:16px;font-weight:700;margin-bottom:8px;">You have not written a review yet</div>
-          <div style="font-size:13px;color:#94a3b8;line-height:1.7;max-width:400px;margin:0 auto;">
+          <div style="font-size:13px;color:var(--text-muted);line-height:1.7;max-width:400px;margin:0 auto;">
             ${REVIEWABLE.length
               ? 'Use “Write a Review” above to tell other buyers what a place was like.'
               : 'Once you have completed a payment on a listing, you will be able to review it here.'}
@@ -140,7 +140,7 @@
     }
 
     if (!shown.length) {
-      listEl.innerHTML = `<div class="review-card" style="text-align:center;color:#94a3b8;padding:32px;">
+      listEl.innerHTML = `<div class="review-card" style="text-align:center;color:var(--text-muted);padding:32px;">
         No reviews match that filter.</div>`;
       return;
     }
@@ -151,7 +151,7 @@
       <div class="review-card">
         <div class="review-header">
           <div class="review-avatar" style="background:${avatarColor(myName)};display:flex;
-               align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:13px;">
+               align-items:center;justify-content:center;font-weight:800;color:var(--text);font-size:13px;">
             ${esc(initials(myName))}
           </div>
           <div class="review-user-info">

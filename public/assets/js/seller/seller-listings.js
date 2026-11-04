@@ -3,8 +3,8 @@
   const session = getSession();
   if (!session || session.role !== 'seller') window.location.href = '../../auth/signin.html';
 
-  HomeSureSidebar.init({ activePage: 'listings' });
-  HomeSureTopbar.init({ placeholder: 'Search your listings...' });
+  KasafideSidebar.init({ activePage: 'listings' });
+  KasafideTopbar.init({ placeholder: 'Search your listings...' });
 
   // ── Resolve user & listings (from the database) ─────────────────────────────
   let isVerified = (session && session.accountStatus) === 'verified';

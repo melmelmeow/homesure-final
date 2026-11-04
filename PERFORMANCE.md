@@ -1,6 +1,6 @@
 # Performance review
 
-Eleven common optimisations, checked against what HomeSure actually does today. Each one says what
+Eleven common optimisations, checked against what Kasafide actually does today. Each one says what
 it is for, whether this project needs it, and what the change would be.
 
 Nothing here was assumed — every claim was measured against the code in this repo on 2026-10-12.
@@ -97,11 +97,12 @@ Cheap to add and nothing else changes.
 
 | File | Size |
 |---|---|
-| House Icon.svg | 196 KB |
 | house_image.jpg | 179 KB |
 | Sta. Maria Map.svg | 146 KB |
 | CatsTone Logo.png | 144 KB |
 | Team photos (5) | ~110–135 KB each |
+
+(Update, Kasafide rebrand: `House Icon.svg`, 196 KB, was the old logo and has been deleted; the map pins now draw a 300-byte inline icon.)
 
 A 196 KB SVG is unusual — an SVG that large almost always has a raster image embedded in it, which
 defeats the point of the format.
@@ -273,7 +274,7 @@ A load balancer is for the problem of **too many users at once**. We do not have
 adding one would mean running several servers, keeping them in step, and putting something in front
 to distribute requests — real cost and real complexity against a bottleneck that does not exist.
 
-**Needed:** no. If HomeSure ever grows into needing it, the host provides it: Vercel scales
+**Needed:** no. If Kasafide ever grows into needing it, the host provides it: Vercel scales
 automatically, and Supabase has connection pooling built in.
 
 ---

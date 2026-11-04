@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-//  HomeSure — keep the top bar readable against whatever is behind it
+//  Kasafide — keep the top bar readable against whatever is behind it
 //
 //  The hero stays dark on desktop in both themes (only the mobile breakpoint gives it a light
 //  version). In light mode that left a white bar sitting on top of a dark panel, which read as two

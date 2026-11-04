@@ -1,21 +1,14 @@
 /* FILE: assets/css/admin/admin-payments.css */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg: #1E293B; --card: #253347; --card2: #2c3d55; --border: rgba(255,255,255,0.07);
-  --teal: #00c9a7; --teal-faint: rgba(0,201,167,0.10); --teal-mid: rgba(0,201,167,0.22);
-  --text: #f1f5f9; --muted: rgba(255,255,255,0.4); --muted2: rgba(255,255,255,0.65);
-  --radius: 14px;
-  --green: #22c55e; --green-faint: rgba(34,197,94,0.12);
-  --yellow: #fbbf24; --yellow-faint: rgba(251,191,36,0.12);
-  --red: #f87171; --red-faint: rgba(248,113,113,0.12);
-  --purple: #a78bfa; --purple-faint: rgba(167,139,250,0.12);
+--radius: 14px;
 }
 body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
 .layout { display: flex; height: 100vh; }
 .main   { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 .content { flex: 1; overflow-y: auto; padding: 26px 30px 60px; }
 .content::-webkit-scrollbar { width: 5px; }
-.content::-webkit-scrollbar-thumb { background: linear-gradient(180deg,#1fc8b4,#0a5e53); border-radius: 99px; }
+.content::-webkit-scrollbar-thumb { background: linear-gradient(180deg,var(--primary),var(--primary)); border-radius: 99px; }
 
 @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 
@@ -39,7 +32,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   display: flex; flex-direction: column; gap: 6px;
   transition: transform .18s, box-shadow .18s;
 }
-.stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+.stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgb(var(--shade-rgb) / min(0.2, var(--shadow-cap, 1))); }
 .stat-icon {
   width: 36px; height: 36px; border-radius: 9px;
   display: flex; align-items: center; justify-content: center; margin-bottom: 4px;
@@ -67,7 +60,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .filter-input:focus, .filter-select:focus, .filter-search:focus { border-color: var(--teal-mid); cursor: auto; }
 .filter-input { min-width: 140px; }
 .filter-select { min-width: 150px; }
-.filter-select option { background: #253347; }
+.filter-select option { background: var(--surface-soft); }
 .filter-search { flex: 1; min-width: 200px; }
 .filter-search::placeholder { color: var(--muted); }
 
@@ -82,7 +75,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 }
 .section-count {
   font-size: 12px; font-weight: 700; color: var(--muted);
-  background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+  background: rgb(var(--wash-rgb) / 0.06); border: 1px solid var(--border);
   padding: 3px 10px; border-radius: 99px;
 }
 .section-count:empty { display: none; }
@@ -99,7 +92,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   text-align: left; padding: 12px 16px;
   font-size: 11px; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.06em; color: var(--muted);
-  background: rgba(255,255,255,0.02);
+  background: rgb(var(--wash-rgb) / 0.02);
   border-bottom: 1px solid var(--border);
   white-space: nowrap;
 }
@@ -108,8 +101,8 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   vertical-align: middle;
 }
 .pay-table tbody tr:last-child td { border-bottom: none; }
-.pay-table tbody tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
-.pay-table tbody tr:hover td { background: rgba(0,201,167,0.04); }
+.pay-table tbody tr:nth-child(even) td { background: rgb(var(--wash-rgb) / 0.015); }
+.pay-table tbody tr:hover td { background: rgb(var(--primary-rgb) / 0.04); }
 .table-empty td {
   text-align: center; color: var(--muted); padding: 48px 16px !important;
   font-size: 13px; background: none !important;
@@ -122,7 +115,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .avatar-sm {
   width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 800; color: #fff;
+  font-size: 11px; font-weight: 800; color: var(--text);
 }
 
 /* ── Badge ── */
@@ -131,10 +124,10 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   padding: 4px 10px; border-radius: 99px;
   font-size: 11px; font-weight: 700; white-space: nowrap;
 }
-.badge-confirmed           { background: var(--green-faint); color: var(--green); border: 1px solid rgba(34,197,94,0.25); }
-.badge-pending             { background: var(--yellow-faint); color: var(--yellow); border: 1px solid rgba(251,191,36,0.25); }
-.badge-pending_confirmation{ background: var(--yellow-faint); color: var(--yellow); border: 1px solid rgba(251,191,36,0.25); }
-.badge-overdue             { background: var(--red-faint); color: var(--red); border: 1px solid rgba(248,113,113,0.25); }
+.badge-confirmed           { background: var(--green-faint); color: var(--green); border: 1px solid rgb(var(--success-rgb) / 0.25); }
+.badge-pending             { background: var(--yellow-faint); color: var(--yellow); border: 1px solid rgb(var(--warning-rgb) / 0.25); }
+.badge-pending_confirmation{ background: var(--yellow-faint); color: var(--yellow); border: 1px solid rgb(var(--warning-rgb) / 0.25); }
+.badge-overdue             { background: var(--red-faint); color: var(--red); border: 1px solid rgb(var(--danger-rgb) / 0.25); }
 .badge-active              { background: var(--teal-faint); color: var(--teal); border: 1px solid var(--teal-mid); }
 
 /* ── Refund Chip ── */
@@ -142,7 +135,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   display: inline-flex; align-items: center;
   padding: 4px 10px; border-radius: 99px;
   background: var(--green-faint); color: var(--green);
-  border: 1px solid rgba(34,197,94,0.25);
+  border: 1px solid rgb(var(--success-rgb) / 0.25);
   font-size: 12px; font-weight: 700; white-space: nowrap;
 }
 
@@ -153,7 +146,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   font-family: inherit; font-size: 12px; font-weight: 600;
   cursor: pointer; transition: background .18s, color .18s; white-space: nowrap;
 }
-.btn-view:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+.btn-view:hover { background: rgb(var(--wash-rgb) / 0.06); color: var(--text); }
 
 /* ── Toast ── */
 .toast {
@@ -162,7 +155,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   border-radius: 12px; padding: 13px 20px;
   display: flex; align-items: center; gap: 11px;
   font-size: 13px; font-weight: 600; color: var(--text);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  box-shadow: 0 8px 30px rgb(var(--shade-rgb) / min(0.4, var(--shadow-cap, 1)));
   opacity: 0; pointer-events: none;
   transition: opacity 0.3s, transform 0.3s; z-index: 9999;
   white-space: normal; text-align: center; max-width: calc(100vw - 40px);
@@ -187,20 +180,20 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 }
 
 .badge-type-security {
-  background: rgba(167, 139, 250, 0.15);
-  border: 1px solid rgba(167, 139, 250, 0.3);
+  background: rgb(var(--info-rgb) / 0.15);
+  border: 1px solid rgb(var(--info-rgb) / 0.3);
   color: var(--purple);
 }
 
 .badge-type-rent {
-  background: rgba(0, 201, 167, 0.15);
-  border: 1px solid rgba(0, 201, 167, 0.3);
+  background: rgb(var(--primary-rgb) / 0.15);
+  border: 1px solid rgb(var(--primary-rgb) / 0.3);
   color: var(--teal);
 }
 
 .badge-type-both {
-  background: rgba(251, 191, 36, 0.15);
-  border: 1px solid rgba(251, 191, 36, 0.3);
+  background: rgb(var(--warning-rgb) / 0.15);
+  border: 1px solid rgb(var(--warning-rgb) / 0.3);
   color: var(--yellow);
 }
 
@@ -209,7 +202,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgb(var(--shade-rgb) / var(--overlay-a, 0.7));
   backdrop-filter: blur(6px);
   z-index: 9000;
   align-items: center;
@@ -231,7 +224,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 60px rgb(var(--shade-rgb) / min(0.5, var(--shadow-cap, 1)));
   animation: slideUp 0.3s ease;
 }
 
@@ -339,14 +332,14 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   font-size: 11px;
   font-weight: 700;
   white-space: nowrap;
-  background: rgba(251, 191, 36, 0.15);
-  border: 1px solid rgba(251, 191, 36, 0.3);
+  background: rgb(var(--warning-rgb) / 0.15);
+  border: 1px solid rgb(var(--warning-rgb) / 0.3);
   color: var(--yellow);
   margin-left: 6px;
 }
 
 .deduction-info {
-  background: rgba(255,255,255,0.03);
+  background: rgb(var(--wash-rgb) / 0.03);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 16px;
@@ -394,7 +387,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 }
 
 .deduction-request-card:hover {
-  border-color: rgba(251, 191, 36, 0.3);
+  border-color: rgb(var(--warning-rgb) / 0.3);
 }
 
 .deduction-header {
@@ -433,7 +426,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   color: var(--muted);
   font-style: italic;
   padding: 8px 12px;
-  background: rgba(255,255,255,0.02);
+  background: rgb(var(--wash-rgb) / 0.02);
   border-left: 3px solid var(--border);
   border-radius: 4px;
   margin-bottom: 12px;
@@ -466,11 +459,11 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 
 .btn-approve {
   background: var(--teal);
-  color: #fff;
+  color: var(--on-primary);
 }
 
 .btn-approve:hover {
-  background: #00a88a;
+  background: var(--primary);
   transform: translateY(-1px);
 }
 
@@ -480,14 +473,14 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 }
 
 .btn-reject {
-  background: rgba(248, 113, 113, 0.12);
+  background: rgb(var(--danger-rgb) / 0.12);
   color: var(--red);
-  border: 1px solid rgba(248, 113, 113, 0.25);
+  border: 1px solid rgb(var(--danger-rgb) / 0.25);
 }
 
 .btn-reject:hover {
-  background: rgba(248, 113, 113, 0.18);
-  border-color: rgba(248, 113, 113, 0.35);
+  background: rgb(var(--danger-rgb) / 0.18);
+  border-color: rgb(var(--danger-rgb) / 0.35);
   transform: translateY(-1px);
 }
 
@@ -498,13 +491,10 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 
 /* ── Light mode ── */
 [data-theme="light"] {
-  --bg: #f1f5f9; --card: #ffffff; --card2: #f8fafc;
-  --border: rgba(0,0,0,0.09); --text: #1e293b;
-  --muted: rgba(0,0,0,0.65); --muted2: rgba(0,0,0,0.62);
 }
 [data-theme="light"] body { background: var(--bg); }
-[data-theme="light"] .filter-select option { background: #ffffff; color: #1e293b; }
-[data-theme="light"] .toast { box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+[data-theme="light"] .filter-select option { background: var(--surface); color: var(--text); }
+[data-theme="light"] .toast { box-shadow: 0 8px 24px rgb(var(--k-ink-rgb) / 0.1); }
 
 /* ── Responsive ── */
 @media (max-width: 1100px) { .stat-row { grid-template-columns: repeat(2, 1fr); } }

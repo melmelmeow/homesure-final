@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════
-//  HomeSure - Auto Review Prompt (Phone App Style)
+//  Kasafide - Auto Review Prompt (Phone App Style)
 //  Appears after payments, rentals, or randomly like mobile apps
 //  Usage: ReviewPrompt.trigger({ context: 'payment', propertyName: '...' })
 // ═══════════════════════════════════════════════════════════════════════════
@@ -14,7 +14,7 @@
       position: fixed;
       inset: 0;
       z-index: 9999;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgb(var(--shade-rgb) / var(--overlay-a, 0.8));
       backdrop-filter: blur(8px);
       align-items: center;
       justify-content: center;
@@ -27,22 +27,22 @@
 
     /* Review Prompt Card */
     .review-prompt-card {
-      background: linear-gradient(135deg, #253347 0%, #1E293B 100%);
-      border: 2px solid rgba(0, 201, 167, 0.3);
+      background: linear-gradient(135deg, var(--surface-soft) 0%, var(--surface) 100%);
+      border: 2px solid rgb(var(--primary-rgb) / 0.3);
       border-radius: 24px;
       width: 100%;
       max-width: 420px;
       padding: 0;
       overflow: hidden;
       animation: reviewSlideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 20px 60px rgb(var(--shade-rgb) / min(0.6, var(--shadow-cap, 1)));
       position: relative;
     }
 
     /* Accent Top Bar */
     .review-prompt-accent {
       height: 4px;
-      background: linear-gradient(90deg, #00c9a7, #00a88a);
+      background: linear-gradient(90deg, var(--primary), var(--primary));
     }
 
     /* Header */
@@ -58,20 +58,20 @@
     .review-prompt-title {
       font-size: 22px;
       font-weight: 800;
-      color: #f1f5f9;
+      color: var(--text);
       margin-bottom: 8px;
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
     .review-prompt-subtitle {
       font-size: 14px;
-      color: rgba(255, 255, 255, 0.6);
+      color: rgb(var(--wash-rgb) / 0.6);
       line-height: 1.5;
     }
 
     /* Property Info (if applicable) */
     .review-prompt-property {
-      background: rgba(0, 201, 167, 0.08);
-      border: 1px solid rgba(0, 201, 167, 0.2);
+      background: rgb(var(--primary-rgb) / 0.08);
+      border: 1px solid rgb(var(--primary-rgb) / 0.2);
       border-radius: 12px;
       padding: 12px 16px;
       margin: 0 24px 24px;
@@ -82,13 +82,13 @@
     .review-prompt-property svg {
       width: 18px;
       height: 18px;
-      color: #00c9a7;
+      color: var(--primary);
       flex-shrink: 0;
     }
     .review-prompt-property-name {
       font-size: 13px;
       font-weight: 700;
-      color: #00c9a7;
+      color: var(--primary);
     }
 
     /* Star Rating */
@@ -100,14 +100,14 @@
     }
     .review-star {
       font-size: 48px;
-      color: rgba(255, 255, 255, 0.15);
+      color: rgb(var(--wash-rgb) / 0.15);
       cursor: pointer;
       transition: all 0.2s ease;
       user-select: none;
     }
     .review-star:hover,
     .review-star.active {
-      color: #fbbf24;
+      color: var(--warning);
       transform: scale(1.1);
     }
     .review-star:active {
@@ -125,11 +125,11 @@
     }
     .review-prompt-textarea {
       width: 100%;
-      background: #1a2739;
-      border: 1.5px solid rgba(255, 255, 255, 0.1);
+      background: var(--surface);
+      border: 1.5px solid rgb(var(--wash-rgb) / 0.1);
       border-radius: 12px;
       padding: 14px 16px;
-      color: #f1f5f9;
+      color: var(--text);
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 14px;
       outline: none;
@@ -139,10 +139,10 @@
       transition: border-color 0.2s;
     }
     .review-prompt-textarea:focus {
-      border-color: rgba(0, 201, 167, 0.4);
+      border-color: rgb(var(--primary-rgb) / 0.4);
     }
     .review-prompt-textarea::placeholder {
-      color: rgba(255, 255, 255, 0.3);
+      color: rgb(var(--wash-rgb) / 0.3);
     }
 
     /* Actions */
@@ -151,7 +151,7 @@
       grid-template-columns: 1fr 1fr;
       gap: 12px;
       padding: 24px;
-      background: rgba(0, 0, 0, 0.2);
+      background: rgb(var(--shade-rgb) / 0.2);
     }
     .review-prompt-btn {
       padding: 14px 20px;
@@ -169,21 +169,21 @@
     }
     .review-prompt-btn-later {
       background: transparent;
-      border: 1.5px solid rgba(255, 255, 255, 0.15);
-      color: rgba(255, 255, 255, 0.6);
+      border: 1.5px solid rgb(var(--wash-rgb) / 0.15);
+      color: rgb(var(--wash-rgb) / 0.6);
     }
     .review-prompt-btn-later:hover {
-      border-color: rgba(255, 255, 255, 0.3);
-      color: rgba(255, 255, 255, 0.8);
+      border-color: rgb(var(--wash-rgb) / 0.3);
+      color: rgb(var(--wash-rgb) / 0.8);
     }
     .review-prompt-btn-submit {
-      background: linear-gradient(135deg, #00c9a7, #00a88a);
-      color: white;
-      box-shadow: 0 4px 12px rgba(0, 201, 167, 0.4);
+      background: linear-gradient(135deg, var(--primary), var(--primary));
+      color: var(--on-primary);
+      box-shadow: 0 4px 12px rgb(var(--primary-rgb) / 0.4);
     }
     .review-prompt-btn-submit:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0, 201, 167, 0.5);
+      box-shadow: 0 6px 16px rgb(var(--primary-rgb) / 0.5);
     }
     .review-prompt-btn-submit:disabled {
       opacity: 0.5;
@@ -208,12 +208,12 @@
     .review-prompt-thanks-title {
       font-size: 24px;
       font-weight: 800;
-      color: #00c9a7;
+      color: var(--primary);
       margin-bottom: 8px;
     }
     .review-prompt-thanks-text {
       font-size: 14px;
-      color: rgba(255, 255, 255, 0.6);
+      color: rgb(var(--wash-rgb) / 0.6);
     }
 
     /* Animations */
@@ -382,7 +382,7 @@
           <div class="review-prompt-thanks" id="reviewPromptThanks">
             <div class="review-prompt-thanks-emoji">🎉</div>
             <div class="review-prompt-thanks-title">Thank you!</div>
-            <div class="review-prompt-thanks-text">Your feedback helps us improve HomeSure</div>
+            <div class="review-prompt-thanks-text">Your feedback helps us improve Kasafide</div>
           </div>
         </div>
       </div>
@@ -432,7 +432,7 @@
     currentContext = options;
 
     // Check if user already reviewed or dismissed recently
-    const lastPrompt = localStorage.getItem('hs_last_review_prompt');
+    const lastPrompt = localStorage.getItem('kasafide_last_review_prompt');
     if (lastPrompt) {
       const daysSince = (Date.now() - parseInt(lastPrompt)) / (1000 * 60 * 60 * 24);
       if (daysSince < 7) {
@@ -452,7 +452,7 @@
     // Show with delay
     setTimeout(() => {
       overlayEl.classList.add('active');
-      localStorage.setItem('hs_last_review_prompt', Date.now().toString());
+      localStorage.setItem('kasafide_last_review_prompt', Date.now().toString());
     }, delay);
   }
 

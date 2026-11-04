@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   HOMESURE - PAYMENT MODAL (PayMongo-style UI)
+   KASAFIDE - PAYMENT MODAL (PayMongo-style UI)
    Demo/Prototype payment integration for capstone project
    ═══════════════════════════════════════════════════════════════════════════ */
 
@@ -8,7 +8,7 @@
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgb(var(--shade-rgb) / var(--overlay-a, 0.75));
   backdrop-filter: blur(4px);
   z-index: 1000;
   align-items: center;
@@ -28,7 +28,7 @@
   max-width: 480px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 24px 48px rgb(var(--shade-rgb) / min(0.5, var(--shadow-cap, 1)));
   animation: slideUp 0.3s ease;
 }
 
@@ -42,12 +42,12 @@
 }
 
 .payment-modal::-webkit-scrollbar-thumb {
-  background: rgba(0, 201, 167, 0.3);
+  background: rgb(var(--primary-rgb) / 0.3);
   border-radius: 10px;
 }
 
 .payment-modal::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 201, 167, 0.5);
+  background: rgb(var(--primary-rgb) / 0.5);
 }
 
 /* Modal Header */
@@ -157,7 +157,7 @@
 
 .payment-method-option.selected {
   border-color: var(--teal);
-  background: rgba(0, 201, 167, 0.08);
+  background: rgb(var(--primary-rgb) / 0.08);
 }
 
 .payment-method-icon {
@@ -182,27 +182,27 @@
 
 /* GCash Official Branding */
 .payment-method-icon.gcash {
-  background: #007DFE;
+  background: var(--k-gcash);
   color: white;
   font-family: 'Plus Jakarta Sans', sans-serif;
   padding: 8px 12px;
   border: none;
-  box-shadow: 0 4px 12px rgba(0, 125, 254, 0.25);
+  box-shadow: 0 4px 12px rgb(var(--k-gcash-rgb) / 0.25);
 }
 
 /* Maya Official Branding */
 .payment-method-icon.maya {
-  background: #00D632;
+  background: var(--k-maya);
   color: white;
   font-family: 'Plus Jakarta Sans', sans-serif;
   padding: 8px 12px;
   border: none;
-  box-shadow: 0 4px 12px rgba(0, 214, 50, 0.25);
+  box-shadow: 0 4px 12px rgb(var(--k-maya-rgb) / 0.25);
 }
 
 .payment-method-icon.card {
-  background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--info) 0%, var(--info) 100%);
+  color: var(--on-primary);
 }
 
 .payment-method-info {
@@ -251,7 +251,7 @@
 .payment-submit-btn {
   width: 100%;
   background: var(--teal);
-  color: white;
+  color: var(--on-primary);
   border: none;
   border-radius: 10px;
   padding: 16px;
@@ -263,9 +263,9 @@
 }
 
 .payment-submit-btn:hover:not(:disabled) {
-  background: #00a88a;
+  background: var(--primary);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 201, 167, 0.3);
+  box-shadow: 0 8px 24px rgb(var(--primary-rgb) / 0.3);
 }
 
 .payment-submit-btn:disabled {
@@ -310,7 +310,7 @@
 .payment-success-icon {
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, #00c9a7 0%, #00a88a 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary) 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -322,7 +322,7 @@
 .payment-success-icon svg {
   width: 40px;
   height: 40px;
-  color: white;
+  color: var(--on-primary);
 }
 
 .payment-success-title {
@@ -395,8 +395,8 @@
   align-items: center;
   gap: 10px;
   padding: 12px 16px;
-  background: rgba(0, 201, 167, 0.08);
-  border: 1px solid rgba(0, 201, 167, 0.2);
+  background: rgb(var(--primary-rgb) / 0.08);
+  border: 1px solid rgb(var(--primary-rgb) / 0.2);
   border-radius: 8px;
   margin-top: 16px;
 }

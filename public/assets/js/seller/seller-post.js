@@ -15,8 +15,8 @@
   HS.auth.refresh().then(me => { if (me) applyGate(me.accountStatus === 'verified'); }).catch(() => {});
 
   /* ── Init sidebar & topbar ── */
-  HomeSureSidebar.init({ activePage: 'listings' });
-  HomeSureTopbar.init({ placeholder: 'Post a property...' });
+  KasafideSidebar.init({ activePage: 'listings' });
+  KasafideTopbar.init({ placeholder: 'Post a property...' });
 
   /* ── Seller name in document section ── */
   const sellerFullName = (user.firstName || '') + ' ' + (user.lastName || '');
@@ -80,10 +80,10 @@
     }
     const formatted = '₱' + val.toLocaleString('en-PH');
     if (currentListingType === 'sale' && val < 50000) {
-      helper.style.color = '#fbbf24';
+      helper.style.color = 'var(--warning)';
       helper.innerHTML = `⚠️ ${formatted} — Did you mean <strong>₱${(val * 1000).toLocaleString('en-PH')}</strong> or <strong>₱${(val * 1000000).toLocaleString('en-PH')}</strong>? Please enter the full amount.`;
     } else {
-      helper.style.color = 'var(--teal, #00c9a7)';
+      helper.style.color = 'var(--teal, var(--primary))';
       let words = '';
       if (val >= 1000000) {
         words = ` (${(val / 1000000).toFixed(val % 1000000 === 0 ? 0 : 2)} Million Pesos)`;

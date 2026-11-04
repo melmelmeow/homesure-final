@@ -4,8 +4,8 @@
   if (!session || session.role !== 'seller') window.location.href = '../../auth/signin.html';
 
   // ── Init shared components ──────────────────────────────────────────────────
-  HomeSureSidebar.init({ activePage: 'viewing-requests' });
-  HomeSureTopbar.init({ placeholder: 'Search...' });
+  KasafideSidebar.init({ activePage: 'viewing-requests' });
+  KasafideTopbar.init({ placeholder: 'Search...' });
 
   // ── Viewing requests (from the database; RLS only returns ones you are part of) ──
   let currentFilter = 'all';
@@ -222,21 +222,24 @@
       const counterNotes = document.getElementById('counterNotes').value;
 
       if (!counterDate || !counterTime) {
-        alert('Please select a date and time for your counter-proposal');
+        hsToast('Please select a date and time for your counter-proposal', 'error');
         return;
       }
 
       patch.proposedDate = counterDate;
       patch.proposedTime = counterTime;
       patch.sellerNotes  = counterNotes || null;
-      successMsg = `✅ Counter-Proposal Sent!\n\nYou proposed: ${formatDate(counterDate)} at ${formatTime(counterTime)}\n\nThe buyer will be notified and can accept your proposal.`;
+      // Shortened from a multi-paragraph alert() to fit a toast — hsToast renders this as a
+      // single line (it sets textContent, and plain text collapses \n to a space), so the longer
+      // version would have read as one run-on sentence instead of the paragraphs alert() showed.
+      successMsg = `Counter-proposal sent: ${formatDate(counterDate)} at ${formatTime(counterTime)}`;
 
     } else if (action === 'confirmed') {
-      successMsg = `✅ Viewing Confirmed!\n\nDate: ${formatDate(request.requestedDate)}\nTime: ${formatTime(request.requestedTime)}\n\nThe buyer has been notified.`;
+      successMsg = `Viewing confirmed for ${formatDate(request.requestedDate)} at ${formatTime(request.requestedTime)}`;
 
     } else if (action === 'declined') {
       if (!confirm('Are you sure you want to decline this viewing request?')) return;
-      successMsg = '❌ Viewing Request Declined\n\nThe buyer has been notified.';
+      successMsg = 'Viewing request declined';
     }
 
     // Save, and mirror the reply into the chat with the buyer.
@@ -244,7 +247,7 @@
     try {
       updated = await HS.viewing.respond(request.id, patch);
     } catch (err) {
-      alert('Could not send your response: ' + err.message);
+      hsToast('Could not send your response: ' + err.message, 'error');
       return;
     }
 
@@ -256,7 +259,7 @@
 
     closeResponseModal();
     renderRequests();
-    alert(successMsg);
+    hsToast(successMsg);
   };
 
   // ── Init ────────────────────────────────────────────────────────────────────

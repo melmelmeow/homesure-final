@@ -36,7 +36,7 @@ function loadEnv(file) {
   return out;
 }
 
-console.log("\nHomeSure — email check\n");
+console.log("\nKasafide — email check\n");
 
 const env = loadEnv(ENV_FILE);
 if (!Object.keys(env).length) {
@@ -61,7 +61,7 @@ ${YELLOW}  What to do${OFF}
     SMTP_PORT=587
     SMTP_USER=<the "Login" it shows you>
     SMTP_PASSWORD=<the Master Password>
-    SMTP_FROM="HomeSure <your-own-email@gmail.com>"
+    SMTP_FROM="Kasafide <your-own-email@gmail.com>"
 
   Brevo emails you once to confirm that From address. Click that link, or nothing will send.
   Then run this check again.
@@ -118,10 +118,10 @@ try {
   const info = await transporter.sendMail({
     from: env.SMTP_FROM,
     to,
-    subject: "HomeSure — email is working",
-    text: "If you are reading this, HomeSure can send email. Sign-up confirmation links will arrive the same way.",
-    html: `<p style="font-family:sans-serif;font-size:15px;color:#0f172a;">
-             If you are reading this, HomeSure can send email.<br>
+    subject: "Kasafide — email is working",
+    text: "If you are reading this, Kasafide can send email. Sign-up confirmation links will arrive the same way.",
+    html: `<p style="font-family:sans-serif;font-size:15px;color:#2B1B3D;">
+             If you are reading this, Kasafide can send email.<br>
              Sign-up confirmation links will arrive the same way.
            </p>`,
   });

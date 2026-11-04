@@ -7,14 +7,6 @@
         padding: 0;
       }
       :root {
-        --bg: #1e293b;
-        --card: #253347;
-        --border: rgba(255, 255, 255, 0.07);
-        --teal: #00c9a7;
-        --teal-faint: rgba(0, 201, 167, 0.12);
-        --text: #f1f5f9;
-        --muted: rgba(255, 255, 255, 0.4);
-        --muted2: rgba(255, 255, 255, 0.65);
         --radius: 12px;
       }
       body {
@@ -46,11 +38,11 @@
         background: transparent;
       }
       .content::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, #1fc8b4, #0a5e53);
+        background: linear-gradient(180deg, var(--primary), var(--primary));
         border-radius: 99px;
       }
       .content::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(180deg, #24e0ca, #1a9e8f);
+        background: linear-gradient(180deg, var(--primary), var(--primary));
       }
 
       @keyframes fadeUp {
@@ -113,8 +105,8 @@
         inset: 0;
         background: linear-gradient(
           180deg,
-          rgba(0, 0, 0, 0.06) 0%,
-          rgba(0, 0, 0, 0.4) 100%
+          rgb(var(--shade-rgb) / 0.06) 0%,
+          rgb(var(--shade-rgb) / 0.4) 100%
         );
         pointer-events: none;
       }
@@ -131,12 +123,12 @@
         letter-spacing: 0.07em;
       }
       .badge-rent {
-        background: #00c9a7;
-        color: #ffffff;
+        background: var(--primary);
+        color: var(--on-primary);
       }
       .badge-sale {
-        background: #3b82f6;
-        color: #051226;
+        background: var(--info);
+        color: var(--on-primary);
       }
       .badge-avail {
         position: absolute;
@@ -147,8 +139,8 @@
         border-radius: 20px;
         font-size: 10px;
         font-weight: 700;
-        background: #22c55e;
-        color: #052213;
+        background: var(--success);
+        color: var(--on-primary);
       }
 
       /* ── Title row ── */
@@ -203,7 +195,7 @@
         margin-left: 12px;
         padding: 4px 10px;
         background: var(--teal);
-        color: #fff;
+        color: var(--on-primary);
         border-radius: 6px;
         font-size: 11px;
         font-weight: 600;
@@ -212,13 +204,13 @@
       }
 
       .map-link:hover {
-        background: #00a88a;
+        background: var(--primary);
         transform: translateY(-1px);
       }
 
       [data-theme="light"] .map-link {
         background: var(--teal);
-        box-shadow: 0 2px 6px rgba(0, 201, 167, 0.25);
+        box-shadow: 0 2px 6px rgb(var(--primary-rgb) / 0.25);
       }
 
       /* ── Specs ── */
@@ -269,8 +261,8 @@
       .amenity-tag {
         padding: 4px 11px;
         border-radius: 20px;
-        background: #00c9a7;
-        color: #fff;
+        background: var(--primary);
+        color: var(--on-primary);
         font-size: 11px;
         font-weight: 600;
       }
@@ -354,15 +346,15 @@
         transition: fill 0.2s;
       }
       .save-btn:hover {
-        background: rgba(255, 255, 255, 0.05);
-        border-color: rgba(255, 255, 255, 0.18);
+        background: rgb(var(--wash-rgb) / 0.05);
+        border-color: rgb(var(--wash-rgb) / 0.18);
         color: var(--text);
         transform: translateY(-1px);
       }
       .save-btn.saved {
         background: var(--teal-faint);
         color: var(--teal);
-        border-color: rgba(0, 201, 167, 0.35);
+        border-color: rgb(var(--primary-rgb) / 0.35);
       }
       .save-btn.saved svg {
         fill: var(--teal);
@@ -374,7 +366,7 @@
         align-items: center;
         gap: 7px;
         background: var(--teal);
-        color: #ffffff;
+        color: var(--on-primary);
         border: none;
         border-radius: 9px;
         padding: 9px 17px;
@@ -388,7 +380,7 @@
           transform 0.15s;
       }
       .msg-btn:hover {
-        background: #00b394;
+        background: var(--primary);
         transform: translateY(-1px);
       }
       .msg-btn svg {
@@ -403,8 +395,8 @@
         padding: 9px 16px;
         font-size: 13px;
         font-weight: 700;
-        color: #fff;
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        color: var(--text);
+        background: linear-gradient(135deg, var(--info) 0%, var(--info) 100%);
         border: none;
         border-radius: 10px;
         cursor: pointer;
@@ -416,9 +408,9 @@
           transform 0.15s;
       }
       .schedule-btn:hover {
-        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        background: linear-gradient(135deg, var(--info) 0%, var(--info) 100%);
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 4px 12px rgb(var(--info-rgb) / 0.3);
       }
       .schedule-btn svg {
         width: 14px;
@@ -508,8 +500,8 @@
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.07em;
-        background: #f59e0b;
-        color: #1a0a00;
+        background: var(--warning);
+        color: var(--on-primary);
       }
       .price-negotiable {
         font-size: 11px;
@@ -524,7 +516,7 @@
         display: inline-flex;
         align-items: center;
         gap: 5px;
-        color: #ef4444;
+        color: var(--danger);
         font-size: 12px;
         font-weight: 500;
         cursor: pointer;
@@ -535,7 +527,7 @@
         transition: color 0.2s;
       }
       .report-link:hover {
-        color: #dc2626;
+        color: var(--danger);
       }
       .report-link svg {
         width: 13px;
@@ -548,7 +540,7 @@
         position: fixed;
         inset: 0;
         z-index: 999;
-        background: rgba(0, 0, 0, 0.6);
+        background: rgb(var(--shade-rgb) / var(--overlay-a, 0.6));
         backdrop-filter: blur(3px);
         align-items: center;
         justify-content: center;
@@ -563,11 +555,11 @@
         top: -200px;
         left: 50%;
         transform: translateX(-50%);
-        background: linear-gradient(135deg, #00c9a7 0%, #00a689 100%);
-        color: white;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+        color: var(--on-primary);
         padding: 20px 28px;
         border-radius: 12px;
-        box-shadow: 0 12px 40px rgba(0, 201, 167, 0.4);
+        box-shadow: 0 12px 40px rgb(var(--primary-rgb) / 0.4);
         z-index: 10000;
         display: flex;
         align-items: center;
@@ -583,7 +575,7 @@
       .success-icon {
         width: 48px;
         height: 48px;
-        background: rgba(255, 255, 255, 0.2);
+        background: rgb(var(--wash-rgb) / 0.2);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -594,7 +586,7 @@
       .success-icon svg {
         width: 28px;
         height: 28px;
-        color: white;
+        color: var(--on-primary);
       }
 
       .success-content {
@@ -605,12 +597,12 @@
         font-size: 16px;
         font-weight: 800;
         margin-bottom: 4px;
-        color: white;
+        color: var(--on-primary);
       }
 
       .success-message {
         font-size: 13px;
-        color: rgba(255, 255, 255, 0.9);
+        color: var(--on-primary);
         line-height: 1.5;
       }
 
@@ -626,8 +618,8 @@
       }
 
       .modal-box {
-        background: #1e2d3d;
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: var(--surface-soft);
+        border: 1px solid rgb(var(--wash-rgb) / 0.08);
         border-radius: 16px;
         padding: 28px 28px 24px;
         width: 100%;
@@ -655,7 +647,7 @@
       }
       .modal-close:hover {
         color: var(--text);
-        background: rgba(255, 255, 255, 0.07);
+        background: rgb(var(--wash-rgb) / 0.07);
       }
       .modal-close svg {
         width: 16px;
@@ -686,7 +678,7 @@
         margin-bottom: 7px;
       }
       .modal-label .req {
-        color: #ef4444;
+        color: var(--danger);
         margin-left: 2px;
       }
 
@@ -710,16 +702,16 @@
         transition: border-color 0.2s;
       }
       .modal-select:focus {
-        border-color: rgba(0, 201, 167, 0.45);
+        border-color: rgb(var(--primary-rgb) / 0.45);
       }
       .modal-select option {
-        background: #1e2d3d;
+        background: var(--surface-soft);
       }
 
       .modal-textarea {
         width: 100%;
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgb(var(--shade-rgb) / 0.3);
+        border: 1px solid rgb(var(--wash-rgb) / 0.1);
         border-radius: 8px;
         padding: 10px 12px;
         color: var(--text);
@@ -732,7 +724,7 @@
         line-height: 1.6;
       }
       .modal-textarea:focus {
-        border-color: rgba(0, 201, 167, 0.45);
+        border-color: rgb(var(--primary-rgb) / 0.45);
       }
       .modal-textarea::placeholder {
         color: var(--muted);
@@ -740,7 +732,7 @@
 
       .modal-error {
         font-size: 11.5px;
-        color: #f87171;
+        color: var(--danger);
         margin-top: 5px;
         display: none;
       }
@@ -753,8 +745,8 @@
         margin-top: 22px;
       }
       .modal-cancel {
-        background: rgba(255, 255, 255, 0.07);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgb(var(--wash-rgb) / 0.07);
+        border: 1px solid rgb(var(--wash-rgb) / 0.1);
         color: var(--muted2);
         border-radius: 8px;
         padding: 9px 18px;
@@ -765,12 +757,12 @@
         transition: background 0.2s;
       }
       .modal-cancel:hover {
-        background: rgba(255, 255, 255, 0.12);
+        background: rgb(var(--wash-rgb) / 0.12);
       }
       .modal-submit {
         background: var(--teal);
         border: none;
-        color: #fff;
+        color: var(--on-primary);
         border-radius: 8px;
         padding: 9px 18px;
         font-size: 13px;
@@ -782,41 +774,40 @@
           transform 0.15s;
       }
       .modal-submit:hover {
-        background: #1fc8b4;
+        background: var(--primary);
         transform: translateY(-1px);
       }
 
       /* ── Light mode ── */
       [data-theme="light"] {
-        --bg: #f1f5f9;
-        --card: #ffffff;
-        --border: rgba(0, 0, 0, 0.09);
-        --text: #1e293b;
-        --muted: rgba(0, 0, 0, 0.45);
-        --muted2: rgba(0, 0, 0, 0.6);
       }
       [data-theme="light"] body {
         background: var(--bg);
         color: var(--text);
       }
       [data-theme="light"] .content::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0, 0.12);
+        background: rgb(var(--k-ink-rgb) / 0.12);
       }
       [data-theme="light"] .modal-box {
-        background: #fff;
-        border-color: rgba(0, 0, 0, 0.1);
+        background: var(--surface);
+        border-color: var(--border);
       }
       [data-theme="light"] .modal-select,
       [data-theme="light"] .modal-textarea {
-        background: rgba(0, 0, 0, 0.04);
-        border-color: rgba(0, 0, 0, 0.12);
+        background: rgb(var(--k-ink-rgb) / 0.04);
+        border-color: var(--border);
       }
       [data-theme="light"] .modal-select option {
-        background: #fff;
-        color: #1e293b;
+        background: var(--surface);
+        color: var(--text);
       }
       [data-theme="light"] .modal-cancel {
-        background: rgba(0, 0, 0, 0.05);
-        border-color: rgba(0, 0, 0, 0.1);
+        background: rgb(var(--k-ink-rgb) / 0.05);
+        border-color: var(--border);
       }
     
+      /* Light: the request-viewing select is a form control on the modal, not a dark-glass chip. */
+      [data-theme="light"] .modal-select {
+        background: var(--surface);
+        border-color: var(--border);
+      }

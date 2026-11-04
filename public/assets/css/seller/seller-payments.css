@@ -1,21 +1,14 @@
 /* FILE: assets/css/seller/seller-payments.css */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg: #1E293B; --card: #253347; --card2: #2c3d55; --border: rgba(255,255,255,0.07);
-  --teal: #00c9a7; --teal-faint: rgba(0,201,167,0.10); --teal-mid: rgba(0,201,167,0.22);
-  --text: #f1f5f9; --muted: rgba(255,255,255,0.4); --muted2: rgba(255,255,255,0.65);
-  --radius: 14px;
-  --green: #22c55e; --green-faint: rgba(34,197,94,0.12);
-  --yellow: #fbbf24; --yellow-faint: rgba(251,191,36,0.12);
-  --red: #f87171; --red-faint: rgba(248,113,113,0.12);
-  --purple: #a78bfa; --purple-faint: rgba(167,139,250,0.12);
+--radius: 14px;
 }
 body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
 .layout { display: flex; height: 100vh; }
 .main   { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 .content { flex: 1; overflow-y: auto; padding: 26px 30px 60px; }
 .content::-webkit-scrollbar { width: 5px; }
-.content::-webkit-scrollbar-thumb { background: linear-gradient(180deg,#1fc8b4,#0a5e53); border-radius: 99px; }
+.content::-webkit-scrollbar-thumb { background: linear-gradient(180deg,var(--primary),var(--primary)); border-radius: 99px; }
 
 @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 
@@ -39,7 +32,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   display: flex; flex-direction: column; gap: 6px;
   transition: transform .18s, box-shadow .18s;
 }
-.stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+.stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgb(var(--shade-rgb) / min(0.2, var(--shadow-cap, 1))); }
 .stat-icon {
   width: 36px; height: 36px; border-radius: 9px;
   display: flex; align-items: center; justify-content: center; margin-bottom: 4px;
@@ -70,7 +63,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .tab-btn:hover { color: var(--text); }
 .tab-btn.active { color: var(--teal); border-bottom-color: var(--teal); }
 .tab-badge {
-  background: var(--yellow); color: #000; font-size: 10px;
+  background: var(--yellow); color: var(--on-primary); font-size: 10px;
   font-weight: 800; border-radius: 99px; padding: 2px 7px; min-width: 18px;
   text-align: center; line-height: 1.4;
 }
@@ -86,11 +79,11 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   display: flex; align-items: center; gap: 16px;
   margin-bottom: 12px; transition: box-shadow .18s;
 }
-.pending-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+.pending-card:hover { box-shadow: 0 4px 20px rgb(var(--shade-rgb) / min(0.2, var(--shadow-cap, 1))); }
 .avatar {
   width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  font-size: 14px; font-weight: 800; color: #fff;
+  font-size: 14px; font-weight: 800; color: var(--text);
 }
 .pending-info { flex: 1; min-width: 0; }
 .pending-name { font-size: 14px; font-weight: 700; }
@@ -115,8 +108,8 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   cursor: pointer; white-space: nowrap; transition: opacity .18s, transform .18s;
 }
 .action-btn:hover { opacity: 0.85; transform: translateY(-1px); }
-.action-btn.confirm { background: var(--teal); border: none; color: #fff; }
-.action-btn.reject  { background: transparent; border: 1px solid rgba(248,113,113,0.4); color: var(--red); }
+.action-btn.confirm { background: var(--teal); border: none; color: var(--on-primary); }
+.action-btn.reject  { background: transparent; border: 1px solid rgb(var(--danger-rgb) / 0.4); color: var(--red); }
 .action-btn.reject:hover { background: var(--red-faint); }
 
 /* ── Tenant Filter Row ── */
@@ -131,7 +124,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   outline: none; cursor: pointer; transition: border-color .18s; min-width: 160px;
 }
 .filter-select:focus { border-color: var(--teal-mid); }
-.filter-select option { background: #253347; }
+.filter-select option { background: var(--surface-soft); }
 
 /* ── Table Toolbar ── */
 .table-toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
@@ -156,7 +149,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   text-align: left; padding: 12px 16px;
   font-size: 11px; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.06em; color: var(--muted);
-  background: rgba(255,255,255,0.02);
+  background: rgb(var(--wash-rgb) / 0.02);
   border-bottom: 1px solid var(--border);
 }
 .pay-table td {
@@ -164,8 +157,8 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   vertical-align: middle;
 }
 .pay-table tbody tr:last-child td { border-bottom: none; }
-.pay-table tbody tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
-.pay-table tbody tr:hover td { background: rgba(0,201,167,0.04); }
+.pay-table tbody tr:nth-child(even) td { background: rgb(var(--wash-rgb) / 0.015); }
+.pay-table tbody tr:hover td { background: rgb(var(--primary-rgb) / 0.04); }
 .table-empty td {
   text-align: center; color: var(--muted); padding: 40px 16px !important;
   font-size: 13px; background: none !important;
@@ -175,7 +168,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .avatar-sm {
   width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 800; color: #fff;
+  font-size: 11px; font-weight: 800; color: var(--text);
 }
 
 /* ── Badge ── */
@@ -184,10 +177,10 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   padding: 4px 10px; border-radius: 99px;
   font-size: 11px; font-weight: 700; white-space: nowrap;
 }
-.badge-confirmed   { background: var(--green-faint); color: var(--green); border: 1px solid rgba(34,197,94,0.25); }
-.badge-pending     { background: var(--yellow-faint); color: var(--yellow); border: 1px solid rgba(251,191,36,0.25); }
-.badge-overdue     { background: var(--red-faint); color: var(--red); border: 1px solid rgba(248,113,113,0.25); }
-.badge-pending_confirmation { background: var(--yellow-faint); color: var(--yellow); border: 1px solid rgba(251,191,36,0.25); }
+.badge-confirmed   { background: var(--green-faint); color: var(--green); border: 1px solid rgb(var(--success-rgb) / 0.25); }
+.badge-pending     { background: var(--yellow-faint); color: var(--yellow); border: 1px solid rgb(var(--warning-rgb) / 0.25); }
+.badge-overdue     { background: var(--red-faint); color: var(--red); border: 1px solid rgb(var(--danger-rgb) / 0.25); }
+.badge-pending_confirmation { background: var(--yellow-faint); color: var(--yellow); border: 1px solid rgb(var(--warning-rgb) / 0.25); }
 .badge-active      { background: var(--teal-faint); color: var(--teal); border: 1px solid var(--teal-mid); }
 
 /* ── Refund Chip ── */
@@ -195,7 +188,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   display: inline-flex; align-items: center;
   padding: 4px 10px; border-radius: 99px;
   background: var(--green-faint); color: var(--green);
-  border: 1px solid rgba(34,197,94,0.25);
+  border: 1px solid rgb(var(--success-rgb) / 0.25);
   font-size: 12px; font-weight: 700;
 }
 
@@ -220,7 +213,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .cost-chip {
   padding: 5px 12px; border-radius: 99px;
   background: var(--red-faint); color: var(--red);
-  border: 1px solid rgba(248,113,113,0.25);
+  border: 1px solid rgb(var(--danger-rgb) / 0.25);
   font-size: 13px; font-weight: 700;
 }
 .damage-empty {
@@ -233,7 +226,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   display: inline-flex; align-items: center; gap: 7px;
   padding: 10px 20px; border-radius: 10px;
   background: var(--teal); border: none;
-  color: #fff; font-family: inherit; font-size: 13.5px; font-weight: 700;
+  color: var(--on-primary); font-family: inherit; font-size: 13.5px; font-weight: 700;
   cursor: pointer; transition: opacity .18s, transform .18s; white-space: nowrap;
 }
 .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
@@ -246,7 +239,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   color: var(--muted2); font-family: inherit; font-size: 13.5px; font-weight: 700;
   cursor: pointer; transition: background .18s, color .18s, border-color .18s;
 }
-.btn-ghost:hover { background: rgba(255,255,255,0.05); color: var(--text); border-color: rgba(255,255,255,0.15); }
+.btn-ghost:hover { background: rgb(var(--wash-rgb) / 0.05); color: var(--text); border-color: rgb(var(--wash-rgb) / 0.15); }
 
 .btn-file-damage {
   background: transparent; border: 1px solid var(--teal-mid);
@@ -259,7 +252,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 /* ── Modal ── */
 .modal-backdrop {
   position: fixed; inset: 0; z-index: 800;
-  background: rgba(0,0,0,0.65); backdrop-filter: blur(4px);
+  background: rgb(var(--shade-rgb) / var(--overlay-a, 0.65)); backdrop-filter: blur(4px);
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
 }
@@ -278,11 +271,11 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .modal-sub   { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
 .modal-close-btn {
   width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
-  background: rgba(255,255,255,0.06); border: none; cursor: pointer;
+  background: rgb(var(--wash-rgb) / 0.06); border: none; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   color: var(--muted2); transition: background .18s;
 }
-.modal-close-btn:hover { background: rgba(255,255,255,0.12); color: var(--text); }
+.modal-close-btn:hover { background: rgb(var(--wash-rgb) / 0.12); color: var(--text); }
 .modal-close-btn svg { width: 15px; height: 15px; }
 .modal-body { padding: 22px 24px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 14px; }
 .modal-footer {
@@ -302,7 +295,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .form-input[readonly] { opacity: 0.6; cursor: default; }
 .form-input::placeholder { color: var(--muted); }
 .form-input:focus, .form-select:focus { border-color: var(--teal-mid); }
-.form-select option { background: #253347; }
+.form-select option { background: var(--surface-soft); }
 
 /* ── Toast ── */
 .toast {
@@ -311,7 +304,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   border-radius: 12px; padding: 13px 20px;
   display: flex; align-items: center; gap: 11px;
   font-size: 13px; font-weight: 600; color: var(--text);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  box-shadow: 0 8px 30px rgb(var(--shade-rgb) / min(0.4, var(--shadow-cap, 1)));
   opacity: 0; pointer-events: none;
   transition: opacity 0.3s, transform 0.3s; z-index: 9999;
   white-space: normal; text-align: center; max-width: calc(100vw - 40px);
@@ -322,14 +315,11 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 
 /* ── Light mode ── */
 [data-theme="light"] {
-  --bg: #f1f5f9; --card: #ffffff; --card2: #f8fafc;
-  --border: rgba(0,0,0,0.09); --text: #1e293b;
-  --muted: rgba(0,0,0,0.65); --muted2: rgba(0,0,0,0.62);
 }
 [data-theme="light"] body { background: var(--bg); }
 [data-theme="light"] .filter-select option,
-[data-theme="light"] .form-select option { background: #ffffff; color: #1e293b; }
-[data-theme="light"] .toast { box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+[data-theme="light"] .form-select option { background: var(--surface); color: var(--text); }
+[data-theme="light"] .toast { box-shadow: 0 8px 24px rgb(var(--k-ink-rgb) / 0.1); }
 
 /* ── Responsive ── */
 @media (max-width: 1100px) { .stat-row { grid-template-columns: repeat(2, 1fr); } }
@@ -362,7 +352,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .settings-icon {
   width: 44px;
   height: 44px;
-  background: rgba(0,201,167,0.15);
+  background: rgb(var(--primary-rgb) / 0.15);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -463,7 +453,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255,255,255,0.1);
+  background: rgb(var(--wash-rgb) / 0.1);
   border-radius: 24px;
   transition: 0.3s;
 }
@@ -511,8 +501,8 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 
 .payment-input {
   width: 100%;
-  background: rgba(0,0,0,0.2);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgb(var(--shade-rgb) / 0.2);
+  border: 1px solid rgb(var(--wash-rgb) / 0.1);
   border-radius: 8px;
   padding: 10px 14px;
   font-size: 13px;
@@ -536,7 +526,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
   align-items: center;
   gap: 8px;
   background: var(--teal);
-  color: #051226;
+  color: var(--on-primary);
   border: none;
   border-radius: 10px;
   padding: 12px 24px;
@@ -547,20 +537,23 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 }
 
 .btn-save-payment:hover {
-  background: #1fc8b4;
+  background: var(--primary);
   transform: translateY(-1px);
 }
 
 [data-theme="light"] .settings-card {
-  background: #ffffff;
-  border-color: rgba(0,0,0,0.1);
+  background: var(--surface);
+  border-color: var(--border);
 }
 
 [data-theme="light"] .payment-input {
-  background: #f8f9fa;
-  border-color: rgba(0,0,0,0.1);
+  background: var(--surface-soft);
+  border-color: var(--border);
 }
 
 [data-theme="light"] .btn-save-payment {
-  color: white;
+  color: var(--on-primary);
 }
+
+/* Light: the switch knob uses the surface tone rather than pure white. */
+[data-theme="light"] .toggle-track::before { background: var(--surface); }

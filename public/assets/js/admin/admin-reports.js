@@ -1,4 +1,4 @@
-// HomeSure – Admin Reports
+// Kasafide – Admin Reports
 
 (function () {
   const user = getSession();
@@ -7,8 +7,8 @@
     return;
   }
 
-  HomeSureSidebar.init({ activePage: 'reports' });
-  HomeSureTopbar.init({ placeholder: 'Search reports...', onSearch: () => window.renderReports && window.renderReports() });
+  KasafideSidebar.init({ activePage: 'reports' });
+  KasafideTopbar.init({ placeholder: 'Search reports...', onSearch: () => window.renderReports && window.renderReports() });
 
   // ── Reports (from listing_reports; RLS gives admins every row) ───────────────
   //
@@ -92,7 +92,7 @@
     }
 
     container.innerHTML = filtered.map(r => {
-      const reporterName = r.reporterName || 'HomeSure user';
+      const reporterName = r.reporterName || 'Kasafide user';
       const listing = r.listingTitle ? { title: r.listingTitle } : null;
       const { cls, svg } = severityIcon(r.severity);
 
@@ -187,7 +187,7 @@
   window.openModal = function (id) {
     const r = REPORTS.find(x => x.id === id);
     if (!r) return;
-    const reporterName = r.reporterName || 'HomeSure user';
+    const reporterName = r.reporterName || 'Kasafide user';
     const listing = r.listingTitle ? { title: r.listingTitle } : null;
     const seller = r.sellerName ? { firstName: r.sellerName, lastName: '' } : null;
     const { cls, svg } = severityIcon(r.severity);

@@ -2,8 +2,8 @@
   const user = getSession();
   if (!user || user.role !== 'buyer') window.location.href = '../../auth/signin.html';
 
-  HomeSureSidebar.init({ activePage: 'settings' });
-  HomeSureTopbar.init({ placeholder: 'Search settings...' });
+  KasafideSidebar.init({ activePage: 'settings' });
+  KasafideTopbar.init({ placeholder: 'Search settings...' });
 
   // ── Toast ────────────────────────────────────────────────────────────────
   function showToast(msg, type = 'success') {
@@ -276,7 +276,7 @@
       if (!hint) {
         hint = document.createElement('div');
         hint.className = 'sms-hint';
-        hint.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Add your phone number in <a href="profile.html">My Profile</a> to enable SMS`;
+        hint.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>Add your phone number in <a href="profile.html">My Profile</a> to enable SMS</span>`;
         smsRow.querySelector('.setting-info').appendChild(hint);
       }
     } else {
@@ -351,12 +351,12 @@
 
   // ── Theme Toggle ─────────────────────────────────────────────────────────
   function getTheme() {
-    return localStorage.getItem('hs-theme') || 'dark';
+    return KasafideTheme.get();
   }
 
   function applyTheme(mode) {
     document.documentElement.setAttribute('data-theme', mode);
-    localStorage.setItem('hs-theme', mode);
+    KasafideTheme.set(mode);
     updateThemeButtons(mode);
   }
 

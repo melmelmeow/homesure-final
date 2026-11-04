@@ -1,5 +1,5 @@
 // FILE: assets/js/seller/seller-payments.js
-// HomeSure – Seller Payment Management
+// Kasafide – Seller Payment Management
 //
 // The payments are the real rows on this seller's own listings — the "Sellers read payments on own
 // properties" policy is what limits them, not any filter written here. Confirming or rejecting one
@@ -13,8 +13,8 @@
     return;
   }
 
-  HomeSureSidebar.init({ activePage: 'payments' });
-  HomeSureTopbar.init({ placeholder: 'Payment Management' });
+  KasafideSidebar.init({ activePage: 'payments' });
+  KasafideTopbar.init({ placeholder: 'Payment Management' });
 
   let ALL_PAYMENTS = [];
   let DEPOSITS = [];
@@ -69,7 +69,7 @@
   }
 
   // Same name, same colour, every time — so a tenant looks like themselves across the page.
-  const AVATAR_COLORS = ['#0f766e', '#7c3aed', '#b45309', '#1d4ed8', '#be123c', '#047857'];
+  const AVATAR_COLORS = ['var(--k-avatar-1)', 'var(--k-avatar-3)', 'var(--k-avatar-2)', 'var(--k-avatar-6)', 'var(--k-avatar-4)', 'var(--k-avatar-5)'];
   function avatarColor(name) {
     let hash = 0;
     for (const ch of String(name || '')) hash = (hash * 31 + ch.charCodeAt(0)) % 9973;
@@ -555,12 +555,12 @@
     const methods = {
       gcash: {
         enabled: document.getElementById('enableGcashPay').checked,
-        number: document.getElementById('gcashNumberPay').value.trim(),
+        number: HSPhone.full('0', document.getElementById('gcashNumberPay').value),
         name: document.getElementById('gcashNamePay').value.trim(),
       },
       maya: {
         enabled: document.getElementById('enableMayaPay').checked,
-        number: document.getElementById('mayaNumberPay').value.trim(),
+        number: HSPhone.full('0', document.getElementById('mayaNumberPay').value),
         name: document.getElementById('mayaNamePay').value.trim(),
       },
       bank: {
@@ -612,7 +612,9 @@
       document.getElementById(fields.toggle).checked = !!saved.enabled;
       Object.keys(fields.inputs).forEach((id) => {
         const el = document.getElementById(id);
-        if (el) el.value = saved[fields.inputs[id]] || '';
+        if (!el) return;
+        const key = fields.inputs[id];
+        el.value = key === 'number' ? HSPhone.strip(saved[key]) : (saved[key] || '');
       });
       if (saved.enabled) {
         const box = document.getElementById(fields.box);

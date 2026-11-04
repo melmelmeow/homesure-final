@@ -1,4 +1,4 @@
-# HomeSure — setup, step by step
+# Kasafide — setup, step by step
 
 Follow this once. It takes about 20 minutes. Do the steps in order; each one says how to tell it worked.
 
@@ -114,7 +114,7 @@ placeholder:
 
 ```ini
 # Xendit → Settings → Developers → API Keys. Still reads "your-xendit-secret-key".
-# Needed only for the "Pay through HomeSure" QR Ph route. Without it that button answers
+# Needed only for the "Pay through Kasafide" QR Ph route. Without it that button answers
 # "Xendit not configured" — it does not pretend to succeed.
 XENDIT_SECRET_KEY=
 
@@ -222,7 +222,7 @@ admin page.
 Step 11 needs `007` to have run. Step 13 needs `SUPABASE_SERVICE_ROLE_KEY` in `.env.local` — confirming a
 payment is a server-side write, so without that key it fails with *"Payment not found"*.
 
-The **Pay through HomeSure** route in step 11 needs real Xendit keys. Without them it answers
+The **Pay through Kasafide** route in step 11 needs real Xendit keys. Without them it answers
 *"Xendit not configured"* instead of pretending to succeed. Everything else above works on Supabase alone.
 
 ---

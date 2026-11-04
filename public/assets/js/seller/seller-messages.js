@@ -9,8 +9,8 @@
     return;
   }
 
-  HomeSureSidebar.init({ activePage: 'messages' });
-  HomeSureTopbar.init({ placeholder: 'Search messages...' });
+  KasafideSidebar.init({ activePage: 'messages' });
+  KasafideTopbar.init({ placeholder: 'Search messages...' });
 
   // ── Icons ──────────────────────────────────────────────────────────────────
   const iconCheck2 = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
@@ -74,7 +74,7 @@
     }
 
     list.innerHTML = filtered.map((c) => {
-      const name = c.other ? c.other.name : 'HomeSure user';
+      const name = c.other ? c.other.name : 'Kasafide user';
       const title = c.listing ? c.listing.title : name;
       const preview = previewOf(c.lastMessage);
       const thumb = c.listing ? HS.cover(c.listing) : HS.PLACEHOLDER_IMG;
@@ -404,7 +404,7 @@
     if (!c) return;
 
     const me = user.id;
-    const name = c.other ? c.other.name : 'HomeSure user';
+    const name = c.other ? c.other.name : 'Kasafide user';
     const l = c.listing;
     const isRent = l && l.listingFor === 'rent';
     const price = l ? '₱' + Number(l.price).toLocaleString('en-PH') : '';
@@ -419,18 +419,17 @@
 
     const iconBack = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>`;
 
+    // Price goes first in .chat-header-sub: short and fixed-length, so a forced truncation eats
+    // into the (variably long) listing title instead of cutting the peso amount off mid-number.
     document.getElementById('chatPanel').innerHTML = `
       <div class="chat-header">
-        <button class="chat-back-btn" onclick="closeMobileChat()" aria-label="Back">${iconBack}</button>
-        <img class="chat-header-img" src="${esc(l ? HS.cover(l) : HS.PLACEHOLDER_IMG)}" alt="${esc(l ? l.title : name)}" />
-        <div class="chat-header-info">
+        <button class="chat-back-btn" onclick="closeMobileChat()" aria-label="Back">${iconBack}<span>Messages</span></button>
+        <div class="chat-header-identity">
+          <img class="chat-header-avatar" src="${esc(l ? HS.cover(l) : HS.PLACEHOLDER_IMG)}" alt="${esc(l ? l.title : name)}" />
           <div class="chat-header-title">${esc(name)}</div>
-          <div class="chat-header-seller">${c.other && c.other.verified ? iconVerify : ''} ${esc(l ? l.title : '')}</div>
+          <div class="chat-header-sub">${price ? `${esc(price)}${isRent ? '/mo' : ''}<span class="chat-header-sub-dot">•</span>` : ''}${c.other && c.other.verified ? iconVerify : ''}${esc(l ? l.title : '')}</div>
         </div>
-        <div class="chat-header-price">
-          ${esc(price)}
-          ${isRent ? `<span>/month</span>` : ''}
-        </div>
+        <div class="chat-header-spacer"></div>
       </div>
 
       <div class="chat-messages" id="chatMessages">${messagesHtml}</div>
@@ -480,6 +479,15 @@
 
     const layout = document.querySelector('.messages-layout');
     if (layout) layout.classList.add('chat-open');
+    // Same redundant-chrome issue the buyer side had: the chat's own header/input bar already
+    // sit flush with the safe areas, so the dashboard topbar and bottom tab bar are just dead
+    // weight stacked on top of them while a conversation is open on mobile.
+    if (window.innerWidth <= 768) {
+      const topbar = document.getElementById('hs-topbar');
+      if (topbar) topbar.style.display = 'none';
+      const bottomNav = document.getElementById('hs-bottom-nav');
+      if (bottomNav) bottomNav.style.display = 'none';
+    }
     const msgs = document.getElementById('chatMessages');
     if (msgs) msgs.scrollTop = msgs.scrollHeight;
 
@@ -498,6 +506,10 @@
   window.closeMobileChat = function () {
     const layout = document.querySelector('.messages-layout');
     if (layout) layout.classList.remove('chat-open');
+    const topbar = document.getElementById('hs-topbar');
+    if (topbar) topbar.style.display = '';
+    const bottomNav = document.getElementById('hs-bottom-nav');
+    if (bottomNav) bottomNav.style.display = '';
     activeConvId = null;
     renderConvList(document.getElementById('convSearch')?.value || '');
   };

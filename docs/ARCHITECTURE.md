@@ -1,12 +1,12 @@
-# HomeSure Architecture Documentation
+# Kasafide Architecture Documentation
 
-This document describes the high-level system design, subsystem relationships, database architecture, and integration flows for the **HomeSure** platform (`homesure-final`).
+This document describes the high-level system design, subsystem relationships, database architecture, and integration flows for the **Kasafide** platform (`homesure-final`).
 
 ---
 
 ## 1. System Overview
 
-HomeSure is a real estate and property service platform delivering modern web experiences, seamless digital payment processing, identity/document verification, and web search analytics tracking.
+Kasafide is a real estate and property service platform delivering modern web experiences, seamless digital payment processing, identity/document verification, and web search analytics tracking.
 
 ```mermaid
 flowchart TD
@@ -59,7 +59,7 @@ flowchart TD
 
 ### 3.2 Payment & Invoice Processing (Xendit)
 - Route handlers located in `src/app/api/payments/` handle invoice creation.
-- Upon user payment initiation, HomeSure calls the Xendit SDK (`xendit-node`) to generate hosted invoice links or checkout sessions.
+- Upon user payment initiation, Kasafide calls the Xendit SDK (`xendit-node`) to generate hosted invoice links or checkout sessions.
 - Xendit dispatches asynchronous webhook notifications to callback route handlers, which update payment statuses in Supabase.
 
 ### 3.3 Analytics & Verification (Google Cloud APIs)

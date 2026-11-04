@@ -1,0 +1,296 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Kasafide — design tokens. The ONLY file that spells a colour value.
+   Load it first on every page, before the page's own stylesheet, after
+   assets/js/kasafide-theme.js has set <html data-theme="light|dark">.
+
+   Three layers:
+     1. Brand palette  — fixed values, never change with the theme.
+     2. Semantic tokens — what a colour is for; these flip with data-theme.
+     3. Legacy names   — the names the page stylesheets were written against
+                         (--card, --teal, --muted2 …), defined once here as
+                         aliases so no page needs its own colour block.
+
+   Triplets (--x-rgb) exist so a page can write rgb(var(--primary-rgb) / 0.12)
+   for a tint without spelling a number.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* 1. Brand palette */
+  --k-plum:   #5B3A8E;
+  --k-peach:  #FF8A65;
+  --k-ink:    #2B1B3D;
+  --k-cream:  #FBF6F0;
+  --k-white:  #FFFFFF;
+  --k-ink-rgb:   43 27 61;
+  --k-plum-rgb:  91 58 142;
+  --k-peach-rgb: 255 138 101;
+  --k-cream-rgb: 251 246 240;
+  --k-black-rgb: 0 0 0;
+  --k-white-rgb: 255 255 255;
+
+  /* Initials avatars: white text clears 4.5:1 on every one, in both themes. */
+  --k-avatar-1: #5B3A8E;
+  --k-avatar-2: #A8462A;
+  --k-avatar-3: #7A4FB5;
+  --k-avatar-4: #9A3468;
+  --k-avatar-5: #3E6B4E;
+  --k-avatar-6: #6B5A80;
+
+  /* Third-party marks keep their own colours: these are GCash's and Maya's, not ours. */
+  --k-gcash:       #007DFE;
+  --k-gcash-sky:   #00AFF0;
+  --k-gcash-rgb:   0 125 254;
+  --k-maya:        #00D632;
+  --k-maya-leaf:   #4CAF50;
+  --k-maya-deep:   #1A8F5D;
+  --k-maya-rgb:    76 175 80;
+  --k-black:       #000000;
+}
+
+/* 2. Semantic tokens — LIGHT (also the default before the theme script runs) */
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  /* "Lavender mist": no pure white anywhere, so light mode is easy on the eyes. */
+  --bg:             #ECE4F4;
+  --surface:        #F7F2FB;
+  --surface-soft:   #DFD3EE;
+  --border:         #CDBFE0;
+  --text:           #2B1B3D;
+  --text-soft:      #4A3B5E;
+  --text-muted:     #5F4F78;
+  --primary:        #5B3A8E;
+  --primary-hover:  #4A2E76;
+  --on-primary:     #FBF6F0;
+  --accent:         #FF8A65;
+  --on-accent:      #2B1B3D;
+  --heading-accent: #5B3A8E;
+  --focus-ring:     #5B3A8E;
+
+  --bg-rgb:      236 228 244;
+  --surface-rgb: 247 242 251;
+  --text-rgb:    43 27 61;
+  --primary-rgb: 91 58 142;
+  --accent-rgb:  255 138 101;
+
+  /* Status. Standard hues, darkened until they clear 4.5:1 on --bg, --surface and --surface-soft. */
+  --success:     #1A6B34;  --success-rgb: 26 107 52;
+  --warning:     #7F4A08;  --warning-rgb: 127 74 8;
+  --danger:      #9C1D29;  --danger-rgb:  156 29 41;   /* dark enough to read on its own 10-15% tint */
+  --info:        #6E46B0;  --info-rgb:    110 70 176;
+
+  /* Dashboard sidebar: always a dark brand panel, so its items stay light in both themes. */
+  --sidebar-bg:     #5B3A8E;
+  --sidebar-active: #FF8A65;
+
+  /* Map */
+  --map-stroke: #5B3A8E;
+  --map-fill:   #F7F2FB;
+  --map-label:  #2B1B3D;
+
+  --overlay:   rgb(var(--k-ink-rgb) / 0.45);
+  --shadow:    0 8px 24px rgb(var(--k-ink-rgb) / 0.10);
+  --shadow-md: 0 8px 28px rgb(var(--k-ink-rgb) / 0.12);
+  --dot:       rgb(var(--k-ink-rgb) / 0.04);
+  --hairline:  rgb(var(--k-ink-rgb) / 0.10);
+
+  /* Shared rules (ones that apply in both themes) were written for the dark theme: they tint
+     with white and shadow with black. They now go through these, which are exactly white and
+     black in dark, so dark renders identically, and plum ink in light, where white glares and
+     black is harsh. */
+  --wash-rgb:   43 27 61;    /* was rgba(255,255,255,a) in a shared rule */
+  --shade-rgb:  43 27 61;    /* was rgba(0,0,0,a) in a shared rule */
+  /* Light-only values, always read with the dark value as fallback: var(--x, <dark value>).
+     The dark block sets them to initial, so the fallback wins there. */
+  --overlay-a:  0.45;        /* modal and drawer backdrops */
+  --shadow-cap: 0.12;        /* no shadow darker than this */
+  --chart-grid: var(--border);
+  --chart-axis: var(--border);
+  --chart-text: var(--text-muted);
+  --chart-track: var(--surface-soft);
+}
+
+/* 2. Semantic tokens — DARK */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg:             #1E1230;
+  --surface:        #2B1B3D;
+  --surface-soft:   #34224B;
+  --border:         #4A3568;
+  --text:           #FBF6F0;
+  --text-soft:      #DDD0EA;
+  --text-muted:     #BBA9D1;
+  --primary:        #FF8A65;
+  --primary-hover:  #FFA182;
+  --on-primary:     #2B1B3D;
+  --accent:         #FF8A65;
+  --on-accent:      #2B1B3D;
+  --heading-accent: #FF8A65;
+  --focus-ring:     #FF8A65;
+
+  --bg-rgb:      30 18 48;
+  --surface-rgb: 43 27 61;
+  --text-rgb:    251 246 240;
+  --primary-rgb: 255 138 101;
+  --accent-rgb:  255 138 101;
+
+  --success:     #6FD394;  --success-rgb: 111 211 148;
+  --warning:     #F4BC5C;  --warning-rgb: 244 188 92;
+  --danger:      #FF8A8A;  --danger-rgb:  255 138 138;
+  --info:        #CDB4F5;  --info-rgb:    205 180 245;
+
+  --sidebar-bg:     #2B1B3D;
+  --sidebar-active: #FF8A65;
+
+  --map-stroke: #FF8A65;
+  --map-fill:   #2B1B3D;
+  --map-label:  #FBF6F0;
+
+  --overlay:   rgb(var(--k-black-rgb) / 0.6);
+  --shadow:    0 4px 20px rgb(var(--k-black-rgb) / 0.4);
+  --shadow-md: 0 10px 32px rgb(var(--k-black-rgb) / 0.45);
+  --dot:       rgb(var(--k-white-rgb) / 0.045);
+  --hairline:  rgb(var(--k-white-rgb) / 0.10);
+
+  --wash-rgb:   255 255 255;
+  --shade-rgb:  0 0 0;
+  --overlay-a:  initial;
+  --shadow-cap: initial;
+  --chart-grid: initial;
+  --chart-axis: initial;
+  --chart-text: initial;
+  --chart-track: initial;
+}
+
+/* 3. Legacy names, resolved against whichever theme is active. */
+:root {
+  --card:          var(--surface);
+  --card2:         var(--surface-soft);
+  --surface2:      var(--surface-soft);
+  --muted:         var(--text-muted);
+  --muted2:        var(--text-soft);
+  --soft:          var(--text-muted);
+  --footer-muted:  var(--text-muted);
+  --footer-link:   var(--text-muted);
+  --divider:       var(--border);
+  --input-bg:      var(--surface);
+  --input-border:  var(--border);
+  --nav-bg:        rgb(var(--bg-rgb) / 0.92);
+  --alt-bg:        rgb(var(--primary-rgb) / 0.04);
+
+  --teal:          var(--primary);
+  --teal-dk:       var(--primary-hover);
+  --teal-hover:    var(--primary-hover);
+  --primary-dark:  var(--primary-hover);
+  --teal-faint:    rgb(var(--primary-rgb) / 0.12);
+  --teal-mid:      rgb(var(--primary-rgb) / 0.25);
+  --teal-glow:     rgb(var(--primary-rgb) / 0.18);
+  --accent-dim:    rgb(var(--primary-rgb) / 0.08);
+  --accent-border: rgb(var(--primary-rgb) / 0.22);
+  --step-line:     rgb(var(--primary-rgb) / 0.20);
+
+  --green:         var(--success);
+  --green-faint:   rgb(var(--success-rgb) / 0.12);
+  --yellow:        var(--warning);
+  --yellow-faint:  rgb(var(--warning-rgb) / 0.12);
+  --amber-dim:     rgb(var(--warning-rgb) / 0.07);
+  --amber-border:  rgb(var(--warning-rgb) / 0.22);
+  --red:           var(--danger);
+  --red-text:      var(--danger);
+  --red-faint:     rgb(var(--danger-rgb) / 0.10);
+  --red-dim:       rgb(var(--danger-rgb) / 0.06);
+  --red-border:    rgb(var(--danger-rgb) / 0.20);
+  --danger-faint:  rgb(var(--danger-rgb) / 0.10);
+  --danger-mid:    rgb(var(--danger-rgb) / 0.30);
+  --purple:        var(--info);
+  --purple-text:   var(--info);
+  --purple-faint:  rgb(var(--info-rgb) / 0.12);
+  --purple-dim:    rgb(var(--info-rgb) / 0.07);
+  --purple-border: rgb(var(--info-rgb) / 0.20);
+}
+
+/* ── Page-wide basics every page shares ── */
+html { background-color: var(--bg); }
+
+::selection {
+  background: rgb(var(--primary-rgb) / 0.28);
+  color: var(--text);
+}
+:root[data-theme="light"] ::selection { background: rgb(var(--primary-rgb) / 0.20); }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--primary-rgb) / 0.35) transparent;
+}
+::-webkit-scrollbar-thumb { background: rgb(var(--primary-rgb) / 0.30); }
+::-webkit-scrollbar-thumb:hover { background: rgb(var(--primary-rgb) / 0.50); }
+
+/* Light: scrollbars and placeholders. Specific enough to beat the page stylesheets' own rules. */
+:root[data-theme="light"] * { scrollbar-color: var(--border) var(--bg); }
+:root[data-theme="light"] *::-webkit-scrollbar-track { background: var(--bg); }
+:root[data-theme="light"] *::-webkit-scrollbar-thumb { background: var(--border); }
+:root[data-theme="light"] *::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+:root[data-theme="light"] ::placeholder { color: var(--text-muted); opacity: 1; }
+
+:focus-visible { outline-color: var(--focus-ring); }
+
+/* The brand mark. Its outline is ink on light backgrounds and cream on dark ones,
+   so it never disappears into the page. See assets/js/kasafide-logo.js. */
+.kf-logo { display: inline-block; flex-shrink: 0; vertical-align: middle; }
+.kf-logo .kf-outline { stroke: var(--kf-logo-outline, var(--k-ink)); }
+.kf-logo--dark,
+:root[data-theme="dark"] .kf-logo:not(.kf-logo--light) { --kf-logo-outline: var(--k-cream); }
+.kf-logo--light { --kf-logo-outline: var(--k-ink); }
+
+/* The wordmark beside the logo: "Kasafide" in Plus Jakarta Sans ExtraBold, wherever it sits. */
+:root :is(.nav-logo, .nav-logo-text, .footer-logo, .hs-logo-text, .faq-logo-text, .help-logo-text, .policy-logo) {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* Light: form controls all read as the same soft surface with a lavender border. Listed by
+   class rather than every <input>, so inputs that sit transparently inside a styled wrapper
+   (the phone field's number box, the chat composer) keep their wrapper's look.
+   :root[data-theme="light"] puts these above the page stylesheets' own input rules. */
+:root[data-theme="light"] :is(
+  .field-input, .field input, .field select, .field textarea,
+  .form-input, .form-select, .modal-input, .modal-select, .modal-textarea,
+  .filter-input, .filter-select, .adjust-avail-input, .chatbot-input,
+  .reject-textarea, .reject-modal-body textarea, .comment-textarea,
+  .search-wrap input, .faq-search-input, .conv-search, .chat-input,
+  .hs-phone-input, .hs-topbar-input
+) {
+  background-color: var(--surface);
+}
+/* Border only when the field is not showing an error, so the red error border still wins. */
+:root[data-theme="light"] :is(
+  .field-input, .field input, .field select, .field textarea,
+  .form-input, .form-select, .modal-input, .modal-select, .modal-textarea,
+  .filter-input, .filter-select, .adjust-avail-input, .chatbot-input,
+  .reject-textarea, .reject-modal-body textarea, .comment-textarea,
+  .search-wrap input, .faq-search-input, .conv-search, .chat-input,
+  .hs-phone-input, .hs-topbar-input
+):not(.error):not(.is-invalid):not(.invalid) {
+  border-color: var(--border);
+}
+:root[data-theme="light"] :is(
+  .field-input, .field input, .field select, .field textarea,
+  .form-input, .form-select, .modal-input, .modal-select, .modal-textarea,
+  .filter-input, .filter-select, .adjust-avail-input, .chatbot-input,
+  .reject-textarea, .reject-modal-body textarea, .comment-textarea,
+  .search-wrap input, .faq-search-input, .conv-search, .chat-input,
+  .hs-phone-input, .hs-topbar-input
+):is(:focus, :focus-within):not(.error):not(.is-invalid):not(.invalid) {
+  border-color: var(--focus-ring);
+}
+
+/* Light: chips and arrows that sit on top of listing photos. The shared rule darkens them with
+   --shade-rgb at about 0.5, which is plum ink in light and lets a bright photo show through too
+   much for the cream label (it measured 3.2:1). A denser backing in light only. */
+:root[data-theme="light"] :is(.badge-tr, .carousel-btn, .carousel-counter, .gallery-nav, .gallery-counter) {
+  background: rgb(var(--k-ink-rgb) / 0.72);
+  color: var(--k-cream);
+}

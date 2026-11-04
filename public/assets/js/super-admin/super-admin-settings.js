@@ -2,8 +2,8 @@
   const user = getSession();
   if (!user || (user.role !== 'superadmin' && user.role !== 'super_duper_admin')) window.location.href = '../../auth/signin.html';
 
-  HomeSureSidebar.init({ activePage: '' });
-  HomeSureTopbar.init({ placeholder: 'Search settings...' });
+  KasafideSidebar.init({ activePage: '' });
+  KasafideTopbar.init({ placeholder: 'Search settings...' });
 
   function showToast(msg, type = 'success') {
     const t = document.getElementById('toast');
@@ -268,13 +268,13 @@
     if (checkbox.checked) {
       // Switch to dark mode
       document.documentElement.setAttribute('data-theme', 'dark');
-      localStorage.setItem('theme', 'dark');
+      KasafideTheme.set('dark');
       label.textContent = 'Dark';
       label.classList.add('on');
     } else {
       // Switch to light mode
       document.documentElement.setAttribute('data-theme', 'light');
-      localStorage.setItem('theme', 'light');
+      KasafideTheme.set('light');
       label.textContent = 'Light';
       label.classList.remove('on');
     }
@@ -282,7 +282,7 @@
 
   // Initialize theme on page load
   (function initTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const savedTheme = KasafideTheme.get();
     const themeToggle = document.getElementById('themeToggle');
     const label = document.getElementById('theme-lbl');
 

@@ -5,8 +5,8 @@
     return;
   }
 
-  HomeSureSidebar.init({ activePage: 'dashboard' });
-  HomeSureTopbar.init({ placeholder: 'Search...' });
+  KasafideSidebar.init({ activePage: 'dashboard' });
+  KasafideTopbar.init({ placeholder: 'Search...' });
 
   // ── Load everything the dashboard shows ───────────────────────────────────
   let LISTINGS, USERS, openReports;
@@ -128,11 +128,11 @@
   const total    = LISTINGS.length || 1;
 
   const breakdown = [
-    { label: 'Approved', count: approved, color: '#00c9a7', pct: Math.round(approved / total * 100) },
-    { label: 'Pending',  count: pending,  color: '#fbbf24', pct: Math.round(pending  / total * 100) },
-    { label: 'Rejected', count: rejected, color: '#f87171', pct: Math.round(rejected / total * 100) },
-    { label: 'For Rent', count: forRent,  color: '#60a5fa', pct: Math.round(forRent  / total * 100) },
-    { label: 'For Sale', count: forSale,  color: '#a78bfa', pct: Math.round(forSale  / total * 100) },
+    { label: 'Approved', count: approved, color: 'var(--primary)', pct: Math.round(approved / total * 100) },
+    { label: 'Pending',  count: pending,  color: 'var(--warning)', pct: Math.round(pending  / total * 100) },
+    { label: 'Rejected', count: rejected, color: 'var(--danger)', pct: Math.round(rejected / total * 100) },
+    { label: 'For Rent', count: forRent,  color: 'var(--accent)', pct: Math.round(forRent  / total * 100) },
+    { label: 'For Sale', count: forSale,  color: 'var(--info)', pct: Math.round(forSale  / total * 100) },
   ];
 
   document.getElementById('listingBreakdown').innerHTML = breakdown.map(b => `

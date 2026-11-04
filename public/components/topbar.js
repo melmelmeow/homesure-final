@@ -1,9 +1,9 @@
 // ─────────────────────────────────────────────────────────────────────────────
-//  HomeSure – Topbar Component
+//  Kasafide – Topbar Component
 //  Usage:
 //    <div id="hs-topbar"></div>
 //    <script src="../components/topbar.js"></script>
-//    <script>HomeSureTopbar.init({ placeholder: 'Search properties...' })</script>
+//    <script>KasafideTopbar.init({ placeholder: 'Search properties...' })</script>
 // ─────────────────────────────────────────────────────────────────────────────
 (function (global) {
   'use strict';
@@ -14,8 +14,8 @@
       align-items: center;
       justify-content: space-between;
       padding: 12px 26px;
-      background: #364153;
-      border-bottom: 1px solid rgba(0,0,0,0.2);
+      background: var(--surface-soft);
+      border-bottom: 1px solid rgb(var(--shade-rgb) / 0.2);
       gap: 14px;
       position: relative;
       z-index: 200;
@@ -24,54 +24,60 @@
     /* ── Search ── */
     .hs-topbar-search {
       flex: 1;
+      min-width: 0;
       max-width: 400px;
       position: relative;
     }
     .hs-topbar-search svg {
       position: absolute; left: 13px; top: 50%;
       transform: translateY(-50%);
-      color: rgba(255,255,255,0.35);
+      color: rgb(var(--wash-rgb) / 0.35);
       width: 14px; height: 14px;
       pointer-events: none;
       transition: color 0.2s;
     }
-    .hs-topbar-search:focus-within svg { color: #00c9a7; }
+    .hs-topbar-search:focus-within svg { color: var(--primary); }
 
     .hs-topbar-input {
       width: 100%;
-      background: rgba(0,0,0,0.2);
-      border: 1px solid rgba(255,255,255,0.1);
+      background: rgb(var(--shade-rgb) / 0.2);
+      border: 1px solid rgb(var(--wash-rgb) / 0.1);
       border-radius: 10px;
       padding: 9px 13px 9px 37px;
-      color: #ffffff;
+      color: var(--text);
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 13px;
       outline: none;
       transition: border-color 0.2s, background 0.2s;
     }
-    .hs-topbar-input::placeholder { color: rgba(255,255,255,0.35); }
+    .hs-topbar-input::placeholder { color: rgb(var(--wash-rgb) / 0.35); }
     .hs-topbar-input::-webkit-search-cancel-button { -webkit-appearance: none; display: none; }
     .hs-topbar-input:-webkit-autofill,
     .hs-topbar-input:-webkit-autofill:hover,
     .hs-topbar-input:-webkit-autofill:focus {
-      -webkit-box-shadow: 0 0 0 1000px #2d3f55 inset !important;
-      -webkit-text-fill-color: #f1f5f9 !important;
-      caret-color: #f1f5f9;
+      -webkit-box-shadow: 0 0 0 1000px var(--surface) inset !important;
+      -webkit-text-fill-color: var(--text) !important;
+      caret-color: var(--text);
     }
     [data-theme="light"] .hs-topbar-input:-webkit-autofill,
     [data-theme="light"] .hs-topbar-input:-webkit-autofill:hover,
     [data-theme="light"] .hs-topbar-input:-webkit-autofill:focus {
-      -webkit-box-shadow: 0 0 0 1000px #f1f5f9 inset !important;
-      -webkit-text-fill-color: #1e293b !important;
-      caret-color: #1e293b;
+      -webkit-box-shadow: 0 0 0 1000px var(--surface) inset !important;
+      -webkit-text-fill-color: var(--text) !important;
+      caret-color: var(--text);
     }
     .hs-topbar-input:focus {
-      border-color: rgba(0,201,167,0.55);
-      background: rgba(0,0,0,0.3);
+      border-color: rgb(var(--primary-rgb) / 0.55);
+      background: rgb(var(--shade-rgb) / 0.3);
     }
 
     /* ── Right side ── */
     .hs-topbar-right {
+      /* margin-left: auto pins this to the right regardless of how many siblings are actually
+         rendered. Relying on .hs-topbar's justify-content: space-between alone breaks once the
+         hamburger is hidden (mobile) and the search box is absent (no onSearch) — with only one
+         visible flex child, space-between places it at the START of the row instead of the end. */
+      margin-left: auto;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -82,31 +88,31 @@
       position: relative;
       width: 36px; height: 36px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.1);
+      background: rgb(var(--wash-rgb) / 0.07);
+      border: 1px solid rgb(var(--wash-rgb) / 0.1);
       display: flex; align-items: center; justify-content: center;
       cursor: pointer;
       transition: background 0.2s, transform 0.18s;
       flex-shrink: 0;
     }
     .hs-notif-btn:hover {
-      background: rgba(255,255,255,0.13);
+      background: rgb(var(--wash-rgb) / 0.13);
       transform: scale(1.07);
     }
     .hs-notif-btn svg {
       width: 16px; height: 16px;
-      color: rgba(255,255,255,0.7);
+      color: rgb(var(--wash-rgb) / 0.7);
       transition: color 0.2s;
     }
-    .hs-notif-btn:hover svg { color: #ffffff; }
+    .hs-notif-btn:hover svg { color: var(--text); }
 
     .hs-notif-dot {
       position: absolute;
       top: 6px; right: 6px;
       width: 8px; height: 8px;
       border-radius: 50%;
-      background: #00c9a7;
-      border: 2px solid #364153;
+      background: var(--primary);
+      border: 2px solid var(--surface-soft);
       animation: hs-notif-pulse 2s ease-in-out infinite;
     }
     @keyframes hs-notif-pulse {
@@ -120,8 +126,8 @@
     }
     .hs-notif-panel {
       display: none; position: absolute; top: calc(100% + 10px); right: 0; z-index: 9999;
-      width: 330px; background: #253347; border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px; box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+      width: 330px; background: var(--surface-soft); border: 1px solid rgb(var(--wash-rgb) / 0.08);
+      border-radius: 16px; box-shadow: 0 16px 48px rgb(var(--shade-rgb) / min(0.5, var(--shadow-cap, 1)));
       overflow: hidden;
       animation: hs-panel-in 0.18s ease both;
     }
@@ -135,9 +141,9 @@
       display: flex; align-items: center; justify-content: space-between;
       padding: 14px 16px 10px;
     }
-    .hs-notif-title { font-size: 15px; font-weight: 800; color: #f1f5f9; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .hs-notif-title { font-size: 15px; font-weight: 800; color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; }
     .hs-notif-mark-read {
-      font-size: 11.5px; font-weight: 600; color: #00c9a7;
+      font-size: 11.5px; font-weight: 600; color: var(--primary);
       background: none; border: none; cursor: pointer;
       font-family: 'Plus Jakarta Sans', sans-serif; padding: 0;
       transition: opacity 0.15s;
@@ -150,19 +156,19 @@
     .hs-notif-tab {
       padding: 5px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 600;
       font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; border: none;
-      background: transparent; color: rgba(255,255,255,0.45);
+      background: transparent; color: rgb(var(--wash-rgb) / 0.45);
       transition: background 0.15s, color 0.15s;
     }
-    .hs-notif-tab.active { background: #00c9a7; color: #ffffff; }
-    .hs-notif-tab:not(.active):hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.8); }
+    .hs-notif-tab.active { background: var(--primary); color: var(--on-primary); }
+    .hs-notif-tab:not(.active):hover { background: rgb(var(--wash-rgb) / 0.07); color: rgb(var(--wash-rgb) / 0.8); }
 
     .hs-notif-body { max-height: 300px; overflow-y: auto; }
     .hs-notif-body::-webkit-scrollbar { width: 3px; }
-    .hs-notif-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 99px; }
+    .hs-notif-body::-webkit-scrollbar-thumb { background: rgb(var(--wash-rgb) / 0.1); border-radius: 99px; }
 
     .hs-notif-section-label {
       padding: 8px 16px 4px;
-      font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.35);
+      font-size: 11px; font-weight: 700; color: rgb(var(--wash-rgb) / 0.35);
       text-transform: uppercase; letter-spacing: 0.06em;
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
@@ -173,45 +179,45 @@
       transition: background 0.15s;
       position: relative;
     }
-    .hs-notif-item:hover { background: rgba(255,255,255,0.05); }
-    .hs-notif-item.unread { background: rgba(0,201,167,0.06); }
+    .hs-notif-item:hover { background: rgb(var(--wash-rgb) / 0.05); }
+    .hs-notif-item.unread { background: rgb(var(--primary-rgb) / 0.06); }
     .hs-notif-item.unread::before {
       content: ''; position: absolute; left: 6px; top: 50%; transform: translateY(-50%);
-      width: 5px; height: 5px; border-radius: 50%; background: #00c9a7;
+      width: 5px; height: 5px; border-radius: 50%; background: var(--primary);
     }
     .hs-notif-avatar {
       width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
-      background: rgba(0,201,167,0.15); display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 700; color: #00c9a7;
+      background: rgb(var(--primary-rgb) / 0.15); display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: var(--primary);
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
-    .hs-notif-avatar.system { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.5); }
+    .hs-notif-avatar.system { background: rgb(var(--wash-rgb) / 0.07); color: rgb(var(--wash-rgb) / 0.5); }
     .hs-notif-avatar svg { width: 16px; height: 16px; }
     .hs-notif-content { flex: 1; min-width: 0; }
     .hs-notif-msg {
-      font-size: 12.5px; color: #cbd5e1; line-height: 1.45;
+      font-size: 12.5px; color: var(--text-muted); line-height: 1.45;
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
-    .hs-notif-msg strong { color: #f1f5f9; font-weight: 600; }
+    .hs-notif-msg strong { color: var(--text); font-weight: 600; }
     .hs-notif-time {
-      font-size: 11px; color: rgba(255,255,255,0.3); margin-top: 3px;
+      font-size: 11px; color: rgb(var(--wash-rgb) / 0.3); margin-top: 3px;
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
-    .hs-notif-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 2px 0; }
+    .hs-notif-divider { height: 1px; background: rgb(var(--wash-rgb) / 0.06); margin: 2px 0; }
 
     .hs-notif-footer {
       padding: 10px 16px 14px;
-      border-top: 1px solid rgba(255,255,255,0.06);
+      border-top: 1px solid rgb(var(--wash-rgb) / 0.06);
     }
     .hs-notif-see-all-btn {
       width: 100%; padding: 10px; border-radius: 9px;
-      background: rgba(0,201,167,0.1); border: 1px solid rgba(0,201,167,0.2);
-      color: #00c9a7; font-size: 13px; font-weight: 700;
+      background: rgb(var(--primary-rgb) / 0.1); border: 1px solid rgb(var(--primary-rgb) / 0.2);
+      color: var(--primary); font-size: 13px; font-weight: 700;
       font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer;
       transition: background 0.15s, border-color 0.15s;
       display: flex; align-items: center; justify-content: center; gap: 6px;
     }
-    .hs-notif-see-all-btn:hover { background: rgba(0,201,167,0.18); border-color: rgba(0,201,167,0.4); }
+    .hs-notif-see-all-btn:hover { background: rgb(var(--primary-rgb) / 0.18); border-color: rgb(var(--primary-rgb) / 0.4); }
     .hs-notif-see-all-btn svg { width: 14px; height: 14px; }
 
     /* ── Profile dropdown ── */
@@ -221,25 +227,25 @@
     .hs-topbar-avatar {
       width: 36px; height: 36px;
       border-radius: 50%;
-      background: rgba(0,201,167,0.15);
-      color: #00c9a7;
+      background: rgb(var(--primary-rgb) / 0.15);
+      color: var(--primary);
       display: flex; align-items: center; justify-content: center;
       font-size: 12px; font-weight: 700;
       cursor: pointer;
-      border: 2px solid rgba(0,201,167,0.4);
+      border: 2px solid rgb(var(--primary-rgb) / 0.4);
       font-family: 'Plus Jakarta Sans', sans-serif;
       transition: border-color 0.2s, transform 0.18s;
       user-select: none;
     }
     .hs-topbar-avatar:hover {
-      border-color: #00c9a7;
+      border-color: var(--primary);
       transform: scale(1.07);
     }
 
     .hs-profile-dropdown {
       display: none; position: absolute; top: calc(100% + 10px); right: 0; z-index: 9999;
-      width: 220px; background: #253347; border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px; box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+      width: 220px; background: var(--surface-soft); border: 1px solid rgb(var(--wash-rgb) / 0.08);
+      border-radius: 14px; box-shadow: 0 16px 48px rgb(var(--shade-rgb) / min(0.5, var(--shadow-cap, 1)));
       overflow: hidden;
       animation: hs-panel-in 0.18s ease both;
     }
@@ -247,14 +253,14 @@
 
     .hs-profile-head {
       padding: 14px 16px 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgb(var(--wash-rgb) / 0.06);
     }
     .hs-profile-head-name {
-      font-size: 13.5px; font-weight: 700; color: #f1f5f9;
+      font-size: 13.5px; font-weight: 700; color: var(--text);
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
     .hs-profile-head-role {
-      font-size: 11px; color: #00c9a7; font-weight: 600; margin-top: 2px;
+      font-size: 11px; color: var(--primary); font-weight: 600; margin-top: 2px;
       font-family: 'Plus Jakarta Sans', sans-serif; text-transform: capitalize;
     }
 
@@ -262,23 +268,23 @@
     .hs-profile-menu-item {
       display: flex; align-items: center; gap: 10px;
       padding: 9px 16px; cursor: pointer;
-      font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.7);
+      font-size: 13px; font-weight: 500; color: rgb(var(--wash-rgb) / 0.7);
       font-family: 'Plus Jakarta Sans', sans-serif;
       border: none; background: none; width: 100%; text-align: left;
       transition: background 0.15s, color 0.15s;
     }
     .hs-profile-menu-item svg { width: 14px; height: 14px; flex-shrink: 0; }
-    .hs-profile-menu-item:hover { background: rgba(255,255,255,0.06); color: #f1f5f9; }
-    .hs-profile-menu-item.danger { color: rgba(248,113,113,0.8); }
-    .hs-profile-menu-item.danger:hover { background: rgba(239,68,68,0.1); color: #f87171; }
-    .hs-profile-menu-item.reverify { color: #00c9a7; }
-    .hs-profile-menu-item.reverify:hover { background: rgba(0,201,167,0.08); }
-    .hs-profile-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 4px 0; }
+    .hs-profile-menu-item:hover { background: rgb(var(--wash-rgb) / 0.06); color: var(--text); }
+    .hs-profile-menu-item.danger { color: rgb(var(--danger-rgb) / 0.8); }
+    .hs-profile-menu-item.danger:hover { background: rgb(var(--danger-rgb) / 0.1); color: var(--danger); }
+    .hs-profile-menu-item.reverify { color: var(--primary); }
+    .hs-profile-menu-item.reverify:hover { background: rgb(var(--primary-rgb) / 0.08); }
+    .hs-profile-divider { height: 1px; background: rgb(var(--wash-rgb) / 0.06); margin: 4px 0; }
 
     /* ── Reverification Modal ── */
     .hs-reverify-backdrop {
       display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.65); z-index: 10000;
+      background: rgb(var(--shade-rgb) / var(--overlay-a, 0.65)); z-index: 10000;
       align-items: flex-start; justify-content: center;
       backdrop-filter: blur(4px);
       overflow-y: auto; padding: 40px 20px;
@@ -286,10 +292,10 @@
     .hs-reverify-backdrop.open { display: flex; }
 
     .hs-reverify-modal {
-      background: #1e2f42; border: 1px solid rgba(255,255,255,0.08);
+      background: var(--surface); border: 1px solid rgb(var(--wash-rgb) / 0.08);
       border-radius: 20px; width: 100%; max-width: 460px;
       margin: auto;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+      box-shadow: 0 24px 64px rgb(var(--shade-rgb) / min(0.6, var(--shadow-cap, 1)));
       animation: hs-panel-in 0.22s ease both;
       position: relative;
     }
@@ -300,72 +306,72 @@
     }
     .hs-rv-icon {
       width: 52px; height: 52px; border-radius: 14px;
-      background: rgba(0,201,167,0.12); border: 1px solid rgba(0,201,167,0.25);
+      background: rgb(var(--primary-rgb) / 0.12); border: 1px solid rgb(var(--primary-rgb) / 0.25);
       display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
-    .hs-rv-icon svg { width: 26px; height: 26px; color: #00c9a7; }
+    .hs-rv-icon svg { width: 26px; height: 26px; color: var(--primary); }
     .hs-rv-close {
       width: 30px; height: 30px; border-radius: 8px; border: none;
-      background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.5);
+      background: rgb(var(--wash-rgb) / 0.06); color: rgb(var(--wash-rgb) / 0.5);
       cursor: pointer; font-size: 18px; line-height: 1;
       display: flex; align-items: center; justify-content: center;
       transition: background 0.15s, color 0.15s;
     }
-    .hs-rv-close:hover { background: rgba(255,255,255,0.12); color: #f1f5f9; }
+    .hs-rv-close:hover { background: rgb(var(--wash-rgb) / 0.12); color: var(--text); }
 
     .hs-rv-body { padding: 16px 24px 24px; }
-    .hs-rv-title { font-size: 18px; font-weight: 800; color: #f1f5f9; margin-bottom: 6px; font-family: 'Plus Jakarta Sans', sans-serif; }
-    .hs-rv-sub { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; margin-bottom: 22px; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .hs-rv-title { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 6px; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .hs-rv-sub { font-size: 13px; color: rgb(var(--wash-rgb) / 0.5); line-height: 1.6; margin-bottom: 22px; font-family: 'Plus Jakarta Sans', sans-serif; }
 
     .hs-rv-steps {
       display: flex; gap: 6px; margin-bottom: 6px; align-items: center;
     }
     .hs-rv-step-dot {
-      flex: 1; height: 4px; border-radius: 99px; background: rgba(255,255,255,0.1);
+      flex: 1; height: 4px; border-radius: 99px; background: rgb(var(--wash-rgb) / 0.1);
       transition: background 0.3s;
     }
-    .hs-rv-step-dot.done { background: #00c9a7; }
+    .hs-rv-step-dot.done { background: var(--primary); }
 
     .hs-rv-step-label {
-      font-size: 10.5px; font-weight: 700; color: rgba(255,255,255,0.35);
+      font-size: 10.5px; font-weight: 700; color: rgb(var(--wash-rgb) / 0.35);
       text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px;
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
     .hs-rv-upload {
-      border: 1.5px dashed rgba(255,255,255,0.14); border-radius: 14px;
+      border: 1.5px dashed rgb(var(--wash-rgb) / 0.14); border-radius: 14px;
       padding: 32px 20px; text-align: center; margin-bottom: 14px;
       cursor: pointer; transition: border-color 0.2s, background 0.2s;
-      background: rgba(255,255,255,0.02); display: block;
+      background: rgb(var(--wash-rgb) / 0.02); display: block;
     }
-    .hs-rv-upload:hover { border-color: rgba(0,201,167,0.5); background: rgba(0,201,167,0.05); }
-    .hs-rv-upload.has-file { border-color: #00c9a7; background: rgba(0,201,167,0.07); }
+    .hs-rv-upload:hover { border-color: rgb(var(--primary-rgb) / 0.5); background: rgb(var(--primary-rgb) / 0.05); }
+    .hs-rv-upload.has-file { border-color: var(--primary); background: rgb(var(--primary-rgb) / 0.07); }
     .hs-rv-upload input { display: none; }
     .hs-rv-upload-icon {
       width: 52px; height: 52px; border-radius: 14px;
-      background: rgba(255,255,255,0.07); margin: 0 auto 14px;
+      background: rgb(var(--wash-rgb) / 0.07); margin: 0 auto 14px;
       display: flex; align-items: center; justify-content: center;
     }
-    .hs-rv-upload-icon svg { width: 24px; height: 24px; color: rgba(255,255,255,0.45); }
-    .hs-rv-upload.has-file .hs-rv-upload-icon { background: rgba(0,201,167,0.12); }
-    .hs-rv-upload.has-file .hs-rv-upload-icon svg { color: #00c9a7; }
-    .hs-rv-upload-label { font-size: 13.5px; font-weight: 700; color: rgba(255,255,255,0.8); font-family: 'Plus Jakarta Sans', sans-serif; margin-bottom: 4px; }
-    .hs-rv-upload-hint { font-size: 11.5px; color: rgba(255,255,255,0.3); font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.5; }
+    .hs-rv-upload-icon svg { width: 24px; height: 24px; color: rgb(var(--wash-rgb) / 0.45); }
+    .hs-rv-upload.has-file .hs-rv-upload-icon { background: rgb(var(--primary-rgb) / 0.12); }
+    .hs-rv-upload.has-file .hs-rv-upload-icon svg { color: var(--primary); }
+    .hs-rv-upload-label { font-size: 13.5px; font-weight: 700; color: rgb(var(--wash-rgb) / 0.8); font-family: 'Plus Jakarta Sans', sans-serif; margin-bottom: 4px; }
+    .hs-rv-upload-hint { font-size: 11.5px; color: rgb(var(--wash-rgb) / 0.3); font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.5; }
     .hs-rv-upload-filename {
       display: inline-flex; align-items: center; gap: 6px;
-      font-size: 12px; color: #00c9a7; font-weight: 600; margin-top: 10px;
-      background: rgba(0,201,167,0.1); padding: 4px 10px; border-radius: 20px;
+      font-size: 12px; color: var(--primary); font-weight: 600; margin-top: 10px;
+      background: rgb(var(--primary-rgb) / 0.1); padding: 4px 10px; border-radius: 20px;
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
     .hs-rv-btn {
       width: 100%; padding: 13px; border-radius: 10px;
-      background: #00c9a7; border: none; color: #fff;
+      background: var(--primary); border: none; color: var(--on-primary);
       font-size: 14px; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif;
       cursor: pointer; margin-top: 6px; transition: background 0.2s, opacity 0.2s;
       letter-spacing: 0.01em;
     }
-    .hs-rv-btn:hover:not(:disabled) { background: #00b396; }
+    .hs-rv-btn:hover:not(:disabled) { background: var(--primary-hover); }
     .hs-rv-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
     /* Success state */
@@ -373,114 +379,115 @@
     .hs-rv-success.show { display: block; }
     .hs-rv-success-icon {
       width: 72px; height: 72px; border-radius: 50%;
-      background: rgba(0,201,167,0.12); border: 2px solid rgba(0,201,167,0.3);
+      background: rgb(var(--primary-rgb) / 0.12); border: 2px solid rgb(var(--primary-rgb) / 0.3);
       display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;
     }
-    .hs-rv-success-icon svg { width: 36px; height: 36px; color: #00c9a7; }
-    .hs-rv-success-title { font-size: 20px; font-weight: 800; color: #f1f5f9; margin-bottom: 8px; font-family: 'Plus Jakarta Sans', sans-serif; }
-    .hs-rv-success-msg { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .hs-rv-success-icon svg { width: 36px; height: 36px; color: var(--primary); }
+    .hs-rv-success-title { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 8px; font-family: 'Plus Jakarta Sans', sans-serif; }
+    .hs-rv-success-msg { font-size: 13px; color: rgb(var(--wash-rgb) / 0.5); line-height: 1.6; font-family: 'Plus Jakarta Sans', sans-serif; }
     .hs-rv-success-close {
       margin-top: 24px; padding: 11px 32px; border-radius: 10px;
-      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-      color: rgba(255,255,255,0.7); font-size: 13.5px; font-weight: 600;
+      background: rgb(var(--wash-rgb) / 0.06); border: 1px solid rgb(var(--wash-rgb) / 0.1);
+      color: rgb(var(--wash-rgb) / 0.7); font-size: 13.5px; font-weight: 600;
       font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer;
       transition: background 0.15s, color 0.15s;
     }
-    .hs-rv-success-close:hover { background: rgba(255,255,255,0.1); color: #f1f5f9; }
+    .hs-rv-success-close:hover { background: rgb(var(--wash-rgb) / 0.1); color: var(--text); }
 
     /* ── Hamburger (mobile only) ── */
     .hs-hamburger {
       display: none;
       align-items: center; justify-content: center;
       width: 36px; height: 36px;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.1);
+      background: rgb(var(--wash-rgb) / 0.07);
+      border: 1px solid rgb(var(--wash-rgb) / 0.1);
       border-radius: 9px;
       cursor: pointer;
       flex-shrink: 0;
       transition: background 0.2s;
     }
-    .hs-hamburger:hover { background: rgba(255,255,255,0.14); }
-    .hs-hamburger svg { width: 17px; height: 17px; color: rgba(255,255,255,0.8); display: block; }
+    .hs-hamburger:hover { background: rgb(var(--wash-rgb) / 0.14); }
+    .hs-hamburger svg { width: 17px; height: 17px; color: rgb(var(--wash-rgb) / 0.8); display: block; }
     @media (max-width: 768px) {
       .hs-hamburger { display: none; }
-      .hs-topbar-search { max-width: 200px; }
-    }
-    @media (max-width: 400px) {
-      .hs-topbar-search { max-width: 130px; }
+      /* These used to cap the search box at 200px (then 130px below 400px) to leave room for
+         the hamburger — but the hamburger is display:none right above this, so nothing was
+         actually competing for that space, and 130px clipped the placeholder text down to
+         "Search by pr...". flex: 1 + min-width: 0 on .hs-topbar-search already shares the row
+         correctly with the bell/avatar; it doesn't need a hardcoded ceiling here at all. */
     }
     [data-theme="light"] .hs-hamburger {
-      background: rgba(0,0,0,0.05);
-      border-color: rgba(0,0,0,0.1);
+      background: rgb(var(--k-ink-rgb) / 0.05);
+      border-color: var(--border);
     }
-    [data-theme="light"] .hs-hamburger svg { color: rgba(0,0,0,0.6); }
+    [data-theme="light"] .hs-hamburger svg { color: var(--text-muted); }
 
     /* ── Light mode ── */
     [data-theme="light"] .hs-topbar {
-      background: #ffffff;
-      border-bottom: 1px solid rgba(0,0,0,0.08);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
     }
     [data-theme="light"] .hs-topbar-input {
-      background: #f1f5f9;
-      border-color: rgba(0,0,0,0.1);
-      color: #1e293b;
+      background: var(--surface-soft);
+      border-color: var(--border);
+      color: var(--text);
     }
-    [data-theme="light"] .hs-topbar-input::placeholder { color: rgba(0,0,0,0.35); }
+    [data-theme="light"] .hs-topbar-input::placeholder { color: var(--text-muted); }
     [data-theme="light"] .hs-topbar-input:focus {
-      background: #ffffff;
-      border-color: rgba(0,201,167,0.55);
+      background: var(--surface);
+      border-color: rgb(var(--primary-rgb) / 0.55);
     }
-    [data-theme="light"] .hs-topbar-search svg { color: rgba(0,0,0,0.35); }
-    [data-theme="light"] .hs-topbar-search:focus-within svg { color: #00c9a7; }
+    [data-theme="light"] .hs-topbar-search svg { color: var(--text-muted); }
+    [data-theme="light"] .hs-topbar-search:focus-within svg { color: var(--primary); }
     [data-theme="light"] .hs-notif-btn {
-      background: #f1f5f9;
-      border-color: rgba(0,0,0,0.1);
+      background: var(--surface-soft);
+      border-color: var(--border);
     }
-    [data-theme="light"] .hs-notif-btn:hover { background: #e2e8f0; }
-    [data-theme="light"] .hs-notif-btn svg { color: rgba(0,0,0,0.5); }
-    [data-theme="light"] .hs-notif-btn:hover svg { color: #1e293b; }
-    [data-theme="light"] .hs-notif-dot { border-color: #ffffff; }
+    [data-theme="light"] .hs-notif-btn:hover { background: var(--border); }
+    [data-theme="light"] .hs-notif-btn svg { color: var(--text-muted); }
+    [data-theme="light"] .hs-notif-btn:hover svg { color: var(--text); }
+    [data-theme="light"] .hs-notif-dot { border-color: var(--surface); }
     [data-theme="light"] .hs-topbar-avatar {
-      background: rgba(0,201,167,0.12);
-      color: #00a88c;
-      border-color: rgba(0,201,167,0.4);
+      background: rgb(var(--primary-rgb) / 0.12);
+      color: var(--primary);
+      border-color: rgb(var(--primary-rgb) / 0.4);
     }
     [data-theme="light"] .hs-notif-panel,
     [data-theme="light"] .hs-profile-dropdown {
-      background: #ffffff; border-color: rgba(0,0,0,0.09);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+      background: var(--surface); border-color: var(--border);
+      box-shadow: 0 12px 40px rgb(var(--k-ink-rgb) / 0.12);
     }
     [data-theme="light"] .hs-notif-title,
-    [data-theme="light"] .hs-profile-head-name { color: #1e293b; }
-    [data-theme="light"] .hs-notif-tab:not(.active) { color: rgba(0,0,0,0.45); }
-    [data-theme="light"] .hs-notif-tab:not(.active):hover { background: rgba(0,0,0,0.05); }
-    [data-theme="light"] .hs-notif-section-label { color: rgba(0,0,0,0.35); }
-    [data-theme="light"] .hs-notif-item:hover { background: rgba(0,0,0,0.03); }
-    [data-theme="light"] .hs-notif-item.unread { background: rgba(0,201,167,0.05); }
-    [data-theme="light"] .hs-notif-msg { color: #475569; }
-    [data-theme="light"] .hs-notif-msg strong { color: #1e293b; }
-    [data-theme="light"] .hs-notif-time { color: rgba(0,0,0,0.3); }
+    [data-theme="light"] .hs-profile-head-name { color: var(--text); }
+    [data-theme="light"] .hs-notif-tab:not(.active) { color: var(--text-muted); }
+    [data-theme="light"] .hs-notif-tab:not(.active):hover { background: rgb(var(--k-ink-rgb) / 0.05); }
+    [data-theme="light"] .hs-notif-section-label { color: var(--text-muted); }
+    [data-theme="light"] .hs-notif-item:hover { background: rgb(var(--k-ink-rgb) / 0.03); }
+    [data-theme="light"] .hs-notif-item.unread { background: rgb(var(--primary-rgb) / 0.05); }
+    [data-theme="light"] .hs-notif-msg { color: var(--text-soft); }
+    [data-theme="light"] .hs-notif-msg strong { color: var(--text); }
+    [data-theme="light"] .hs-notif-time { color: var(--text-muted); }
     [data-theme="light"] .hs-notif-divider,
-    [data-theme="light"] .hs-profile-divider { background: rgba(0,0,0,0.06); }
-    [data-theme="light"] .hs-notif-footer { border-color: rgba(0,0,0,0.06); }
-    [data-theme="light"] .hs-notif-see-all-btn { color: #00a88c; }
-    [data-theme="light"] .hs-profile-menu-item { color: rgba(0,0,0,0.6); }
-    [data-theme="light"] .hs-profile-menu-item:hover { background: rgba(0,0,0,0.04); color: #1e293b; }
-    [data-theme="light"] .hs-profile-head { border-color: rgba(0,0,0,0.06); }
-    [data-theme="light"] .hs-profile-menu { border-color: rgba(0,0,0,0.06); }
-    [data-theme="light"] .hs-reverify-modal { background: #ffffff; border-color: rgba(0,0,0,0.09); }
-    [data-theme="light"] .hs-rv-title { color: #1e293b; }
-    [data-theme="light"] .hs-rv-sub { color: rgba(0,0,0,0.45); }
-    [data-theme="light"] .hs-rv-upload { border-color: rgba(0,0,0,0.13); background: rgba(0,0,0,0.02); }
-    [data-theme="light"] .hs-rv-upload:hover { border-color: rgba(0,201,167,0.5); background: rgba(0,201,167,0.04); }
-    [data-theme="light"] .hs-rv-upload-icon { background: rgba(0,0,0,0.06); }
-    [data-theme="light"] .hs-rv-upload-icon svg { color: rgba(0,0,0,0.35); }
-    [data-theme="light"] .hs-rv-upload-label { color: rgba(0,0,0,0.75); }
-    [data-theme="light"] .hs-rv-upload-hint { color: rgba(0,0,0,0.35); }
-    [data-theme="light"] .hs-rv-step-dot { background: rgba(0,0,0,0.1); }
-    [data-theme="light"] .hs-rv-step-label { color: rgba(0,0,0,0.35); }
-    [data-theme="light"] .hs-rv-success-title { color: #1e293b; }
-    [data-theme="light"] .hs-rv-success-msg { color: rgba(0,0,0,0.45); }
+    [data-theme="light"] .hs-profile-divider { background: rgb(var(--k-ink-rgb) / 0.06); }
+    [data-theme="light"] .hs-notif-footer { border-color: var(--border); }
+    [data-theme="light"] .hs-notif-see-all-btn { color: var(--primary); }
+    [data-theme="light"] .hs-profile-menu-item { color: var(--text-muted); }
+    [data-theme="light"] .hs-profile-menu-item:hover { background: rgb(var(--k-ink-rgb) / 0.04); color: var(--text); }
+    [data-theme="light"] .hs-profile-head { border-color: var(--border); }
+    [data-theme="light"] .hs-profile-menu { border-color: var(--border); }
+    [data-theme="light"] .hs-reverify-modal { background: var(--surface); border-color: var(--border); }
+    [data-theme="light"] .hs-rv-title { color: var(--text); }
+    [data-theme="light"] .hs-rv-sub { color: var(--text-muted); }
+    [data-theme="light"] .hs-rv-upload { border-color: var(--border); background: rgb(var(--k-ink-rgb) / 0.02); }
+    [data-theme="light"] .hs-rv-upload:hover { border-color: rgb(var(--primary-rgb) / 0.5); background: rgb(var(--primary-rgb) / 0.04); }
+    [data-theme="light"] .hs-rv-upload-icon { background: rgb(var(--k-ink-rgb) / 0.06); }
+    [data-theme="light"] .hs-rv-upload-icon svg { color: var(--text-muted); }
+    [data-theme="light"] .hs-rv-upload-label { color: var(--text); }
+    [data-theme="light"] .hs-rv-upload-hint { color: var(--text-muted); }
+    [data-theme="light"] .hs-rv-step-dot { background: rgb(var(--k-ink-rgb) / 0.1); }
+    [data-theme="light"] .hs-rv-step-label { color: var(--text-muted); }
+    [data-theme="light"] .hs-rv-success-title { color: var(--text); }
+    [data-theme="light"] .hs-rv-success-msg { color: var(--text-muted); }
   `;
 
   function injectCSS() {
@@ -495,7 +502,7 @@
     injectCSS();
 
     const el = document.getElementById('hs-topbar');
-    if (!el) { console.warn('HomeSureTopbar: #hs-topbar not found.'); return; }
+    if (!el) { console.warn('KasafideTopbar: #hs-topbar not found.'); return; }
 
     const user = typeof getSession === 'function' ? getSession() : null;
     const initials  = user ? hsInitials(user.firstName, user.lastName, user.email) : 'U';
@@ -505,15 +512,10 @@
       ? `<img src="${user.avatar}" alt="${fullName}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />`
       : initials;
 
-    el.className = 'hs-topbar';
-    el.innerHTML = `
-      <button class="hs-hamburger" id="hsHamburger" aria-label="Open menu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="3" y1="6" x2="21" y2="6"/>
-          <line x1="3" y1="12" x2="21" y2="12"/>
-          <line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
-      </button>
+    // A search box that does nothing when typed into is worse than no search box — most pages
+    // never pass onSearch (it's dead UI left over from before the front end was wired to real
+    // data), so only render it where there's an actual handler for it.
+    const searchHTML = typeof onSearch === 'function' ? `
       <div class="hs-topbar-search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
              stroke-linecap="round" stroke-linejoin="round">
@@ -533,6 +535,18 @@
           onblur="if(!this.value)this.setAttribute('readonly','')"
         />
       </div>
+    ` : '';
+
+    el.className = 'hs-topbar';
+    el.innerHTML = `
+      <button class="hs-hamburger" id="hsHamburger" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      ${searchHTML}
       <div class="hs-topbar-right">
 
         <!-- Notification Bell -->
@@ -583,10 +597,11 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                 Settings
               </button>
+              ${(role === 'buyer' || role === 'seller') ? `
               <button class="hs-profile-menu-item" data-action="help">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                 Help & Support
-              </button>
+              </button>` : ''}
               ${(role === 'buyer' || role === 'seller') ? `
               <div class="hs-profile-divider"></div>
               <button class="hs-profile-menu-item reverify" data-action="reverify">
@@ -618,8 +633,8 @@
     const hamburger = el.querySelector('#hsHamburger');
     if (hamburger) {
       hamburger.addEventListener('click', () => {
-        if (typeof HomeSureSidebar !== 'undefined' && HomeSureSidebar.toggleMobile) {
-          HomeSureSidebar.toggleMobile();
+        if (typeof KasafideSidebar !== 'undefined' && KasafideSidebar.toggleMobile) {
+          KasafideSidebar.toggleMobile();
         }
       });
     }
@@ -631,62 +646,21 @@
     }
 
     // ── Notification panel ──────────────────────────────────────────────────
-    const NOTIFS_BY_ROLE = {
-      buyer: [
-        { id: 1, type: 'message', unread: true,  time: '2m ago',    msg: '<strong>Ramon Cruz</strong> sent you a message about a property.' },
-        { id: 2, type: 'listing', unread: true,  time: '18m ago',   msg: '<strong>New listing</strong> in Poblacion matches your saved preferences.' },
-        { id: 3, type: 'price',   unread: false, time: '2h ago',    msg: 'Price dropped on a saved listing — <strong>1-Bedroom Apartment near Town Proper</strong>.' },
-        { id: 4, type: 'system',  unread: false, time: 'Yesterday', msg: 'Your account was successfully verified.' },
-      ],
-      seller: [
-        { id: 1, type: 'message', unread: true,  time: '5m ago',    msg: '<strong>Maria Santos</strong> sent an inquiry about your listing in Poblacion.' },
-        { id: 2, type: 'listing', unread: true,  time: '1h ago',    msg: 'Your listing <strong>2-Bedroom Unit in Sta. Maria</strong> has been approved.' },
-        { id: 3, type: 'price',   unread: false, time: '3h ago',    msg: '3 buyers viewed your listing in Pulong Yantok today.' },
-        { id: 4, type: 'system',  unread: false, time: 'Yesterday', msg: 'Your seller account has been successfully verified.' },
-      ],
-      admin: [
-        { id: 1, type: 'listing', unread: true,  time: '10m ago',   msg: '<strong>New listing</strong> submitted by Juan Dela Cruz — pending approval.' },
-        { id: 2, type: 'message', unread: true,  time: '45m ago',   msg: 'User <strong>Maria Santos</strong> filed a report against a listing.' },
-        { id: 3, type: 'system',  unread: false, time: '4h ago',    msg: '2 listings flagged for review by the content filter.' },
-        { id: 4, type: 'system',  unread: false, time: 'Yesterday', msg: 'System backup completed successfully.' },
-      ],
-      superadmin: [
-        { id: 1, type: 'system',  unread: true,  time: '15m ago',   msg: 'Admin <strong>Jose Reyes</strong> approved 5 new listings.' },
-        { id: 2, type: 'message', unread: true,  time: '2h ago',    msg: 'New admin account registered — pending super admin approval.' },
-        { id: 3, type: 'system',  unread: false, time: 'Yesterday', msg: 'Monthly report generated for March 2026.' },
-        { id: 4, type: 'system',  unread: false, time: '2 days ago', msg: 'Platform usage hit 500 active users this week.' },
-      ],
-      super_duper_admin: [
-        { id: 1, type: 'system',  unread: true,  time: '15m ago',   msg: 'Admin <strong>Jose Reyes</strong> approved 5 new listings.' },
-        { id: 2, type: 'message', unread: true,  time: '2h ago',    msg: 'New admin account registered — pending super admin approval.' },
-        { id: 3, type: 'system',  unread: false, time: 'Yesterday', msg: 'Monthly report generated for March 2026.' },
-        { id: 4, type: 'system',  unread: false, time: '2 days ago', msg: 'Platform usage hit 500 active users this week.' },
-      ],
-    };
+    // Reads the real `notifications` table (HS.notifications) instead of fabricated per-role
+    // messages — nothing currently inserts rows into that table, so most accounts will honestly
+    // show "No notifications" here rather than invented activity that never happened.
+    let NOTIFS = [];
 
-    const notifStorageKey = 'hs_read_notifs_' + role + '_' + (user ? user.id : 'anon');
-    let readIds = [];
-    try {
-      readIds = JSON.parse(localStorage.getItem(notifStorageKey) || '[]');
-    } catch (_) { readIds = []; }
-
-    let NOTIFS = (NOTIFS_BY_ROLE[role] || NOTIFS_BY_ROLE.superadmin || NOTIFS_BY_ROLE.buyer).map(n => {
-      const isRead = Array.isArray(readIds) && readIds.includes(n.id);
-      return Object.assign({}, n, { unread: isRead ? false : n.unread });
-    });
-
-    function updateNotifDot() {
-      const hasUnread = NOTIFS.some(n => n.unread);
-      const dot = el.querySelector('#hsNotifDot');
-      if (dot) dot.style.display = hasUnread ? 'block' : 'none';
-    }
-
-    function saveReadState() {
-      const read = NOTIFS.filter(n => !n.unread).map(n => n.id);
-      try {
-        localStorage.setItem(notifStorageKey, JSON.stringify(read));
-      } catch (_) {}
-      updateNotifDot();
+    function timeAgo(iso) {
+      const minutes = Math.floor((Date.now() - new Date(iso).getTime()) / 60000);
+      if (minutes < 1) return 'Just now';
+      if (minutes < 60) return `${minutes}m ago`;
+      const hours = Math.floor(minutes / 60);
+      if (hours < 24) return `${hours}h ago`;
+      const days = Math.floor(hours / 24);
+      if (days === 1) return 'Yesterday';
+      if (days < 7) return `${days}d ago`;
+      return new Date(iso).toLocaleDateString('en-PH', { month: 'short', day: 'numeric' });
     }
 
     const ICONS = {
@@ -716,7 +690,7 @@
         html += earlierItems.map(n => notifItem(n)).join('');
       }
       if (!list.length) {
-        html = `<div style="padding:28px 16px;text-align:center;font-size:13px;color:rgba(255,255,255,0.35);font-family:'Plus Jakarta Sans',sans-serif;">No notifications</div>`;
+        html = `<div style="padding:28px 16px;text-align:center;font-size:13px;color:rgb(var(--wash-rgb) / 0.35);font-family:'Plus Jakarta Sans',sans-serif;">No notifications</div>`;
       }
       body.innerHTML = html;
     }
@@ -724,16 +698,46 @@
     function notifItem(n) {
       return `
         <div class="hs-notif-item ${n.unread ? 'unread' : ''}" data-id="${n.id}">
-          <div class="hs-notif-avatar ${n.type === 'system' ? 'system' : ''}">${ICONS[n.type] || ''}</div>
+          <div class="hs-notif-avatar ${n.type === 'system' ? 'system' : ''}">${ICONS[n.type] || ICONS.system}</div>
           <div class="hs-notif-content">
-            <div class="hs-notif-msg">${n.msg}</div>
-            <div class="hs-notif-time">${n.time}</div>
+            <div class="hs-notif-msg">${n.title ? `<strong>${n.title}</strong> ` : ''}${n.body}</div>
+            <div class="hs-notif-time">${timeAgo(n.createdAt)}</div>
           </div>
         </div>`;
     }
 
+    // Clicking an item marks just that one read (and follows its link, if it has one).
+    const notifBody = el.querySelector('#hsNotifBody');
+    if (notifBody) {
+      notifBody.addEventListener('click', async (e) => {
+        const item = e.target.closest('.hs-notif-item');
+        if (!item) return;
+        const id = item.dataset.id;
+        const n = NOTIFS.find((x) => String(x.id) === id);
+        if (n && n.unread) {
+          n.unread = false;
+          renderNotifs(activeTab);
+          try { await HS.notifications.markRead(id); } catch (err) { console.error('Could not mark notification read:', err); }
+        }
+        if (n && n.link) window.location.href = n.link;
+      });
+    }
+
+    async function loadNotifs() {
+      if (typeof HS === 'undefined' || !HS.notifications) return;
+      try {
+        NOTIFS = await HS.notifications.list();
+      } catch (err) {
+        console.error('Could not load notifications:', err);
+        return;
+      }
+      renderNotifs(activeTab);
+      const dot = el.querySelector('#hsNotifDot');
+      if (dot) dot.style.display = NOTIFS.some((n) => n.unread) ? '' : 'none';
+    }
+
     renderNotifs('all');
-    updateNotifDot();
+    loadNotifs();
 
     // Tab switching
     el.querySelectorAll('.hs-notif-tab').forEach(tab => {
@@ -745,76 +749,45 @@
       });
     });
 
-    // Individual notification click
-    const notifBody = el.querySelector('#hsNotifBody');
-    if (notifBody) {
-      notifBody.addEventListener('click', e => {
-        const item = e.target.closest('.hs-notif-item');
-        if (!item) return;
-        const id = Number(item.dataset.id);
-        const target = NOTIFS.find(n => n.id === id);
-        if (target && target.unread) {
-          target.unread = false;
-          saveReadState();
-          renderNotifs(activeTab);
-        }
-      });
-    }
-
     // Mark all as read
     const markRead = el.querySelector('#hsMarkRead');
     if (markRead) {
-      markRead.addEventListener('click', () => {
+      markRead.addEventListener('click', async () => {
         NOTIFS.forEach(n => n.unread = false);
-        saveReadState();
         renderNotifs(activeTab);
+        const dot = el.querySelector('#hsNotifDot');
+        if (dot) dot.style.display = 'none';
+        try { await HS.notifications.markAllRead(); } catch (err) { console.error('Could not mark notifications read:', err); }
       });
     }
 
     // Navigate to full notifications page
     function goToNotifPage() {
       const p = window.location.pathname;
+      // '../<folder>/' rather than a bare filename: module/buyer/listing.html is shared by buyers
+      // and sellers, and from there a bare name opened the buyer's page for a seller too.
+      const folder = (role === 'superadmin' || role === 'super_duper_admin') ? 'super-admin' : role;
       let path;
-      if (p.includes('/module/'))    path = 'notifications.html';
-      else if (p.includes('/auth/')) path = '../module/' + role + '/notifications.html';
-      else                           path = 'module/' + role + '/notifications.html';
+      if (p.includes('/module/'))    path = '../' + folder + '/notifications.html';
+      else if (p.includes('/auth/')) path = '../module/' + folder + '/notifications.html';
+      else                           path = 'module/' + folder + '/notifications.html';
       window.location.href = path;
     }
 
     const seeAllBtn = el.querySelector('#hsNotifSeeAll');
     if (seeAllBtn) seeAllBtn.addEventListener('click', goToNotifPage);
 
-    // Toggle notification panel (desktop) or navigate to page (mobile)
+    // Toggle notification panel — same popup behavior as the profile button, at every width.
+    // This used to redirect to the full notifications page on mobile instead of opening the
+    // panel, which was inconsistent with how the profile button always just opens its dropdown.
     const notifBtn   = el.querySelector('#hsNotifBtn');
     const notifPanel = el.querySelector('#hsNotifPanel');
     if (notifBtn && notifPanel) {
       notifBtn.addEventListener('click', e => {
         e.stopPropagation();
-
-        // On mobile (< 768px), go to notifications page instead
-        if (window.innerWidth < 768) {
-          // Determine the correct path based on current role
-          const currentPath = window.location.pathname;
-          let notifPath = 'notifications.html';
-
-          if (currentPath.includes('/buyer/')) {
-            notifPath = 'notifications.html';
-          } else if (currentPath.includes('/seller/')) {
-            notifPath = 'notifications.html';
-          } else if (currentPath.includes('/admin/')) {
-            notifPath = 'notifications.html';
-          }
-
-          window.location.href = notifPath;
-          return;
-        }
-
-        // Desktop: Toggle dropdown
         notifPanel.classList.toggle('open');
         const profileDropdown = el.querySelector('#hsProfileDropdown');
         if (profileDropdown) profileDropdown.classList.remove('open');
-        const dot = el.querySelector('#hsNotifDot');
-        if (dot) dot.style.display = 'none';
       });
     }
 
@@ -839,16 +812,17 @@
         profileDropdown.classList.remove('open');
         const action = btn.dataset.action;
         const p = window.location.pathname;
+        // The roles 'superadmin' and 'super_duper_admin' both live in module/super-admin/ — using
+        // the role name as the folder sent them to a nonexistent path (404). The pages there are
+        // profile.html / settings.html, same names as every other role's.
+        const folder = (role === 'superadmin' || role === 'super_duper_admin') ? 'super-admin' : role;
+        const basePath = p.includes('/module/') ? '../' + folder + '/' : 'module/' + folder + '/';
 
-        const moduleDir = (role === 'super_duper_admin' || role === 'superadmin') ? 'super-admin' : role;
         if (action === 'profile') {
-          const basePath = p.includes('/module/') ? '../' + moduleDir + '/' : 'module/' + moduleDir + '/';
-          window.location.href = basePath + (role === 'super_duper_admin' || role === 'superadmin' ? 'super-admin-profile.html' : 'profile.html');
+          window.location.href = basePath + 'profile.html';
         } else if (action === 'settings') {
-          const basePath = p.includes('/module/') ? '../' + moduleDir + '/' : 'module/' + moduleDir + '/';
-          window.location.href = basePath + (role === 'super_duper_admin' || role === 'superadmin' ? 'super-admin-settings.html' : 'settings.html');
+          window.location.href = basePath + 'settings.html';
         } else if (action === 'help') {
-          const basePath = p.includes('/module/') ? '../' + moduleDir + '/' : 'module/' + moduleDir + '/';
           window.location.href = basePath + 'help.html';
         } else if (action === 'reverify') {
           if (typeof global._hsOpenReverify === 'function') global._hsOpenReverify();
@@ -873,6 +847,6 @@
     });
   }
 
-  global.HomeSureTopbar = { init };
+  global.KasafideTopbar = { init };
 
 })(window);

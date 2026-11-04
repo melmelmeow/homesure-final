@@ -1,4 +1,4 @@
-// HomeSure – User Detail Page (Admin)
+// Kasafide – User Detail Page (Admin)
 
 (async function () {
   const admin = getSession();
@@ -7,8 +7,8 @@
     return;
   }
 
-  HomeSureSidebar.init({ activePage: 'users' });
-  HomeSureTopbar.init({ placeholder: 'Search...' });
+  KasafideSidebar.init({ activePage: 'users' });
+  KasafideTopbar.init({ placeholder: 'Search...' });
 
   const params = new URLSearchParams(window.location.search);
   const id     = params.get('id');
@@ -38,7 +38,7 @@
   const listingsCount = u.role === 'seller'
     ? (await HS.listings.bySeller(u.id).catch(() => [])).length
     : await HS.admin.savedCount(u.id).catch(() => 0);
-  const avatarColor = u.role === 'buyer' ? '#3b82f6' : '#8b5cf6';
+  const avatarColor = u.role === 'buyer' ? 'var(--k-avatar-1)' : 'var(--k-avatar-3)';
   const roleLabel   = u.role === 'buyer' ? 'Buyer' : 'Seller';
   const statusLabel = u.accountStatus
     ? u.accountStatus.charAt(0).toUpperCase() + u.accountStatus.slice(1)
@@ -221,7 +221,7 @@
     const selected = document.querySelector('input[name="rejectReason"]:checked');
     const custom   = document.getElementById('rejectCustom').value.trim();
     const reason   = custom || (selected ? reasons[selected.value] : null);
-    if (!reason) { alert('Please select or write a rejection reason.'); return; }
+    if (!reason) { hsToast('Please select or write a rejection reason.', 'error'); return; }
     try {
       await HS.admin.rejectVerification(u.id, reason);
       HS.audit.log('Rejected verification', 'user', u.name + ' – ' + reason);

@@ -2,12 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/kasafide-favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../../assets/img/favicon-16.png" />
+  <link rel="apple-touch-icon" href="../../assets/img/apple-touch-icon.png" />
+  <link rel="manifest" href="../../site.webmanifest" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HomeSure – Analytics</title>
+  <script src="../../assets/js/kasafide-theme.js"></script>
+  <script src="../../assets/js/kasafide-logo.js"></script>
+  <link rel="stylesheet" href="../../assets/css/kasafide-theme.css" />
+  <title>Kasafide – Analytics</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../../assets/css/admin/admin-analytics.css" />
   <link rel="stylesheet" href="../../assets/css/responsive.css" />
+  <link rel="stylesheet" href="../../assets/css/chart-anim.css" />
 </head>
 <body>
 <div class="layout">
@@ -57,7 +65,7 @@
         </div>
         <div class="chart-card">
           <div class="chart-header">
-            <span class="chart-title" id="trendChartTitle">Search Trends (Last 7 Months)</span>
+            <span class="chart-title" id="trendChartTitle">New Accounts (Last 7 Months)</span>
             <div class="period-dropdown" id="trendsDropdown">
               <button class="period-btn" onclick="togglePeriodDropdown('trendsDropdown')">
                 <span id="trendsPeriodLabel">Monthly</span>
@@ -110,6 +118,7 @@
 <script src="../../assets/js/data.js"></script>
 <script src="../../components/sidebar.js"></script>
 <script src="../../components/topbar.js"></script>
+<script src="../../assets/js/chart-anim.js"></script>
 <script src="../../assets/js/admin/admin-analytics.js"></script>
 </body>
 </html>

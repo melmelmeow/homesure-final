@@ -2,8 +2,8 @@
   const user = getSession();
   if (!user || user.role !== 'buyer') window.location.href = '../../auth/signin.html';
 
-  HomeSureSidebar.init({ activePage: 'profile' });
-  HomeSureTopbar.init({ placeholder: 'Identity Verification' });
+  KasafideSidebar.init({ activePage: 'profile' });
+  KasafideTopbar.init({ placeholder: 'Identity Verification' });
 
   const col = document.getElementById('verifyCol');
 
@@ -27,6 +27,14 @@
 
   const isVerified = fullUser.accountStatus === 'verified' && fullUser.verificationExpiry && new Date(fullUser.verificationExpiry) >= new Date();
   const isExpired  = fullUser.accountStatus === 'verified' && fullUser.verificationExpiry && new Date(fullUser.verificationExpiry) < new Date();
+  const daysLeft = fullUser.verificationExpiry
+    ? Math.ceil((new Date(fullUser.verificationExpiry) - new Date()) / (1000 * 60 * 60 * 24))
+    : null;
+  const isNearExpiry = isVerified && daysLeft !== null && daysLeft <= 30;
+  // Resubmitting isn't needed (and HS.verification.submit() will refuse it) until the current
+  // verification is within 30 days of expiring, or already has. Comfortably-valid buyers get the
+  // info card below instead of a form with nothing to actually submit.
+  const canSubmit = !isVerified || isExpired || isNearExpiry;
 
     // Under review / last rejection (the reason is written by the admin who reviewed the documents)
     const underReview = fullUser.accountStatus === 'pending' || fullUser.accountStatus === 'reverification';
@@ -59,10 +67,12 @@
         </svg>
       </div>
       <div>
-        <div class="banner-title">${isExpired ? 'Verification Expired' : isVerified ? 'Re-verify Your Identity' : 'Verification Required'}</div>
-        <div class="banner-desc">${isVerified
-          ? 'Re-upload your government ID and a selfie to renew your verification and keep your messaging access active.'
-          : 'To message sellers and save listings, HomeSure requires identity verification. This keeps the platform safe for everyone.'
+        <div class="banner-title">${isExpired ? 'Verification Expired' : isNearExpiry ? 'Verification Expiring Soon' : isVerified ? 'Identity Verified' : 'Verification Required'}</div>
+        <div class="banner-desc">${
+          isExpired ? 'Re-upload your government ID and a selfie to renew your verification and keep your messaging access active.'
+          : isNearExpiry ? 'Your verification expires soon. Re-upload your government ID and a selfie to renew it and keep your messaging access active.'
+          : isVerified ? `You're all set — your identity has been verified. You'll be able to re-verify starting 30 days before it expires.`
+          : 'To message sellers and save listings, Kasafide requires identity verification. This keeps the platform safe for everyone.'
         }</div>
       </div>
     </div>
@@ -86,6 +96,7 @@
       </div>
     </div>` : ''}
 
+    ${canSubmit ? `
     <div class="section-card">
       <div class="section-header">
         <div class="section-icon">
@@ -154,6 +165,7 @@
         <button class="btn-primary" id="submitBtn" onclick="submitVerification()" disabled>Submit for Verification</button>
       </div>
     </div>
+    ` : ''}
   `;
   }
 
@@ -189,7 +201,7 @@
 
         // Check if both photos captured
         checkBothCaptured();
-        showToast('✅ ID photo captured!');
+        showToast('ID photo captured!');
       }
     });
   };
@@ -217,7 +229,7 @@
 
         // Check if both photos captured
         checkBothCaptured();
-        showToast('✅ Selfie captured!');
+        showToast('Selfie captured!');
       }
     });
   };
@@ -229,7 +241,7 @@
 
   async function submitVerification() {
     if (!idPhotoData || !selfiePhotoData) {
-      showToast('⚠️ Please take both ID photo and selfie');
+      showToast('Please take both ID photo and selfie');
       return;
     }
 
@@ -248,11 +260,11 @@
       console.error(err);
       btn.disabled = false;
       btn.textContent = 'Submit for Verification';
-      showToast('⚠️ Could not submit your documents: ' + err.message);
+      showToast('Could not submit your documents: ' + err.message);
       return;
     }
 
-    showToast("✅ Documents submitted! You'll be able to message sellers and save listings once an admin verifies you (within 24 hours).");
+    showToast("Documents submitted! You'll be able to message sellers and save listings once an admin verifies you (within 24 hours).");
 
     setTimeout(() => window.location.href = 'buyer.html', 3000);
   }

@@ -5,8 +5,8 @@
   if (!session || session.role !== 'seller') window.location.href = '../../auth/signin.html';
 
   // ── Init shared components ──────────────────────────────────────────────────
-  HomeSureSidebar.init({ activePage: 'profile' });
-  HomeSureTopbar.init({ placeholder: 'Search...' });
+  KasafideSidebar.init({ activePage: 'profile' });
+  KasafideTopbar.init({ placeholder: 'Search...' });
 
   // ── Load the real profile, listings and reviews ─────────────────────────────
   const seller = await HS.profiles.me();
@@ -166,7 +166,7 @@
 
       return `
         <div class="prop-card${l.lifecycleStatus ? ' listing-closed' : ''}"
-             onclick="window.location.href='listing.html?id=${l.id}'">
+             onclick="window.location.href='../buyer/listing.html?id=${l.id}'">
           <div class="prop-img-wrap">
             <img src="${l.images[0]}" alt="${l.title}" loading="lazy" />
             ${typeBadge}
@@ -199,11 +199,11 @@
     let stars = '';
     for (let i = 0; i < 5; i++) {
       if (i < fullStars) {
-        stars += `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="#fbbf24" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+        stars += `<svg width="${size}" height="${size}" viewBox="0 0 24 24" stroke="none" style="fill:var(--warning)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
       } else if (i === fullStars && hasHalf) {
-        stars += `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="url(#half-${rating})" stroke="none"><defs><linearGradient id="half-${rating}"><stop offset="50%" stop-color="#fbbf24"/><stop offset="50%" stop-color="#e5e7eb"/></linearGradient></defs><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+        stars += `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="url(#half-${rating})" stroke="none"><defs><linearGradient id="half-${rating}"><stop offset="50%" style="stop-color:var(--warning)"/><stop offset="50%" style="stop-color:var(--border)"/></linearGradient></defs><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
       } else {
-        stars += `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="#e5e7eb" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+        stars += `<svg width="${size}" height="${size}" viewBox="0 0 24 24" stroke="none" style="fill:var(--text-muted)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
       }
     }
     return stars;
@@ -259,7 +259,7 @@
       </div>
       <div class="reviews-list">
         ${sellerReviews.sort((a,b) => new Date(b.reviewDate) - new Date(a.reviewDate)).map(rev => {
-          const buyerName = rev.reviewerName || 'HomeSure user';
+          const buyerName = rev.reviewerName || 'Kasafide user';
           const buyerInitials = buyerName.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase() || '?';
           const reviewDate = new Date(rev.reviewDate).toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' });
           return `
@@ -291,7 +291,7 @@
     // Populate modal with current values
     document.getElementById('editFirstName').value = seller.firstName || '';
     document.getElementById('editLastName').value = seller.lastName || '';
-    document.getElementById('editPhone').value = seller.phone || '';
+    document.getElementById('editPhone').value = HSPhone.strip(seller.phone);
     document.getElementById('editEmail').value = seller.email || '';
 
     // Show modal
@@ -305,11 +305,11 @@
   window.saveProfile = async function() {
     const firstName = document.getElementById('editFirstName').value.trim();
     const lastName = document.getElementById('editLastName').value.trim();
-    const phone = document.getElementById('editPhone').value.trim();
+    const phone = HSPhone.full('+63', document.getElementById('editPhone').value);
 
     // Validation
     if (!firstName || !lastName) {
-      alert('Please enter both first and last name');
+      hsToast('Please enter both first and last name', 'error');
       return;
     }
 
@@ -317,15 +317,17 @@
     try {
       await HS.profiles.updateMe({ firstName, lastName, phone });
     } catch (err) {
-      alert('Could not save your profile: ' + err.message);
+      hsToast('Could not save your profile: ' + err.message, 'error');
       return;
     }
 
     closeEditModal();
 
-    // Refresh page to show updated info
-    alert('✅ Profile updated successfully!');
-    location.reload();
+    // Refresh page to show updated info. alert() used to block here until dismissed, so the
+    // reload only ever happened after you'd actually seen the message; hsToast doesn't block, so
+    // without this delay the page would reload before the toast was ever on screen.
+    hsToast('Profile updated successfully!');
+    setTimeout(() => location.reload(), 1200);
   };
 
 

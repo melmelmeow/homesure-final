@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   HOMESURE — PAYMENT MODAL
+   KASAFIDE — PAYMENT MODAL
 
    Two ways to pay, both real:
 
@@ -92,7 +92,7 @@ const PaymentIntegration = (function () {
         ${currentPayment.purpose ? `
         <div class="payment-summary-row">
           <span class="payment-summary-label">Payment Type</span>
-          <span class="payment-summary-value" style="font-weight:700;color:#00c9a7;">${formatPaymentType(currentPayment.purpose)}</span>
+          <span class="payment-summary-value" style="font-weight:700;color:var(--primary);">${formatPaymentType(currentPayment.purpose)}</span>
         </div>` : ''}
         ${currentPayment.period ? `
         <div class="payment-summary-row">
@@ -123,7 +123,7 @@ const PaymentIntegration = (function () {
         <div class="payment-method-option" onclick="PaymentIntegration.chooseRoute('qrph')">
           <div class="payment-method-icon gcash">QR Ph</div>
           <div class="payment-method-info">
-            <div class="payment-method-name">Pay through HomeSure</div>
+            <div class="payment-method-name">Pay through Kasafide</div>
             <div class="payment-method-desc">Scan one QR with GCash, Maya or your bank app. Confirmed automatically.</div>
           </div>
           <div class="payment-method-radio"></div>
@@ -148,7 +148,7 @@ const PaymentIntegration = (function () {
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
         </svg>
         <div class="payment-security-notice-text">
-          <strong>Paying through HomeSure is safer.</strong> The amount is set by the listing, the
+          <strong>Paying through Kasafide is safer.</strong> The amount is set by the listing, the
           payment is confirmed by the provider, and you have a record either side can show.
         </div>
       </div>
@@ -203,12 +203,12 @@ const PaymentIntegration = (function () {
           ? `<div style="text-align:center;padding:12px 0;">
                <img src="${esc(imageUrl)}" alt="QR Ph code" style="width:240px;max-width:100%;border-radius:12px;">
              </div>`
-          : `<div style="padding:14px;border:1px dashed #cbd5e1;border-radius:12px;">
-               <div style="font-size:13px;color:#64748b;margin-bottom:8px;">
+          : `<div style="padding:14px;border:1px dashed var(--border);border-radius:12px;">
+               <div style="font-size:13px;color:var(--text-muted);margin-bottom:8px;">
                  Copy this QR Ph string into your banking or e-wallet app:
                </div>
                <textarea readonly id="qrPhString" style="width:100%;height:84px;font-family:monospace;font-size:11px;
-                 border:1px solid #e2e8f0;border-radius:8px;padding:8px;resize:none;">${esc(qrString)}</textarea>
+                 border:1px solid var(--border);border-radius:8px;padding:8px;resize:none;">${esc(qrString)}</textarea>
                <button class="payment-btn-secondary" style="margin-top:8px;"
                  onclick="PaymentIntegration.copyQrString()">Copy code</button>
              </div>`}
@@ -223,7 +223,7 @@ const PaymentIntegration = (function () {
         </div>
       </div>
       <div id="qrWaitRow" style="display:flex;align-items:center;gap:10px;justify-content:center;
-           padding:14px;color:#64748b;font-size:13px;">
+           padding:14px;color:var(--text-muted);font-size:13px;">
         <div class="payment-processing-spinner" style="width:18px;height:18px;border-width:2px;margin:0;"></div>
         Waiting for your payment…
       </div>
@@ -314,18 +314,18 @@ const PaymentIntegration = (function () {
       ${summaryHtml()}
       <div class="payment-methods-section">
         <h3 class="payment-section-title">Proof of your ${esc(selectedMethod)} payment</h3>
-        <label style="display:block;padding:18px;border:1px dashed #cbd5e1;border-radius:12px;
-               text-align:center;cursor:pointer;color:#64748b;font-size:13px;">
+        <label style="display:block;padding:18px;border:1px dashed var(--border);border-radius:12px;
+               text-align:center;cursor:pointer;color:var(--text-muted);font-size:13px;">
           <input type="file" accept="image/*" style="display:none"
                  onchange="PaymentIntegration.onProofSelect(event)">
           <span id="proofLabel">Click to attach a screenshot or photo of the receipt</span>
         </label>
         <div style="margin-top:12px;">
-          <label style="font-size:12px;color:#64748b;display:block;margin-bottom:4px;">
+          <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px;">
             Reference number (optional)
           </label>
           <input type="text" id="manualReference" placeholder="e.g. GC-78452"
-                 style="width:100%;padding:10px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;">
+                 style="width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;font-size:14px;">
         </div>
         <div class="payment-security-notice" style="margin-top:14px;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -427,7 +427,7 @@ const PaymentIntegration = (function () {
   function renderAwaitingConfirmation(payment) {
     body().innerHTML = `
       <div class="payment-success">
-        <div class="payment-success-icon" style="background:#fef3c7;color:#b45309;">
+        <div class="payment-success-icon" style="background:rgb(var(--warning-rgb) / 0.12);color:var(--warning);">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
           </svg>
@@ -463,7 +463,7 @@ const PaymentIntegration = (function () {
   function renderError(message, retryCall) {
     body().innerHTML = `
       <div class="payment-success">
-        <div class="payment-success-icon" style="background:#fee2e2;color:#b91c1c;">
+        <div class="payment-success-icon" style="background:rgb(var(--danger-rgb) / 0.12);color:var(--danger);">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
           </svg>

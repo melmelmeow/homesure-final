@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-//  HomeSure – Buyer Messages
+//  Kasafide – Buyer Messages
 //  Depends on: config.js, session.js, data.js (HS.messages), sidebar.js, topbar.js
 // ─────────────────────────────────────────────────────────────────────────────
 (function () {
@@ -9,8 +9,8 @@
     return;
   }
 
-  HomeSureSidebar.init({ activePage: 'messages' });
-  HomeSureTopbar.init({ placeholder: 'Search messages...' });
+  KasafideSidebar.init({ activePage: 'messages' });
+  KasafideTopbar.init({ placeholder: 'Search messages...' });
 
   // ── Icons ──────────────────────────────────────────────────────────────────
   const iconCheck2 = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
@@ -61,7 +61,7 @@
     }
 
     list.innerHTML = filtered.map((c) => {
-      const name = c.other ? c.other.name : 'HomeSure user';
+      const name = c.other ? c.other.name : 'Kasafide user';
       const title = c.listing ? c.listing.title : name;
       const preview = previewOf(c.lastMessage);
       const thumb = c.listing ? HS.cover(c.listing) : HS.PLACEHOLDER_IMG;
@@ -335,7 +335,7 @@
     if (!c) return;
 
     const me = user.id;
-    const name = c.other ? c.other.name : 'HomeSure user';
+    const name = c.other ? c.other.name : 'Kasafide user';
     const l = c.listing;
     const isRent = l && l.listingFor === 'rent';
     const price = l ? '₱' + Number(l.price).toLocaleString('en-PH') : '';
@@ -350,18 +350,18 @@
 
     const iconBack = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>`;
 
+    // Price goes first in .chat-header-sub: it's short and fixed-length, so if the line has to
+    // truncate, the ellipsis eats into the (variably long) name instead of cutting the peso
+    // amount off mid-number.
     document.getElementById('chatPanel').innerHTML = `
       <div class="chat-header">
-        <button class="chat-back-btn" onclick="closeMobileChat()" aria-label="Back">${iconBack}</button>
-        <img class="chat-header-img" src="${esc(l ? HS.cover(l) : HS.PLACEHOLDER_IMG)}" alt="${esc(l ? l.title : name)}" />
-        <div class="chat-header-info">
+        <button class="chat-back-btn" onclick="closeMobileChat()" aria-label="Back">${iconBack}<span>Messages</span></button>
+        <div class="chat-header-identity">
+          <img class="chat-header-avatar" src="${esc(l ? HS.cover(l) : HS.PLACEHOLDER_IMG)}" alt="${esc(l ? l.title : name)}" />
           <div class="chat-header-title">${esc(l ? l.title : name)}</div>
-          <div class="chat-header-seller">${c.other && c.other.verified ? iconVerify : ''} ${esc(name)}</div>
+          <div class="chat-header-sub">${price ? `${esc(price)}${isRent ? '/mo' : ''}<span class="chat-header-sub-dot">•</span>` : ''}${c.other && c.other.verified ? iconVerify : ''}${esc(name)}</div>
         </div>
-        <div class="chat-header-price">
-          ${esc(price)}
-          ${isRent ? `<span>/month</span>` : ''}
-        </div>
+        <div class="chat-header-spacer"></div>
       </div>
 
       <div class="chat-messages" id="chatMessages">${messagesHtml}</div>
@@ -406,6 +406,18 @@
     `;
 
     document.querySelector('.messages-layout').classList.add('chat-open');
+    // The chat panel's own header already has a back button, the listing's title and price — the
+    // dashboard topbar above it (search bar, bell, avatar) was still showing at the same time on
+    // mobile, cramped right above it with nothing distinguishing the two. Redundant chrome, same
+    // issue as the Help & Support page had.
+    const topbar = document.getElementById('hs-topbar');
+    const bottomNav = document.getElementById('hs-bottom-nav');
+    if (window.innerWidth <= 768) {
+      if (topbar) topbar.style.display = 'none';
+      // The chat's own input bar already sits flush with the bottom safe area — the dashboard's
+      // bottom tab bar stacked right under it was the same redundant-chrome issue as the topbar.
+      if (bottomNav) bottomNav.style.display = 'none';
+    }
     const msgs = document.getElementById('chatMessages');
     if (msgs) msgs.scrollTop = msgs.scrollHeight;
 
@@ -423,6 +435,10 @@
 
   window.closeMobileChat = function () {
     document.querySelector('.messages-layout').classList.remove('chat-open');
+    const topbar = document.getElementById('hs-topbar');
+    if (topbar) topbar.style.display = '';
+    const bottomNav = document.getElementById('hs-bottom-nav');
+    if (bottomNav) bottomNav.style.display = '';
     activeConvId = null;
     renderConvList(document.getElementById('convSearch')?.value || '');
   };

@@ -3,14 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HomeSure - Auto Review Prompt Demo</title>
+  <script src="../assets/js/kasafide-theme.js"></script>
+  <script src="../assets/js/kasafide-logo.js"></script>
+  <link rel="stylesheet" href="../assets/css/kasafide-theme.css" />
+  <title>Kasafide - Auto Review Prompt Demo</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background: #1E293B;
-      color: #f1f5f9;
+      background: var(--surface);
+      color: var(--text);
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -25,7 +28,7 @@
       font-size: 36px;
       font-weight: 800;
       margin-bottom: 12px;
-      background: linear-gradient(135deg, #00c9a7, #00a88a);
+      background: linear-gradient(135deg, var(--primary), var(--primary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -34,7 +37,7 @@
     .subtitle {
       text-align: center;
       font-size: 16px;
-      color: rgba(255,255,255,0.6);
+      color: rgb(var(--wash-rgb) / 0.6);
       margin-bottom: 60px;
     }
     .triggers {
@@ -44,17 +47,17 @@
       margin-bottom: 60px;
     }
     .trigger-card {
-      background: #253347;
-      border: 1.5px solid rgba(255,255,255,0.08);
+      background: var(--surface-soft);
+      border: 1.5px solid rgb(var(--wash-rgb) / 0.08);
       border-radius: 16px;
       padding: 24px;
       cursor: pointer;
       transition: all 0.2s;
     }
     .trigger-card:hover {
-      border-color: rgba(0,201,167,0.4);
+      border-color: rgb(var(--primary-rgb) / 0.4);
       transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0,201,167,0.2);
+      box-shadow: 0 8px 24px rgb(var(--primary-rgb) / 0.2);
     }
     .trigger-emoji {
       font-size: 40px;
@@ -63,24 +66,24 @@
     .trigger-title {
       font-size: 18px;
       font-weight: 700;
-      color: #f1f5f9;
+      color: var(--text);
       margin-bottom: 8px;
     }
     .trigger-desc {
       font-size: 13px;
-      color: rgba(255,255,255,0.6);
+      color: rgb(var(--wash-rgb) / 0.6);
       line-height: 1.6;
     }
     .info-box {
-      background: #253347;
-      border: 1.5px solid rgba(0,201,167,0.3);
+      background: var(--surface-soft);
+      border: 1.5px solid rgb(var(--primary-rgb) / 0.3);
       border-radius: 16px;
       padding: 24px;
     }
     .info-box h2 {
       font-size: 20px;
       font-weight: 700;
-      color: #00c9a7;
+      color: var(--primary);
       margin-bottom: 16px;
       display: flex;
       align-items: center;
@@ -96,18 +99,18 @@
       align-items: flex-start;
       gap: 10px;
       font-size: 14px;
-      color: rgba(255,255,255,0.7);
+      color: rgb(var(--wash-rgb) / 0.7);
       line-height: 1.6;
     }
     .info-list li::before {
       content: '✓';
-      color: #00c9a7;
+      color: var(--primary);
       font-weight: 900;
       flex-shrink: 0;
     }
     .code-block {
-      background: #1a2739;
-      border: 1px solid rgba(255,255,255,0.1);
+      background: var(--surface);
+      border: 1px solid rgb(var(--wash-rgb) / 0.1);
       border-radius: 12px;
       padding: 16px;
       margin-top: 16px;
@@ -116,7 +119,7 @@
     .code-block code {
       font-family: 'Courier New', monospace;
       font-size: 13px;
-      color: #00c9a7;
+      color: var(--primary);
       line-height: 1.6;
     }
   </style>

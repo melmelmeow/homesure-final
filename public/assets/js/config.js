@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-//  HomeSure – Front-end configuration
+//  Kasafide – Front-end configuration
 //  Load order on every page: supabase-js (CDN) → config.js → session.js → data.js
 //
 //  The anon key is meant to be public: what a visitor can read or change is decided

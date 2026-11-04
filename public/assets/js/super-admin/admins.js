@@ -1,10 +1,10 @@
-// HomeSure – Super Admin: Admin Management Page
+// Kasafide – Super Admin: Admin Management Page
 
 const user = getSession();
 if (!user || (user.role !== 'superadmin' && user.role !== 'super_duper_admin')) window.location.href = '../../auth/signin.html';
 
-HomeSureSidebar.init({ activePage: 'admins' });
-HomeSureTopbar.init({ placeholder: 'Search admins...', onSearch: function() { searchQuery = (document.getElementById('hsSearch')||{}).value?.trim() || ''; renderAdminTable(); } });
+KasafideSidebar.init({ activePage: 'admins' });
+KasafideTopbar.init({ placeholder: 'Search admins...', onSearch: function() { searchQuery = (document.getElementById('hsSearch')||{}).value?.trim() || ''; renderAdminTable(); } });
 
 let adminList   = [];        // loaded from profiles (role admin / superadmin)
 let filterState = 'all';
