@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="../../assets/css/seller/seller-post.css" />
   <link rel="stylesheet" href="../../assets/css/camera-capture.css" />
   <link rel="stylesheet" href="../../assets/css/responsive.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 </head>
 <body>
 <div class="layout">
@@ -223,6 +224,84 @@
             </div>
           </div>
 
+          
+          <!-- ── SECTION: Pin Property Location on Google Map ── -->
+          <div class="section-card">
+            <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;">
+              <div style="display:flex;align-items:center;gap:11px;">
+                <div class="section-icon" style="background:#ea4335;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <div>
+                  <div class="section-title">Pin House Location (Google Maps)</div>
+                  <div class="section-sub">Double-click or drag the pin anywhere on the map to mark your exact house</div>
+                </div>
+              </div>
+              <!-- Google Maps View Toggle: Map / Satellite -->
+              <div style="display:flex;gap:6px;">
+                <button type="button" id="gmapBtnStreet" class="map-view-pill active" onclick="switchGoogleMapView('street')">
+                  Map
+                </button>
+                <button type="button" id="gmapBtnSatellite" class="map-view-pill" onclick="switchGoogleMapView('satellite')">
+                  Satellite
+                </button>
+              </div>
+            </div>
+            <div class="section-body">
+              <div class="field">
+                <label>Search Address, Subdivision, or GPS Coordinates in Sta. Maria</label>
+                <div style="display:flex;gap:10px;">
+                  <input type="text" id="mapAddressSearch" placeholder="e.g. Garden Village, Pulong Buhangin or 14.8192, 120.9610" style="flex:1;" onkeydown="if(event.key==='Enter'){event.preventDefault();pinLocationOnMap();}" />
+                  <button type="button" class="btn-primary" style="padding:10px 18px;font-size:13px;white-space:nowrap;display:flex;align-items:center;gap:6px;" onclick="pinLocationOnMap()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Search Location
+                  </button>
+                </div>
+              </div>
+
+              <!-- Quick Helper Actions -->
+              <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-top:-6px;">
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                  <button type="button" class="btn-ghost" style="padding:7px 13px;font-size:12px;display:flex;align-items:center;gap:6px;border-radius:8px;border:1px solid var(--border);" onclick="useCurrentGpsLocation()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+                    <span>📍 Find by GPS</span>
+                  </button>
+                  <button type="button" class="btn-ghost" style="padding:7px 13px;font-size:12px;display:flex;align-items:center;gap:6px;border-radius:8px;border:1px solid var(--border);" onclick="pinFromAddressField()">
+                    <span>🏠 Find from Address Field</span>
+                  </button>
+                </div>
+                <div id="coordBadge" style="font-size:12px;color:var(--teal);font-family:monospace;display:none;"></div>
+              </div>
+
+              <!-- Interactive Google Maps Container -->
+              <div id="sellerMapWrapper" style="width:100%;height:360px;border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-top:10px;background:#1e293b;position:relative;">
+                <div id="sellerGoogleMap" style="width:100%;height:100%;z-index:1;"></div>
+              </div>
+
+              <input type="hidden" id="pinnedLat" value="" />
+              <input type="hidden" id="pinnedLng" value="" />
+
+              <!-- Save Pin Bar -->
+              <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:12px;padding:12px 16px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                  <button type="button" id="btnSavePin" class="btn-primary" style="padding:8px 18px;font-size:13px;display:flex;align-items:center;gap:6px;background:#00c9a7;color:#0b1523;font-weight:700;" onclick="savePinLocation()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>Save Pin Location</span>
+                  </button>
+                  <span id="pinSavedBadge" style="font-size:12.5px;color:var(--teal);display:none;font-weight:600;">✓ Pin Saved &amp; Ready</span>
+                </div>
+                <a id="openInGoogleMapsLink" href="https://maps.google.com/?q=Santa+Maria+Bulacan+Philippines" target="_blank" rel="noopener noreferrer" style="font-size:12.5px;color:var(--text);background:rgba(255,255,255,0.06);padding:7px 14px;border-radius:8px;border:1px solid var(--border);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all 0.2s;">
+                  <svg viewBox="0 0 24 32" width="14" height="18" fill="none"><path d="M12 0C5.37 0 0 5.37 0 12c0 9 12 20 12 20s12-11 12-20c0-6.63-5.37-12-12-12z" fill="#EA4335"/><circle cx="12" cy="11" r="4.2" fill="#FFFFFF"/></svg>
+                  <span>View in Actual Google Maps ↗</span>
+                </a>
+              </div>
+
+              <div id="mapStatusText" style="font-size:12px;color:var(--muted);line-height:1.4;margin-top:4px;">
+                💡 <strong>Double-click (or click) anywhere on the map</strong> to drop the pin on your exact house, then click <strong>Save Pin Location</strong> to confirm!
+              </div>
+            </div>
+          </div>
+
           <!-- ── SECTION 3: Property Photos ── -->
           <div class="section-card">
             <div class="section-header">
@@ -371,6 +450,7 @@
 <script src="../../components/sidebar.js"></script>
 <script src="../../components/topbar.js"></script>
 <script src="../../assets/js/camera-capture.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="../../assets/js/seller/seller-post.js"></script>
 </body>
 </html>

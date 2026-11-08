@@ -5,7 +5,43 @@
   KasafideSidebar.init({ activePage: 'notifications' });
   KasafideTopbar.init({ placeholder: 'Search notifications...' });
 
-  const TYPE_BADGE = {
+  
+  const roleName = 'buyer';
+  const notifStorageKey = 'hs_read_notifs_' + roleName + '_' + (user ? user.id : 'anon');
+
+  function getReadIds() {
+    try {
+      const arr = JSON.parse(localStorage.getItem(notifStorageKey) || '[]');
+      return new Set(Array.isArray(arr) ? arr : []);
+    } catch (_) {
+      return new Set();
+    }
+  }
+
+  function saveReadIds(readSet) {
+    try {
+      localStorage.setItem(notifStorageKey, JSON.stringify([...readSet]));
+    } catch (_) {}
+    syncTopbarDot();
+  }
+
+  function syncTopbarDot() {
+    const hasUnread = NOTIFICATIONS.some(n => n.unread);
+    const topbarDot = document.querySelector('#hsNotifDot') || document.querySelector('.hs-notif-dot');
+    if (topbarDot) {
+      topbarDot.style.display = hasUnread ? 'block' : 'none';
+    }
+  }
+
+  // Restore persistent read status
+  const savedReadIds = getReadIds();
+  NOTIFICATIONS.forEach(n => {
+    if (savedReadIds.has(n.id)) {
+      n.unread = false;
+    }
+  });
+
+const TYPE_BADGE = {
     message: { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`, cls: 'badge-teal'   },
     listing: { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>`,                                                         cls: 'badge-blue'   },
     price:   { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`,                           cls: 'badge-amber'  },
@@ -76,16 +112,25 @@
 
   async function markRead(id) {
     const n = NOTIFICATIONS.find(x => x.id === id);
-    if (!n || !n.unread) return;
-    n.unread = false;
+    if (n) {
+      n.unread = false;
+      const readSet = getReadIds();
+      readSet.add(id);
+      saveReadIds(readSet);
+    }
     render(currentTab);
-    try { await HS.notifications.markRead(id); } catch (err) { console.error('Could not mark notification read:', err); }
+    syncTopbarDot();
   }
 
-  async function markAllRead() {
-    NOTIFICATIONS.forEach(n => n.unread = false);
+  function markAllRead() {
+    const readSet = getReadIds();
+    NOTIFICATIONS.forEach(n => {
+      n.unread = false;
+      readSet.add(n.id);
+    });
+    saveReadIds(readSet);
     render(currentTab);
-    try { await HS.notifications.markAllRead(); } catch (err) { console.error('Could not mark notifications read:', err); }
+    syncTopbarDot();
   }
 
   function switchTab(btn, tab) {

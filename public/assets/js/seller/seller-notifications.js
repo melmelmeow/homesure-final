@@ -6,6 +6,42 @@ if (!user || user.role !== 'seller') window.location.href = '../../auth/signin.h
 KasafideSidebar.init({ activePage: 'notifications' });
 KasafideTopbar.init({ placeholder: 'Search notifications...' });
 
+
+  const roleName = 'seller';
+  const notifStorageKey = 'hs_read_notifs_' + roleName + '_' + (user ? user.id : 'anon');
+
+  function getReadIds() {
+    try {
+      const arr = JSON.parse(localStorage.getItem(notifStorageKey) || '[]');
+      return new Set(Array.isArray(arr) ? arr : []);
+    } catch (_) {
+      return new Set();
+    }
+  }
+
+  function saveReadIds(readSet) {
+    try {
+      localStorage.setItem(notifStorageKey, JSON.stringify([...readSet]));
+    } catch (_) {}
+    syncTopbarDot();
+  }
+
+  function syncTopbarDot() {
+    const hasUnread = NOTIFICATIONS.some(n => n.unread);
+    const topbarDot = document.querySelector('#hsNotifDot') || document.querySelector('.hs-notif-dot');
+    if (topbarDot) {
+      topbarDot.style.display = hasUnread ? 'block' : 'none';
+    }
+  }
+
+  // Restore persistent read status
+  const savedReadIds = getReadIds();
+  NOTIFICATIONS.forEach(n => {
+    if (savedReadIds.has(n.id)) {
+      n.unread = false;
+    }
+  });
+
 const TYPE_BADGE = {
   listing: { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>`, cls: 'badge-teal' },
   message: { icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`, cls: 'badge-blue' },
@@ -68,19 +104,28 @@ function notifRow(n) {
     </div>`;
 }
 
-async function markRead(id) {
-  const n = NOTIFICATIONS.find(x => x.id === id);
-  if (!n || !n.unread) return;
-  n.unread = false;
-  render(currentTab);
-  try { await HS.notifications.markRead(id); } catch (err) { console.error('Could not mark notification read:', err); }
-}
+function markRead(id) {
+    const n = NOTIFICATIONS.find(x => x.id === id);
+    if (n) {
+      n.unread = false;
+      const readSet = getReadIds();
+      readSet.add(id);
+      saveReadIds(readSet);
+    }
+    render(currentTab);
+    syncTopbarDot();
+  }
 
-async function markAllRead() {
-  NOTIFICATIONS.forEach(n => n.unread = false);
-  render(currentTab);
-  try { await HS.notifications.markAllRead(); } catch (err) { console.error('Could not mark notifications read:', err); }
-}
+function markAllRead() {
+    const readSet = getReadIds();
+    NOTIFICATIONS.forEach(n => {
+      n.unread = false;
+      readSet.add(n.id);
+    });
+    saveReadIds(readSet);
+    render(currentTab);
+    syncTopbarDot();
+  }
 
 function switchTab(btn, tab) {
   document.querySelectorAll('.notif-tab').forEach(t => t.classList.remove('active'));

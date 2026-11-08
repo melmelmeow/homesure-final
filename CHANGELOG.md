@@ -8,6 +8,27 @@ after pulling.
 
 ---
 
+## 2026-11-08
+
+### Merge of main into lhenna-frontend: three files repaired
+
+**Front end only.**
+
+- Buyer and seller Help pages: kept the Meowrie chat (agreed with Choya). The merge into main
+  had swapped in `components/customer-service.js` with HomeSure branding and left the buyer page
+  without its chat script. `customer-service.js` stays in the repo; no page loads it now.
+- `super-admin-profile.js`: removed leftover lines from the old `savePhone` that followed the new
+  one (a syntax error, so the super-admin Profile page script did not run). The new database
+  saving is kept.
+- `admin-payments.js`: two versions had been mixed (a call to a missing `initModal`, no
+  `viewDeductions`, a leftover copy of the details popup), so the admin Payments page did not
+  load. Replaced with the working version, which reads payments and deposits from the database.
+- `seller/post.html`: keeps both the Leaflet map script and the `seller-post.js` fix.
+
+**You need to:** nothing.
+
+---
+
 ## 2026-11-07
 
 ### Landing page: photo hero, map moved to its own section, sections reordered
