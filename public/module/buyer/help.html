@@ -2,12 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HomeSure – Buyer Help & Support Center</title>
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/kasafide-favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../../assets/img/favicon-16.png" />
+  <link rel="apple-touch-icon" href="../../assets/img/apple-touch-icon.png" />
+  <link rel="manifest" href="../../site.webmanifest" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="../../assets/js/kasafide-theme.js"></script>
+  <script src="../../assets/js/kasafide-logo.js"></script>
+  <link rel="stylesheet" href="../../assets/css/kasafide-theme.css" />
+  <title data-assistant-name>Meowrie</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../../assets/css/buyer/buyer-dashboard.css" />
-  <link rel="stylesheet" href="../../assets/css/chatbot-widget.css" />
+  <link rel="stylesheet" href="../../assets/css/chatbot-widget.css?v=2" />
   <script>
     // buyer-dashboard.css keys its dark/light tokens off [data-theme] on <html>. Normally
     // sidebar.js's init() sets that as a side effect of building the sidebar — this page
@@ -241,7 +248,7 @@
       </button>
       <div class="ios-navbar-identity">
         <div class="ios-navbar-avatar"><img src="../../assets/img/kasafide-chatbot-avatar.svg" alt="" /></div>
-        <div class="ios-navbar-name">Kasafide Assistant</div>
+        <div class="ios-navbar-name" data-assistant-name>Meowrie</div>
         <div class="ios-navbar-status"><span class="dot"></span>Online</div>
       </div>
       <div class="ios-navbar-spacer"></div>
@@ -249,32 +256,25 @@
 
     <div class="chatbot-messages" id="chatbotMessages"></div>
 
-        <div class="chatbot-messages" id="chatbotMessages"></div>
-
-        <div class="chatbot-input-area">
-          <div class="chatbot-input-wrap">
-            <textarea
-              class="chatbot-input"
-              id="chatbotInput"
-              placeholder="Type your message..."
-              rows="1"
-              onkeydown="ChatbotWidget.handleKeyDown(event)"
-            ></textarea>
-            <button class="chatbot-send-btn" id="chatbotSendBtn" onclick="ChatbotWidget.sendMessage()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="22" y1="2" x2="11" y2="13"/>
-                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /content -->
+    <div class="ios-input-bar">
+      <textarea
+        class="ios-input"
+        id="chatbotInput"
+        placeholder="Message"
+        rows="1"
+        onkeydown="ChatbotWidget.handleKeyDown(event)"
+      ></textarea>
+      <button class="ios-send-btn" id="chatbotSendBtn" onclick="ChatbotWidget.sendMessage()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="19" x2="12" y2="5"/>
+          <polyline points="5 12 12 5 19 12"/>
+        </svg>
+      </button>
+    </div>
   </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0/dist/umd/supabase.js"></script>
-<script src="../../assets/js/config.js"></script>
+<script src="../../assets/js/config.js?v=2"></script>
 <script src="../../assets/js/session.js"></script>
 <script>
   // Same guard every other buyer page has (buyer-dashboard.js:7) — this page never had one, so it
@@ -283,19 +283,8 @@
   if (!user || user.role !== 'buyer') window.location.href = '../../auth/signin.html';
 </script>
 <script src="../../assets/js/data.js"></script>
-<script src="../../components/sidebar.js"></script>
-<script src="../../components/customer-service.js"></script>
-<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/chatbot-widget.js?v=4"></script>
 <script>
-  // Initialize sidebar
-  HomeSureSidebar.init({ activePage: 'help' });
-  HomeSureTopbar.init({ placeholder: 'Search help & user guides...' });
-
-  function toggleGuide(card) {
-    card.classList.toggle('open');
-  }
-
-  // Initialize chatbot (full-page mode)
   ChatbotWidget.initFullPage();
 </script>
 </body>

@@ -147,6 +147,12 @@
       const detail = document.getElementById("listingDetail");
 
       async function loadListing() {
+        // Opened with no ?id= (a bookmark, a hand-typed URL): nothing to load, and asking the
+        // database for id "null" only produces an error. Say so and point back to browsing.
+        if (!params.get("id")) {
+          detail.innerHTML = `<p style="color:var(--muted);text-align:center;padding:60px 0">No listing selected. <a href="buyer.html" style="color:var(--primary);font-weight:700">Browse properties</a> and pick one.</p>`;
+          return;
+        }
         detail.innerHTML = `<p style="color:var(--muted);text-align:center;padding:60px 0">Loading…</p>`;
         try {
           listing = await HS.listings.get(params.get("id"));

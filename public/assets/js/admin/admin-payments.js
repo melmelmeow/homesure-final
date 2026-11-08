@@ -1,5 +1,10 @@
 // FILE: assets/js/admin/admin-payments.js
-// HomeSure – Admin Payments Overview (Real Data Integration)
+// Kasafide – Admin Payments Overview
+//
+// Read-only monitoring of every payment and security deposit on the platform, straight from the
+// database (admins can read all rows of both by policy). Admins don't act on payments here — the
+// listing's seller confirms or rejects them, and records deposit deductions themselves; there is
+// no admin approval step for either in the schema.
 
 (async function () {
   const user = getSession();
@@ -11,54 +16,8 @@
   KasafideSidebar.init({ activePage: 'payments' });
   KasafideTopbar.init({ placeholder: 'Payments Overview' });
 
-  // Real Database Transactions & Deposits (All fake data removed)
   let ALL_TRANSACTIONS = [];
   let ALL_DEPOSITS = [];
-
-  // Load real payments from database
-  try {
-    const rawPayments = await sb
-      .from('payments')
-      .select('*, properties(title, landowner_id), profiles:user_id(first_name, last_name, email)')
-      .order('created_at', { ascending: false });
-
-    if (rawPayments && rawPayments.data) {
-      ALL_TRANSACTIONS = rawPayments.data.map(p => {
-        const tenantName = p.profiles ? (p.profiles.first_name + ' ' + p.profiles.last_name).trim() : 'Anonymous Tenant';
-        const tenantInitials = hsInitials(p.profiles?.first_name, p.profiles?.last_name, p.profiles?.email);
-        return {
-          id: p.id || p.reference || ('PAY-' + p.created_at?.slice(0, 10)),
-          tenantName,
-          tenantInitials,
-          tenantColor: '#0f766e',
-          landlord: p.seller_name || 'Landlord',
-          listingTitle: p.properties?.title || 'Property',
-          period: p.created_at ? new Date(p.created_at).toLocaleDateString('en-PH', { month: 'long', year: 'numeric' }) : '—',
-          amount: Number(p.amount) || 0,
-          method: p.payment_method || 'Online / Xendit',
-          reference: p.reference_number || p.xendit_invoice_id || '—',
-          paymentType: p.payment_type || 'rent',
-          dueDate: p.due_date || null,
-          status: p.status === 'paid' ? 'confirmed' : (p.status || 'pending_confirmation'),
-          paidDate: p.paid_at ? p.paid_at.slice(0, 10) : null
-        };
-      });
-    }
-  } catch (err) {
-    console.warn('Real payments fetch note:', err.message);
-  }
-
-  // Populate landlord dropdown dynamically from real records
-  const landlordSelect = document.getElementById('fLandlord');
-  if (landlordSelect) {
-    const uniqueLandlords = [...new Set(ALL_TRANSACTIONS.map(t => t.landlord).filter(Boolean))];
-    uniqueLandlords.forEach(name => {
-      const opt = document.createElement('option');
-      opt.value = name;
-      opt.textContent = name;
-      landlordSelect.appendChild(opt);
-    });
-  }
 
   // ── Helpers ───────────────────────────────────────────────────────────────────
   // Names, titles and references are typed by users, and everything here is rendered as HTML.
@@ -120,11 +79,10 @@
   // (proof uploaded, waiting on the seller), 'paid' (shown as 'confirmed'), 'rejected'.
   function statusBadge(status) {
     const map = {
-      confirmed: { cls: 'badge-confirmed', label: 'Confirmed' },
-      paid: { cls: 'badge-confirmed', label: 'Confirmed' },
-      pending_confirmation: { cls: 'badge-pending_confirmation', label: 'Pending' },
-      pending: { cls: 'badge-pending', label: 'Pending' },
-      overdue: { cls: 'badge-overdue', label: 'Overdue' },
+      confirmed:            { cls: 'badge-confirmed',            label: 'Confirmed' },
+      pending_confirmation: { cls: 'badge-pending_confirmation', label: 'Awaiting Seller' },
+      pending:              { cls: 'badge-pending',              label: 'Awaiting Payment' },
+      rejected:             { cls: 'badge-overdue',              label: 'Rejected' },
     };
     const s = map[status] || { cls: 'badge-pending', label: status || '—' };
     return `<span class="badge ${s.cls}">${esc(s.label)}</span>`;
@@ -165,20 +123,15 @@
     }));
   }
 
-  // ── Render Stats with REAL values ──────────────────────────────────────────────
+  // ── Render Stats ──────────────────────────────────────────────────────────────
   function renderStats() {
-    const totalCollected = ALL_TRANSACTIONS
-      .filter(t => t.status === 'confirmed' || t.status === 'paid')
-      .reduce((s, t) => s + t.amount, 0);
-
-    const pendingCount = ALL_TRANSACTIONS
-      .filter(t => t.status === 'pending_confirmation' || t.status === 'pending').length;
-
-    const depositsHeld = ALL_DEPOSITS
-      .reduce((s, d) => s + (d.amount || 0), 0);
-
-    const damageDeductions = ALL_DEPOSITS
-      .reduce((s, d) => s + (d.deductions ? d.deductions.reduce((a, x) => a + x.cost, 0) : 0), 0);
+    const confirmed = ALL_TRANSACTIONS.filter(t => t.status === 'confirmed');
+    const totalCollected = confirmed.reduce((s, t) => s + t.amount, 0);
+    const pendingCount = ALL_TRANSACTIONS.filter(t => t.status === 'pending_confirmation').length;
+    const active = ALL_DEPOSITS.filter(d => d.status === 'held' || d.status === 'partially_refunded');
+    const depositsHeld = active.reduce((s, d) => s + d.refundable, 0);
+    const damageDeductions = ALL_DEPOSITS.reduce((s, d) => s + d.totalDeductions, 0);
+    const deductionCount = ALL_DEPOSITS.reduce((s, d) => s + d.deductions.length, 0);
 
     document.getElementById('statRow').innerHTML = `
       <div class="stat-card">
@@ -187,7 +140,7 @@
         </div>
         <div class="stat-label">Total Collected</div>
         <div class="stat-value">${fmtMoney(totalCollected)}</div>
-        <div class="stat-hint">Platform confirmed payments</div>
+        <div class="stat-hint">${confirmed.length} confirmed payment${confirmed.length !== 1 ? 's' : ''}</div>
       </div>
       <div class="stat-card">
         <div class="stat-icon yellow">
@@ -195,7 +148,7 @@
         </div>
         <div class="stat-label">Pending Confirmation</div>
         <div class="stat-value">${pendingCount}</div>
-        <div class="stat-hint">Awaiting landlord / admin review</div>
+        <div class="stat-hint">Awaiting landlord action</div>
       </div>
       <div class="stat-card">
         <div class="stat-icon purple">
@@ -203,7 +156,7 @@
         </div>
         <div class="stat-label">Security Deposits Held</div>
         <div class="stat-value">${fmtMoney(depositsHeld)}</div>
-        <div class="stat-hint">${ALL_DEPOSITS.length} active deposits</div>
+        <div class="stat-hint">${active.length} active deposit${active.length !== 1 ? 's' : ''}, after deductions</div>
       </div>
       <div class="stat-card">
         <div class="stat-icon red">
@@ -211,7 +164,7 @@
         </div>
         <div class="stat-label">Damage Deductions</div>
         <div class="stat-value">${fmtMoney(damageDeductions)}</div>
-        <div class="stat-hint">Across all deposits</div>
+        <div class="stat-hint">${deductionCount} deduction${deductionCount !== 1 ? 's' : ''} across all deposits</div>
       </div>
     `;
   }
@@ -225,6 +178,9 @@
   }
 
   // ── Render Transactions ───────────────────────────────────────────────────────
+
+  // Only the search box uses this. renderTransactions() itself stays immediate, so the first render and
+  // every call from code are unaffected.
   window.renderTransactionsSoon = hsDebounce(() => window.renderTransactions(), 200);
 
   window.renderTransactions = function () {
@@ -243,11 +199,8 @@
     if (status)   list = list.filter(t => t.status === status);
     if (paymentType) list = list.filter(t => t.paymentType === paymentType);
     if (q)        list = list.filter(t =>
-      (t.tenantName && t.tenantName.toLowerCase().includes(q)) ||
-      (t.landlord && t.landlord.toLowerCase().includes(q)) ||
-      (t.reference && t.reference.toLowerCase().includes(q)) ||
-      (t.listingTitle && t.listingTitle.toLowerCase().includes(q)) ||
-      (t.period && t.period.toLowerCase().includes(q))
+      [t.tenantName, t.landlord, t.reference, t.listingTitle, t.period]
+        .some(v => String(v || '').toLowerCase().includes(q))
     );
 
     const countEl = document.getElementById('txCount');
@@ -255,7 +208,8 @@
 
     const tbody = document.getElementById('transactionsBody');
     if (!list.length) {
-      tbody.innerHTML = `<tr class="table-empty"><td colspan="9" style="text-align:center;padding:40px;color:var(--muted);">No transactions found. Payments completed via Xendit or Manual Bank Transfer will appear here automatically.</td></tr>`;
+      tbody.innerHTML = `<tr class="table-empty"><td colspan="9">${ALL_TRANSACTIONS.length
+        ? 'No transactions match the current filters.' : 'No payments have been made on the platform yet.'}</td></tr>`;
       return;
     }
 
@@ -288,15 +242,11 @@
 
     const tbody = document.getElementById('depositsBody');
     if (!ALL_DEPOSITS.length) {
-      tbody.innerHTML = `<tr class="table-empty"><td colspan="8" style="text-align:center;padding:32px;color:var(--muted);">No security deposits currently on hold.</td></tr>`;
+      tbody.innerHTML = '<tr class="table-empty"><td colspan="8">No security deposits recorded yet.</td></tr>';
       return;
     }
 
-    tbody.innerHTML = ALL_DEPOSITS.map(d => {
-      const totalDed = (d.deductions || []).reduce((s, x) => s + x.cost, 0);
-      const refund = d.amount - totalDed;
-      const hasPending = d.pendingDeductions && d.pendingDeductions.length > 0;
-      return `
+    tbody.innerHTML = ALL_DEPOSITS.map(d => `
         <tr>
           <td data-label="Tenant">
             <div class="user-cell">
@@ -319,11 +269,11 @@
       `).join('');
   }
 
-  // ── View Transaction Modal ────────────────────────────────────────────────────
-  function initTransactionModal() {
+  // ── Modal (shared by payment details and deduction lists) ─────────────────────
+  function initModal() {
     if (document.getElementById('transactionModalBackdrop')) return;
 
-    const modalHtml = `
+    document.body.insertAdjacentHTML('beforeend', `
       <div class="transaction-modal-backdrop" id="transactionModalBackdrop">
         <div class="transaction-modal">
           <div class="transaction-modal-header">
@@ -333,9 +283,7 @@
           <div class="transaction-modal-body" id="transactionModalBody"></div>
         </div>
       </div>
-    `;
-
-    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    `);
 
     document.getElementById('transactionModalBackdrop').addEventListener('click', (e) => {
       if (e.target.id === 'transactionModalBackdrop') closeTransactionModal();
@@ -376,11 +324,17 @@
     ].join(''));
   };
 
-    const body = document.getElementById('transactionModalBody');
-    body.innerHTML = `
-      <div class="tx-detail-section">
-        <div class="tx-detail-label">Transaction ID / Reference</div>
-        <div class="tx-detail-value">${t.id}</div>
+  window.viewDeductions = function (id) {
+    const d = ALL_DEPOSITS.find(x => x.id === id);
+    if (!d) return;
+
+    openModal('Deposit Deductions', `
+      <div class="deduction-info">
+        <div class="deduction-info-row"><span class="deduction-info-label">Tenant:</span><span class="deduction-info-value">${esc(d.tenantName)}</span></div>
+        <div class="deduction-info-row"><span class="deduction-info-label">Landlord:</span><span class="deduction-info-value">${esc(d.landlord)}</span></div>
+        <div class="deduction-info-row"><span class="deduction-info-label">Property:</span><span class="deduction-info-value">${esc(d.listingTitle || '—')}</span></div>
+        <div class="deduction-info-row"><span class="deduction-info-label">Deposit:</span><span class="deduction-info-value">${fmtMoney(d.amount)}</span></div>
+        <div class="deduction-info-row"><span class="deduction-info-label">Refundable:</span><span class="deduction-info-value">${fmtMoney(d.refundable)}</span></div>
       </div>
       <div class="pending-deductions-list">
         ${d.deductions.map(ded => `
@@ -393,29 +347,7 @@
           </div>
         `).join('')}
       </div>
-      <div class="tx-detail-section">
-        <div class="tx-detail-label">Landlord</div>
-        <div class="tx-detail-value">${t.landlord}</div>
-      </div>
-      <div class="tx-detail-section">
-        <div class="tx-detail-label">Property</div>
-        <div class="tx-detail-value">${t.listingTitle}</div>
-      </div>
-      <div class="tx-detail-section">
-        <div class="tx-detail-label">Amount</div>
-        <div class="tx-detail-value" style="font-size:20px;font-weight:800;color:var(--teal)">${fmtMoney(t.amount)}</div>
-      </div>
-      <div class="tx-detail-section">
-        <div class="tx-detail-label">Payment Method</div>
-        <div class="tx-detail-value">${t.method}</div>
-      </div>
-      <div class="tx-detail-section">
-        <div class="tx-detail-label">Status</div>
-        <div class="tx-detail-value">${statusBadge(t.status)}</div>
-      </div>
-    `;
-
-    document.getElementById('transactionModalBackdrop').classList.add('active');
+    `);
   };
 
   window.closeTransactionModal = function () {
@@ -423,8 +355,25 @@
   };
 
   // ── Init ──────────────────────────────────────────────────────────────────────
+  document.getElementById('transactionsBody').innerHTML =
+    '<tr class="table-empty"><td colspan="9">Loading…</td></tr>';
+  document.getElementById('depositsBody').innerHTML =
+    '<tr class="table-empty"><td colspan="8">Loading…</td></tr>';
+
+  try {
+    await load();
+  } catch (err) {
+    console.error('Could not load payments:', err);
+    document.getElementById('transactionsBody').innerHTML =
+      '<tr class="table-empty"><td colspan="9">Could not load payments. Please refresh.</td></tr>';
+    document.getElementById('depositsBody').innerHTML =
+      '<tr class="table-empty"><td colspan="8">Could not load deposits. Please refresh.</td></tr>';
+    return;
+  }
+
   renderStats();
   fillLandlordFilter();
   renderTransactions();
   renderDeposits();
 })();
+

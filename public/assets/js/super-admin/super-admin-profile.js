@@ -107,8 +107,3 @@
   window.savePersonal = savePersonal;
   window.savePhone = savePhone;
   window.showToast = showToast;
-    user.phone = ph;
-    saveSession(user);
-    document.getElementById('phoneStatus').textContent = ph;
-    showToast('Phone number saved.');
-  }

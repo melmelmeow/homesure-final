@@ -120,6 +120,7 @@ const logoMark = (size) => React.createElement("span", {
 // ── React Components ──────────────────────────────────────────────────────────
 
 const { useState, useEffect, useRef } = React;
+const h = React.createElement;
 
 // How many live listings each barangay has, read once and shared.
 //
@@ -197,7 +198,7 @@ function useFeaturedListings() {
 }
 
 function browseBarangay(name) {
-  window.location.href = 'browse.html?barangay=' + encodeURIComponent(name);
+  showBrowse({ barangay: name });
 }
 
 function useReveal(threshold = 0.12) {
@@ -303,7 +304,11 @@ function HeroCards() {
   );
 }
 
-function HeroMap() {
+// The Sta. Maria barangay map. It used to fill the right half of the hero; the hero is a full-bleed
+// listing photo now, so the map has its own section further down (MapSection) and lives here.
+const MAP_MIN_SCALE = 0.5, MAP_MAX_SCALE = 3;
+
+function BarangayMap() {
   const counts = useBarangayCounts();
   const mapWrapRef = useRef(null);
   const containerRef = useRef(null);
@@ -312,23 +317,37 @@ function HeroMap() {
   const [isRotating, setIsRotating] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [svgContent, setSvgContent] = useState('');
+  const [near, setNear] = useState(false);
 
-  // Fetch the map artwork.
-  //
-  // responsive.css hides the map below 768px, but display:none does not stop a fetch — phones were
-  // downloading 140KB of SVG and parsing 47 paths to show none of it. The media query is the same
-  // one the stylesheet uses, so the two cannot drift apart silently: if one changes, the map either
-  // appears with no artwork or loads artwork it never draws, which is visible immediately.
+  // Fetch the map artwork only once the section is close to the screen — it is ~140KB of SVG and
+  // most visitors never scroll this far. The same observer pauses the pin animations while the map
+  // is off screen (the hero used to get this from glass-nav.js; the map is not in the hero now).
   useEffect(() => {
-    if (window.matchMedia('(max-width: 768px)').matches) return;
+    const wrap = mapWrapRef.current;
+    if (!wrap) return;
+    if (typeof IntersectionObserver !== 'function') { setNear(true); return; }
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) setNear(true);
+      wrap.classList.toggle('is-offscreen', !entry.isIntersecting);
+    }, { rootMargin: '400px 0px' });
+    obs.observe(wrap);
+    return () => obs.disconnect();
+  }, []);
 
+  useEffect(() => {
+    if (!near) return;
     let cancelled = false;
     fetch('assets/img/Sta. Maria Map.svg')
       .then((res) => res.text())
       .then((svg) => { if (!cancelled) setSvgContent(svg); })
       .catch((err) => console.error('Could not load the map:', err));
     return () => { cancelled = true; };
-  }, []);
+  }, [near]);
+
+  const zoomBy = (d) => setTransform((prev) => ({
+    ...prev, scale: Math.min(Math.max(MAP_MIN_SCALE, prev.scale + d), MAP_MAX_SCALE),
+  }));
+  const resetView = () => setTransform({ scale: 1, x: 0, y: 0, rotate: 0 });
 
   // Property markers.
   //
@@ -357,7 +376,13 @@ function HeroMap() {
       'San Vicente':      [1181, 1438],'San Gabriel':      [480, 1482],
       'Tabing Bakod':     [280, 1540], 'Buenavista':       [786, 1607],
       'Camangyanan':      [585, 1643], 'Mahabang Parang':  [317, 1743],
+      // Not one of the 24 and has no label in the artwork: a sitio inside Pulong Buhangin, on its
+      // northwest side by the Silangan / Mag-asawang Sapa border (~14.87°N 121.00°E, along the
+      // Norzagaray–Santa Maria road). Estimated, not measured. Listings are still filed under it.
+      'Pulong Yantok':    [1060, 340],
     };
+    // Shown in the tooltip after the name, for places that are part of a bigger barangay.
+    const partOf = { 'Pulong Yantok': 'Pulong Buhangin' };
 
     const container = containerRef.current;
 
@@ -382,6 +407,7 @@ function HeroMap() {
         const p = { barangay: name };
         const [x, y] = positions[name];
         const n = counts[p.barangay];
+        const place = partOf[name] ? `${name}, ${partOf[name]}` : name;
         const pin = document.createElement('div');
         pins.push({ el: pin, x, y });
         pin.className = 'property-marker';
@@ -389,13 +415,13 @@ function HeroMap() {
         pin.setAttribute('role', 'link');
         pin.setAttribute('tabindex', '0');
         pin.setAttribute('aria-label',
-          `${n} ${n === 1 ? 'property' : 'properties'} in ${p.barangay} — browse them`);
+          `${n} ${n === 1 ? 'property' : 'properties'} in ${place} — browse them`);
         pin.innerHTML = `
           <div class="marker-pulse"></div>
           <div class="marker-icon">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/><path d="M10 20v-5h4v5"/></svg>
           </div>
-          <div class="marker-tooltip">${n} ${n === 1 ? 'property' : 'properties'} in ${p.barangay}</div>
+          <div class="marker-tooltip">${n} ${n === 1 ? 'property' : 'properties'} in ${place}</div>
         `;
 
         // The map itself is drag-to-pan, so a pin must not open browse at the end of a drag.
@@ -423,14 +449,18 @@ function HeroMap() {
 
     const wrap = mapWrapRef.current;
 
+    // Mid-page now, so a plain scroll wheel must scroll the page, not get swallowed by the map.
+    // Ctrl/⌘ + wheel zooms (a trackpad pinch arrives as ctrl + wheel too), like an embedded map.
     const handleWheel = (e) => {
+      if (!e.ctrlKey && !e.metaKey) return;
       e.preventDefault();
       const delta = e.deltaY * -0.001;
-      const newScale = Math.min(Math.max(0.5, transform.scale + delta), 3);
+      const newScale = Math.min(Math.max(MAP_MIN_SCALE, transform.scale + delta), MAP_MAX_SCALE);
       setTransform(prev => ({ ...prev, scale: newScale }));
     };
 
     const handleMouseDown = (e) => {
+      if (e.button !== 0 || e.target.closest('.smap-controls')) return;
       if (e.shiftKey) {
         setIsRotating(true);
         setDragStart({ x: e.clientX, y: e.clientY });
@@ -475,15 +505,25 @@ function HeroMap() {
     };
   }, [transform, isDragging, isRotating, dragStart]);
 
+  const ctrlBtn = (label, text, onClick) => React.createElement('button', {
+    type: 'button', className: 'smap-btn', 'aria-label': label, title: label, onClick,
+  }, text);
+
   return React.createElement(
     'div', {
-      className: 'hero-map-wrap',
+      className: 'smap-wrap',
       ref: mapWrapRef,
       style: { cursor: isDragging ? 'grabbing' : isRotating ? 'crosshair' : 'grab' }
     },
+    !svgContent && React.createElement('div', { className: 'smap-loading' }, 'Loading map…'),
+    React.createElement('div', { className: 'smap-controls' },
+      ctrlBtn('Zoom in', '+', () => zoomBy(0.25)),
+      ctrlBtn('Zoom out', '−', () => zoomBy(-0.25)),
+      ctrlBtn('Reset view', '⟲', resetView),
+    ),
     React.createElement('div', {
       ref: containerRef,
-      className: 'hero-map-container',
+      className: 'smap-canvas',
       style: {
         transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale}) rotate(${transform.rotate}deg)`,
         transformOrigin: 'center center',
@@ -498,6 +538,86 @@ const sunSVG  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stro
 const moonSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
 
 // Navbar
+//
+// `section` ties a link to a part of this page: the highlight follows whichever of those you are
+// scrolled to.
+const navLinks = [
+  { label: 'Home',         href: '#',             section: 'top' },
+  { label: 'Listings',     href: '#featured',     section: 'featured' },
+  { label: 'How it works', href: '#how-it-works', section: 'how-it-works' },
+  { label: 'Browse',       href: '#browse',       section: 'browse' },
+];
+const SPY_SECTIONS = ['featured', 'how-it-works', 'browse'];
+
+// Which section is under the top third of the screen, re-checked once per frame while scrolling.
+// Listings stays lit through Browse by Type and the map (they are all "finding a place"), and How
+// it works until the Browse section near the bottom.
+function useScrollSection() {
+  const [active, setActive] = useState('top');
+  useEffect(() => {
+    let queued = false;
+    const update = () => {
+      queued = false;
+      const line = window.innerHeight * 0.35;
+      let cur = 'top';
+      SPY_SECTIONS.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= line) cur = id;
+      });
+      setActive(cur);
+    };
+    const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); };
+  }, []);
+  return active;
+}
+
+// The links with one pill behind them that slides: to the section you scroll into, to the link
+// under the pointer while hovering, and back when the pointer leaves.
+function NavLinks() {
+  const active = useScrollSection();
+  const boxRef = useRef(null);
+  const [hover, setHover] = useState(null);
+  const [pill, setPill] = useState(null);
+  const target = hover || active;
+
+  useEffect(() => {
+    const box = boxRef.current;
+    if (!box) return;
+    const measure = () => {
+      const a = box.querySelector(`[data-key="${target}"]`);
+      setPill(a ? { x: a.offsetLeft, w: a.offsetWidth } : null);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(box);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+    return () => ro.disconnect();
+  }, [target]);
+
+  return h('div', { className: 'nav-links', ref: boxRef, onMouseLeave: () => setHover(null) },
+    h('span', {
+      className: 'nav-pill', 'aria-hidden': 'true',
+      style: pill ? { transform: `translateX(${pill.x}px)`, width: `${pill.w}px`, opacity: 1 } : { opacity: 0 },
+    }),
+    navLinks.map((l) => {
+      const key = l.section || l.label;
+      const on = key === active;
+      return h('a', {
+        key, href: l.href, 'data-key': key,
+        className: `${on ? 'is-active' : ''}${key === target ? ' is-lit' : ''}`,
+        'aria-current': on ? 'location' : undefined,
+        onMouseEnter: () => setHover(key),
+        onFocus: () => setHover(key),
+        onBlur: () => setHover(null),
+      }, l.label);
+    }),
+  );
+}
+
 function Navbar() {
   const [theme, setTheme] = useState(
     document.documentElement.getAttribute('data-theme') || 'light'
@@ -512,7 +632,7 @@ function Navbar() {
 
   return React.createElement(
     "nav",
-    null,
+    { className: "nav-photo" },
     React.createElement(
       "a",
       { className: "nav-logo", href: "#" },
@@ -523,6 +643,7 @@ function Navbar() {
       logoMark(32),
       React.createElement("span", { style: { display: "inline-block" } }, "Kasafide"),
     ),
+    React.createElement(NavLinks),
     React.createElement(
       "div",
       { className: "nav-btns" },
@@ -533,14 +654,11 @@ function Navbar() {
         dangerouslySetInnerHTML: { __html: theme === 'dark' ? sunSVG : moonSVG },
       }),
       React.createElement("button", { className: "btn-outline", onClick: () => (window.location.href = "auth/signin.html") }, "Sign In"),
-      React.createElement(
-        "button",
-        { className: "btn-solid", onClick: () => (window.location.href = "auth/signup.html") },
-        "Sign Up",
-      ),
+      React.createElement("button", { className: "btn-solid", onClick: () => (window.location.href = "auth/signup.html") }, "Sign Up"),
     ),
   );
 }
+
 
 const bedSVG  = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9V4a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v5"/><path d="M2 9h20v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/><line x1="6" y1="9" x2="6" y2="20"/></svg>`;
 const bathSVG = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6L9 2"/><path d="M4 6h16v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M4 6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2"/><line x1="4" y1="14" x2="20" y2="14"/></svg>`;
@@ -818,91 +936,339 @@ function PlatformFeatures() {
   );
 }
 
+// Hero
+//
+// A full-bleed photo of a real featured listing, with that same listing in the card on the right.
+// The two move together: the arrows, the dots and the timer all change one index, and the
+// background cross-fades to whichever listing the card is showing. Nothing loaded yet means a plain
+// dark panel; nothing approved at all means the bundled stock photo and no card.
+const HERO_FALLBACK_IMG = 'assets/img/house_image.jpg';
+const HERO_ROTATE_MS = 6500;
+const HERO_MAX_SLIDES = 6;
+const heroTypeIcons = {
+  house:     `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/><path d="M10 20v-5h4v5"/></svg>`,
+  apartment: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2"/></svg>`,
+  lot:       `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3z"/><path d="M9 4v13M15 7v13"/></svg>`,
+};
+const heroArrowIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;
+
+// ── Effects adapted from React Bits (reactbits.dev, MIT + Commons Clause) ────────────────────
+// Those components ship for a bundler (BlurText needs `motion`, others run a JS loop per frame).
+// This page has no build step, so each is a small port: CSS keyframes where CSS can do it, and
+// one shared, frame-throttled listener for the pointer effects. All of it is skipped under
+// prefers-reduced-motion except the spotlight, which only follows the pointer.
+
+// Blur Text: each word starts blurred and lifted, then settles, one after another.
+function BlurText({ text, delay = 0, step = 0.09 }) {
+  const words = text.split(' ');
+  return h(React.Fragment, null, words.flatMap((w, i) => [
+    h('span', { key: 'w' + i, className: 'blur-word', style: { animationDelay: `${delay + i * step}s` } }, w),
+    i < words.length - 1 ? ' ' : null,
+  ]));
+}
+
+// Spotlight Card (verify + platform cards) and Magnet (the two hero buttons).
+const SPOTLIGHT_CARDS = '.verify-card, .platform-item';
+const MAGNET_TARGETS = '.hero-btn-browse, .hero-btn-list';
+const MAGNET_REACH = 70;     // px beyond the button's edge where the pull starts
+const MAGNET_STRENGTH = 5;   // 1/n of the distance to the pointer
+
+function usePointerEffects() {
+  useEffect(() => {
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (!finePointer) return;
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let ev = null, queued = false;
+
+    const frame = () => {
+      queued = false;
+      const e = ev;
+      const card = e.target.closest && e.target.closest(SPOTLIGHT_CARDS);
+      if (card) {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+        card.style.setProperty('--my', `${e.clientY - r.top}px`);
+      }
+      if (calm) return;
+      document.querySelectorAll(MAGNET_TARGETS).forEach((btn) => {
+        const r = btn.getBoundingClientRect();
+        const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+        const near = Math.abs(e.clientX - cx) < r.width / 2 + MAGNET_REACH
+                  && Math.abs(e.clientY - cy) < r.height / 2 + MAGNET_REACH;
+        btn.style.transform = near
+          ? `translate(${(e.clientX - cx) / MAGNET_STRENGTH}px, ${(e.clientY - cy) / MAGNET_STRENGTH}px)`
+          : '';
+      });
+    };
+    const onMove = (e) => { ev = e; if (!queued) { queued = true; requestAnimationFrame(frame); } };
+    document.addEventListener('pointermove', onMove, { passive: true });
+    return () => document.removeEventListener('pointermove', onMove);
+  }, []);
+}
+
 function Hero() {
+  usePointerEffects();
+  const listings = useFeaturedListings();
+  const heroRef = useRef(null);
+  const [idx, setIdx] = useState(0);
+  const [tick, setTick] = useState(0);
 
-  return React.createElement(
-    "section",
-    { className: "hero" },
+  // A listing without its own photo gets data.js's placeholder; a placeholder is no hero.
+  const slides = (listings || []).filter((l) => l.image && !l.image.startsWith('data:')).slice(0, HERO_MAX_SLIDES);
+  const n = slides.length;
+  const at = n ? idx % n : 0;
+  const cur = n ? slides[at] : null;
 
-    // ── Particle background ──
-    React.createElement("div", { className: "hero-particles" }),
+  // Changes on its own, always: no arrows, no pause on hover. One timeout per slide rather than an
+  // interval, so clicking a dot restarts the wait instead of the next change landing a second
+  // later. Waits only while the tab is hidden or the hero is scrolled away (glass-nav.js sets
+  // .hero-paused). Reduced motion keeps the rotation; it only drops the zoom (see index.css).
+  useEffect(() => {
+    if (n < 2) return;
+    const t = setTimeout(() => {
+      const hero = heroRef.current;
+      if (document.hidden || (hero && hero.classList.contains('hero-paused'))) { setTick((x) => x + 1); return; }
+      setIdx((i) => (i + 1) % n);
+    }, HERO_ROTATE_MS);
+    return () => clearTimeout(t);
+  }, [idx, n, tick]);
 
-    // ── Content ──
-    React.createElement(
-      "div",
-      { className: "hero-left" },
-      React.createElement(
-        "div",
-        { className: "hero-badge" },
-        React.createElement("span", { className: "hero-badge-dot" }),
-        "Sta. Maria, Bulacan — Property Platform",
+
+  return h(
+    'section',
+    { className: 'hero hero-photo', ref: heroRef },
+
+    // ── Background photos, one per slide, cross-faded ──
+    h('div', { className: 'hero-bg', 'aria-hidden': 'true' },
+      n
+        ? slides.map((s, i) => h('img', {
+            key: s.id, src: s.image, alt: '', decoding: 'async',
+            className: `hero-bg-img${i === at ? ' is-active' : ''}`,
+          }))
+        : listings
+          ? h('img', { src: HERO_FALLBACK_IMG, alt: '', className: 'hero-bg-img is-active' })
+          : null,
+    ),
+    h('div', { className: 'hero-shade', 'aria-hidden': 'true' }),
+    h('div', { className: 'hero-watermark', 'aria-hidden': 'true' }, 'KASAFIDE'),
+
+    // ── Copy ──
+    h('div', { className: 'hero-left' },
+      h('h1', { className: 'hero-title' },
+        h(BlurText, { text: 'Buy. Sell. Rent.' }), h('br'),
+        h(BlurText, { text: 'All in one place.', delay: 0.27 }),
+        h('span', { className: 'hero-title-accent shiny-text blur-word', style: { animationDelay: '0.6s, 2.4s' } }, 'Verified, every time.'),
       ),
-      React.createElement(
-        "h1",
-        { className: "hero-title" },
-        "Buy. Sell. Rent.",
-        React.createElement("br"),
-        "All in one place.",
-        React.createElement("br"),
-        React.createElement(
-          "span", { className: "hero-title-accent" },
-          React.createElement(TypingText),
+      h('p', { className: 'hero-desc' },
+        'Kasafide connects buyers with verified property owners across Sta. Maria, Bulacan. No hidden listings. No unverified sellers.',
+      ),
+      h('div', { className: 'hero-trust' },
+        h('span', { className: 'hero-trust-item' },
+          h('span', { className: 'hero-trust-icon', dangerouslySetInnerHTML: { __html: shieldIcon } }),
+          h('span', null, 'Every seller ID-checked, every listing reviewed'),
         ),
       ),
-      React.createElement(
-        "p",
-        { className: "hero-desc" },
-        "Kasafide connects buyers with verified property owners across Sta. Maria, Bulacan. No hidden listings. No unverified sellers.",
-      ),
-      React.createElement(
-        "div",
-        { className: "hero-ctas" },
+      h('div', { className: 'hero-ctas' },
         // Desktop: Browse Listings & List Property
-        React.createElement(
-          "button",
-          { className: "hero-btn-primary hero-btn-browse", onClick: () => (window.location.href = "browse.html") },
-          React.createElement("span", { dangerouslySetInnerHTML: { __html: searchIcon } }),
-          React.createElement("span", null, "Browse Listings"),
+        h('button', { className: 'hero-btn-primary hero-btn-browse', onClick: () => showBrowse() },
+          h('span', null, 'Browse Listings'),
+          h('span', { className: 'hero-btn-arrow', dangerouslySetInnerHTML: { __html: heroArrowIcon } }),
         ),
-        React.createElement(
-          "button",
-          { className: "hero-btn-secondary hero-btn-list", onClick: () => (window.location.href = "auth/signup.html") },
-          React.createElement("span", null, "List Your Property"),
-          React.createElement("span", { dangerouslySetInnerHTML: { __html: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>` } }),
+        h('button', { className: 'hero-btn-secondary hero-btn-list', onClick: () => (window.location.href = 'auth/signup.html?role=seller') },
+          h('span', null, 'List Your Property'),
         ),
         // Mobile: Sign In & Sign Up
-        React.createElement(
-          "button",
-          { className: "hero-btn-mobile-signin", onClick: () => (window.location.href = "auth/signin.html") },
-          "Sign In",
-        ),
-        React.createElement(
-          "button",
-          { className: "hero-btn-mobile-signup", onClick: () => (window.location.href = "auth/signup.html") },
-          "Sign Up",
-        ),
-      ),
-      React.createElement(
-        "div",
-        { className: "hero-trust" },
-        React.createElement("span", { className: "hero-trust-item" },
-          React.createElement("span", { className: "hero-trust-icon", dangerouslySetInnerHTML: { __html: shieldIcon } }),
-          React.createElement("span", null, "Verified Listings"),
-        ),
-        React.createElement("span", { className: "hero-trust-item" },
-          React.createElement("span", { className: "hero-trust-icon", dangerouslySetInnerHTML: { __html: lockIcon } }),
-          React.createElement("span", null, "Secure Messaging"),
-        ),
+        h('button', { className: 'hero-btn-mobile-signin', onClick: () => (window.location.href = 'auth/signin.html') }, 'Sign In'),
+        h('button', { className: 'hero-btn-mobile-signup', onClick: () => (window.location.href = 'auth/signup.html') }, 'Sign Up'),
       ),
     ),
 
-    // ── Map on right side ──
-    React.createElement(
-      "div",
-      { className: "hero-right" },
-      React.createElement(HeroMap),
+    // ── Featured card + categories ──
+    h('div', { className: 'hero-side' },
+      cur && h('div', { className: 'hero-feature' },
+        // Photo on the left, details in their own inner panel on the right, with the dots at the
+        // bottom of that panel. The photo and the title both open the listing.
+        h('button', {
+            type: 'button', className: 'hf-thumb-btn', onClick: () => openListing(cur.id),
+            'aria-label': `Featured: ${cur.title}, ${cur.price}${cur.period}. View listing.`,
+          },
+          h('img', { key: 'img-' + cur.id, className: 'hf-thumb', src: cur.image, alt: '' }),
+        ),
+        h('div', { className: 'hf-panel' },
+          h('div', { key: 'text-' + cur.id, className: 'hf-text' },
+            h('span', { className: 'hf-kicker' }, [cur.badge, cur.barangay].filter(Boolean).join(' · ')),
+            h('button', { type: 'button', className: 'hf-title', tabIndex: -1, onClick: () => openListing(cur.id) }, h('span', null, cur.title)),
+            h('span', { className: 'hf-price' }, cur.price, cur.period && h('small', null, cur.period)),
+          ),
+          n > 1 && h('div', { className: 'hf-foot' },
+          h('div', { className: 'hf-dots' },
+            slides.map((s, i) => h('button', {
+              key: s.id, type: 'button',
+              className: `hf-dot${i === at ? ' is-active' : ''}`,
+              'aria-label': `Show featured listing ${i + 1} of ${n}`,
+              'aria-current': i === at ? 'true' : undefined,
+              onClick: () => setIdx(i),
+            })),
+          ),
+          ),
+        ),
+      ),
+      // Same three types as the "Browse by Type" section; each shows the Browse section filtered to it.
+      h('div', { className: 'hero-brgy' },
+        h('div', { className: 'hero-brgy-head' }, 'Browse by category'),
+        h('div', { className: 'hero-brgy-chips' },
+          categories.map((c) => h('a', {
+              key: c.type, className: 'hero-brgy-chip',
+              href: '#browse',
+              onClick: (e) => { e.preventDefault(); showBrowse({ type: c.type }); },
+            },
+            h('span', { dangerouslySetInnerHTML: { __html: heroTypeIcons[c.type] } }),
+            c.name,
+          )),
+        ),
+      ),
     ),
+  );
+}
 
+// Map: the barangay map that used to sit in the hero, now its own section.
+function MapSection() {
+  const [ref, visible] = useReveal(0.08);
+  const counts = useBarangayCounts();
+  const list = counts
+    ? Object.keys(counts).filter((k) => counts[k] > 0).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b))
+    : null;
+
+  // Full-bleed: the map fills the whole section with no frame, and the heading and the list
+  // float over its empty left side (the drawing is tall and narrow, so that side is free).
+  return h(
+    'section',
+    { id: 'map', className: `map-section reveal-section${visible ? ' in-view' : ''}`, ref },
+    h('div', { className: 'map-frame' }, h(BarangayMap)),
+    h('div', { className: 'map-overlay' },
+      h('div', { className: 'map-head' },
+        h('span', { className: 'section-label' }, 'Explore the Map'),
+        h('h2', { className: 'section-title' }, 'Every Barangay in Sta. Maria'),
+        h('p', { className: 'map-sub' }, 'Each pin is a barangay with live listings. Click one to see what’s there.'),
+      ),
+      h('aside', { className: 'map-side' },
+        h('div', { className: 'map-side-title' }, 'Barangays with listings'),
+        list === null
+          ? h('p', { className: 'map-side-empty' }, 'Loading…')
+          : list.length
+            ? h('ul', { className: 'map-side-list' },
+                list.map((name) => h('li', { key: name },
+                  h('button', { type: 'button', onClick: () => browseBarangay(name) },
+                    h('span', { className: 'map-side-name' }, name),
+                    h('span', { className: 'map-side-count' }, counts[name]),
+                  ),
+                )),
+              )
+            : h('p', { className: 'map-side-empty' }, 'No live listings yet.'),
+      ),
+      h('p', { className: 'map-hint' }, 'Drag to move · Ctrl + scroll to zoom · Shift + drag to rotate'),
+    ),
+  );
+}
+
+// Browse — every approved listing, filterable, as a section of this page. It used to be only
+// browse.html (which still works for old links); now the navbar, the hero, the category chips,
+// Browse by Type and the map all bring you down here with the filter already set.
+const BROWSE_TYPES = [['', 'All types'], ['house', 'House'], ['apartment', 'Apartment'], ['condo', 'Condo'], ['commercial', 'Commercial'], ['lot', 'Lot only']];
+const BROWSE_FOR = [['', 'For sale & rent'], ['rent', 'For rent'], ['sale', 'For sale']];
+const NO_FILTERS = { type: '', for: '', barangay: '', q: '' };
+
+// Show the browse section with these filters, e.g. showBrowse({ type: 'lot' }).
+function showBrowse(filters) {
+  window.dispatchEvent(new CustomEvent('kf-browse', { detail: filters || {} }));
+  const el = document.getElementById('browse');
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// An approved listing (HS.listings.approved) in the shape FeaturedCard draws, so both rows of
+// cards on this page look the same.
+function browseCard(l) {
+  const rent = l.listingFor === 'rent';
+  return {
+    id: l.id, title: l.title,
+    price: '₱' + (Number(l.price) || 0).toLocaleString('en-PH'),
+    period: rent ? '/month' : '',
+    location: [l.barangay, l.city || 'Sta. Maria'].filter(Boolean).join(', '),
+    beds: l.bedrooms || 0, baths: l.bathrooms || 0,
+    badge: rent ? 'For Rent' : 'For Sale', badgeType: rent ? 'rent' : 'sale',
+    verified: !!l.verified,
+    image: HS.cover(l),
+  };
+}
+
+let approvedListingsPromise = null;
+
+function BrowseSection() {
+  const [ref, visible] = useReveal(0.05);
+  const [all, setAll] = useState(null);
+  const [failed, setFailed] = useState(false);
+  const [f, setF] = useState(NO_FILTERS);
+
+  useEffect(() => {
+    if (typeof HS === 'undefined' || !HS.listings) return;
+    if (!approvedListingsPromise) approvedListingsPromise = HS.listings.approved();
+    let cancelled = false;
+    approvedListingsPromise
+      .then((rows) => { if (!cancelled) setAll(rows); })
+      .catch((err) => {
+        console.error('Could not load listings:', err);
+        approvedListingsPromise = null;
+        if (!cancelled) setFailed(true);
+      });
+    return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
+    const onBrowse = (e) => setF({ ...NO_FILTERS, ...e.detail });
+    window.addEventListener('kf-browse', onBrowse);
+    return () => window.removeEventListener('kf-browse', onBrowse);
+  }, []);
+
+  // Barangays that actually have listings, plus the one asked for if it has none, so a map click
+  // on an empty barangay says "0 found" with the barangay still named instead of showing all.
+  const barangays = all ? [...new Set(all.map((l) => l.barangay).filter(Boolean))].sort() : [];
+  if (f.barangay && !barangays.includes(f.barangay)) barangays.push(f.barangay);
+
+  const q = f.q.trim().toLowerCase();
+  const shown = (all || []).filter((l) =>
+    (!f.type || l.type === f.type) &&
+    (!f.for || l.listingFor === f.for) &&
+    (!f.barangay || l.barangay === f.barangay) &&
+    (!q || [l.title, l.address, l.barangay].some((v) => (v || '').toLowerCase().includes(q))));
+  const filtering = !!(f.type || f.for || f.barangay || q);
+  const set = (key) => (e) => setF((prev) => ({ ...prev, [key]: e.target.value }));
+  const select = (key, label, options) => h('select', { className: 'bs-field', value: f[key], onChange: set(key), 'aria-label': label },
+    options.map(([v, t]) => h('option', { key: v, value: v }, t)));
+
+  return h(
+    'section',
+    { id: 'browse', className: `section browse-section reveal-section${visible ? ' in-view' : ''}`, ref },
+    h('span', { className: 'section-label' }, 'Browse'),
+    h('h2', { className: 'section-title' }, 'All Properties'),
+    h('p', { className: 'section-sub' }, 'Every approved listing in Sta. Maria, Bulacan. Narrow it down by type, barangay, or a search.'),
+    h('div', { className: 'bs-filters' },
+      select('type', 'Property type', BROWSE_TYPES),
+      select('for', 'For sale or rent', BROWSE_FOR),
+      select('barangay', 'Barangay', [['', 'All barangays']].concat(barangays.map((b) => [b, b]))),
+      h('input', {
+        className: 'bs-field bs-search', type: 'search', value: f.q, onChange: set('q'),
+        placeholder: 'Search by title or address…', 'aria-label': 'Search listings',
+      }),
+    ),
+    h('div', { className: 'bs-meta' },
+      h('span', null, all === null
+        ? (failed ? 'Could not load listings.' : 'Loading listings…')
+        : `${shown.length} propert${shown.length === 1 ? 'y' : 'ies'} found`),
+      filtering && h('button', { type: 'button', className: 'bs-clear', onClick: () => setF(NO_FILTERS) }, 'Clear filters'),
+    ),
+    all && (shown.length
+      ? h('div', { className: 'bs-grid' }, shown.map((l) => FeaturedCard(browseCard(l))))
+      : h('p', { className: 'bs-empty' }, filtering ? 'No listings match those filters.' : 'No approved listings yet.')),
   );
 }
 
@@ -942,8 +1308,8 @@ function Categories() {
         // swapped for the real one a moment later; the gradient is the honest "loading" state.
         const sources = summary == null ? []
           : (typePhotos[c.type] ? [typePhotos[c.type]] : []).concat(c.fallbacks);
-        // Opens browse.html filtered to this card's type.
-        const open = () => { window.location.href = 'browse.html?type=' + encodeURIComponent(c.type); };
+        // Shows the Browse section filtered to this card's type.
+        const open = () => showBrowse({ type: c.type });
         return React.createElement(
           "div",
           {
@@ -1083,7 +1449,7 @@ function Carousel() {
   if (!listings || !listings.length) {
     return React.createElement(
       "section",
-      { className: `section-alt reveal-section${visible ? ' in-view' : ''}`, ref },
+      { id: "featured", className: `section-alt reveal-section${visible ? ' in-view' : ''}`, ref },
       ...header,
       React.createElement(
         "p",
@@ -1099,7 +1465,7 @@ function Carousel() {
 
   return React.createElement(
     "section",
-    { className: `section-alt reveal-section${visible ? ' in-view' : ''}`, ref },
+    { id: "featured", className: `section-alt reveal-section${visible ? ' in-view' : ''}`, ref },
     ...header,
     React.createElement(
       "p",
@@ -1127,7 +1493,7 @@ function Carousel() {
     ),
     React.createElement(
       "a",
-      { className: "fp-all", href: "browse.html" },
+      { className: "fp-all", href: "#browse" },
       "Browse all properties →",
     ),
   );
@@ -1267,7 +1633,7 @@ function HowItWorks() {
 
   return React.createElement(
     "section",
-    { className: `section reveal-section${visible ? ' in-view' : ''}`, ref },
+    { id: "how-it-works", className: `section reveal-section${visible ? ' in-view' : ''}`, ref },
     React.createElement("span", { className: "section-label" }, "How It Works"),
     React.createElement(
       "h2",
@@ -1324,7 +1690,6 @@ function HowItWorks() {
   );
 }
 
-const h = React.createElement;
 
 const tlCheck = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 10 11 15 8 12"/></svg>`;
 const tlShield = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`;
@@ -1628,7 +1993,7 @@ function CTA() {
       React.createElement(
         "p",
         { className: "cta-sub" },
-        "Join thousands of verified users discovering trusted properties in Sta. Maria, Bulacan",
+        "Join verified buyers and sellers finding trusted properties in Sta. Maria, Bulacan",
       ),
       React.createElement(
         "div",
@@ -1637,7 +2002,7 @@ function CTA() {
           "button",
           {
             className: "cta-btn-white",
-            onClick: () => (window.location.href = "auth/signup.html"),
+            onClick: () => (window.location.href = "auth/signup.html?role=buyer"),
           },
           "Sign Up as Buyer",
         ),
@@ -1645,7 +2010,7 @@ function CTA() {
           "button",
           {
             className: "cta-btn-ghost",
-            onClick: () => (window.location.href = "auth/signup.html"),
+            onClick: () => (window.location.href = "auth/signup.html?role=seller"),
           },
           "List Your Property",
         ),
@@ -1657,21 +2022,19 @@ function CTA() {
 // Footer
 function Footer() {
   const platformLinks = ["Browse Listings", "List Your Property", "About Us"];
-  const supportLinks = ["Help & Support", "Contact Us", "Report a Listing"];
+  const supportLinks = ["Help & Support", "FAQs"];
   const legalLinks = ["Privacy Policy", "Terms of Service"];
 
-  // Most of these were "#" — dead links that went nowhere. Browse and About are genuinely public
-  // pages, so they go straight there; Help & Support already pointed at the public FAQ page
-  // correctly. List Your Property, Contact Us and Report a Listing have no public page to land
-  // on yet (reporting needs to know who is reporting; listing needs an account either way), so
-  // those go to sign in instead of doing nothing.
+  // Only links a visitor can actually use. "Contact Us" and "Report a Listing" used to sit under
+  // Support, but both only opened the sign-in page: there is no public contact page, and
+  // reporting needs an account and a listing to report (signed-in users do that from the
+  // listing itself). Help & Support is Meowrie on help.html; FAQs is the static answers page.
   const footerHref = {
-    "Browse Listings": "browse.html",
-    "List Your Property": "auth/signup.html",
+    "Browse Listings": "#browse",
+    "List Your Property": "auth/signup.html?role=seller",
     "About Us": "about.html",
-    "Help & Support": "faqs.html",
-    "Contact Us": "auth/signin.html",
-    "Report a Listing": "auth/signin.html",
+    "Help & Support": "help.html",
+    "FAQs": "faqs.html",
   };
 
   return React.createElement(
@@ -1832,22 +2195,30 @@ function HowWeVerify() {
 }
 
 function App() {
+  // Order, top to bottom: find a place (listings, type, barangay map) -> how it works -> why you
+  // can trust it (the rule, then how each gate is enforced) -> what the platform does for you ->
+  // the live numbers as proof -> every listing, filterable -> sign up.
   return React.createElement(
     React.Fragment,
     null,
     React.createElement(Navbar),
     React.createElement(Hero),
-    // Listings first, so the first scroll shows homes and it reads as a listing site;
-    // the trust sections follow.
+    // Discover
     React.createElement(Carousel),
     React.createElement(Categories),
-    React.createElement(FeatureHighlights),
-    React.createElement(TrustBanner),
-    React.createElement(PlatformFeatures),
+    React.createElement(MapSection),
+    // How it works
     React.createElement(HowItWorks),
+    // Trust
+    React.createElement(TrustBanner),
     React.createElement(HowWeVerify),
+    // What you get
     React.createElement(Features),
+    React.createElement(FeatureHighlights),
+    React.createElement(PlatformFeatures),
+    // Proof, then the ask
     React.createElement(Stats),
+    React.createElement(BrowseSection),
     React.createElement(CTA),
     React.createElement(Footer),
   );

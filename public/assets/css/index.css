@@ -658,8 +658,8 @@ nav {
   50%, 100% { opacity: 0; }
 }
 
-/* ── HERO MAP — right side container ── */
-.hero-map-wrap {
+/* ── BARANGAY MAP (its own section, see MapSection in index.js) ── */
+.smap-wrap {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -668,7 +668,7 @@ nav {
   user-select: none;
 }
 
-.hero-map-container {
+.smap-canvas {
   position: relative;
   width: 100%;
   height: 100%;
@@ -677,7 +677,7 @@ nav {
   justify-content: center;
 }
 
-.hero-map-container svg {
+.smap-canvas svg {
   max-width: 100%;
   max-height: 100%;
   width: auto;
@@ -688,9 +688,9 @@ nav {
    Colours come from the theme tokens, so the map follows light/dark. The borders are open
    paths shared between neighbours, not one closed shape per barangay, so there is no
    per-barangay hover fill — the pins are what you hover and click. */
-.hero-map-container svg .map-border  { stroke: var(--map-stroke); }
-.hero-map-container svg .map-outline { fill: var(--map-fill); }
-.hero-map-container svg .map-label   { fill: var(--map-label); stroke: none; }
+.smap-canvas svg .map-border  { stroke: var(--map-stroke); }
+.smap-canvas svg .map-outline { fill: var(--map-fill); }
+.smap-canvas svg .map-label   { fill: var(--map-label); stroke: none; }
 
 /* Property Markers */
 .property-marker {
@@ -2092,4 +2092,498 @@ footer {
   .feature-3d .feature-card-badge,
   .feature-3d .feature-card-title,
   .feature-3d .feature-card-desc { transform: none; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Photo hero
+
+   The hero is a full-bleed photo of a featured listing, cross-faded as the card on the right
+   changes (see Hero in index.js). A photo stays dark under the shade in either theme, so the hero
+   re-points the colour tokens at the cream/peach brand colours for everything inside it, instead
+   of every rule below needing a light and a dark version. --teal and --muted are redefined too:
+   they are aliases resolved on :root, so changing --primary alone would not reach them.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.hero.hero-photo {
+  --text:           var(--k-cream);
+  --text-soft:      rgb(var(--k-cream-rgb) / 0.86);
+  --text-muted:     rgb(var(--k-cream-rgb) / 0.72);
+  --muted:          rgb(var(--k-cream-rgb) / 0.72);
+  --heading-accent: var(--k-peach);
+  --primary:        var(--k-peach);
+  --primary-rgb:    var(--k-peach-rgb);
+  --teal:           var(--k-peach);
+  --on-primary:     var(--k-ink);
+  --border:         rgb(var(--k-cream-rgb) / 0.18);
+  --hero-glass:     rgb(var(--k-ink-rgb) / 0.62);
+  --hero-edge:      rgb(var(--k-plum-rgb) / 0.55);
+
+  background: var(--k-ink);
+  overflow: hidden;
+  isolation: isolate;
+  justify-content: space-between;
+}
+
+.hero-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.hero-bg-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.06);
+  transition: opacity 1.2s ease, transform 8s ease-out;
+}
+.hero-bg-img.is-active { opacity: 1; transform: scale(1); }
+
+/* Dark behind the copy on the left, the photo showing through on the right, and a plum wash over
+   all of it so any photo reads as part of the brand. */
+.hero-shade {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(90deg,
+      rgb(var(--k-ink-rgb) / 0.88) 0%,
+      rgb(var(--k-ink-rgb) / 0.70) 32%,
+      rgb(var(--k-ink-rgb) / 0.30) 62%,
+      rgb(var(--k-ink-rgb) / 0.12) 100%),
+    linear-gradient(180deg,
+      rgb(var(--k-ink-rgb) / 0.45) 0%,
+      transparent 18%,
+      transparent 78%,
+      rgb(var(--k-ink-rgb) / 0.55) 100%),
+    rgb(var(--k-plum-rgb) / 0.22);
+}
+
+.hero-watermark {
+  position: absolute; left: 50%; bottom: 4vh; z-index: 1;
+  transform: translateX(-50%);
+  font-size: clamp(110px, 15vw, 280px);
+  font-weight: 800; line-height: 1; letter-spacing: 0.01em;
+  color: rgb(var(--k-plum-rgb) / 0.42);
+  white-space: nowrap; pointer-events: none; user-select: none;
+}
+
+/* Copy */
+.hero-photo .hero-left { max-width: 760px; min-width: 0; padding-left: 40px; gap: 24px; }
+.hero-photo .hero-badge {
+  background: none; border: 0; padding: 0;
+  color: var(--text-soft);
+  font-size: 13px; font-weight: 600;
+  letter-spacing: 0; text-transform: none;
+}
+.hero-photo .hero-badge-dot { width: 6px; height: 6px; background: var(--text-muted); }
+.hero-photo .hero-title {
+  font-size: clamp(40px, 4.9vw, 78px);
+  line-height: 1.04;
+  letter-spacing: -1.5px;
+  text-shadow: 0 2px 28px rgb(var(--k-black-rgb) / 0.25);
+}
+.hero-photo .hero-title-accent {
+  font-size: inherit; font-weight: 900; letter-spacing: inherit;
+  white-space: normal;
+}
+.hero-photo .hero-desc { max-width: 480px; font-size: 15.5px; }
+.hero-photo .hero-trust { padding-top: 0; }
+.hero-photo .hero-trust-item { font-size: 13px; color: var(--text-soft); }
+.hero-photo .hero-btn-primary,
+.hero-photo .hero-btn-secondary { border-radius: 999px; }
+.hero-photo .hero-btn-primary { padding: 7px 7px 7px 22px; gap: 12px; }
+.hero-photo .hero-btn-secondary { height: 46px; padding: 0 26px; border-width: 1.5px; }
+.hero-photo .hero-btn-primary { height: 46px; }
+.hero-btn-arrow {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--k-ink);
+  color: var(--k-cream);
+  justify-content: center;
+}
+
+/* Featured card + barangay box */
+.hero-side {
+  position: relative; z-index: 2;
+  width: 365px; flex-shrink: 0;
+  margin: 40px 50px 0 24px;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 28px;
+}
+.hero-feature,
+.hero-brgy {
+  background: var(--hero-glass);
+  border: 1px solid var(--hero-edge);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: 0 18px 40px rgb(var(--k-black-rgb) / 0.30);
+}
+.hero-feature {
+  width: 305px;
+  display: flex; gap: 8px;
+  padding: 8px;
+  border-radius: 18px;
+  border-width: 2px;
+}
+.hf-thumb-btn {
+  flex-shrink: 0; align-self: stretch; min-height: 0 !important; padding: 0; border: 0; background: none; cursor: pointer;
+  border-radius: 12px; overflow: hidden;
+}
+.hf-thumb {
+  display: block; width: 92px; height: 100%; min-height: 112px;
+  object-fit: cover;
+  animation: hfIn 0.5s ease;
+}
+.hf-panel {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 8px;
+  padding: 10px 10px 8px 12px;
+  border-radius: 12px;
+  background: rgb(var(--k-cream-rgb) / 0.06);
+}
+.hf-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; animation: hfIn 0.5s ease; }
+.hf-kicker {
+  font-size: 9.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.hf-title {
+  padding: 0; border: 0; background: none; cursor: pointer; text-align: left;
+  font-family: inherit; font-size: 13.5px; font-weight: 800; line-height: 1.22;
+  text-transform: uppercase; color: var(--text);
+  min-height: 0 !important;
+}
+/* The clamp sits on an inner span: -webkit-box does not clamp reliably on a <button> itself. */
+.hf-title span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.hf-title:hover { text-decoration: underline; text-underline-offset: 3px; }
+.hf-price { font-size: 13px; font-weight: 800; color: var(--k-peach); }
+.hf-price small { font-size: 13px; font-weight: 800; color: var(--k-peach); }
+.hf-foot { display: flex; align-items: center; justify-content: space-between; }
+.hf-dots { display: flex; gap: 5px; }
+.hf-dot {
+  /* min-* reset: responsive.css gives every button a 40px tap height on phones. */
+  min-width: 0 !important; min-height: 0 !important;
+  width: 5px; height: 3px; padding: 0; border: 0; border-radius: 99px;
+  background: rgb(var(--k-cream-rgb) / 0.35);
+  cursor: pointer; transition: width 0.3s ease, background 0.3s ease;
+}
+.hf-dot.is-active { width: 14px; background: var(--k-cream); }
+.hf-arrows { display: flex; gap: 6px; }
+.hf-arrow {
+  min-width: 0 !important; min-height: 0 !important;
+  width: 26px; height: 26px; padding: 0; border-radius: 50%;
+  border: 1px solid rgb(var(--k-cream-rgb) / 0.30);
+  background: var(--k-ink);
+  color: var(--text);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background 0.15s, color 0.15s;
+}
+.hf-arrow svg { width: 13px; height: 13px; }
+.hf-arrow:hover { background: var(--k-peach); color: var(--k-ink); border-color: transparent; }
+@keyframes hfIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+.hero-brgy { width: 100%; border-radius: 16px; padding: 12px 18px 14px; }
+.hero-brgy-head {
+  text-align: right;
+  font-size: 12px; font-weight: 600; color: var(--text-soft);
+  margin-bottom: 10px;
+}
+.hero-brgy-chips { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.hero-brgy-chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 2px 0; border: 0; background: none;
+  color: var(--text);
+  font-family: inherit; font-size: 12.5px; font-weight: 600; text-decoration: none;
+  cursor: pointer;
+}
+.hero-brgy-chip span { display: inline-flex; color: var(--k-peach); }
+.hero-brgy-chip:hover { color: var(--k-peach); }
+
+@media (max-width: 768px) {
+  .hero.hero-photo { flex-direction: column; align-items: stretch; }
+  .hero-photo .hero-left { max-width: 100%; width: 100%; }
+  .hero-shade {
+    background: linear-gradient(180deg,
+      rgb(var(--k-ink-rgb) / 0.78) 0%,
+      rgb(var(--k-ink-rgb) / 0.70) 45%,
+      rgb(var(--k-ink-rgb) / 0.88) 100%);
+  }
+  .hero-watermark { display: none; }
+  .hero-side { width: auto; min-width: 0; margin: 0 20px 40px; align-items: stretch; }
+  .hero-feature { width: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg-img { transition: none; transform: none; }
+  .hf-thumb, .hf-text { animation: none; }
+}
+
+/* ── Nav: links with a sliding highlight ──
+   One pill (.nav-pill) sits behind the links and slides to the section you are scrolled to, or to
+   the link under the pointer (NavLinks in index.js sets its position and width). */
+.nav-links { position: relative; display: flex; align-items: center; gap: 4px; }
+.nav-links a {
+  position: relative; z-index: 1;
+  padding: 7px 14px; border-radius: 999px;
+  color: var(--text-soft);
+  font-size: 13.5px; font-weight: 600;
+  text-decoration: none; white-space: nowrap;
+  transition: color 0.35s ease;
+}
+.nav-links a.is-lit { color: var(--text); }
+.nav-links a.is-active { font-weight: 700; }
+.nav-pill {
+  position: absolute; left: 0; top: 50%;
+  height: 32px; margin-top: -16px;
+  border-radius: 999px;
+  background: rgb(var(--primary-rgb) / 0.16);
+  box-shadow: inset 0 0 0 1px rgb(var(--primary-rgb) / 0.28);
+  pointer-events: none;
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.25s ease,
+    background-color 0.45s ease;
+}
+@media (prefers-reduced-motion: reduce) { .nav-pill { transition: opacity 0.2s; } }
+@media (max-width: 980px)  { .nav-links { display: none; } }
+
+.nav-photo .nav-theme-btn { width: 34px; height: 34px; min-width: 34px; min-height: 34px; }
+.nav-photo .btn-outline, .nav-photo .btn-solid { height: 34px; padding-top: 0; padding-bottom: 0; }
+
+/* Over the photo hero the bar drops the pill and runs the full width with no background at all,
+   only its buttons have one. Contents switch to cream in both themes. html:root is only there to
+   outrank glass-nav.css's over-hero rules, which this file loads before. Once the hero is
+   scrolled past it goes back to the glass pill. */
+html:root nav.nav-photo.over-hero:not(.browse-nav):not(.toc-nav) {
+  --text:        var(--k-cream);
+  --text-soft:   rgb(var(--k-cream-rgb) / 0.88);
+  --text-muted:  rgb(var(--k-cream-rgb) / 0.70);
+  --muted:       rgb(var(--k-cream-rgb) / 0.70);
+  --muted2:      rgb(var(--k-cream-rgb) / 0.85);
+  --border:      rgb(var(--k-cream-rgb) / 0.16);
+  --card:        rgb(var(--k-ink-rgb) / 0.62);
+  --surface:     var(--k-ink);
+  --surface-soft: rgb(var(--k-cream-rgb) / 0.08);
+  --primary:     var(--k-peach);
+  --primary-rgb: var(--k-peach-rgb);
+  --teal:        var(--k-peach);
+  --on-primary:  var(--k-ink);
+  --kf-logo-outline: var(--k-cream);
+  top: 10px;
+  width: calc(100% - 24px);
+  /* Real values rather than none, so each one can animate into the pill below: max-width none,
+     box-shadow none and backdrop-filter none cannot be interpolated, which is what made the bar
+     jump instead of slide. */
+  max-width: 100vw;
+  padding: 0 30px 0 30px;
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: inset 0 1px 0 transparent, 0 8px 28px transparent;
+  -webkit-backdrop-filter: blur(0px) saturate(100%);
+  backdrop-filter: blur(0px) saturate(100%);
+}
+
+/* Flat bar -> glass pill: the width closes in, the glass fades and blurs in, the contents change
+   colour, all on the same curve. */
+html:root nav.nav-photo:not(.browse-nav):not(.toc-nav) {
+  transition:
+    max-width 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    top 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    padding 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.45s ease,
+    border-color 0.45s ease,
+    box-shadow 0.45s ease,
+    -webkit-backdrop-filter 0.45s ease,
+    backdrop-filter 0.45s ease;
+}
+html:root nav.nav-photo .nav-logo { transition: color 0.45s ease; }
+@media (prefers-reduced-motion: reduce) {
+  html:root nav.nav-photo:not(.browse-nav):not(.toc-nav) { transition: background-color 0.2s, border-color 0.2s; }
+}
+
+/* ── Map section: full-bleed ──
+   The map fills the whole section edge to edge with no frame; the heading and the barangay list
+   float over the left side, where the tall, narrow drawing leaves room. Pointer events pass
+   through the overlay to the map except on the things you can actually click. */
+#featured, #how-it-works, #map { scroll-margin-top: 0; }
+#featured, #how-it-works { scroll-margin-top: 90px; }
+.map-section {
+  position: relative;
+  height: 100vh; min-height: 620px; max-height: 1000px;
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.map-frame { position: absolute; inset: 90px 0 30px; }  /* room for the floating nav; the pins measure this box, so it is space around it, not padding inside it */
+.map-frame .smap-wrap { overflow: hidden; }
+.smap-wrap.is-offscreen,
+.smap-wrap.is-offscreen * { animation-play-state: paused !important; }
+.smap-loading {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  color: var(--text-muted); font-size: 13px;
+}
+.smap-controls {
+  position: absolute; right: 32px; bottom: 32px; z-index: 20;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.smap-btn {
+  width: 36px; height: 36px; padding: 0;
+  border-radius: 50%; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text);
+  font-family: inherit; font-size: 16px; font-weight: 700; line-height: 1;
+  display: grid; place-items: center; cursor: pointer;
+}
+.smap-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+.map-overlay {
+  position: absolute; inset: 0; z-index: 15;
+  pointer-events: none;
+  display: flex; flex-direction: column; justify-content: center; gap: 36px;
+  padding: 90px 52px 32px;
+  max-width: 420px;
+  text-align: left;
+}
+.map-overlay a, .map-overlay button { pointer-events: auto; }
+.map-head { text-align: left; }
+.map-head .section-label { display: inline-block; margin-bottom: 14px; }
+.map-head .section-title { font-size: clamp(30px, 3.4vw, 46px); line-height: 1.08; margin-bottom: 12px; }
+.map-sub { font-size: 15px; color: var(--muted); line-height: 1.6; }
+
+.map-side-title {
+  font-size: 11.5px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 8px;
+}
+.map-side-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.map-side-list li { border-bottom: 1px solid var(--border); }
+.map-side-list button {
+  width: 100%; padding: 12px 0;
+  display: flex; justify-content: space-between; align-items: center; gap: 10px;
+  border: 0; background: transparent;
+  color: var(--text); font-family: inherit; font-size: 16px; font-weight: 700;
+  text-align: left; cursor: pointer; transition: color 0.15s, padding 0.2s;
+}
+.map-side-list button:hover { color: var(--primary); padding-left: 6px; }
+.map-head .section-title { text-align: left; }
+@media (max-width: 900px) { .map-head .section-title { text-align: center; } }
+.map-side-count {
+  min-width: 26px; height: 22px; padding: 0 8px;
+  display: inline-grid; place-items: center;
+  border-radius: 99px; background: var(--primary); color: var(--on-primary);
+  font-size: 12px; font-weight: 700;
+}
+.map-side-empty { color: var(--text-muted); font-size: 14px; }
+.map-hint {
+  position: absolute; left: 52px; bottom: 32px;
+  font-size: 12px; color: var(--text-muted);
+}
+@media (hover: none) { .map-hint { display: none; } }
+
+/* Narrow screens: no free side to float over, so heading, map and list stack. */
+@media (max-width: 900px) {
+  .map-section { height: auto; max-height: none; min-height: 0; display: flex; flex-direction: column; }
+  .map-overlay { display: contents; }
+  .map-head { order: 1; padding: 56px 20px 0; text-align: center; }
+  .map-frame { inset: auto; }
+  .map-frame { order: 2; position: relative; height: 70vh; min-height: 420px; }
+  .map-side { order: 3; padding: 0 20px 48px; max-width: 520px; width: 100%; margin: 0 auto; box-sizing: border-box; }
+  .map-hint { display: none; }
+  .smap-controls { right: 16px; bottom: 16px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Effects adapted from React Bits (reactbits.dev): Blur Text, Shiny Text, Spotlight Card.
+   Magnet is in index.js (usePointerEffects). Ported to plain CSS: no motion/gsap on this page.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Blur Text: each word starts blurred and lifted, then settles. Ends on filter/transform none so
+   nothing is left composited once it has played. */
+.blur-word { display: inline-block; animation: blurIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes blurIn {
+  0%   { opacity: 0;   filter: blur(10px); transform: translateY(-0.3em); }
+  60%  { opacity: 0.9; filter: blur(3px);  transform: translateY(0.03em); }
+  100% { opacity: 1;   filter: none;       transform: none; }
+}
+
+/* Shiny Text: a band of light sweeps across the accent line, then rests before the next pass.
+   The text fill is the gradient itself, so the !important colour on .hero-title-accent no longer
+   decides what you see. */
+.hero-photo .hero-title-accent.shiny-text {
+  background-image: linear-gradient(110deg,
+    var(--k-peach) 0%, var(--k-peach) 42%,
+    var(--k-cream) 50%,
+    var(--k-peach) 58%, var(--k-peach) 100%);
+  background-size: 250% 100%;
+  background-position: 100% 0;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation:
+    blurIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both,
+    shinySweep 5s ease-in-out infinite;
+}
+@keyframes shinySweep {
+  0%        { background-position: 100% 0; }
+  35%, 100% { background-position: 0% 0; }
+}
+
+/* Spotlight Card: a soft glow that follows the pointer (--mx/--my set from index.js). */
+.verify-card::after,
+.platform-item::after {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%),
+    rgb(var(--primary-rgb) / 0.14), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.verify-card:hover::after,
+.platform-item:hover::after { opacity: 1; }
+
+/* Magnet: index.js sets the offset inline; this only eases it back and forth. */
+.hero-photo .hero-btn-browse,
+.hero-photo .hero-btn-list { transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.18s, background 0.18s, border-color 0.18s, color 0.18s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .blur-word { animation: none; }
+  .hero-photo .hero-title-accent.shiny-text { animation: none; }
+}
+
+/* ── Browse section (BrowseSection in index.js): every approved listing, filterable ── */
+#browse { scroll-margin-top: 90px; }
+.browse-section { max-width: 1180px; }
+.bs-filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.6fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.bs-field {
+  height: 46px; padding: 0 16px;
+  border-radius: 12px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text);
+  font-family: inherit; font-size: 14px; font-weight: 600;
+  transition: border-color 0.15s;
+}
+.bs-field:focus { outline: none; border-color: var(--primary); }
+.bs-search::placeholder { color: var(--text-muted); font-weight: 500; }
+.bs-meta {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin-bottom: 18px;
+  font-size: 14px; font-weight: 600; color: var(--text-muted); text-align: left;
+}
+.bs-clear {
+  padding: 0; border: 0; background: none; cursor: pointer;
+  font-family: inherit; font-size: 13.5px; font-weight: 700; color: var(--primary);
+}
+.bs-clear:hover { text-decoration: underline; }
+.bs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+.bs-empty { padding: 40px 0; color: var(--text-muted); font-size: 15px; }
+@media (max-width: 900px) {
+  .bs-filters { grid-template-columns: 1fr 1fr; }
+  .bs-search { grid-column: 1 / -1; }
+}
+@media (max-width: 480px) {
+  .bs-filters { grid-template-columns: 1fr; }
+  .bs-grid { grid-template-columns: 1fr; }
 }

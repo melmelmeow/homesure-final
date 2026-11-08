@@ -2,12 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HomeSure – Seller Help & Support Center</title>
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/kasafide-favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../../assets/img/favicon-16.png" />
+  <link rel="apple-touch-icon" href="../../assets/img/apple-touch-icon.png" />
+  <link rel="manifest" href="../../site.webmanifest" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="../../assets/js/kasafide-theme.js"></script>
+  <script src="../../assets/js/kasafide-logo.js"></script>
+  <link rel="stylesheet" href="../../assets/css/kasafide-theme.css" />
+  <title data-assistant-name>Meowrie</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../../assets/css/seller/seller-dashboard.css" />
-  <link rel="stylesheet" href="../../assets/css/chatbot-widget.css" />
+  <link rel="stylesheet" href="../../assets/css/chatbot-widget.css?v=2" />
   <script>
     // seller-dashboard.css keys its dark/light tokens off [data-theme] on <html>. Normally
     // sidebar.js's init() sets that as a side effect of building the sidebar — this page
@@ -17,72 +24,84 @@
     document.documentElement.setAttribute('data-theme', KasafideTheme.get());
   </script>
   <style>
+    /* ═══════════════════════════════════════════════════════════════════════
+       Same redesign as buyer/help.html — see that file for the full reasoning.
+       Short version: this used to be the dashboard's sidebar + topbar (a
+       non-functional search bar — KasafideTopbar.init() was never given an
+       onSearch handler) wrapped around a second, separately-boxed chat card,
+       on top of the mobile bottom tab bar. Replaced with the iOS pattern:
+       one nav bar, full-bleed thread, no tab bar competing with the input
+       bar for the bottom safe area.
+       ═══════════════════════════════════════════════════════════════════════ */
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #1E293B; --card: #253347; --card2: #2c3d55; --border: rgba(255, 255, 255, 0.08);
-      --text: #f1f5f9; --muted: rgba(255, 255, 255, 0.45); --muted2: rgba(255, 255, 255, 0.7);
-      --teal: #00c9a7; --teal-faint: rgba(0, 201, 167, 0.12); --teal-mid: rgba(0, 201, 167, 0.25);
-      --radius: 14px;
-    }
-    [data-theme="light"] {
-      --bg: #f8fafc; --card: #ffffff; --card2: #f1f5f9; --border: rgba(0, 0, 0, 0.08);
-      --text: #0f172a; --muted: rgba(0, 0, 0, 0.5); --muted2: rgba(0, 0, 0, 0.7);
-      --teal-faint: rgba(0, 201, 167, 0.10); --teal-mid: rgba(0, 201, 167, 0.20);
-    }
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
-    .layout { display: flex; height: 100vh; }
-    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
-    .content { flex: 1; overflow-y: auto; padding: 26px 32px 60px; }
-    .content::-webkit-scrollbar { width: 5px; }
-    .content::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #1fc8b4, #0a5e53); border-radius: 99px; }
 
-    .page-header { margin-bottom: 24px; }
-    .page-title { font-size: 24px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 10px; }
-    .page-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
-
-    .hero-search-card {
-      background: linear-gradient(135deg, rgba(0, 201, 167, 0.15) 0%, rgba(37, 51, 71, 0.8) 100%);
-      border: 1px solid var(--teal-mid); border-radius: var(--radius);
-      padding: 24px 28px; margin-bottom: 24px; display: flex; flex-direction: column; gap: 14px;
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
     }
-    .hero-search-title { font-size: 18px; font-weight: 800; color: var(--text); }
-    .hero-search-sub { font-size: 13px; color: var(--muted2); line-height: 1.5; }
-    .hero-search-input-wrap { position: relative; max-width: 600px; width: 100%; }
-    .hero-search-input-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--muted); pointer-events: none; }
-    .hero-search-input {
-      width: 100%; background: var(--card); border: 1.5px solid var(--border); border-radius: 12px;
-      padding: 12px 16px 12px 42px; font-size: 13.5px; color: var(--text); font-family: inherit; outline: none; transition: all 0.2s;
-    }
-    .hero-search-input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(0, 201, 167, 0.15); }
 
-    /* User Guides Grid */
-    .guides-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 28px; }
-    @media (max-width: 900px) { .guides-grid { grid-template-columns: 1fr; } }
-    .guide-card {
-      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 20px 22px; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; gap: 10px;
+    .help-screen {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      height: 100dvh;
     }
-    .guide-card:hover { transform: translateY(-2px); border-color: var(--teal); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
-    .guide-header { display: flex; align-items: center; gap: 12px; }
-    .guide-icon { width: 42px; height: 42px; border-radius: 10px; background: var(--teal-faint); color: var(--teal); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .guide-icon svg { width: 20px; height: 20px; }
-    .guide-title { font-size: 15px; font-weight: 700; color: var(--text); }
-    .guide-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
-    .guide-steps-list { display: none; margin-top: 10px; padding-left: 20px; font-size: 13px; color: var(--muted2); line-height: 1.7; border-top: 1px solid var(--border); padding-top: 12px; }
-    .guide-card.open .guide-steps-list { display: block; }
-    .guide-card.open { border-color: var(--teal); }
 
-    /* FAQ Section */
-    .section-headline { font-size: 16px; font-weight: 800; color: var(--text); margin: 24px 0 14px; display: flex; align-items: center; justify-content: space-between; }
-    .faq-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
-    .faq-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-    .faq-card.open { border-color: var(--teal-mid); }
-    .faq-header { padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; user-select: none; }
-    .faq-q { font-size: 13.5px; font-weight: 700; color: var(--text); }
-    .faq-arrow { width: 18px; height: 18px; color: var(--muted); transition: transform 0.2s; }
-    .faq-card.open .faq-arrow { transform: rotate(180deg); color: var(--teal); }
-    .faq-answer { display: none; padding: 12px 20px 16px; font-size: 13px; color: var(--muted2); line-height: 1.6; border-top: 1px solid var(--border); }
-    .faq-card.open .faq-answer { display: block; }
+    /* ── iOS-style nav bar ── */
+    .ios-navbar {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      padding: calc(10px + env(safe-area-inset-top, 0px)) 8px 10px;
+      background: color-mix(in srgb, var(--bg) 82%, transparent);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .ios-back-btn {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      background: none;
+      border: none;
+      color: var(--teal);
+      font-size: 15px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      padding: 6px 8px 6px 2px;
+      flex: 0 0 auto;
+      min-width: 90px;
+    }
+    .ios-back-btn svg { width: 22px; height: 22px; flex-shrink: 0; }
+
+    .ios-navbar-identity {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1px;
+      min-width: 0;
+    }
+
+    .ios-navbar-avatar {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: transparent;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 2px;
+      overflow: hidden;
+    }
+    .ios-navbar-avatar img { width: 34px; height: 34px; display: block; }
 
     .ios-navbar-name { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.2; }
     .ios-navbar-status {
@@ -210,46 +229,41 @@
   </style>
 </head>
 <body>
-<div class="layout">
-  <div id="hs-sidebar"></div>
-  <div class="main">
-    <div id="hs-topbar"></div>
-    <div class="content">
-
-      <!-- ── PAGE HEADER ── -->
-      <div class="page-header">
-        <h1 class="page-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" width="26" height="26" style="color:var(--teal)">
-            <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-          </svg>
-          Seller Help & Support Center
-        </h1>
-        <p class="page-sub">Find comprehensive seller user guides, title verification guidelines, and viewing management procedures.</p>
+  <div class="help-screen">
+    <header class="ios-navbar">
+      <button class="ios-back-btn" onclick="window.location.href='seller.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Dashboard
+      </button>
+      <div class="ios-navbar-identity">
+        <div class="ios-navbar-avatar"><img src="../../assets/img/kasafide-chatbot-avatar.svg" alt="" /></div>
+        <div class="ios-navbar-name" data-assistant-name>Meowrie</div>
+        <div class="ios-navbar-status"><span class="dot"></span>Online</div>
       </div>
       <div class="ios-navbar-spacer"></div>
     </header>
 
-      <!-- Chat Window (Full Page) -->
-      <div class="chatbot-window open" id="chatbotWindow">
-        <div class="chatbot-header">
-          <div class="chatbot-avatar">
-            <img src="../../assets/img/homesure-cat.svg" alt="Meowrie" />
-          </div>
-          <div class="chatbot-header-info">
-            <div class="chatbot-header-title">Meowrie</div>
-            <div class="chatbot-header-status">
-              <span class="chatbot-status-dot"></span>
-              Online - Always here to help
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="chatbot-messages" id="chatbotMessages"></div>
 
-    </div><!-- /content -->
+    <div class="ios-input-bar">
+      <textarea
+        class="ios-input"
+        id="chatbotInput"
+        placeholder="Message"
+        rows="1"
+        onkeydown="ChatbotWidget.handleKeyDown(event)"
+      ></textarea>
+      <button class="ios-send-btn" id="chatbotSendBtn" onclick="ChatbotWidget.sendMessage()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="19" x2="12" y2="5"/>
+          <polyline points="5 12 12 5 19 12"/>
+        </svg>
+      </button>
+    </div>
   </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0/dist/umd/supabase.js"></script>
-<script src="../../assets/js/config.js"></script>
+<script src="../../assets/js/config.js?v=2"></script>
 <script src="../../assets/js/session.js"></script>
 <script>
   // Same guard every other seller page has (seller-dashboard.js:4) — this page never had one, so
@@ -258,37 +272,9 @@
   if (!session || session.role !== 'seller') window.location.href = '../../auth/signin.html';
 </script>
 <script src="../../assets/js/data.js"></script>
-<script src="../../components/sidebar.js"></script>
-<script src="../../components/customer-service.js"></script>
-<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/chatbot-widget.js?v=4"></script>
 <script>
-  HomeSureSidebar.init({ activePage: 'help' });
-  HomeSureTopbar.init({ placeholder: 'Search help & user guides...' });
-
-  function toggleGuide(card) {
-    card.classList.toggle('open');
-  }
-
-  function toggleFaq(header) {
-    const card = header.closest('.faq-card');
-    card.classList.toggle('open');
-  }
-
-  function filterHelpContent(val) {
-    const q = val.toLowerCase().trim();
-
-    // Filter user guides
-    document.querySelectorAll('.guide-card').forEach(card => {
-      const kw = (card.dataset.keywords || '') + ' ' + card.innerText.toLowerCase();
-      card.style.display = !q || kw.includes(q) ? 'flex' : 'none';
-    });
-
-    // Filter FAQs
-    document.querySelectorAll('.faq-card').forEach(card => {
-      const kw = (card.dataset.keywords || '') + ' ' + card.innerText.toLowerCase();
-      card.style.display = !q || kw.includes(q) ? 'block' : 'none';
-    });
-  }
+  ChatbotWidget.initFullPage();
 </script>
 </body>
 </html>

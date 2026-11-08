@@ -1,9 +1,22 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   CHATBOT WIDGET
-   AI-powered chatbot with auto-escalation to human agents
+   CHATBOT WIDGET — Meowrie
+   Answers common questions from a fixed set of keyword rules (see processUserMessage below), with
+   escalation to human support. Not an AI model.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 const ChatbotWidget = (function() {
+
+  // The assistant's name, in one place. The widget's own header and greeting use it, and any
+  // element on a page marked data-assistant-name gets it written in (the Help pages' headers), as
+  // does the page title when the <title> is marked the same way. Rename her here, nowhere else.
+  const NAME = 'Meowrie';
+
+  function applyName() {
+    document.querySelectorAll('[data-assistant-name]').forEach((el) => {
+      if (el.tagName === 'IMG') el.alt = NAME; else el.textContent = NAME;
+    });
+    if (document.querySelector('title[data-assistant-name]')) document.title = NAME;
+  }
 
   let isOpen = false;
   let messages = [];
@@ -29,10 +42,10 @@ const ChatbotWidget = (function() {
       <div class="chatbot-window" id="chatbotWindow">
         <div class="chatbot-header">
           <div class="chatbot-avatar">
-            <img src="/assets/img/kasafide-chatbot-avatar.svg" alt="Kasafide Assistant" />
+            <img src="/assets/img/kasafide-chatbot-avatar.svg" alt="${NAME}" />
           </div>
           <div class="chatbot-header-info">
-            <div class="chatbot-header-title">Kasafide Assistant</div>
+            <div class="chatbot-header-title">${NAME}</div>
             <div class="chatbot-header-status">
               <span class="chatbot-status-dot"></span>
               Online
@@ -72,7 +85,7 @@ const ChatbotWidget = (function() {
 
     // Send welcome message
     setTimeout(() => {
-      addBotMessage('Hi! 👋 I\'m the Kasafide Assistant. How can I help you today?', true);
+      addBotMessage(`Hi! 👋 I'm ${NAME}, Kasafide's assistant. How can I help you today?`, true);
     }, 500);
   }
 
@@ -147,10 +160,12 @@ const ChatbotWidget = (function() {
 
     container.innerHTML = messages.map(msg => {
       if (msg.type === 'user') {
+        // No avatar beside your own messages (like any chat app), and the text is escaped: it is
+        // whatever was typed, so a "<" in it must show as a "<", not become markup.
+        const safe = String(msg.text).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
         return `
           <div class="chatbot-message user">
-            <div class="chatbot-message-avatar">ME</div>
-            <div class="chatbot-message-bubble">${msg.text}</div>
+            <div class="chatbot-message-bubble">${safe}</div>
           </div>
         `;
       } else {
@@ -199,7 +214,7 @@ const ChatbotWidget = (function() {
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // PROCESS USER MESSAGE (AI LOGIC)
+  // PROCESS USER MESSAGE (keyword rules, not an AI model)
   // ═══════════════════════════════════════════════════════════════════════════
 
   function processUserMessage(text) {
@@ -294,7 +309,7 @@ const ChatbotWidget = (function() {
 
   function escalate() {
     // Redirect to messages page or show contact form
-    addBotMessage('Redirecting you to our support team... Please check your Messages page or email us at support@homesure.com');
+    addBotMessage('Taking you to our support team now. Their reply will appear in your Messages.');
 
     setTimeout(() => {
       window.location.href = window.location.pathname.includes('/module/')
@@ -319,9 +334,10 @@ const ChatbotWidget = (function() {
   // ═══════════════════════════════════════════════════════════════════════════
 
   function initFullPage() {
+    applyName();
     // Send welcome message for full-page mode
     setTimeout(() => {
-      addBotMessage('Hi! 👋 I\'m the Kasafide Assistant. How can I help you today?', true);
+      addBotMessage(`Hi! 👋 I'm ${NAME}, Kasafide's assistant. How can I help you today?`, true);
     }, 500);
 
     // Focus input
@@ -333,6 +349,7 @@ const ChatbotWidget = (function() {
   // ═══════════════════════════════════════════════════════════════════════════
 
   return {
+    NAME,
     init,
     initFullPage,
     toggle,

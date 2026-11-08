@@ -25,7 +25,9 @@
   <meta name="twitter:description" content="Verified homes in Sta. Maria, Bulacan." />
   <meta name="twitter:image" content="/assets/img/og-image.png" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/chatbot-widget.css" />
+  <link rel="stylesheet" href="assets/css/chatbot-widget.css?v=2" />
+  <link rel="stylesheet" href="assets/css/glass-nav.css" />
+  <link rel="stylesheet" href="assets/css/site-nav.css?v=2" />
   <style>
     * {
       margin: 0;
@@ -45,52 +47,6 @@
       flex-direction: column;
     }
 
-    /* Header */
-    .help-header {
-      background: var(--primary);
-      padding: 16px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-    }
-
-    .help-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-    }
-
-    .help-logo img {
-      height: 28px;
-    }
-
-    .help-logo-text {
-      font-size: 17px;
-      font-weight: 800;
-      color: var(--on-primary);
-      letter-spacing: -0.02em;
-    }
-
-    .help-back-btn {
-      padding: 8px 16px;
-      background: rgb(var(--k-white-rgb) / 0.15);
-      border: 1px solid rgb(var(--k-white-rgb) / 0.3);
-      border-radius: 8px;
-      color: var(--on-primary);
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 600;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .help-back-btn:hover {
-      background: rgba(255, 255, 255, 0.25);
-    }
 
     /* Container */
     .help-container {
@@ -127,7 +83,7 @@
       border-radius: 12px;
       box-shadow: 0 4px 20px rgb(var(--shade-rgb) / min(0.3, var(--shadow-cap, 1)));
       display: flex;
-      max-height: calc(100vh - 180px);
+      max-height: calc(100vh - 230px);
     }
 
     .chatbot-bubble {
@@ -153,36 +109,24 @@
     }
   </style>
 </head>
-<body>
-  <!-- Header -->
-  <div class="help-header">
-    <a href="index.html" class="help-logo">
-      <span class="kf-logo" data-size="28" role="img" aria-label="Kasafide logo"></span>
-      <span class="help-logo-text">Kasafide</span>
-    </a>
-    <a href="index.html" class="help-back-btn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
-        <polyline points="15 18 9 12 15 6"/>
-      </svg>
-      Back to Home
-    </a>
-  </div>
+<body class="sn-offset">
+  <nav class="site-nav" data-page="help"></nav>
 
   <!-- Help Container -->
   <div class="help-container">
     <div class="help-title-section">
       <div class="help-title">Help & Support</div>
-      <div class="help-subtitle">Get instant answers from our AI assistant or connect with our support team</div>
+      <div class="help-subtitle">Get quick answers from Meowrie, our assistant, or connect with our support team</div>
     </div>
 
     <!-- Chat Window -->
     <div class="chatbot-window open" id="chatbotWindow">
       <div class="chatbot-header">
         <div class="chatbot-avatar">
-          <img src="assets/img/kasafide-chatbot-avatar.svg" alt="Kasafide Assistant" />
+          <img src="assets/img/kasafide-chatbot-avatar.svg" alt="Meowrie" data-assistant-name />
         </div>
         <div class="chatbot-header-info">
-          <div class="chatbot-header-title">Kasafide Assistant</div>
+          <div class="chatbot-header-title" data-assistant-name>Meowrie</div>
           <div class="chatbot-header-status">
             <span class="chatbot-status-dot"></span>
             Online - Always here to help
@@ -212,6 +156,8 @@
     </div>
   </div>
 
-<script src="assets/js/chatbot-widget.js"></script>
+<script src="assets/js/chatbot-widget.js?v=4"></script>
+<script src="assets/js/site-nav.js?v=3"></script>
+<script>ChatbotWidget.initFullPage();</script>
 </body>
 </html>

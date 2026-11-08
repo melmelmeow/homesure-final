@@ -474,3 +474,82 @@ footer {
   .principles-section, .values-section, .mv-section,
   .team-section, .hiring-section { padding: 44px 18px; }
 }
+
+/* ── Team flip cards ───────────────────────────────────────────────────────────
+   Front: the photo with name and title. Back: a short profile from each member's CV. Hover or
+   keyboard focus flips it; a tap does on touch screens (about.html adds .is-flipped). Both faces
+   share one grid cell, so the card is as tall as whichever face needs more room. */
+.team-card {
+  overflow: visible; background: none; border: 0; padding: 0;
+  perspective: 1200px; cursor: pointer; outline: none;
+}
+.team-card:hover { transform: none; }
+.team-flip {
+  display: grid;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.team-card:hover .team-flip,
+.team-card:focus-visible .team-flip,
+.team-card.is-flipped .team-flip { transform: rotateY(180deg); }
+.team-face {
+  grid-area: 1 / 1;
+  -webkit-backface-visibility: hidden; backface-visibility: hidden;
+  border-radius: 16px; overflow: hidden;
+  background: var(--bg); border: 1px solid rgb(var(--wash-rgb) / 0.07);
+}
+[data-theme="light"] .team-face { background: var(--surface); border-color: var(--border); box-shadow: 0 4px 16px rgb(var(--k-ink-rgb) / 0.08); }
+.team-card:focus-visible .team-face { border-color: var(--primary); }
+
+.team-front { display: flex; flex-direction: column; }
+.team-front-cap { padding: 16px 18px 18px; }
+
+.team-back {
+  transform: rotateY(180deg);
+  display: flex; flex-direction: column; align-items: flex-start;
+  padding: 20px 18px 18px;
+  border-color: rgb(var(--primary-rgb) / 0.35);
+  background:
+    radial-gradient(circle at 100% 0%, rgb(var(--primary-rgb) / 0.14), transparent 55%),
+    var(--bg);
+}
+[data-theme="light"] .team-back {
+  background:
+    radial-gradient(circle at 100% 0%, rgb(var(--primary-rgb) / 0.10), transparent 55%),
+    var(--surface);
+  border-color: rgb(var(--primary-rgb) / 0.35);
+}
+.team-back-avatar {
+  width: 48px; height: 48px; border-radius: 50%;
+  object-fit: cover; object-position: top;
+  border: 2px solid rgb(var(--primary-rgb) / 0.6);
+  margin-bottom: 12px;
+}
+.team-back .team-role { margin-bottom: 12px; }
+.team-back-label {
+  font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 2px;
+}
+.team-back .team-subrole { color: var(--text); font-weight: 600; margin-bottom: 10px; }
+.team-bio { font-size: 12.5px; line-height: 1.55; color: var(--text-soft); margin-bottom: 12px; }
+.team-skills { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: auto; padding-bottom: 12px; }
+.team-skills span {
+  padding: 3px 9px; border-radius: 99px;
+  font-size: 10.5px; font-weight: 700;
+  background: rgb(var(--primary-rgb) / 0.12); color: var(--primary);
+}
+.team-back .team-socials { margin-top: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .team-flip { transition: none; }
+}
+/* Every card in a row matches the tallest one (the grid stretches the card; the flip and its
+   faces fill it). */
+.team-card { display: grid; }
+.team-flip { height: 100%; }
+.team-front-cap { flex: 1; display: flex; flex-direction: column; }
+.team-front-cap::after {
+  content: "View profile \21BB";
+  margin-top: auto; padding-top: 14px;
+  font-size: 11.5px; font-weight: 700; color: var(--text-muted);
+}

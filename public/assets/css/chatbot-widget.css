@@ -223,8 +223,13 @@
   }
 }
 
+/* Your own messages sit on the right. This used to be row-reverse (to put a "ME" avatar on the
+   right of the bubble); the Help pages add justify-content: flex-end, and flex-end on a reversed
+   row is the LEFT edge, so messages landed on the wrong side. The avatar is gone, so a plain row
+   pushed to the end works everywhere. */
 .chatbot-message.user {
-  flex-direction: row-reverse;
+  flex-direction: row;
+  justify-content: flex-end;
 }
 
 .chatbot-message-avatar {
