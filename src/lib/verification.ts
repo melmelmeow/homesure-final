@@ -59,3 +59,47 @@ export async function cooldownRemaining(userId: string): Promise<number> {
   const elapsed = (Date.now() - new Date(data.sent_at).getTime()) / 1000;
   return Math.max(0, Math.ceil(RESEND_COOLDOWN_SECONDS - elapsed));
 }
+
+// ── Password resets (table from migration 015) ─────────────────────────────────────────────────
+// Same idea as the confirmation tokens above, in their own table so the two never cancel each
+// other, and much shorter-lived: a reset link is a key to the account.
+
+/** How long a password-reset link stays usable. */
+export const RESET_TTL_MINUTES = 60;
+
+/** Store a reset token for this user and return it; any earlier unused one is spent first. */
+export async function issueResetToken(userId: string, email: string): Promise<string> {
+  const admin = getAdminSupabase();
+  const { token, hash } = newToken();
+
+  await admin
+    .from("password_resets")
+    .update({ used_at: new Date().toISOString() })
+    .eq("user_id", userId)
+    .is("used_at", null);
+
+  const { error } = await admin.from("password_resets").insert({
+    user_id: userId,
+    email,
+    token_hash: hash,
+    expires_at: new Date(Date.now() + RESET_TTL_MINUTES * 60 * 1000).toISOString(),
+  });
+
+  if (error) throw new Error(`Could not store the reset token: ${error.message}`);
+  return token;
+}
+
+/** Seconds still to wait before this user may request another reset mail, or 0. */
+export async function resetCooldownRemaining(userId: string): Promise<number> {
+  const { data } = await getAdminSupabase()
+    .from("password_resets")
+    .select("sent_at")
+    .eq("user_id", userId)
+    .order("sent_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (!data?.sent_at) return 0;
+  const elapsed = (Date.now() - new Date(data.sent_at).getTime()) / 1000;
+  return Math.max(0, Math.ceil(RESEND_COOLDOWN_SECONDS - elapsed));
+}

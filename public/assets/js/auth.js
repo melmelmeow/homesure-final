@@ -92,6 +92,15 @@ function setRole(role) {
   document.getElementById('sellerBtn').classList.toggle('active', role === 'seller');
 }
 
+// signup.html?role=seller arrives with Seller / Lister already picked: every "List Your Property"
+// button links here that way, so a landlord does not have to notice the toggle first.
+// ?role=buyer does the same for "Sign Up as Buyer". Anything else leaves the default (buyer).
+(function roleFromURL() {
+  if (!document.getElementById('sellerBtn')) return;
+  const wanted = new URLSearchParams(window.location.search).get('role');
+  if (wanted === 'seller' || wanted === 'buyer') setRole(wanted);
+})();
+
 // ══════════════════════════════════════════════════════════════════════════════
 // Validation Helpers
 // Because "oops" is not a valid error message
@@ -326,6 +335,7 @@ async function resendEmail() {
 
   const MESSAGES = {
     success: ['Your email is confirmed. You can sign in now.', 'ok'],
+    reset:   ['Your password is changed. Sign in with the new one.', 'ok'],
     already: ['That email was already confirmed. Go ahead and sign in.', 'ok'],
     expired: ['That link has expired. Sign up again, or use "Resend" to get a new one.', 'error'],
     invalid: ['That confirmation link is not valid. Please request a new one.', 'error'],
@@ -373,16 +383,101 @@ async function submitForgotPassword() {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim())) { showError(input, 'Enter a valid email address'); return; }
   clearError(input);
 
-  const { error } = await sb.auth.resetPasswordForEmail(input.value.trim(), {
-    // PLACEHOLDER: kailangan din i-whitelist, at kailangan ng page na tumatanggap ng bagong password
-    redirectTo: window.location.origin + '/auth/signin.html'
-  });
-  if (error) { showError(input, error.message); return; }
+  // Kasafide sends the reset mail itself (POST /api/auth/forgot-password, migration 015). It used
+  // to call sb.auth.resetPasswordForEmail, but the auth server has no SMTP (the page showed "{}")
+  // and its link landed on sign-in, which has no way to set a new password. The link now opens
+  // auth/reset-password.html.
+  const email = input.value.trim();
+  const sendBtn = document.getElementById('fpSendBtn');
+  setButtonLabel(sendBtn, 'Sending…', true);
 
-  document.getElementById('sentEmail').textContent = input.value.trim();
-  document.getElementById('formView').style.display    = 'none';
+  // Go straight to "Check Your Email" so the envelope can play the send there.
+  document.getElementById('sentEmail').textContent = email;
+  document.getElementById('formView').style.display = 'none';
   document.getElementById('successView').style.display = '';
-  startFpCountdown(32);
+  const resendBtn = document.getElementById('fpResendBtn');
+  setButtonLabel(resendBtn, 'Sending…', true);
+  document.getElementById('fpCountdown').textContent = '';
+
+  const ok = await playSend(email);
+  setButtonLabel(sendBtn, 'Send Reset Link', false);
+  if (!ok.sent) {
+    // Back to the form, error under the email.
+    document.getElementById('successView').style.display = 'none';
+    document.getElementById('formView').style.display = '';
+    setButtonLabel(resendBtn, 'Resend Email', false);
+    showError(input, ok.error);
+    return;
+  }
+  setButtonLabel(resendBtn, 'Resend Email', false);
+  startFpCountdown(60);
+}
+
+// ── Send animation (in the envelope; the look is in auth.css under #fpMailIcon) ───
+const SEND_MIN_MS = 1300;   // at least one full flight, so a fast reply is not a flicker
+const fpWait = (ms) => new Promise((r) => setTimeout(r, ms));
+const fpCalm = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const FP_SENT_LINE = 'If this email has a Kasafide account, a reset link is on its way to';
+
+function setButtonLabel(btn, label, busy) {
+  if (!btn) return;
+  btn.textContent = label;
+  btn.disabled = !!busy;
+  btn.setAttribute('aria-busy', busy ? 'true' : 'false');
+}
+
+function popBadge(badge) {
+  if (!badge) return;
+  badge.classList.remove('pop');
+  void badge.offsetWidth;            // restart it if it already played
+  badge.classList.add('pop');
+}
+
+// Sends the reset email while the envelope animates. Resolves { sent: true } or
+// { sent: false, error }. On success: envelope flies → big check draws → check shrinks into the
+// badge. On failure the envelope just settles back.
+async function playSend(email) {
+  const icon = document.getElementById('fpMailIcon');
+  const title = document.getElementById('fpSentTitle');
+  const line = document.getElementById('fpSentLine');
+  const badge = icon && icon.querySelector('.fp-success-check');
+
+  if (icon) { icon.classList.remove('is-sent', 'is-settling'); badge && badge.classList.remove('pop'); icon.classList.add('is-sending'); }
+  if (title) title.textContent = 'Sending…';
+  if (line) line.textContent = 'Sending a reset link to';
+
+  const [error] = await Promise.all([requestResetEmail(email), fpWait(fpCalm() ? 0 : SEND_MIN_MS)]);
+  if (icon) icon.classList.remove('is-sending');
+  if (title) title.textContent = 'Check Your Email';
+  if (line) line.textContent = FP_SENT_LINE;
+  if (error) { popBadge(badge); return { sent: false, error }; }
+
+  if (icon && !fpCalm()) {
+    icon.classList.add('is-sent');              // big check pops in and draws
+    await fpWait(950);
+    icon.classList.add('is-settling');          // …then shrinks into the badge corner
+    await fpWait(560);
+    icon.classList.remove('is-sent', 'is-settling');
+  }
+  popBadge(badge);
+  return { sent: true };
+}
+
+// Returns an error message to show, or null. The route answers the same whether or not the email
+// has an account, so "sent" here never confirms that someone is registered.
+async function requestResetEmail(email) {
+  try {
+    const res = await fetch('/api/auth/forgot-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    if (res.ok) return null;
+    const data = await res.json().catch(() => ({}));
+    return data.error || 'We could not send the reset email. Please try again.';
+  } catch (err) {
+    return 'We could not reach the server. Please try again.';
+  }
 }
 
 function startFpCountdown(seconds) {
@@ -400,9 +495,14 @@ function startFpCountdown(seconds) {
 
 async function resendReset() {
   const email = document.getElementById('sentEmail').textContent;
-  await sb.auth.resetPasswordForEmail(email);
+  const btn = document.getElementById('fpResendBtn');
   clearInterval(_fpTimer);
-  startFpCountdown(32);
+  document.getElementById('fpCountdown').textContent = '';
+  setButtonLabel(btn, 'Sending…', true);
+  const result = await playSend(email);
+  setButtonLabel(btn, 'Resend Email', false);
+  if (!result.sent) { alert(result.error); return; }
+  startFpCountdown(60);
 }
 
 // ── Dodge Button Easter Egg REMOVED ───────────────────────────────────────────

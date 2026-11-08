@@ -27,9 +27,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/about.css" />
+  <link rel="stylesheet" href="assets/css/about.css?v=3" />
   <link rel="stylesheet" href="assets/css/responsive.css" />
   <link rel="stylesheet" href="assets/css/glass-nav.css" />
+  <link rel="stylesheet" href="assets/css/site-nav.css?v=2" />
   <script>
     (function() {
       var t = KasafideTheme.get();
@@ -40,21 +41,7 @@
 <body>
 
   <!-- ── NAV ── -->
-  <nav>
-    <a class="nav-logo" href="index.html">
-      <span class="nav-catstone-wrap">
-        <img src="assets/img/CatsTone Logo.svg" alt="CatsTone" class="nav-catstone-img" />
-      </span>
-      <span class="nav-logo-divider"></span>
-      <span class="kf-logo" data-size="30" role="img" aria-label="Kasafide logo"></span>
-      Kasafide
-    </a>
-    <div class="nav-btns">
-      <button class="nav-theme-btn" id="themeBtn" title="Toggle theme"></button>
-      <button class="btn-outline" onclick="location.href='auth/signin.html'">Sign In</button>
-      <button class="btn-solid"   onclick="location.href='auth/signup.html'">Sign Up</button>
-    </div>
-  </nav>
+  <nav class="site-nav" data-page="about"></nav>
 
   <!-- ── HERO ── -->
   <section class="about-hero">
@@ -79,28 +66,9 @@
     </div>
   </section>
 
-  <!-- ── STATS BAR ── -->
-  <div class="stats-bar">
-    <div class="stat-item">
-      <div class="stat-num">100%</div>
-      <div class="stat-lbl">Verified Sellers<br><span>Every listing is identity-checked</span></div>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat-item">
-      <div class="stat-num">0</div>
-      <div class="stat-lbl">Fake Listings<br><span>Our system filters them all out</span></div>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat-item">
-      <div class="stat-num">24/7</div>
-      <div class="stat-lbl">Secure Platform<br><span>Always-on data protection</span></div>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat-item">
-      <div class="stat-num">10k+</div>
-      <div class="stat-lbl">Happy Renters<br><span>Across Sta. Maria, Bulacan</span></div>
-    </div>
-  </div>
+  <!-- A stats bar sat here ("10k+ Happy Renters", "0 Fake Listings", "100%", "24/7"). None of it
+       was counted from anything; the landing page's "Our Numbers" section shows the real,
+       live figures instead. -->
 
   <!-- ── STORY ── -->
   <section class="story-section">
@@ -244,84 +212,133 @@
     </div>
     <div class="team-grid">
 
-      <div class="team-card">
-        <img class="team-photo" loading="lazy" src="assets/img/Lhenna.png" alt="Lhenna-Marie Velasco" />
-        <div class="team-info">
-          <div class="team-name">Lhenna-Marie Velasco</div>
-          <div class="team-role accent">Founder &amp; CEO</div>
-          <div class="team-subrole">Project Manager and Front-End Developer</div>
-          <div class="team-socials">
-            <a href="https://www.linkedin.com/in/lhenna-marie-velasco-151825342/" class="team-social" title="LinkedIn" aria-label="Lhenna-Marie Velasco on LinkedIn" target="_blank" rel="noopener noreferrer">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-            </a>
-            <a href="https://github.com/LhennaV" class="team-social" title="GitHub" aria-label="Lhenna-Marie Velasco on GitHub" target="_blank" rel="noopener noreferrer">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-            </a>
-            <a href="mailto:vlhennamarie@gmail.com" class="team-social" title="Email" aria-label="Email Lhenna-Marie Velasco">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            </a>
+      <div class="team-card" tabindex="0" aria-label="Lhenna-Marie Velasco, Founder and CEO. Flip for profile.">
+        <div class="team-flip">
+          <div class="team-face team-front">
+  <img class="team-photo" loading="lazy" src="assets/img/Lhenna.png" alt="Lhenna-Marie Velasco" />
+            <div class="team-front-cap">
+              <div class="team-name">Lhenna-Marie Velasco</div>
+              <div class="team-role accent">Founder &amp; CEO</div>
+            </div>
+          </div>
+          <div class="team-face team-back">
+            <img class="team-back-avatar" src="assets/img/Lhenna.png" alt="" loading="lazy" />
+            <div class="team-name">Lhenna-Marie Velasco</div>
+            <div class="team-role accent">Founder &amp; CEO</div>
+            <div class="team-back-label">On Kasafide</div>
+            <div class="team-subrole">Project Manager and Front-End Developer</div>
+            <p class="team-bio">BSIT student at PUP Sta. Maria with a strong interest in UI/UX design and front-end development. Designed Kasafide in Figma and built the interface people see, including the barangay map.</p>
+            <div class="team-skills"><span>Figma</span><span>HTML/CSS/JS</span><span>React</span><span>Next.js</span><span>Supabase</span></div>
+              <div class="team-socials">
+                <a href="https://lhenna-portfolio.vercel.app" class="team-social" title="Portfolio" aria-label="Lhenna-Marie Velasco’s portfolio" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></a>
+                <a href="https://www.linkedin.com/in/lhenna-marie-velasco-151825342/" class="team-social" title="LinkedIn" aria-label="Lhenna-Marie Velasco on LinkedIn" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                </a>
+                <a href="https://github.com/LhennaV" class="team-social" title="GitHub" aria-label="Lhenna-Marie Velasco on GitHub" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                </a>
+                <a href="mailto:vlhennamarie@gmail.com" class="team-social" title="Email" aria-label="Email Lhenna-Marie Velasco">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </a>
+              </div>
           </div>
         </div>
       </div>
 
-      <div class="team-card">
-        <div style="width:100%;aspect-ratio:1/1;overflow:hidden;">
-          <img loading="lazy" src="assets/img/Aljon.png" alt="Aljon Lenard Gumafelix" style="width:100%;height:100%;object-fit:cover;transform:scale(1.15);transform-origin:top center;display:block;" />
-        </div>
-        <div class="team-info">
-          <div class="team-name">Aljon Lenard Gumafelix</div>
-          <div class="team-role accent">Co-Founder &amp; COO</div>
-          <div class="team-subrole">QA Tester and Lead Researcher</div>
-          <div class="team-socials">
-            <a href="https://www.linkedin.com/in/gumafelix-aljon-lenard-s-d-91390240b/" class="team-social" title="LinkedIn" aria-label="Aljon Lenard Gumafelix on LinkedIn" target="_blank" rel="noopener noreferrer">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-            </a>
-            <a href="https://github.com/Aljon-09" class="team-social" title="GitHub" aria-label="Aljon Lenard Gumafelix on GitHub" target="_blank" rel="noopener noreferrer">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-            </a>
-            <a href="mailto:aljongumafelix@gmail.com" class="team-social" title="Email" aria-label="Email Aljon Lenard Gumafelix">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            </a>
+      <div class="team-card" tabindex="0" aria-label="Aljon Lenard Gumafelix, Co-Founder and COO. Flip for profile.">
+        <div class="team-flip">
+          <div class="team-face team-front">
+  <div style="width:100%;aspect-ratio:1/1;overflow:hidden;">
+            <img loading="lazy" src="assets/img/Aljon.png" alt="Aljon Lenard Gumafelix" style="width:100%;height:100%;object-fit:cover;transform:scale(1.15);transform-origin:top center;display:block;" />
+          </div>
+            <div class="team-front-cap">
+              <div class="team-name">Aljon Lenard Gumafelix</div>
+              <div class="team-role accent">Co-Founder &amp; COO</div>
+            </div>
+          </div>
+          <div class="team-face team-back">
+            <img class="team-back-avatar" src="assets/img/Aljon.png" alt="" loading="lazy" />
+            <div class="team-name">Aljon Lenard Gumafelix</div>
+            <div class="team-role accent">Co-Founder &amp; COO</div>
+            <div class="team-back-label">On Kasafide</div>
+            <div class="team-subrole">QA Tester and Lead Researcher</div>
+            <p class="team-bio">BSIT student at PUP Sta. Maria aiming to become a SOC Analyst. As Lead Researcher, he gathered user needs and turned them into features like verification, location search and payments.</p>
+            <div class="team-skills"><span>C#</span><span>HTML/CSS/JS</span><span>MySQL</span><span>Supabase</span></div>
+              <div class="team-socials">
+                <a href="https://www.linkedin.com/in/gumafelix-aljon-lenard-s-d-91390240b/" class="team-social" title="LinkedIn" aria-label="Aljon Lenard Gumafelix on LinkedIn" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                </a>
+                <a href="https://github.com/Aljon-09" class="team-social" title="GitHub" aria-label="Aljon Lenard Gumafelix on GitHub" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                </a>
+                <a href="mailto:aljongumafelix@gmail.com" class="team-social" title="Email" aria-label="Email Aljon Lenard Gumafelix">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </a>
+              </div>
           </div>
         </div>
       </div>
 
-      <div class="team-card">
-        <img class="team-photo" loading="lazy" src="assets/img/Emman.png" alt="Emmanuel John Catiis" />
-        <div class="team-info">
-          <div class="team-name">Emmanuel John Catiis</div>
-          <div class="team-role accent">Founding Engineer</div>
-          <div class="team-subrole">Database Manager</div>
-          <div class="team-socials">
-            <a href="https://www.linkedin.com/in/emmanuel-john-catiis-82258940b/" class="team-social" title="LinkedIn" aria-label="Emmanuel John Catiis on LinkedIn" target="_blank" rel="noopener noreferrer">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-            </a>
-            <a href="https://github.com/skz1sz" class="team-social" title="GitHub" aria-label="Emmanuel John Catiis on GitHub" target="_blank" rel="noopener noreferrer">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-            </a>
-            <a href="mailto:emmanuelpupenroll@gmail.com" class="team-social" title="Email" aria-label="Email Emmanuel John Catiis">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            </a>
+      <div class="team-card" tabindex="0" aria-label="Emmanuel John Catiis, Founding Engineer. Flip for profile.">
+        <div class="team-flip">
+          <div class="team-face team-front">
+  <img class="team-photo" loading="lazy" src="assets/img/Emman.png" alt="Emmanuel John Catiis" />
+            <div class="team-front-cap">
+              <div class="team-name">Emmanuel John Catiis</div>
+              <div class="team-role accent">Founding Engineer</div>
+            </div>
+          </div>
+          <div class="team-face team-back">
+            <img class="team-back-avatar" src="assets/img/Emman.png" alt="" loading="lazy" />
+            <div class="team-name">Emmanuel John Catiis</div>
+            <div class="team-role accent">Founding Engineer</div>
+            <div class="team-back-label">On Kasafide</div>
+            <div class="team-subrole">Database Manager</div>
+            <p class="team-bio">BSIT student at PUP Sta. Maria focused on database management and putting AI tools to work. Manages Kasafide’s data: accounts, listings, verification records and the queries behind search.</p>
+            <div class="team-skills"><span>Supabase</span><span>MySQL</span><span>HTML/CSS/JS</span><span>AI tools</span></div>
+              <div class="team-socials">
+                <a href="https://www.linkedin.com/in/emmanuel-john-catiis-82258940b/" class="team-social" title="LinkedIn" aria-label="Emmanuel John Catiis on LinkedIn" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                </a>
+                <a href="https://github.com/skz1sz" class="team-social" title="GitHub" aria-label="Emmanuel John Catiis on GitHub" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                </a>
+                <a href="mailto:emmanuelpupenroll@gmail.com" class="team-social" title="Email" aria-label="Email Emmanuel John Catiis">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </a>
+              </div>
           </div>
         </div>
       </div>
 
-      <div class="team-card">
-        <img class="team-photo" loading="lazy" src="assets/img/Ma. Melchora.png" alt="Ma. Melchora Lyndit Dayrit" />
-        <div class="team-info">
-          <div class="team-name">Ma. Melchora Lyndit Dayrit</div>
-          <div class="team-role accent">Founding Engineer</div>
-          <div class="team-subrole">Back-End Developer</div>
-          <div class="team-socials">
-            <a href="https://www.linkedin.com/in/lyndt-dayrit-2388b8319/" class="team-social" title="LinkedIn" aria-label="Ma. Melchora Lyndit Dayrit on LinkedIn" target="_blank" rel="noopener noreferrer">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-            </a>
-            <a href="https://github.com/melmelmeow" class="team-social" title="GitHub" aria-label="Ma. Melchora Lyndit Dayrit on GitHub" target="_blank" rel="noopener noreferrer">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-            </a>
-            <a href="mailto:lyndt.dayrit@gmail.com" class="team-social" title="Email" aria-label="Email Ma. Melchora Lyndit Dayrit">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            </a>
+      <div class="team-card" tabindex="0" aria-label="Ma. Melchora Lyndt Dayrit, Founding Engineer. Flip for profile.">
+        <div class="team-flip">
+          <div class="team-face team-front">
+  <img class="team-photo" loading="lazy" src="assets/img/Ma. Melchora.png" alt="Ma. Melchora Lyndt Dayrit" />
+            <div class="team-front-cap">
+              <div class="team-name">Ma. Melchora Lyndt Dayrit</div>
+              <div class="team-role accent">Founding Engineer</div>
+            </div>
+          </div>
+          <div class="team-face team-back">
+            <img class="team-back-avatar" src="assets/img/Ma. Melchora.png" alt="" loading="lazy" />
+            <div class="team-name">Ma. Melchora Lyndt Dayrit</div>
+            <div class="team-role accent">Founding Engineer</div>
+            <div class="team-back-label">On Kasafide</div>
+            <div class="team-subrole">Back-End Developer</div>
+            <p class="team-bio">BSIT student at PUP Sta. Maria specializing in back-end architecture and cloud deployment, heading toward a SOC Analyst role. Designed Kasafide’s back-end data, access rules and verification flow.</p>
+            <div class="team-skills"><span>Laravel</span><span>C#</span><span>Supabase</span><span>MySQL</span><span>MongoDB</span></div>
+              <div class="team-socials">
+                <a href="https://www.linkedin.com/in/lyndt-dayrit-2388b8319/" class="team-social" title="LinkedIn" aria-label="Ma. Melchora Lyndt Dayrit on LinkedIn" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                </a>
+                <a href="https://github.com/melmelmeow" class="team-social" title="GitHub" aria-label="Ma. Melchora Lyndt Dayrit on GitHub" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                </a>
+                <a href="mailto:lyndt.dayrit@gmail.com" class="team-social" title="Email" aria-label="Email Ma. Melchora Lyndt Dayrit">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </a>
+              </div>
           </div>
         </div>
       </div>
@@ -341,8 +358,8 @@
       without the guesswork.
     </p>
     <div class="hiring-btns">
-      <button class="btn-solid" onclick="location.href='auth/signup.html'">Browse Listings</button>
-      <button class="btn-ghost" onclick="location.href='auth/signup.html'">List Your Property</button>
+      <button class="btn-solid" onclick="location.href='index.html#browse'">Browse Listings</button>
+      <button class="btn-ghost" onclick="location.href='auth/signup.html?role=seller'">List Your Property</button>
     </div>
   </section>
 
@@ -358,44 +375,35 @@
       </div>
       <div>
         <div class="footer-col-title">Platform</div>
-        <a class="footer-link" href="index.html">About Us</a>
-        <a class="footer-link" href="auth/signup.html">List Your Property</a>
+        <a class="footer-link" href="index.html#browse">Browse Listings</a>
+        <a class="footer-link" href="auth/signup.html?role=seller">List Your Property</a>
+        <a class="footer-link" href="about.html">About Us</a>
+      </div>
+      <div>
+        <div class="footer-col-title">Support</div>
+        <a class="footer-link" href="help.html">Help &amp; Support</a>
+        <a class="footer-link" href="faqs.html">FAQs</a>
       </div>
       <div>
         <div class="footer-col-title">Legal</div>
         <a class="footer-link" href="privacy-policy.html">Privacy Policy</a>
         <a class="footer-link" href="terms.html">Terms of Service</a>
       </div>
-      <div>
-        <div class="footer-col-title">Contacts</div>
-        <a class="footer-link" href="tel:+63281234567">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 5.55 5.55l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          +63 (2) 8123 4567
-        </a>
-        <a class="footer-link" href="mailto:support@homesure.ph">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          support@homesure.ph
-        </a>
-      </div>
     </div>
     <div class="footer-bottom">© 2026 Kasafide. All rights reserved.</div>
   </footer>
 
+  <script src="assets/js/site-nav.js?v=3"></script>
   <script>
-    const _sunSVG  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
-    const _moonSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
-    const _btn = document.getElementById('themeBtn');
-    function _updateBtn() {
-      const t = document.documentElement.getAttribute('data-theme') || 'dark';
-      _btn.innerHTML = t === 'dark' ? _sunSVG : _moonSVG;
-      _btn.title = t === 'dark' ? 'Switch to Light' : 'Switch to Dark';
-    }
-    _updateBtn();
-    _btn.addEventListener('click', function() {
-      const next = (document.documentElement.getAttribute('data-theme') || 'dark') === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      KasafideTheme.set(next);
-      _updateBtn();
+    // Team cards flip on hover (CSS). A touch screen has no hover, so a tap flips one instead,
+    // and tapping another or anywhere else flips it back. Links on the back still work.
+    document.querySelectorAll('.team-card').forEach(function (card) {
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('a')) return;
+        var open = card.classList.contains('is-flipped');
+        document.querySelectorAll('.team-card.is-flipped').forEach(function (c) { c.classList.remove('is-flipped'); });
+        if (!open) card.classList.add('is-flipped');
+      });
     });
   </script>
 </body>

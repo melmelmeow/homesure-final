@@ -11,10 +11,10 @@
   <script src="../../assets/js/kasafide-theme.js"></script>
   <script src="../../assets/js/kasafide-logo.js"></script>
   <link rel="stylesheet" href="../../assets/css/kasafide-theme.css" />
-  <title>Kasafide Assistant</title>
+  <title data-assistant-name>Meowrie</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../../assets/css/seller/seller-dashboard.css" />
-  <link rel="stylesheet" href="../../assets/css/chatbot-widget.css" />
+  <link rel="stylesheet" href="../../assets/css/chatbot-widget.css?v=2" />
   <script>
     // seller-dashboard.css keys its dark/light tokens off [data-theme] on <html>. Normally
     // sidebar.js's init() sets that as a side effect of building the sidebar — this page
@@ -237,7 +237,7 @@
       </button>
       <div class="ios-navbar-identity">
         <div class="ios-navbar-avatar"><img src="../../assets/img/kasafide-chatbot-avatar.svg" alt="" /></div>
-        <div class="ios-navbar-name">Kasafide Assistant</div>
+        <div class="ios-navbar-name" data-assistant-name>Meowrie</div>
         <div class="ios-navbar-status"><span class="dot"></span>Online</div>
       </div>
       <div class="ios-navbar-spacer"></div>
@@ -263,7 +263,7 @@
   </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0/dist/umd/supabase.js"></script>
-<script src="../../assets/js/config.js"></script>
+<script src="../../assets/js/config.js?v=2"></script>
 <script src="../../assets/js/session.js"></script>
 <script>
   // Same guard every other seller page has (seller-dashboard.js:4) — this page never had one, so
@@ -272,7 +272,7 @@
   if (!session || session.role !== 'seller') window.location.href = '../../auth/signin.html';
 </script>
 <script src="../../assets/js/data.js"></script>
-<script src="../../assets/js/chatbot-widget.js"></script>
+<script src="../../assets/js/chatbot-widget.js?v=4"></script>
 <script>
   ChatbotWidget.initFullPage();
 </script>

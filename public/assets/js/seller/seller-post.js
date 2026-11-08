@@ -11,8 +11,10 @@
       document.getElementById('pageSubtitle').textContent = 'Complete identity verification to post your first listing';
     }
   }
-  applyGate(user.accountStatus === 'verified');
-  HS.auth.refresh().then(me => { if (me) applyGate(me.accountStatus === 'verified'); }).catch(() => {});
+  // `user` is null for someone not signed in; the redirect above is already on its way, so just
+  // don't read from it (this used to throw "Cannot read properties of null").
+  applyGate(!!user && user.accountStatus === 'verified');
+  if (user) HS.auth.refresh().then(me => { if (me) applyGate(me.accountStatus === 'verified'); }).catch(() => {});
 
   /* ── Init sidebar & topbar ── */
   KasafideSidebar.init({ activePage: 'listings' });

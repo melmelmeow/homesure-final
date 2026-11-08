@@ -22,7 +22,8 @@ WITH state AS (
             WHERE table_schema = 'public' AND table_name = 'payments' AND column_name = 'due_date')          AS has_payment_columns,
     EXISTS (SELECT 1 FROM information_schema.columns
             WHERE table_schema = 'public' AND table_name = 'profiles' AND column_name = 'payment_methods')   AS has_payment_methods,
-    to_regclass('public.email_verifications') IS NOT NULL AS has_email_verification
+    to_regclass('public.email_verifications') IS NOT NULL AS has_email_verification,
+    to_regclass('public.password_resets') IS NOT NULL AS has_password_resets
 )
 SELECT * FROM (
   SELECT 1 AS n, '001_initial_schema'          AS migration,
@@ -57,4 +58,8 @@ SELECT * FROM (
   SELECT 8, '008_email_verification',
          CASE WHEN has_email_verification THEN 'APPLIED' ELSE 'RUN THIS' END,
          'confirmation links Kasafide emails itself' FROM state
+  UNION ALL
+  SELECT 15, '015_password_resets',
+         CASE WHEN has_password_resets THEN 'APPLIED' ELSE 'RUN THIS' END,
+         'password-reset links Kasafide emails itself' FROM state
 ) rows ORDER BY n;

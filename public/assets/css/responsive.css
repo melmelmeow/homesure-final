@@ -305,7 +305,7 @@
     transform: translateX(0) !important;
     opacity: 1;
   }
-  /* Matches the Help & Support (Kasafide Assistant) nav bar exactly: a plain text+chevron back button, no
+  /* Matches the Help & Support (Meowrie) nav bar exactly: a plain text+chevron back button, no
      circle background, with the identity block centered and a same-width spacer on the other
      side to keep it actually centered rather than just left-aligned next to the button. */
   .chat-back-btn {
@@ -531,10 +531,12 @@
   .hero-title {
     font-size: clamp(34px, 6vw, 52px);
   }
-  .hero-right {
-    width: 100%;
-    min-height: 420px;
-    flex: none;
+  /* The featured card and barangay chips drop under the copy instead of beside it. */
+  .hero-side {
+    width: auto;
+    margin: 0 40px 56px;
+    max-width: 460px;
+    align-self: flex-start;
   }
 }
 
@@ -548,10 +550,9 @@
   .steps-grid    { grid-template-columns: 1fr !important; }
   .cta-actions   { flex-direction: column !important; align-items: center; }
 
-  /* Mobile hero — hide map, use gradient background */
-  .hero-map-wrap { display: none !important; }
+  /* Mobile hero — the listing photo stays (it sits on top of this background), the card and chips
+     stack under the copy. */
   .hero-overlay  { display: none !important; }
-  .hero-right { display: none !important; }
   .hero {
     background: linear-gradient(160deg, var(--bg) 0%, var(--surface-soft) 55%, var(--bg) 100%) !important;
     min-height: auto !important;

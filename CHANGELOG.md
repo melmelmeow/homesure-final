@@ -8,6 +8,114 @@ after pulling.
 
 ---
 
+## 2026-11-07
+
+### Landing page: photo hero, map moved to its own section, sections reordered
+
+**Front end only.** `index.js`, `index.css`, `responsive.css`.
+
+- Hero is now a full-bleed photo of a featured listing, with that listing in a card on the right
+  (dots, no arrows, changes on its own every 6.5s). The background cross-fades to whatever the
+  card shows. Waits only while the tab is hidden or the hero is scrolled away. No approved
+  listings → bundled `house_image.jpg`, no card.
+- Under the card: Browse by category (Houses, Apartments, Lots & Land), each opening
+  `browse.html?type=…`.
+- Over the hero the nav is a full-width bar with no background, cream in both themes; past the
+  hero it animates into the glass pill (width, glass and blur ease in over ~0.5s). It gained
+  section links (hidden below 980px) with a sliding highlight: it rests on the section you are
+  scrolled to (Home / Listings / How it works / Browse), follows the pointer on hover and slides back.
+  Sign In / Sign Up stay in the bar (only Sign In on phones).
+- Effects adapted from React Bits (reactbits.dev), ported to CSS / plain JS with no new
+  libraries: Blur Text on the headline, Shiny Text on "Verified, every time.", Spotlight Card on
+  the verify and platform cards, Magnet on the two hero buttons. Off under reduced motion,
+  except the spotlight.
+- `index.html` loads `index.css`, `responsive.css` and `index.js` with a `?v=` version, so a
+  browser cannot pair a cached old `index.js` with the new CSS.
+- `next.config.mjs`: `/` redirects to `/index.html` again (temporary redirect). It had been
+  missing, so `/` was served by `src/app/page.tsx`, an older React copy of the landing page that
+  shares `index.css`. `page.tsx` itself is untouched.
+- The barangay map left the hero for a new "Explore the Map" section with a barangay list.
+  It now shows on phones too, loads its SVG only when scrolled near, and a plain scroll wheel
+  scrolls the page (Ctrl/⌘ + wheel or the +/−/reset buttons zoom).
+- Map pin for Pulong Yantok (a sitio in northwest Pulong Buhangin, position estimated), so
+  listings filed under it show on the map.
+- The map section is full-bleed: no frame, the map fills the section and the heading and
+  barangay list float over its left side (stacked on phones). Hero badge line removed.
+- browse.html, about.html, help.html share one top bar (`site-nav.js` + `site-nav.css`) with the
+  landing page's links, sliding highlight (resting on the current page), theme button and
+  Sign In / Sign Up. Help's orange
+  header is gone, and its chat now starts (it never called `ChatbotWidget.initFullPage()`, so no
+  welcome message or quick actions appeared).
+- About pages (`about.html`, `module/about/about.html`): removed the stats bar ("10k+ Happy
+  Renters", "0 Fake Listings", "100%", "24/7"); none of it was counted from real data.
+- Chatbot renamed **Meowrie** (was "Kasafide Assistant"). The name is one `NAME` constant in
+  `chatbot-widget.js`; pages mark spots with `data-assistant-name`. Your own messages now sit on
+  the right with no "ME" avatar (the widget's `row-reverse` plus the Help pages' `flex-end` put
+  them on the left), and are HTML-escaped. Help no longer calls it an "AI assistant": it answers
+  from keyword rules.
+- About: team cards flip on hover / tap to a profile written from each member's CV (bio and
+  skills; no phone numbers). "Lyndit" corrected to "Lyndt" per her CV.
+- "List Your Property" everywhere opens sign-up with Seller / Lister selected (`?role=seller`,
+  read in `auth.js`); "Sign Up as Buyer" uses `?role=buyer`. CTA no longer says "Join
+  thousands".
+- Footers (landing page, both About pages): Platform / Support / Legal with only links a visitor
+  can use. Removed "Contact Us" and "Report a Listing" (both only opened sign-in), and the About
+  footer's made-up phone number and old support@homesure.ph address. Meowrie's hand-off message
+  no longer names support@homesure.com.
+- Kasafide's contact address is now **kasafide.team@gmail.com**: it replaces support@homesure.com
+  and fraud@homesure.com everywhere on Privacy Policy and Terms (fraud reports: same inbox,
+  subject "Fraud Report"), and is the sample `SMTP_FROM` in `.env.example`.
+- Privacy Policy and Terms use the shared top bar; their "Back to Home" / other-policy buttons
+  at the end of the text are gone.
+- Sign-in / sign-up background: animated Grainient (adapted from React Bits, `kasafide-grainient.js`)
+  in ink → plum → peach, lighter in light mode. Falls back to the blurred listing photo without
+  WebGL2.
+- Order: Hero → Featured → Browse by Type → Map → How It Works → Trust banner → How We Verify →
+  Why Kasafide → Feature highlights → Platform features → Numbers → Browse → CTA → Footer.
+- New Browse section ("All Properties") near the bottom: every approved listing with the same
+  filters as browse.html (type, rent/sale, barangay, search). The navbar, the hero button and
+  category chips, Browse by Type, the map pins and list, and the footer link now scroll to it
+  with the filter set, instead of opening browse.html (which still works for old links).
+- Navbar links on every page: Home, Listings, How it works, Browse. About and Help were
+  removed from the bar; they are still in the footer.
+
+- **Forgot password works now, and Kasafide sends it.** It called the Supabase auth server's reset
+  mail, which has no SMTP (the page showed "{}") and whose link landed on sign-in with no way to
+  set a new password. Now: `POST /api/auth/forgot-password` emails a Kasafide-branded link (token
+  hashed in the new `password_resets` table, 60 minutes, single use, 60s resend cooldown, same
+  answer whether or not the email has an account); `auth/reset-password.html` takes the new
+  password; `POST /api/auth/reset-password` checks the token and sets it via the admin API.
+  `supabase/templates/reset-password.html` (written for a dashboard that turned out to be
+  self-hosted) is no longer needed and was removed.
+
+- Forgot Password page rebuilt in the sign-in/sign-up style (card over the Grainient). The old
+  split layout had a stock photo and a testimonial from a "Michael Rodriguez" who is not a real
+  user. Its "sent" message now says "if this email has an account", matching what the route does.
+- Forgot Password send animation, played in the envelope at the top of "Check Your Email"
+  (first send switches to that view straight away): the envelope flies off while sending
+  ("Sending…"), a big check pops in and draws itself, then shrinks into the badge corner as the
+  envelope returns. Same on Resend. At least 1.3s so a fast reply is not a flicker; if sending
+  fails, back to the form with the error. Buttons only change label (`data-no-busy`).
+- Grainient background (auth pages) now freezes to a still frame where animating would hurt:
+  a software renderer (no GPU, or hardware acceleration off) or mostly-slow first frames.
+  Measured on a software renderer, it had dropped the page to 7 fps and held network replies
+  back 5+ seconds, so sign-in and the reset link looked frozen; now 60 fps and replies in 0.3s.
+- Busy buttons, site-wide (`config.js`): a button whose click starts a server request shows a
+  spinner and ignores further clicks until the request finishes. Covers every page that loads
+  `config.js` (all 52 that talk to the server) without changing each button; `data-no-busy`
+  opts one out. Disabled `.btn-primary` buttons now look disabled.
+
+- Small fixes found by signing in as the sample buyer and seller and opening every page:
+  buyer Reviews loaded `components/skeleton.css` (404; it lives in `assets/css/`); buyer Listing
+  opened with no `?id=` queried id "null" and said "try again" (now: "No listing selected");
+  seller Post a Property threw on `user.accountStatus` when signed out, before its redirect.
+
+**You need to:** run `supabase/migrations/015_password_resets.sql` in the SQL Editor (forgot
+password answers 502 until then). In `.env.local` set `SMTP_FROM="Kasafide <…>"` (it still said
+HomeSure) and restart the server.
+
+---
+
 ## 2026-11-05
 
 ### Light mode is softer ("Lavender mist"); dark mode unchanged

@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="512" height="512" stroke-linejoin="round" stroke-linecap="round" role="img" aria-label="Kasafide Assistant">
-<title>Kasafide Assistant</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="512" height="512" stroke-linejoin="round" stroke-linecap="round" role="img" aria-label="Meowrie">
+<title>Meowrie</title>
 <circle cx="80" cy="80" r="80" fill="#FFB89C"/>
 <g transform="translate(80 84) scale(0.86) translate(-80 -84)">
   <path d="M26 128 V70 Q26 62 30 54 L40 22 Q42 16 48 20 L68 38 Q80 35 92 38 L111 22 Q117 17 120 24 L130 54 Q134 62 134 70 V128 Q134 142 120 142 H40 Q26 142 26 128 Z" fill="#5B3A8E" stroke="#2B1B3D" stroke-width="4.5"/>
