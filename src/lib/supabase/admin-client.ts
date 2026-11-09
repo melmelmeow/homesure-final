@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import "server-only";
+=======
+>>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import dns from "node:dns";
 
@@ -10,6 +13,7 @@ if (typeof dns.setDefaultResultOrder === "function") {
   }
 }
 
+<<<<<<< HEAD
 // Service-role client: bypasses RLS. Server-only — the `server-only` import above makes the build
 // fail if a client component ever imports this file.
 //
@@ -27,6 +31,17 @@ export function getAdminSupabase(): SupabaseClient {
   if (!url) throw new Error("[admin-client] NEXT_PUBLIC_SUPABASE_URL is not configured");
 
   return createClient(url, key, {
+=======
+// Service-role client: bypasses RLS. Server-only (never import from a client component, never
+// expose SUPABASE_SERVICE_ROLE_KEY to the browser). Use it only for writes that RLS intentionally
+// forbids to end users (payments, refunds, webhooks, analytics sync) AFTER the caller has been
+// authenticated/authorised in the route.
+export function getAdminSupabase(): SupabaseClient {
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!key) throw new Error("SUPABASE_SERVICE_ROLE_KEY is not configured");
+
+  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, key, {
+>>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
     auth: { persistSession: false, autoRefreshToken: false },
   });
 }

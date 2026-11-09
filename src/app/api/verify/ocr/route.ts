@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { guardApi } from "@/lib/api";
 import { getAdminSupabase } from "@/lib/supabase/admin-client";
+<<<<<<< HEAD
 import { rateLimit } from "@/lib/rate-limit";
 import { ocrSchema } from "@/lib/schemas";
 
@@ -9,12 +10,15 @@ import { ocrSchema } from "@/lib/schemas";
 // public bucket called "titles", which no migration creates.)
 const DOCS_BUCKET = "verification-docs";
 const SAFE_FILE = /^[A-Za-z0-9._-]{1,150}\.(jpg|jpeg|png|webp)$/i;
+=======
+>>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 
 export async function POST(request: Request) {
   const guard = await guardApi();
   if (!guard.ok) return guard.response;
   const { supabase, user } = guard;
 
+<<<<<<< HEAD
   // Each call is a paid Google Vision request.
   const limited = await rateLimit("ocr", user.id, 10, 600);
   if (!limited.ok) return limited.response;
@@ -35,6 +39,14 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   }
+=======
+  const body = await request.json().catch(() => ({}));
+  const { propertyId, imagePath } = body;
+
+  if (!propertyId || !imagePath) {
+    return NextResponse.json({ error: "propertyId and imagePath are required" }, { status: 400 });
+  }
+>>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 
   // Only the owner may run OCR on a listing (RLS lets owners read their own, non-public listings).
   const { data: property } = await supabase.from("properties").select("id, landowner_id").eq("id", propertyId).single();
@@ -42,6 +54,7 @@ export async function POST(request: Request) {
   if (property.landowner_id !== user.id) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   try {
+<<<<<<< HEAD
     // A signed link that expires in 60 seconds — long enough for Vision to fetch it, and nothing
     // permanent is ever exposed. Created as the CALLER, so the storage policies still apply.
     const { data: signed, error: signError } = await supabase.storage.from(DOCS_BUCKET).createSignedUrl(imagePath, 60);
@@ -49,6 +62,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Could not access that document" }, { status: 404 });
     }
     const imageUrl = signed.signedUrl;
+=======
+    const { data: { publicUrl } } = supabase.storage.from("titles").getPublicUrl(imagePath);
+>>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 
     const visionApiKey = process.env.GOOGLE_CLOUD_VISION_API_KEY;
     if (!visionApiKey) return NextResponse.json({ error: "Vision API not configured" }, { status: 500 });
@@ -57,7 +73,11 @@ export async function POST(request: Request) {
     const visionBody = {
       requests: [
         {
+<<<<<<< HEAD
           image: { source: { imageUri: imageUrl } },
+=======
+          image: { source: { imageUri: publicUrl } },
+>>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
           features: [{ type: "TEXT_DETECTION", maxResults: 10 }],
         },
       ],
@@ -78,9 +98,15 @@ export async function POST(request: Request) {
     const { data: profile } = await supabase.from("profiles").select("full_name").eq("id", user.id).single();
 
     let matchScore: number | null = null;
+<<<<<<< HEAD
     if (profile?.full_name && ownerMatch) {
       const titleOwner = ownerMatch[1].trim();
       const profileName = String(profile.full_name).toUpperCase();
+=======
+    if (profile && ownerMatch) {
+      const titleOwner = ownerMatch[1].trim();
+      const profileName = profile.full_name.toUpperCase();
+>>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
       const { data: similarityData } = await supabase.rpc("name_similarity", {
         str1: profileName,
         str2: titleOwner,
@@ -101,7 +127,10 @@ export async function POST(request: Request) {
       matchScore,
     });
   } catch (error) {
+<<<<<<< HEAD
     console.error("[ocr] failed:", error instanceof Error ? error.message : error);
+=======
+>>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
     return NextResponse.json({ error: "OCR processing failed" }, { status: 500 });
   }
 }

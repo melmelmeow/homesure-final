@@ -56,10 +56,14 @@ export async function POST(request: Request) {
     .select("*")
     .single();
 
+<<<<<<< HEAD
   if (error) {
     console.error("[refunds/request] insert failed:", error.message);
     return NextResponse.json({ error: "Could not record the refund request. Please try again." }, { status: 500 });
   }
+=======
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+>>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 
   return NextResponse.json({ refund }, { status: 200 });
 }

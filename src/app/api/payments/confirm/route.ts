@@ -53,10 +53,14 @@ export async function POST(request: Request) {
     .select("*")
     .maybeSingle();
 
+<<<<<<< HEAD
   if (error) {
     console.error("[payments/confirm] update failed:", error.message);
     return NextResponse.json({ error: "Could not update the payment. Please try again." }, { status: 500 });
   }
+=======
+  if (error) return NextResponse.json({ error: `Could not update the payment: ${error.message}` }, { status: 500 });
+>>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
   if (!updated) return NextResponse.json({ error: "This payment was already decided" }, { status: 409 });
 
   // Tell the buyer. A failed notification must not undo a confirmed payment, so it is best effort.

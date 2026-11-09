@@ -1,14 +1,28 @@
 import { NextResponse } from "next/server";
 import { guardApi } from "@/lib/api";
 import { getAdminSupabase } from "@/lib/supabase/admin-client";
+<<<<<<< HEAD
 import { rateLimit } from "@/lib/rate-limit";
 import { createInvoiceSchema, firstIssue } from "@/lib/schemas";
+=======
+
+type Body = {
+  propertyId?: string;
+  purpose?: string;
+  period?: string;
+  dueDate?: string;
+  depositMonths?: number;
+};
+
+const PURPOSES = ["rent", "security", "both", "reservation", "sale"];
+>>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 
 export async function POST(request: Request) {
   const guard = await guardApi();
   if (!guard.ok) return guard.response;
   const { supabase, user } = guard;
 
+<<<<<<< HEAD
   // Each call creates a real Xendit QR code, so keep one user from creating them in a loop.
   const limited = await rateLimit("create-invoice", user.id, 10, 600);
   if (!limited.ok) return limited.response;
@@ -18,6 +32,22 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: firstIssue(parsed.error) }, { status: 400 });
   }
   const { propertyId, purpose = "rent", period, dueDate, depositMonths: months = 1 } = parsed.data;
+=======
+  const { propertyId, purpose = "rent", period, dueDate, depositMonths = 1 } =
+    ((await request.json().catch(() => ({}))) as Body);
+
+  if (!propertyId) return NextResponse.json({ error: "propertyId is required" }, { status: 400 });
+  if (!PURPOSES.includes(purpose)) {
+    return NextResponse.json({ error: `purpose must be one of ${PURPOSES.join(", ")}` }, { status: 400 });
+  }
+  const months = Math.trunc(Number(depositMonths));
+  if (!Number.isFinite(months) || months < 1 || months > 3) {
+    return NextResponse.json({ error: "depositMonths must be 1, 2 or 3" }, { status: 400 });
+  }
+  if (dueDate && !/^\d{4}-\d{2}-\d{2}$/.test(dueDate)) {
+    return NextResponse.json({ error: "dueDate must be YYYY-MM-DD" }, { status: 400 });
+  }
+>>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 
   // RLS only lets the caller see publicly visible (admin-approved) listings.
   const { data: property } = await supabase
@@ -67,6 +97,7 @@ export async function POST(request: Request) {
   });
 
   if (!xenditRes.ok) {
+<<<<<<< HEAD
     // Log the gateway's answer here; never forward it to the browser. Payment-gateway error bodies
     // can carry internal reference ids and account details.
     const err = await xenditRes.text();
@@ -75,6 +106,10 @@ export async function POST(request: Request) {
       { error: "Payment could not be initiated. Please try again or contact support." },
       { status: 502 },
     );
+=======
+    const err = await xenditRes.text();
+    return NextResponse.json({ error: `Xendit error: ${err}` }, { status: 500 });
+>>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
   }
 
   const qr = await xenditRes.json();
@@ -101,10 +136,14 @@ export async function POST(request: Request) {
     .select("*")
     .single();
 
+<<<<<<< HEAD
   if (error) {
     console.error("[create-invoice] could not record payment:", error.message);
     return NextResponse.json({ error: "Could not record the payment. Please try again." }, { status: 500 });
   }
+=======
+  if (error) return NextResponse.json({ error: `Could not record payment: ${error.message}` }, { status: 500 });
+>>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 
   return NextResponse.json({ payment, qr }, { status: 200 });
 }

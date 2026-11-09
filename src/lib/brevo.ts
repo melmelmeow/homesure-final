@@ -5,7 +5,11 @@ import nodemailer from "nodemailer";
  * Supports:
  * 1. Brevo Transactional Email (via REST API or SMTP)
  * 2. Brevo Transactional SMS (via REST API)
+<<<<<<< HEAD
  * (One-time codes are in src/lib/otp.ts.)
+=======
+ * 3. 2FA OTP generation and storage
+>>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
  */
 
 export type BrevoEmailOptions = {
@@ -132,6 +136,7 @@ export async function sendBrevoSms(options: BrevoSmsOptions): Promise<{ success:
   const sender = (options.sender || "HomeSure").slice(0, 11); // Brevo max sender length is 11 chars
 
   if (!apiKey) {
+<<<<<<< HEAD
     // Pretending an SMS went out is only acceptable on a developer machine. In production it would
     // tell the user a code is on its way when nothing was sent. The message body is never logged:
     // it contains the one-time code.
@@ -140,6 +145,9 @@ export async function sendBrevoSms(options: BrevoSmsOptions): Promise<{ success:
       return { success: false, error: "SMS is not configured" };
     }
     console.warn("BREVO_API_KEY not configured. Simulating SMS to " + recipient + " (development only).");
+=======
+    console.warn("BREVO_API_KEY not configured. Simulating SMS to " + recipient + ": " + options.content);
+>>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
     return { success: true, messageId: "simulated-" + Date.now() };
   }
 
@@ -173,5 +181,43 @@ export async function sendBrevoSms(options: BrevoSmsOptions): Promise<{ success:
   }
 }
 
+<<<<<<< HEAD
 // One-time codes (generate / store / verify) live in src/lib/otp.ts. They used to be here, kept in an
 // in-memory Map with a hard-coded "123456" bypass; both are gone.
+=======
+/**
+ * Generate a 6-digit random verification code
+ */
+export function generateOtpCode(): string {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+// In-memory OTP storage with 10-minute expiry
+// Key: email or phone -> { code: string, expiresAt: number }
+const otpStore = new Map<string, { code: string; expiresAt: number }>();
+
+export function storeOtp(identifier: string, code: string): void {
+  const key = identifier.toLowerCase().trim();
+  const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
+  otpStore.set(key, { code, expiresAt });
+}
+
+export function verifyOtpCode(identifier: string, code: string): boolean {
+  const key = identifier.toLowerCase().trim();
+  // Allow master demo bypass in development or test if needed
+  if (code === "123456" && process.env.NODE_ENV !== "production") {
+    return true;
+  }
+  const entry = otpStore.get(key);
+  if (!entry) return false;
+  if (Date.now() > entry.expiresAt) {
+    otpStore.delete(key);
+    return false;
+  }
+  if (entry.code === code.trim()) {
+    otpStore.delete(key);
+    return true;
+  }
+  return false;
+}
+>>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6

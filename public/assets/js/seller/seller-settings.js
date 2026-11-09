@@ -245,7 +245,11 @@
 
       // Trigger real OTP delivery via Brevo Email & SMS
       try {
+<<<<<<< HEAD
         await HS.authFetch('/api/auth/2fa', {
+=======
+        await fetch('/api/auth/2fa', {
+>>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ action: 'send', email: user.email, phone: user.phone || '' })
@@ -287,7 +291,11 @@
     start2FAResendTimer();
 
     try {
+<<<<<<< HEAD
       await HS.authFetch('/api/auth/2fa', {
+=======
+      await fetch('/api/auth/2fa', {
+>>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'send', email: user.email, phone: user.phone || '' })
@@ -311,7 +319,11 @@
     if (code.length < 6) { showToast('Please enter the full 6-digit code.', 'error'); return; }
 
     try {
+<<<<<<< HEAD
       const res = await HS.authFetch('/api/auth/2fa', {
+=======
+      const res = await fetch('/api/auth/2fa', {
+>>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'verify', email: user.email, phone: user.phone || '', code })
