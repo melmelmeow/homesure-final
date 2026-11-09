@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – Authenticating...</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/auth.css" />
+  <link rel="stylesheet" href="../assets/css/responsive.css" />
+  <style>
+    .callback-card {
+      max-width: 420px;
+      margin: 120px auto 40px;
+      padding: 40px 32px;
+      background: var(--card, #1c2f42);
+      border: 1px solid var(--border, rgba(255,255,255,0.08));
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border: 3.5px solid rgba(31, 200, 180, 0.2);
+      border-top-color: #1fc8b4;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .callback-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text, #f1f5f9);
+      margin-bottom: 8px;
+    }
+    .callback-sub {
+      font-size: 14px;
+      color: var(--muted, #94a3b8);
+      line-height: 1.5;
+    }
+    .callback-error {
+      display: none;
+      color: #ef4444;
+      font-size: 13.5px;
+      font-weight: 500;
+      margin-top: 16px;
+      padding: 12px;
+      background: rgba(239, 68, 68, 0.1);
+      border-radius: 8px;
+      border: 1px solid rgba(239, 68, 68, 0.25);
+    }
+    .callback-btn {
+      display: none;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #1a9e8f;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body class="dark">
+  <div class="callback-card">
+    <div style="display:flex; justify-content:center; align-items:center; gap:10px; margin-bottom:20px;">
+      <img src="../assets/img/image.png" alt="HomeSure" height="32" style="display:block" />
+      <span style="font-size:20px; font-weight:800; color:var(--text, #f1f5f9);">HomeSure</span>
+    </div>
+    <div class="spinner" id="spinner"></div>
+    <h1 class="callback-title" id="statusTitle">Authenticating with Google...</h1>
+    <p class="callback-sub" id="statusSub">Please wait a moment while we set up your session.</p>
+    <div class="callback-error" id="errorBox"></div>
+    <a href="signin.html" class="callback-btn" id="retryBtn">Return to Sign In</a>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0/dist/umd/supabase.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/session.js"></script>
+<script src="../assets/js/data.js"></script>
+<script>
+  (async function handleCallback() {
+    const errorBox = document.getElementById('errorBox');
+    const retryBtn = document.getElementById('retryBtn');
+    const spinner = document.getElementById('spinner');
+    const title = document.getElementById('statusTitle');
+    const sub = document.getElementById('statusSub');
+
+    function showError(msg) {
+      if (spinner) spinner.style.display = 'none';
+      if (title) title.textContent = 'Authentication Failed';
+      if (sub) sub.textContent = 'We were unable to complete your Google sign-in.';
+      if (errorBox) {
+        errorBox.textContent = msg;
+        errorBox.style.display = 'block';
+      }
+      if (retryBtn) retryBtn.style.display = 'inline-block';
+    }
+
+    try {
+      // 1. Parse tokens from hash
+      const hash = window.location.hash.substring(1);
+      const params = new URLSearchParams(hash);
+      const access_token = params.get('access_token');
+      const refresh_token = params.get('refresh_token');
+
+      // Check query params if not in hash
+      const queryParams = new URLSearchParams(window.location.search);
+      const redirect = params.get('redirect') || queryParams.get('redirect');
+
+      if (!access_token || !refresh_token) {
+        // Fallback: check if sb already caught the session from URL
+        const { data: { session } } = await sb.auth.getSession();
+        if (!session) {
+          showError('Missing authentication tokens. Please try signing in again.');
+          return;
+        }
+      } else {
+        const { error: sessionError } = await sb.auth.setSession({
+          access_token,
+          refresh_token,
+        });
+        if (sessionError) {
+          showError(sessionError.message || 'Could not restore authentication session.');
+          return;
+        }
+      }
+
+      // 2. Refresh profile and session
+      const user = await HS.auth.refresh();
+      if (!user) {
+        showError('Could not load your user profile. Please contact support.');
+        return;
+      }
+
+      // 3. Clean hash to prevent token leaking in history
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+
+      // 4. Redirect to intended destination or user dashboard
+      if (user.role === 'buyer' && redirect && /^module\/buyer\/[a-z-]+\.html(\?[\w=&-]*)?$/.test(redirect)) {
+        window.location.href = '../' + redirect;
+        return;
+      }
+
+      redirectToDashboard(user.role);
+    } catch (err) {
+      console.error('Callback error:', err);
+      showError(err.message || 'An unexpected error occurred during Google sign-in.');
+    }
+  })();
+</script>
+</body>
+</html>

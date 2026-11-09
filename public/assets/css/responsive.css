@@ -1,0 +1,1231 @@
+/* ============================================================
+   Kasafide – Global Responsive Styles
+   Breakpoints: tablet 1100px | mobile 768px | small 480px
+   ============================================================ */
+
+/* ── 1. Content Padding ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .content { padding: 16px 14px 40px !important; }
+}
+
+/* ── 2. Page Headers ────────────────────────────────────── */
+@media (max-width: 640px) {
+  .page-header  { margin-bottom: 16px !important; }
+  .page-title   { font-size: 18px !important; }
+  .page-header[style*="display:flex"],
+  .page-header[style*="display: flex"] {
+    flex-direction: column !important;
+    gap: 12px !important;
+    align-items: flex-start !important;
+  }
+  .detail-header { flex-direction: column !important; gap: 12px !important; }
+  .header-actions { flex-wrap: wrap; }
+}
+
+/* ── 3. Stat Grids ──────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .stat-grid { grid-template-columns: repeat(3, 1fr) !important; }
+}
+@media (max-width: 768px) {
+  .stat-grid  { grid-template-columns: repeat(2, 1fr) !important; }
+  .health-row { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 480px) {
+  .stat-grid  { grid-template-columns: 1fr 1fr !important; }
+  .health-row { grid-template-columns: 1fr !important; }
+  .stat-card  { padding: 14px 16px !important; }
+  /* .stat-value removed - causing conflicts with profile page */
+}
+
+/* ── 4. Filter Bars ─────────────────────────────────────── */
+@media (max-width: 768px) {
+  .filter-bar {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    padding: 10px 14px !important;
+  }
+  .filter-search-wrap { width: 100%; }
+  .filter-search      { width: 100% !important; }
+  .search-wrap        { width: 100%; }
+  .search-wrap input  { width: 100% !important; }
+  /* Buyer 4-col filter panel */
+  .filter-row { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* ── 4b. Filter panels become a bottom sheet ──────────────────────
+     Was always inline above the listings — the "palagay bumubungad" complaint (too much to
+     scroll past before you reach the listings). Originally scoped to #filterPanel (buyer.html's
+     own id) because seller.html used the same .filter-panel class for its dashboard's own
+     Marketplace section without any of this trigger/backdrop/open-close wiring. Seller's panel
+     now has that wiring too (id="sellerFilterPanel"), so both ids share this block. */
+  .mobile-filter-trigger { display: flex !important; }
+  #filterPanel, #sellerFilterPanel { display: none; }
+  #filterPanel.sheet-open, #sellerFilterPanel.sheet-open {
+    display: block !important;
+    position: fixed !important; z-index: 300;
+    left: 0; right: 0; bottom: 0;
+    max-height: 82vh; overflow-y: auto;
+    margin: 0 !important;
+    border-radius: 18px 18px 0 0 !important;
+    box-shadow: 0 -12px 40px rgb(var(--shade-rgb) / min(0.4, var(--shadow-cap, 1)));
+    animation: filterSheetUp 0.22s ease-out;
+  }
+  @keyframes filterSheetUp {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+  .filter-backdrop.open {
+    display: block !important;
+    position: fixed; inset: 0; z-index: 299;
+    background: rgb(var(--shade-rgb) / var(--overlay-a, 0.5));
+  }
+  #filterPanel.sheet-open .filter-title,
+  #sellerFilterPanel.sheet-open .filter-title { padding-right: 32px; margin-bottom: 18px; }
+  #filterPanel.sheet-open .filter-sheet-close,
+  #sellerFilterPanel.sheet-open .filter-sheet-close {
+    display: flex !important;
+    position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+    width: 26px; height: 26px; align-items: center; justify-content: center;
+    background: none; border: none; color: var(--muted); cursor: pointer;
+  }
+  #filterPanel.sheet-open .filter-row,
+  #sellerFilterPanel.sheet-open .filter-row { grid-template-columns: 1fr !important; gap: 14px; }
+  #filterPanel.sheet-open .filter-sheet-footer,
+  #sellerFilterPanel.sheet-open .filter-sheet-footer {
+    display: flex !important;
+    gap: 10px; margin-top: 20px;
+  }
+  #filterPanel.sheet-open .filter-sheet-reset,
+  #filterPanel.sheet-open .filter-sheet-apply,
+  #sellerFilterPanel.sheet-open .filter-sheet-reset,
+  #sellerFilterPanel.sheet-open .filter-sheet-apply {
+    flex: 1; padding: 12px; border-radius: 8px;
+    font-family: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer;
+  }
+  #filterPanel.sheet-open .filter-sheet-reset,
+  #sellerFilterPanel.sheet-open .filter-sheet-reset {
+    background: transparent; border: 1.5px solid var(--border); color: var(--text);
+  }
+  #filterPanel.sheet-open .filter-sheet-apply,
+  #sellerFilterPanel.sheet-open .filter-sheet-apply {
+    background: var(--teal); border: none; color: var(--on-primary);
+  }
+}
+@media (max-width: 480px) {
+  .filter-row  { grid-template-columns: 1fr !important; }
+  .filter-tabs {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    padding-bottom: 2px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .filter-tab { flex-shrink: 0; }
+}
+
+/* ── 5. Data Tables → Card Layout on Mobile ─────────────────── */
+@media (max-width: 900px) {
+  /* Desktop table - horizontal scroll for medium screens */
+  .section-card { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+  .data-table   { min-width: 580px; }
+}
+
+@media (max-width: 768px) {
+  /* Mobile: Convert tables to cards */
+  .data-table {
+    display: block !important;
+    min-width: unset !important;
+  }
+
+  .data-table thead {
+    display: none !important; /* Hide table headers */
+  }
+
+  .data-table tbody {
+    display: block !important;
+  }
+
+  .data-table tr {
+    display: block !important;
+    background: rgb(var(--wash-rgb) / 0.02) !important;
+    border: 1.5px solid rgb(var(--wash-rgb) / 0.08) !important;
+    border-radius: 12px !important;
+    padding: 16px !important;
+    margin-bottom: 12px !important;
+    position: relative;
+  }
+
+  .data-table td {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 8px 0 !important;
+    border: none !important;
+    text-align: left !important;
+    gap: 12px;
+  }
+
+  .data-table td::before {
+    content: attr(data-label) !important;
+    font-weight: 700 !important;
+    font-size: 11px !important;
+    color: var(--muted) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    flex-shrink: 0;
+    min-width: 100px;
+    display: block !important;
+  }
+
+  /* Payment table specific overrides */
+  .pay-table.data-table td {
+    display: flex !important;
+    justify-content: space-between !important;
+    padding: 8px 0 !important;
+    border: none !important;
+    background: transparent !important;
+  }
+
+  .pay-table.data-table td::before {
+    content: attr(data-label) !important;
+    font-weight: 700 !important;
+    font-size: 11px !important;
+    color: var(--muted) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    display: block !important;
+  }
+
+  .pay-table.data-table tbody tr:hover td {
+    background: transparent !important;
+  }
+
+  .data-table td:first-child {
+    padding-top: 0 !important;
+    border-top: none !important;
+  }
+
+  .data-table td:last-child {
+    padding-bottom: 0 !important;
+  }
+
+  /* Action buttons in tables */
+  .action-btns {
+    flex-wrap: wrap !important;
+    justify-content: flex-end !important;
+  }
+
+  /* User cell with avatar */
+  .user-cell {
+    flex-direction: row !important;
+    justify-content: flex-end !important;
+  }
+
+  /* Status badges */
+  .status-badge {
+    margin-left: auto !important;
+  }
+}
+
+/* ── 6. Property / Listing Card Grid ────────────────────── */
+@media (max-width: 1100px) {
+  .property-grid  { grid-template-columns: repeat(2, 1fr) !important; }
+  .listings-grid  { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 640px) {
+  .property-grid  { grid-template-columns: 1fr !important; }
+  .listings-grid  { grid-template-columns: 1fr !important; }
+}
+
+/* ── 7. Messages Layout — Messenger-style slide on mobile ─── */
+.chat-back-btn { display: none; }
+
+@media (max-width: 768px) {
+  /* buyer-messages.css already builds .content with no padding so the layout fills edge-to-edge
+     ("messages fill edge-to-edge" — its own comment) — but the generic mobile rules above (#1
+     Content Padding, and the Bottom Nav Spacing block further down) force 16px/14px side padding
+     and 78-40px of bottom padding onto every .content, which left a visible margin of page
+     background around the conversation list and a dead gap below it. :has() gives this selector
+     higher specificity than those plain `.content` rules regardless of source order, so it wins
+     without needing to touch the generic rules themselves. The 78px bottom clearance for the tab
+     bar still belongs somewhere — moved onto .conv-list itself, which already scrolls. */
+  .content:has(.messages-layout) { padding: 0 !important; }
+  .conv-list { padding-bottom: calc(78px + env(safe-area-inset-bottom, 0px)); }
+
+  /* PREVIEW ONLY — hides the shared bell/avatar topbar on this page so it can be compared against
+     keeping it. .conv-top's own safe-area-top padding (added in 7b below) already accounts for
+     its absence. Remove this rule to restore the topbar. */
+  .main:has(.messages-layout) #hs-topbar { display: none !important; }
+
+  .messages-layout {
+    position: relative !important;
+    overflow: hidden !important;
+  }
+  .conv-panel {
+    position: absolute !important;
+    top: 0; left: 0;
+    width: 100% !important; height: 100% !important;
+    min-width: unset !important;
+    border-right: none !important;
+    transform: translateX(0);
+    transition: transform 0.28s cubic-bezier(0.4,0,0.2,1) !important;
+    z-index: 1;
+  }
+  .chat-panel {
+    position: absolute !important;
+    top: 0; left: 0;
+    width: 100% !important; height: 100% !important;
+    transform: translateX(100%);
+    transition: transform 0.28s cubic-bezier(0.4,0,0.2,1) !important;
+    z-index: 2;
+    background: var(--bg, var(--surface));
+  }
+  /* .content reserves 78px of bottom padding everywhere on mobile so the conversation LIST isn't
+     hidden behind the fixed bottom tab bar — but buyer/seller-messages.js hides that bar entirely
+     once a conversation is open, and the chat's own input bar already pads itself for the safe
+     area. Left as-is, that 78px just became a dead gap under the input bar. Zero it only while a
+     chat is open; the list view still gets its normal clearance. */
+  .content:has(.messages-layout.chat-open) {
+    padding-bottom: 0 !important;
+  }
+  /* buyer-messages.js hides #hs-topbar while a conversation is open on mobile — this is what
+     replaces the clearance that used to come from, giving the chat's own header room under the
+     status bar/notch instead of butting right up against it. */
+  .chat-header {
+    padding-left: 8px;
+    padding-right: 8px;
+    gap: 4px;
+  }
+  .messages-layout.chat-open .chat-header {
+    padding-top: calc(10px + env(safe-area-inset-top, 0px));
+  }
+  .messages-layout.chat-open .conv-panel {
+    transform: translateX(-20%) !important;
+    opacity: 0.5;
+  }
+  .messages-layout.chat-open .chat-panel {
+    transform: translateX(0) !important;
+    opacity: 1;
+  }
+  /* Matches the Help & Support (Meowrie) nav bar exactly: a plain text+chevron back button, no
+     circle background, with the identity block centered and a same-width spacer on the other
+     side to keep it actually centered rather than just left-aligned next to the button. */
+  .chat-back-btn {
+    display: flex !important;
+    align-items: center; gap: 2px;
+    background: none; border: none; cursor: pointer;
+    color: var(--teal);
+    font-size: 15px; font-weight: 500; font-family: inherit;
+    padding: 6px 8px 6px 2px;
+    flex: 0 0 auto; min-width: 70px;
+  }
+  .chat-back-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+  .chat-header-identity {
+    align-items: center;
+    text-align: center;
+  }
+  .chat-header-sub { justify-content: center; }
+  .chat-header-spacer { min-width: 70px; }
+
+  .content.no-pad { padding: 0 !important; }
+
+  /* ── 7b. Conversation list — read as a native chat list, not a desktop sidebar ──
+     At full phone width .conv-panel already fills the screen (see above), but it kept the
+     desktop sidebar's look: a small 8px-rounded square avatar and tight list-row padding, more
+     like a settings menu than a messaging app. Bigger circular avatars (the pattern this file
+     already uses for .chat-header-avatar) and roomier rows read as a chat list; the header gets
+     its own safe-area padding now that it's a true mobile screen top, not a sidebar corner.
+
+     Styled to read as iOS Messages specifically: a bold "large title" above the search field
+     (same stack the real app uses), a frosted-glass system-gray search pill instead of a bordered
+     box, and inset row separators that start after the avatar instead of running edge-to-edge —
+     the thing that most makes a plain `border-bottom` list read as "web page", not "Settings app". */
+  .conv-top {
+    padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 10px;
+    background: color-mix(in srgb, var(--card2) 88%, transparent);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+  }
+  .conv-title {
+    font-size: 32px; font-weight: 800; letter-spacing: -0.5px;
+    margin-bottom: 10px;
+  }
+  .conv-search {
+    background: rgba(118,118,128,0.16); border: none;
+    padding: 9px 12px 9px 34px; font-size: 14px; border-radius: 10px;
+  }
+  .conv-search::placeholder { color: var(--muted); }
+  .conv-search:focus { border-color: transparent; box-shadow: 0 ; }
+  [data-theme="light"] .conv-search { background: rgba(118,118,128,0.12); }
+  .conv-search-icon svg { width: 14px; height: 14px; }
+
+  .conv-item {
+    padding: 11px 16px; gap: 13px;
+    border-bottom: none !important;
+    position: relative;
+  }
+  .conv-item::after {
+    content: ''; position: absolute; left: 79px; right: 0; bottom: 0; height: 1px;
+    background: var(--border);
+  }
+  .conv-item:last-child::after { display: none; }
+  .conv-item:active { background: rgba(118,118,128,0.14) !important; }
+  .conv-item.active {
+    background: rgb(var(--primary-rgb) / 0.08); border-left: none !important; padding-left: 16px !important;
+  }
+  .conv-avatar { width: 50px; height: 50px; border-radius: 50%; }
+  .conv-name { font-size: 14.5px; font-weight: 600; }
+  .conv-preview { font-size: 13px; margin-top: 2px; }
+  .conv-time { font-size: 11.5px; }
+  .conv-badge {
+    background: var(--teal); min-width: 19px; height: 19px;
+    border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center;
+  }
+}
+
+/* ── 8. Admin Listing Detail Two-Col ────────────────────── */
+@media (max-width: 900px) {
+  .detail-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ── 9. Buyer Listing Detail ─────────────────────────────── */
+@media (max-width: 768px) {
+  .detail-img-wrap { height: 220px !important; }
+  .detail-title    { font-size: 18px !important; }
+  .listing-detail-wrap,
+  .detail-body-wrap { flex-direction: column !important; }
+  .seller-sidebar { width: 100% !important; order: -1; }
+  /* .seller-card used to stay a side-by-side row at this width, squeezing the seller's name into
+     a narrow column (hence it wrapping across 4 lines) while 3 buttons fought for the rest. Stacked
+     instead: name gets the full width, actions get their own row below it. */
+  .seller-card { flex-direction: column; align-items: stretch; }
+  .seller-actions { flex-wrap: wrap; gap: 8px; width: 100%; }
+  /* schedule-btn was left out of the flex:1 rule below, so it kept its own nowrap content width
+     while its two neighbors stretched to fill the row — different sizing logic in the same wrapped
+     row is what was actually colliding. Save Listing gets its own full-width row (it's the
+     secondary action); Schedule Viewing and Message Seller share the row below it evenly. */
+  .seller-actions .save-btn { flex: 1 1 100%; justify-content: center; }
+  .seller-actions .schedule-btn,
+  .seller-actions .msg-btn { flex: 1 1 calc(50% - 4px); justify-content: center; }
+}
+
+/* ── 10. User Detail & Profile ──────────────────────────── */
+@media (max-width: 900px) {
+  .compare-grid { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 768px) {
+  .info-grid    { grid-template-columns: repeat(2, 1fr) !important; }
+  .docs-grid    { grid-template-columns: repeat(2, 1fr) !important; }
+  .profile-head { flex-direction: column !important; gap: 12px !important; align-items: flex-start !important; }
+}
+@media (max-width: 480px) {
+  .info-grid    { grid-template-columns: 1fr !important; }
+  .docs-grid    { grid-template-columns: 1fr 1fr !important; }
+}
+
+/* ── 11. Reports — Charts Row ───────────────────────────── */
+@media (max-width: 900px) {
+  .charts-row { grid-template-columns: 1fr !important; }
+  .breakdown-wrap { justify-content: center; }
+}
+
+/* ── 12. Modals → Bottom Sheet on Mobile ────────────────── */
+@media (max-width: 640px) {
+  .modal-backdrop,
+  .verif-modal-backdrop,
+  .listing-modal-backdrop,
+  [id$="Modal"][style*="display: flex"],
+  [id$="Modal"][style*="display:flex"] {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+  .modal,
+  .verif-modal,
+  .reject-modal-box,
+  .listing-modal-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 20px 20px 0 0 !important;
+    max-height: 88vh;
+    overflow-y: auto !important;
+  }
+  .field-group { grid-template-columns: 1fr !important; }
+}
+
+/* ── 13. Form Grids (post listing, settings) ────────────── */
+@media (max-width: 768px) {
+  .two-col   { grid-template-columns: 1fr !important; }
+  .three-col { grid-template-columns: 1fr 1fr !important; }
+  .field-group { grid-template-columns: 1fr !important; }
+  .section-body { padding: 16px 14px !important; }
+  .section-header { padding: 14px !important; }
+}
+@media (max-width: 480px) {
+  .three-col { grid-template-columns: 1fr !important; }
+}
+
+/* ── 14. Notifications Page ─────────────────────────────── */
+@media (max-width: 768px) {
+  .notif-container { padding: 14px !important; max-width: 100% !important; }
+  .notif-item      { padding: 12px 14px !important; gap: 10px !important; }
+  .notif-header    { padding: 16px 14px 12px !important; }
+}
+
+/* ── 15. Toast ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* left+right here were meant to center it with equal margins, but the base rule's
+     transform: translateX(-50%) — written for the desktop left:50% + transform centering trick —
+     was never reset, so it kept shifting the toast an extra 50% of its own width further left on
+     top of this, shoving it toward the edge with its text clipped. Only the vertical slide-in
+     part of the transform is needed here; the horizontal centering now comes from left/right alone. */
+  .toast {
+    left: 14px !important;
+    right: 14px !important;
+    width: auto !important;
+    transform: translateY(12px) !important;
+  }
+  .toast.show {
+    transform: translateY(0) !important;
+  }
+}
+
+/* ── 16. Action Button Rows ─────────────────────────────── */
+@media (max-width: 480px) {
+  .action-btns { flex-wrap: wrap; gap: 4px !important; }
+  .btn-sm { font-size: 11px !important; padding: 5px 10px !important; }
+}
+
+/* ── 17. Seller Verification Steps ─────────────────────── */
+@media (max-width: 640px) {
+  .step-bar { gap: 6px !important; }
+  .step-label { display: none; }
+}
+
+/* ── 18. Analytics / Admin Dashboard Charts ─────────────── */
+@media (max-width: 900px) {
+  .analytics-grid,
+  .dashboard-charts { grid-template-columns: 1fr !important; }
+}
+
+/* ── 19. Seller Post — Photo Upload Grid ────────────────── */
+@media (max-width: 640px) {
+  .photo-grid   { grid-template-columns: repeat(3, 1fr) !important; }
+  .amenity-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* ── 20. Index / Landing Page ────────────────────────────── */
+
+/* Tablets and narrow windows: 769px to 1024px.
+   The hero is two columns side by side, and .hero-left is capped at max-width: 50%. Below about
+   1024px that leaves the headline roughly 350px to live in, while .hero-title has a floor of 38px
+   and will not shrink past it — so "All in one place." ran off the edge. Phones were already
+   handled at 768px; this is the gap between the two.
+   Stacked rather than hidden, so the map is still there on a tablet, just underneath. */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .hero {
+    flex-direction: column;
+    min-height: auto;
+  }
+  .hero-left {
+    max-width: 100%;
+    padding: 64px 40px 48px;
+  }
+  .hero-title {
+    font-size: clamp(34px, 6vw, 52px);
+  }
+  /* The featured card and barangay chips drop under the copy instead of beside it. */
+  .hero-side {
+    width: auto;
+    margin: 0 40px 56px;
+    max-width: 460px;
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 768px) {
+  nav { padding: 0 20px !important; }
+  .nav-links { display: none; }
+  .hero-content h1 { font-size: 32px !important; }
+  .hero-stats { flex-wrap: wrap; gap: 16px !important; }
+  .features-grid { grid-template-columns: 1fr !important; }
+  .feature-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
+  .steps-grid    { grid-template-columns: 1fr !important; }
+  .cta-actions   { flex-direction: column !important; align-items: center; }
+
+  /* Mobile hero — the listing photo stays (it sits on top of this background), the card and chips
+     stack under the copy. */
+  .hero-overlay  { display: none !important; }
+  .hero {
+    background: linear-gradient(160deg, var(--bg) 0%, var(--surface-soft) 55%, var(--bg) 100%) !important;
+    min-height: auto !important;
+  }
+  .hero-left {
+    max-width: 100% !important;
+    padding: 96px 24px 44px !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+  .hero-badge, .hero-content, .hero-actions, .hero-stats {
+    align-items: center !important;
+    text-align: center !important;
+  }
+  .hero-title {
+    font-size: clamp(28px, 8vw, 40px) !important;
+    line-height: 1.2 !important;
+  }
+  .hero-desc {
+    font-size: 15px !important;
+    max-width: 100% !important;
+  }
+
+  /* Hide Browse/List buttons on mobile, show Sign In/Up instead */
+  .hero-btn-browse,
+  .hero-btn-list {
+    display: none !important;
+  }
+  .hero-btn-mobile-signin,
+  .hero-btn-mobile-signup {
+    display: flex !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+  .hero-ctas {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 12px !important;
+    width: 100% !important;
+    flex-wrap: nowrap !important;
+  }
+
+  /* Feature cards mobile */
+  .feature-card {
+    padding: 32px 24px !important;
+    text-align: center !important;
+  }
+  .feature-card::before {
+    width: 150px !important;
+    height: 150px !important;
+  }
+  .feature-card-title {
+    font-size: 18px !important;
+  }
+  .feature-card-desc {
+    font-size: 14px !important;
+  }
+
+  /* Sections mobile padding */
+  .section, .section-alt {
+    padding: 48px 20px !important;
+  }
+  .section-title {
+    font-size: clamp(24px, 6vw, 32px) !important;
+  }
+  .section-desc {
+    font-size: 14px !important;
+  }
+
+  /* Trust banner */
+  .trust-banner {
+    padding: 48px 20px !important;
+  }
+
+  /* Stats grid */
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* Features wrap */
+  .features-card-wrap {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* Categories grid */
+  .categories-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* Testimonials */
+  .testimonials-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* CTA section */
+  .cta-section {
+    padding: 48px 20px !important;
+  }
+  .cta-title {
+    font-size: clamp(24px, 6vw, 32px) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-left {
+    padding: 76px 16px 32px !important;
+  }
+  .hero-title {
+    font-size: clamp(24px, 7vw, 32px) !important;
+  }
+  .hero-ctas {
+    width: 100% !important;
+    flex-direction: row !important;
+    gap: 10px !important;
+  }
+  .hero-btn-mobile-signin,
+  .hero-btn-mobile-signup {
+    flex: 1 !important;
+    padding: 12px 16px !important;
+    font-size: 13px !important;
+  }
+  .hero-trust {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  /* Feature cards extra small */
+  .feature-card {
+    padding: 24px 20px !important;
+  }
+  .feature-card-icon {
+    width: 48px !important;
+    height: 48px !important;
+    margin-bottom: 16px !important;
+  }
+  .feature-card-title {
+    font-size: 16px !important;
+  }
+  .feature-card-desc {
+    font-size: 13px !important;
+  }
+
+  /* Sections */
+  .section, .section-alt {
+    padding: 40px 16px !important;
+  }
+  .section-title {
+    font-size: clamp(20px, 5vw, 28px) !important;
+  }
+}
+
+/* ── How It Works — vertical timeline on mobile ─────────── */
+@media (max-width: 768px) {
+  .how-steps {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    padding: 0 4px !important;
+  }
+
+  /* Each step: number circle left, text right */
+  .how-step {
+    display: grid !important;
+    grid-template-columns: 44px 1fr !important;
+    grid-template-rows: auto auto !important;
+    column-gap: 16px !important;
+    row-gap: 4px !important;
+    text-align: left !important;
+    padding: 0 0 28px !important;
+    position: relative !important;
+  }
+  .how-step:last-child { padding-bottom: 0 !important; }
+
+  /* Vertical connector line */
+  .how-step:not(:last-child)::before {
+    content: '' !important;
+    position: absolute !important;
+    left: 21px !important;
+    top: 44px !important;
+    bottom: 0 !important;
+    width: 2px !important;
+    background: rgb(var(--primary-rgb) / 0.22) !important;
+  }
+
+  /* Kill the desktop horizontal connector */
+  .how-step::after { display: none !important; }
+
+  .how-step-num {
+    grid-column: 1 !important;
+    grid-row: 1 / 3 !important;
+    align-self: flex-start !important;
+    margin: 0 !important;
+    width: 44px !important;
+    height: 44px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .how-step-title {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    padding-top: 10px !important;
+    font-size: 15px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .how-step-desc {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    font-size: 13px !important;
+  }
+}
+
+/* ── Bottom nav spacing — push content up on mobile ─────── */
+@media (max-width: 768px) {
+  .content { padding-bottom: 78px !important; }
+  .toast   { bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important; }
+}
+
+/* ── 21. About Page ──────────────────────────────────────── */
+@media (max-width: 900px) {
+  .team-grid   { grid-template-columns: repeat(2, 1fr) !important; }
+  .about-intro { flex-direction: column !important; }
+}
+@media (max-width: 480px) {
+  .team-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ── 22. Auth Pages ──────────────────────────────────────── */
+@media (max-width: 480px) {
+  .auth-card  { padding: 24px 18px !important; border-radius: 16px !important; }
+  .auth-title { font-size: 20px !important; }
+}
+
+/* ── 23. Topbar Notification Panel & Profile Dropdown ────── */
+@media (max-width: 768px) {
+  /* Both panels now open the same way at every width (see topbar.js — the bell used to redirect
+     to a full page here instead of opening its panel, unlike the profile button). Their base
+     desktop widths (330px / 220px) would overflow a narrow screen anchored this close to the
+     edge, so both get the same mobile-safe sizing. */
+  .hs-notif-panel {
+    right: 12px !important;
+    left: auto !important;
+    width: auto !important;
+    min-width: 260px !important;
+    max-width: calc(100vw - 24px) !important;
+  }
+
+  .hs-profile-dropdown {
+    right: 12px !important;
+    left: auto !important;
+    min-width: 200px !important;
+    max-width: calc(100vw - 24px) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hs-notif-panel {
+    right: 8px !important;
+    min-width: 230px !important;
+  }
+  .hs-profile-dropdown {
+    right: 8px !important;
+    min-width: 180px !important;
+  }
+}
+
+/* ── 24. Tab Bars (seller listings, admin tabs) ──────────── */
+@media (max-width: 640px) {
+  .tab-bar, .filter-tabs {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .tab-bar::-webkit-scrollbar,
+  .filter-tabs::-webkit-scrollbar { display: none; }
+  .tab, .filter-tab { flex-shrink: 0; white-space: nowrap; }
+}
+
+/* ── 25. Page Header Buttons on Mobile ───────────────────── */
+@media (max-width: 640px) {
+  .page-header { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; }
+  .btn-add, .btn-primary-sm { width: 100% !important; justify-content: center; }
+}
+
+/* ── 26. Warn / Verify Banner ────────────────────────────── */
+@media (max-width: 640px) {
+  .warn-banner { flex-direction: column !important; gap: 12px !important; align-items: flex-start !important; }
+  .btn-verify  { width: 100% !important; text-align: center; }
+
+  /* .verify-banner (seller dashboard's own "Verification Required" card — a different component
+     from .warn-banner above) stayed a single flex row at every width: a fixed 40px icon, the
+     flex:1 title+sub text, and a nowrap "Start Verification" button all fighting for the same
+     line. With "Start Verification" eating ~140px and the icon another 40px, the body text column
+     was squeezed down to almost nothing, so it wrapped word-by-word into a tall ladder next to a
+     now visually-floating icon and button. Regridded like .how-step elsewhere in this file: icon
+     and text share a row, the button gets its own full-width row below. */
+  .verify-banner {
+    display: grid !important;
+    grid-template-columns: 40px 1fr !important;
+    column-gap: 14px !important; row-gap: 14px !important;
+    align-items: start !important;
+  }
+  .verify-banner-icon { grid-column: 1; grid-row: 1; }
+  .verify-banner-body { grid-column: 2; grid-row: 1; }
+  .verify-btn { grid-column: 1 / -1; grid-row: 2; width: 100%; justify-content: center; }
+}
+
+/* ── 27. Listing Cards (seller my-listings) ──────────────── */
+@media (max-width: 640px) {
+  .listing-card { flex-direction: column !important; }
+  .listing-card .card-thumb { width: 100% !important; height: 180px !important; }
+  .card-actions { flex-wrap: wrap; gap: 8px !important; }
+}
+
+
+/* ── 27b. Saved Listings Cards (buyer) ───────────────────── */
+@media (max-width: 640px) {
+  /* .saved-card kept its desktop side-by-side layout at every width: a fixed 155px image plus a
+     price column left too little room for the title/address/specs, so the address wrapped onto a
+     second line and pushed everything else down, and the specs row clipped bath/area entirely.
+     Stacked like .listing-card above: image full-width on top, body below, price row under it. */
+  .saved-card { flex-direction: column !important; align-items: stretch !important; }
+  .saved-img-wrap { width: 100% !important; min-width: 0 !important; height: 170px !important; }
+  .saved-price-col {
+    flex-direction: row !important; align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 15px 13px !important;
+  }
+}
+
+/* ── 28. Verification Steps ──────────────────────────────── */
+@media (max-width: 640px) {
+  .step-bar { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; padding-bottom: 4px; }
+  .step-item { flex-shrink: 0; }
+}
+
+/* ── 29. Seller Post Form Sections ───────────────────────── */
+@media (max-width: 768px) {
+  .section-grid   { grid-template-columns: 1fr !important; }
+  .doc-grid       { grid-template-columns: 1fr !important; }
+  .upload-zone    { padding: 28px 16px !important; }
+}
+
+/* ── 30. Profile / Settings Form Cards ──────────────────── */
+@media (max-width: 768px) {
+  .form-cards-row { flex-direction: column !important; gap: 16px !important; }
+  .form-card      { width: 100% !important; }
+}
+
+/* ── 31. Admin / Super-admin: Listing Table ──────────────── */
+@media (max-width: 900px) {
+  .listings-table-wrap { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+  .listings-table      { min-width: 700px; }
+}
+
+/* ── 32. Global touch target minimum ────────────────────── */
+@media (max-width: 768px) {
+  button, a, [role="button"] { min-height: 40px; }
+  .btn-sm { min-height: 32px !important; }
+}
+
+/* ── 35. Payment Cards - Compact Mobile Layout ──────────── */
+@media (max-width: 768px) {
+  /* Payment stat-row in 2-column grid on mobile */
+  .stat-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Make individual stat cards more compact */
+  .stat-card {
+    padding: 16px 14px !important;
+  }
+
+  .stat-card .stat-value {
+    font-size: 22px !important;
+  }
+
+  .stat-card .stat-label {
+    font-size: 10px !important;
+  }
+
+  .stat-card .stat-hint {
+    font-size: 11px !important;
+  }
+
+  .stat-icon {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .stat-icon svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* On very small screens, keep 2 columns but tighter */
+  .stat-row {
+    gap: 10px !important;
+  }
+
+  .stat-card {
+    padding: 14px 12px !important;
+  }
+
+  .stat-card .stat-value {
+    font-size: 20px !important;
+  }
+}
+
+/* ── 33. Prevent horizontal overflow on mobile ──────────── */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+  * {
+    max-width: 100%;
+  }
+  img {
+    height: auto !important;
+  }
+
+  /* Fix common overflow causes */
+  .hero, .section, .section-alt, .cta-section, .feature-highlights, .platform-features {
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+  }
+
+  /* Ensure containers don't overflow */
+  .container, .hero-left, .section-inner, .feature-grid, .features-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Feature cards containment */
+  .feature-card, .feature-card::before {
+    max-width: 100% !important;
+  }
+
+  /* Text wrapping */
+  h1, h2, h3, h4, h5, h6, p {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* Prevent long URLs or text from breaking layout */
+  a {
+    word-break: break-word !important;
+  }
+
+  /* SVG and absolute elements */
+  svg, .hero-map-svg {
+    max-width: 100% !important;
+    max-height: 100% !important;
+  }
+}
+
+/* ── 34. Landing page specific mobile fixes ─────────────── */
+@media (max-width: 768px) {
+  /* Nav mobile */
+  nav {
+    padding: 0 12px !important;
+    height: 60px !important;
+  }
+  .nav-logo {
+    font-size: 16px !important;
+    gap: 6px !important;
+  }
+  .nav-logo img {
+    height: 24px !important;
+    max-height: 24px !important;
+  }
+  .nav-catstone-wrap {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  .nav-logo-divider {
+    height: 18px !important;
+  }
+  .nav-btns {
+    gap: 10px !important;
+    flex-shrink: 0 !important;
+  }
+  /* Sign Up stays hidden on mobile — the hero's own pill buttons cover it, and the nav only has
+     room for one. Sign In stays visible: scrolling away from the hero used to mean scrolling all
+     the way back up just to sign in, so it needs to be reachable from the nav at any scroll
+     position, not only at the top. */
+  .btn-solid {
+    display: none !important;
+  }
+  .btn-outline {
+    display: flex !important;
+    padding: 7px 14px !important;
+    font-size: 12.5px !important;
+  }
+  /* The theme toggle used to shrink here and again below (36px -> 32px -> 30px). It is a tap
+     target, and nothing else competes for space next to it once Sign In/Up are hidden, so on
+     request it now stays the same size everywhere rather than getting smaller exactly where a
+     smaller target is harder to hit. */
+
+  /* Footer mobile */
+  footer {
+    padding: 40px 20px 24px !important;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+    margin-bottom: 32px !important;
+  }
+  .footer-logo {
+    font-size: 16px !important;
+    margin-bottom: 10px !important;
+  }
+  .footer-logo img {
+    height: 24px !important;
+  }
+  .footer-tagline {
+    font-size: 12px !important;
+    line-height: 1.6 !important;
+  }
+  .footer-col-title {
+    font-size: 10px !important;
+    margin-bottom: 12px !important;
+  }
+  .footer-link {
+    font-size: 13px !important;
+    margin-bottom: 8px !important;
+  }
+  .footer-divider {
+    margin: 0 auto 20px !important;
+  }
+  .footer-copy {
+    font-size: 11px !important;
+  }
+
+  /* How it works section */
+  .how-steps {
+    padding: 0 !important;
+  }
+
+  /* Category cards */
+  .cat-card {
+    padding: 20px 16px !important;
+  }
+  .cat-title {
+    font-size: 15px !important;
+  }
+  .cat-desc {
+    font-size: 13px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  nav {
+    padding: 0 10px !important;
+  }
+  .nav-logo {
+    font-size: 14px !important;
+    gap: 4px !important;
+  }
+  .nav-logo img {
+    height: 22px !important;
+  }
+  .nav-catstone-wrap {
+    width: 26px !important;
+    height: 26px !important;
+  }
+  .nav-logo-divider {
+    height: 16px !important;
+  }
+  /* .btn-primary was a typo for .btn-solid, the real class on the nav's Sign Up button — still
+     unreachable, .btn-solid stays display: none at this width (see the 768px block above).
+     .btn-outline (Sign In) is reachable now, so its own size here is real. */
+  .btn-outline, .btn-solid {
+    padding: 6px 10px !important;
+    font-size: 11px !important;
+  }
+  /* Used to shrink to 30px here — removed, see the 768px block above for why. */
+}
+
+@media (max-width: 375px) {
+  /* Extra small phones */
+  nav {
+    padding: 0 8px !important;
+  }
+  .nav-logo {
+    font-size: 13px !important;
+  }
+  .nav-logo img {
+    height: 20px !important;
+  }
+  .nav-catstone-wrap {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  /* Sign In used to disappear entirely below 375px. Kept visible on request — it is the only way
+     to reach sign-in while scrolled away from the hero, so losing it here left the smallest
+     phones with no way to sign in without scrolling back to the top. Shrunk instead. */
+  .btn-outline {
+    padding: 5px 9px !important;
+    font-size: 10.5px !important;
+  }
+  /* .btn-primary was a typo for .btn-solid, same as above — fixed, though still unreachable here
+     for the same reason: both nav buttons are already display: none at this width. */
+  .btn-solid {
+    padding: 6px 12px !important;
+    font-size: 11px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* .profile-card (buyer/seller profile) stayed a single tight row at this width — avatar, name,
+     meta, status badge and the Edit Profile button all squeezed onto one line with no room to
+     breathe. Stack it instead: avatar+name on top, badge below that, button full-width last. */
+  .profile-card {
+    flex-wrap: wrap;
+    padding: 20px;
+    gap: 14px;
+  }
+  .profile-info { flex: 1 1 auto; min-width: 0; }
+  .profile-meta { gap: 8px 12px; }
+  #statusBadge { flex-basis: 100%; order: 3; }
+  .edit-profile-btn {
+    flex-basis: 100%;
+    order: 4;
+    justify-content: center;
+    margin-left: 0;
+    padding: 11px 16px;
+  }
+
+  /* .section-header (My Transactions / My Reviews, buyer & seller profile) was a baseline-aligned
+     row cramming the bold title and the muted description side by side — at this width there's
+     not enough room, so the description got squeezed into a narrow wrapped column next to the
+     title instead of reading as its own line. Stack them. */
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  /* .setting-row (buyer/seller settings) stayed a side-by-side row at this width — the label+desc
+     text and the Light/Dark toggle buttons fought for the same line, squeezing the description
+     into a narrow wrapped column next to the buttons. Stack them instead. */
+  .setting-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .theme-toggle-container { width: 100%; }
+  .theme-toggle-container .theme-option { flex: 1; justify-content: center; }
+  .toggle-group { align-self: flex-start; }
+
+  /* .verify-status-row (seller Settings > Identity Verification section) is the OUTER row —
+     `display:flex; justify-content:space-between` putting the whole verified-status block (badge,
+     paragraph, Re-verify button — itself already stacked by the .setting-row rule above) on the
+     left and the separate "Verification valid until ... days remaining" box on the right, side by
+     side. At this width that squeezed the expiry box into a narrow column, wrapping its one-line
+     sentence awkwardly and leaving it looking like a stray floating card rather than content
+     that's actually part of the same section. Stacked, full width, expiry box below. */
+  .verify-status-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

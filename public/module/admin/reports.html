@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/kasafide-favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../../assets/img/favicon-16.png" />
+  <link rel="apple-touch-icon" href="../../assets/img/apple-touch-icon.png" />
+  <link rel="manifest" href="../../site.webmanifest" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../../assets/js/kasafide-theme.js"></script>
+  <script src="../../assets/js/kasafide-logo.js"></script>
+  <link rel="stylesheet" href="../../assets/css/kasafide-theme.css" />
+  <title>Kasafide – Reports</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/admin/admin-reports.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+  <div class="main">
+    <div id="hs-topbar"></div>
+    <div class="content">
+
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Reports</h1>
+          <p class="page-sub">User-submitted reports on listings and sellers</p>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <div class="filter-tabs" id="filterTabs">
+          <button class="filter-tab active" data-status="all">All</button>
+          <button class="filter-tab" data-status="pending">Pending</button>
+          <button class="filter-tab" data-status="under_review">Under Review</button>
+          <button class="filter-tab" data-status="resolved">Resolved</button>
+          <button class="filter-tab" data-status="rejected">Rejected</button>
+        </div>
+      </div>
+
+      <!-- Reports Table -->
+      <div class="table-card" id="reportsContainer"></div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Report Detail Modal -->
+<div class="modal-backdrop" id="reportModal">
+  <div class="modal" id="reportModalContent"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0/dist/umd/supabase.js"></script>
+<script src="../../assets/js/config.js?v=2"></script>
+<script src="../../assets/js/session.js"></script>
+<script src="../../assets/js/data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/admin/admin-reports.js"></script>
+</body>
+</html>

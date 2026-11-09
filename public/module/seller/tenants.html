@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/kasafide-favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../../assets/img/favicon-16.png" />
+  <link rel="apple-touch-icon" href="../../assets/img/apple-touch-icon.png" />
+  <link rel="manifest" href="../../site.webmanifest" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../../assets/js/kasafide-theme.js"></script>
+  <script src="../../assets/js/kasafide-logo.js"></script>
+  <link rel="stylesheet" href="../../assets/css/kasafide-theme.css" />
+  <title>Kasafide – My Tenants</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/seller/seller-tenants.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+  <div class="main">
+    <div id="hs-topbar"></div>
+    <div class="content">
+
+      <div class="page-header">
+        <div>
+          <div class="page-title">My Tenants</div>
+          <div class="page-sub">Everyone renting or buying through your listings</div>
+        </div>
+      </div>
+
+      <div class="stat-row" id="statRow"><!-- filled by seller-tenants.js --></div>
+
+      <div class="toolbar" id="toolbar" style="display:none">
+        <div class="search-wrap">
+          <span class="search-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+          <input class="search-input" id="tenantSearch" type="text" placeholder="Search by name or property…" />
+        </div>
+      </div>
+
+      <div id="tenantList"><!-- filled by seller-tenants.js --></div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0/dist/umd/supabase.js"></script>
+<script src="../../assets/js/config.js?v=2"></script>
+<script src="../../assets/js/session.js"></script>
+<script src="../../assets/js/data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/seller/seller-tenants.js"></script>
+</body>
+</html>

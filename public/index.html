@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="assets/img/kasafide-favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png" />
+  <!-- "Add to Home Screen" on iOS looks only for apple-touch-icon, never the regular favicon
+       above. apple-touch-icon.png is generated at Apple's 180x180 with the logo padded on a solid
+       cream square: iOS renders transparent pixels as black, so the icon must not have any. -->
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+    <meta name="apple-mobile-web-app-title" content="Kasafide" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="assets/js/kasafide-theme.js"></script>
+  <script src="assets/js/kasafide-logo.js"></script>
+  <link rel="stylesheet" href="assets/css/kasafide-theme.css" />
+    <title>Kasafide</title>
+  <meta name="description" content="Kasafide is a verified housing rental and listing platform for Sta. Maria, Bulacan. Every seller is ID-checked and every listing is reviewed before it goes live." />
+  <meta property="og:site_name" content="Kasafide" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Kasafide" />
+  <meta property="og:description" content="Verified homes in Sta. Maria, Bulacan." />
+  <meta property="og:image" content="/assets/img/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Kasafide" />
+  <meta name="twitter:description" content="Verified homes in Sta. Maria, Bulacan." />
+  <meta name="twitter:image" content="/assets/img/og-image.png" />
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="assets/css/index.css?v=20261107q" />
+
+    <!-- React (via CDN — no build tools needed).
+         Production builds: the development ones ship roughly three times the code and run extra
+         checks on every render, neither of which a visitor benefits from. -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"
+    ></script>
+    <link rel="stylesheet" href="assets/css/responsive.css?v=20261107q" />
+    <link rel="stylesheet" href="assets/css/glass-nav.css" />
+</head>
+  <body>
+    <div id="root"></div>
+
+<!-- The landing page reads the database for its figures, so it needs the same chain every other
+     page uses: supabase-js, then config.js for `sb`, then data.js for `HS`.
+     session.js only redirects on /module/ pages, so it is inert here — but data.js expects the
+     helpers it defines. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0/dist/umd/supabase.js"></script>
+<script src="assets/js/config.js?v=2"></script>
+<script src="assets/js/session.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/index.js?v=20261107q"></script>
+<script src="assets/js/glass-nav.js"></script>
+  </body>
+</html>

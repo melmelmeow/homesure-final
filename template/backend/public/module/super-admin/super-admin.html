@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – Super Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/super-admin/super-admin.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+  <div class="main">
+    <div id="hs-topbar"></div>
+    <div class="content">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div>
+          <h1 class="page-title" id="dashTitle">Super Admin Control Panel</h1>
+          <p class="page-sub">Full system oversight — users, admins, listings, and audit trail.</p>
+        </div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="stat-grid" id="statGrid"></div>
+
+      <!-- System Health -->
+      <div class="health-row" id="healthRow"></div>
+
+      <!-- Admin Management -->
+      <div class="section-card">
+        <div class="section-head">
+          <div>
+            <div class="section-title">Admin Management</div>
+            <div class="section-sub">Manage admin accounts — add, deactivate, or reset credentials.</div>
+          </div>
+          <button class="btn-primary" id="addAdminBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Admin
+          </button>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Admin</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Date Added</th>
+              <th>Added By</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="adminTable"></tbody>
+        </table>
+      </div>
+
+      <!-- Audit Trail Preview -->
+      <div class="section-card">
+        <div class="section-head">
+          <div>
+            <div class="section-title">Recent Activity</div>
+            <div class="section-sub">Latest 5 actions across the platform.</div>
+          </div>
+          <a href="audit-trail.html" class="btn-primary" style="text-decoration:none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            View Full Audit Trail
+          </a>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>User</th>
+              <th>Role</th>
+              <th>Action</th>
+              <th>IP Address</th>
+              <th>Status</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody id="auditTable"></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Add Admin Modal -->
+<div class="modal-backdrop" id="addAdminModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Add New Admin</span>
+      <button class="modal-close" id="closeAdminModal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <div class="field">
+          <label>First Name</label>
+          <input type="text" id="newAdminFirst" placeholder="First name" />
+        </div>
+        <div class="field">
+          <label>Last Name</label>
+          <input type="text" id="newAdminLast" placeholder="Last name" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Email Address</label>
+        <input type="email" id="newAdminEmail" placeholder="admin@homesure.com" />
+      </div>
+      <div class="field">
+        <label>Temporary Password</label>
+        <input type="password" id="newAdminPass" placeholder="Set a temporary password" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" id="cancelAdminModal">Cancel</button>
+      <button class="btn-primary" id="confirmAddAdmin">Create Admin</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toastMsg"></span>
+</div>
+
+<script src="../../assets/js/fake-data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/super-admin/super-admin.js"></script>
+</body>
+</html>

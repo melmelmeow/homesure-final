@@ -1,0 +1,178 @@
+/* HomeSure – Admin Management Page (extends super-admin.css) */
+
+/* ── Filter Bar ── */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius) var(--radius) 0 0;
+  border-bottom: none;
+  padding: 12px 20px;
+  gap: 16px;
+  animation: fadeUp .3s ease .08s both;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+/* ── Search ── */
+.search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-wrap svg {
+  position: absolute;
+  left: 11px;
+  width: 15px;
+  height: 15px;
+  color: var(--muted);
+  pointer-events: none;
+}
+.search-wrap input {
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  padding: 7px 14px 7px 34px;
+  width: 240px;
+  outline: none;
+  transition: border-color 0.18s;
+}
+.search-wrap input::placeholder { color: var(--muted); }
+.search-wrap input:focus { border-color: var(--teal); }
+
+/* ── Section card attached to filter bar ── */
+.section-card {
+  border-radius: 0 0 var(--radius) var(--radius);
+  animation: fadeUp .3s ease .1s both;
+}
+
+/* ── Action Buttons ── */
+.action-btns { display: flex; gap: 6px; }
+
+.btn-sm {
+  font-size: 11.5px; font-weight: 700;
+  padding: 5px 13px; border-radius: 7px;
+  border: none; cursor: pointer;
+  font-family: inherit; transition: opacity 0.18s, transform 0.18s;
+  white-space: nowrap;
+}
+.btn-sm:hover { opacity: 0.82; transform: translateY(-1px); }
+
+.btn-sm.activate   { background: #00c9a7; color: #fff; }
+.btn-sm.deactivate { background: rgba(239,68,68,0.15); color: #ef4444; }
+.btn-sm.reset      { background: rgba(59,130,246,0.15); color: #3b82f6; }
+
+/* ── Modal ── */
+.modal-backdrop {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(3px);
+}
+
+.modal {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 460px;
+  box-shadow: var(--shadow-md);
+  animation: fadeUp .22s ease both;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-title { font-size: 15px; font-weight: 800; color: var(--text); }
+
+.modal-close {
+  background: transparent; border: none;
+  color: var(--muted); cursor: pointer;
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 7px; transition: background 0.18s;
+}
+.modal-close svg { width: 16px; height: 16px; }
+.modal-close:hover { background: rgba(255,255,255,0.07); color: var(--text); }
+
+.modal-body {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.field input {
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13.5px;
+  padding: 9px 13px;
+  outline: none;
+  transition: border-color 0.18s;
+}
+.field input::placeholder { color: var(--muted); }
+.field input:focus { border-color: var(--teal); }
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── Toast ── */
+.toast {
+  position: fixed; bottom: 28px; right: 28px;
+  background: #1a2535; border: 1px solid var(--border);
+  border-radius: 12px; padding: 13px 18px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13.5px; font-weight: 600; color: var(--text);
+  box-shadow: var(--shadow-md);
+  transform: translateY(20px); opacity: 0;
+  transition: all 0.28s cubic-bezier(.22,1,.36,1);
+  pointer-events: none; z-index: 999;
+}
+.toast svg { width: 17px; height: 17px; color: var(--teal); flex-shrink: 0; }
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* ── Light Mode ── */
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f4f6f9; --card: #ffffff; --card2: #f1f5f9;
+    --border: rgba(0,0,0,0.08);
+    --text: #0f172a; --muted: rgba(0,0,0,0.38); --muted2: rgba(0,0,0,0.8);
+    --shadow: 0 2px 8px rgba(0,0,0,0.08); --shadow-md: 0 8px 28px rgba(0,0,0,0.14);
+  }
+  .btn-sm.deactivate { background: rgba(239,68,68,0.08); }
+  .btn-sm.reset      { background: rgba(59,130,246,0.08); }
+}

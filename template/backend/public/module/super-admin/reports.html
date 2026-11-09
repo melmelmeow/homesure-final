@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – System Reports</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/super-admin/super-admin.css" />
+  <link rel="stylesheet" href="../../assets/css/super-admin/reports.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+  <div class="main">
+    <div id="hs-topbar"></div>
+    <div class="content">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">System Reports</h1>
+          <p class="page-sub">Platform-wide overview — user growth, listing health, and reported content.</p>
+        </div>
+        <button class="export-btn" onclick="exportReportsCSV()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export CSV
+        </button>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="stat-grid" id="statGrid"></div>
+
+      <!-- Charts Row -->
+      <div class="charts-row">
+        <div class="chart-card" id="userGrowthCard">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">User Registrations</div>
+              <div class="chart-sub" id="userGrowthSub">Monthly new accounts — last 7 months</div>
+            </div>
+            <div class="period-dropdown" id="userGrowthDropdown">
+              <button class="period-btn" onclick="toggleDropdown('userGrowthDropdown')">
+                <span id="userGrowthPeriodLabel">Monthly</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="period-menu">
+                <div class="period-option active" data-period="monthly" onclick="setUserGrowthPeriod('monthly',this)">Monthly</div>
+                <div class="period-option" data-period="weekly" onclick="setUserGrowthPeriod('weekly',this)">Weekly</div>
+                <div class="period-option" data-period="daily" onclick="setUserGrowthPeriod('daily',this)">Daily</div>
+              </div>
+            </div>
+          </div>
+          <svg id="userGrowthChart" class="chart-svg"></svg>
+        </div>
+        <div class="chart-card" id="listingBreakdownCard">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Listing Status Breakdown</div>
+              <div class="chart-sub" id="listingBreakdownSub">All listings by current status</div>
+            </div>
+            <div class="period-dropdown" id="listingDropdown">
+              <button class="period-btn" onclick="toggleDropdown('listingDropdown')">
+                <span id="listingPeriodLabel">Monthly</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="period-menu">
+                <div class="period-option active" data-period="monthly" onclick="setListingPeriod('monthly',this)">Monthly</div>
+                <div class="period-option" data-period="weekly" onclick="setListingPeriod('weekly',this)">Weekly</div>
+                <div class="period-option" data-period="daily" onclick="setListingPeriod('daily',this)">Daily</div>
+              </div>
+            </div>
+          </div>
+          <div id="listingBreakdown"></div>
+        </div>
+      </div>
+
+      <!-- Reports Table -->
+      <div class="section-card">
+        <div class="section-head">
+          <div>
+            <div class="section-title">Reported Listings</div>
+            <div class="section-sub">User-submitted reports requiring admin review.</div>
+          </div>
+          <div class="filter-tabs" id="reportTabs">
+            <button class="filter-tab active" data-status="all">All</button>
+            <button class="filter-tab" data-status="pending">Pending</button>
+            <button class="filter-tab" data-status="resolved">Resolved</button>
+            <button class="filter-tab" data-status="dismissed">Dismissed</button>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Listing</th>
+                <th>Reported By</th>
+                <th>Category</th>
+                <th>Reason</th>
+                <th>Reported</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="reportsTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toastMsg"></span>
+</div>
+
+<script src="../../assets/js/fake-data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/super-admin/reports.js"></script>
+</body>
+</html>

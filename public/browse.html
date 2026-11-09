@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="assets/img/kasafide-favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png" />
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="assets/js/kasafide-theme.js"></script>
+  <script src="assets/js/kasafide-logo.js"></script>
+  <link rel="stylesheet" href="assets/css/kasafide-theme.css" />
+  <title>Browse Listings - Kasafide</title>
+  <meta name="description" content="Kasafide is a verified housing rental and listing platform for Sta. Maria, Bulacan. Every seller is ID-checked and every listing is reviewed before it goes live." />
+  <meta property="og:site_name" content="Kasafide" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Browse Listings - Kasafide" />
+  <meta property="og:description" content="Verified homes in Sta. Maria, Bulacan." />
+  <meta property="og:image" content="/assets/img/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Browse Listings - Kasafide" />
+  <meta name="twitter:description" content="Verified homes in Sta. Maria, Bulacan." />
+  <meta name="twitter:image" content="/assets/img/og-image.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/browse.css" />
+  <link rel="stylesheet" href="assets/css/responsive.css" />
+  <link rel="stylesheet" href="assets/css/glass-nav.css" />
+  <link rel="stylesheet" href="assets/css/site-nav.css?v=2" />
+</head>
+<body class="sn-offset">
+  <!-- Navigation Bar -->
+  <nav class="site-nav" data-page="browse"></nav>
+
+  <!-- Main Content -->
+  <div class="browse-container">
+    <!-- Page Header -->
+    <div class="browse-header">
+      <h1 class="browse-title">Browse Properties</h1>
+      <p class="browse-subtitle">Find your perfect home in Sta. Maria, Bulacan</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="browse-filters">
+      <div class="filter-row">
+        <select class="filter-select" id="filterType" onchange="applyFilters()">
+          <option value="">All Types</option>
+          <option value="apartment">Apartment</option>
+          <option value="house">House</option>
+          <option value="condo">Condo</option>
+          <option value="commercial">Commercial</option>
+          <option value="lot">Lot Only</option>
+        </select>
+        <select class="filter-select" id="filterFor" onchange="applyFilters()">
+          <option value="">For Sale & Rent</option>
+          <option value="rent">For Rent</option>
+          <option value="sale">For Sale</option>
+        </select>
+        <select class="filter-select" id="filterBarangay" onchange="applyFilters()">
+          <option value="">All Barangays</option>
+        </select>
+        <input type="text" class="filter-search" id="filterSearch" placeholder="Search by title or address..." oninput="applyFiltersSoon()" />
+      </div>
+    </div>
+
+    <!-- Results Count -->
+    <div class="browse-results-header">
+      <span class="results-count" id="resultsCount">Loading...</span>
+    </div>
+
+    <!-- Listings Grid -->
+    <div class="browse-grid" id="listingsGrid">
+      <!-- Injected by JS -->
+    </div>
+
+    <!-- Empty State -->
+    <div class="browse-empty" id="emptyState" style="display:none;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <div class="empty-title">No listings found</div>
+      <div class="empty-text">Try adjusting your filters</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="browse-footer">
+    <div class="footer-content">
+      <p>&copy; 2026 Kasafide. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="about.html">About Us</a>
+      </div>
+    </div>
+  </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0/dist/umd/supabase.js"></script>
+<script src="assets/js/config.js?v=2"></script>
+<script src="assets/js/session.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/browse.js"></script>
+<script src="assets/js/site-nav.js?v=3"></script> 
+</body>
+</html>

@@ -1,0 +1,631 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+/* ── THEMES ── */
+body.dark {
+}
+body.light {
+}
+
+/* ── LAYOUT ── */
+.auth-layout { display: flex; min-height: 100vh; }
+.auth-left {
+  flex: 0 0 40%; background: var(--bg);
+  display: flex; flex-direction: column;
+  padding: 0 48px; min-width: 0;
+}
+.auth-right { flex: 0 0 60%; position: relative; overflow: hidden; }
+
+/* ── HEADER ── */
+.auth-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 24px 0; max-width: 400px; width: 100%; margin: 0 auto;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  color: var(--text); font-weight: 700; font-size: 18px; text-decoration: none;
+}
+.back-link {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--text-muted); font-size: 13px; font-weight: 500;
+  text-decoration: none; transition: color 0.2s;
+}
+.back-link:hover { color: var(--primary); }
+
+/* ── FORM WRAP ── */
+.auth-form-wrap {
+  flex: 1; max-width: 400px; width: 100%;
+  margin: 0 auto; padding: 24px 0;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.auth-title { font-size: 28px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.auth-sub   { color: var(--text-muted); font-size: 14px; margin-bottom: 28px; }
+
+/* ── FIELDS ── */
+.field-group { margin-bottom: 18px; }
+.field-label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 7px; }
+.field-input {
+  background: var(--input-bg); border: 1.5px solid var(--input-border);
+  color: var(--text); padding: 10px 14px; border-radius: 8px;
+  font-family: inherit; font-size: 14px; outline: none; transition: border-color 0.2s;
+}
+.field-input::placeholder { color: var(--text-muted); }
+.field-input:-webkit-autofill,
+.field-input:-webkit-autofill:hover,
+.field-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--input-bg) inset;
+  -webkit-text-fill-color: var(--text);
+  caret-color: var(--text);
+  transition: background-color 5000s ease-in-out 0s;
+}
+.field-input:focus { border-color: var(--primary); }
+.field-input.error { border-color: var(--danger); }
+.field-input.full  { width: 100%; }
+.field-hint { font-size: 12px; color: var(--text-muted); margin-top: 6px; display: block; }
+.field-error-msg { font-size: 12px; color: var(--danger); margin-top: 5px; display: block; }
+
+.field-row-end { display: flex; justify-content: flex-end; margin-top: 8px; }
+.forgot-link { font-size: 12px; font-weight: 600; color: var(--primary); text-decoration: none; }
+.forgot-link:hover { text-decoration: underline; }
+
+.name-row { display: flex; gap: 8px; }
+.name-row .field-input { flex: 1; min-width: 0; }
+.name-row .field-input.mi { flex: 0 0 64px; }
+
+.input-eye { position: relative; }
+.input-eye .field-input { padding-right: 42px; }
+.eye-btn {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  color: var(--text-muted); padding: 0; display: flex; align-items: center;
+}
+.eye-btn:hover { color: var(--primary); }
+
+/* "+63" as its own fixed segment rather than text inside the input's value — a prefix living in
+   the value itself has to fight the user over backspace and cursor position to stay put. This way
+   it just can't be deleted, because it was never part of what they're typing. auth.js strips
+   anything that isn't a digit as they type, so no dash or space can get entered either. */
+.phone-input {
+  display: flex; align-items: stretch;
+  background: var(--input-bg); border: 1.5px solid var(--input-border);
+  border-radius: 8px; overflow: hidden;
+  transition: border-color 0.2s;
+}
+.phone-input:focus-within { border-color: var(--primary); }
+/* .field-input.error normally colors the input's own border; this input's border is none (the
+   wrapper draws it instead), so the wrapper has to pick up the error color itself. */
+.phone-input:has(.field-input.error) { border-color: var(--danger); }
+.phone-prefix {
+  display: flex; align-items: center;
+  padding: 10px 0 10px 14px;
+  color: var(--text-muted); font-size: 14px; font-weight: 600;
+  user-select: none;
+}
+.phone-input .field-input {
+  flex: 1; min-width: 0;
+  border: none; background: transparent;
+  padding-left: 6px;
+}
+.phone-input .field-input:focus { border-color: transparent; }
+
+/* ── ROLE TOGGLE ── */
+.role-toggle { display: flex; background: var(--card); border-radius: 10px; padding: 4px; gap: 4px; }
+.role-btn {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
+  background: transparent; border: none; color: var(--text-muted);
+  font-family: inherit; font-size: 13px; font-weight: 600;
+  padding: 9px 16px; border-radius: 7px; cursor: pointer; transition: all 0.2s;
+}
+.role-btn.active { background: var(--primary); color: var(--on-primary); }
+
+/* ── BUTTONS ── */
+.btn-primary {
+  background: var(--primary); color: var(--on-primary); border: none; width: 100%;
+  padding: 12px; border-radius: 8px; font-family: inherit;
+  font-size: 15px; font-weight: 700; cursor: pointer;
+  transition: background 0.2s; margin-top: 4px;
+}
+.btn-primary:hover { background: var(--primary-hover); }
+
+.btn-google {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: var(--surface); border: 1.5px solid var(--border); color: var(--text);
+  width: 100%; padding: 11px; border-radius: 8px;
+  font-family: inherit; font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: border-color 0.2s;
+}
+.btn-google:hover { border-color: var(--text-muted); }
+
+/* ── Agree to Terms checkbox ── */
+.agree-check {
+  display: flex; align-items: flex-start; gap: 11px;
+  cursor: pointer; margin-bottom: 4px;
+}
+.agree-check input[type="checkbox"] { display: none; }
+.agree-box {
+  flex-shrink: 0; width: 18px; height: 18px; margin-top: 2px;
+  border-radius: 5px; border: 1.5px solid var(--input-border);
+  background: var(--input-bg);
+  display: flex; align-items: center; justify-content: center;
+  transition: background .18s, border-color .18s;
+}
+.agree-check input:checked + .agree-box {
+  background: var(--primary); border-color: var(--primary);
+}
+.agree-check input:checked + .agree-box::after {
+  content: '';
+  display: block; width: 10px; height: 6px;
+  border-left: 2px solid var(--surface); border-bottom: 2px solid var(--surface);
+  transform: translateY(-1px) rotate(-45deg);
+}
+.agree-text {
+  font-size: 12.5px; color: var(--text-muted); line-height: 1.55;
+}
+.agree-text a {
+  color: var(--primary); font-weight: 600; text-decoration: none;
+}
+.agree-text a:hover { text-decoration: underline; }
+
+.divider { display: flex; align-items: center; gap: 12px; margin: 18px 0; }
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--divider); }
+.divider span { font-size: 12px; color: var(--text-muted); }
+
+.auth-footer-text { text-align: center; font-size: 13px; color: var(--text-muted); margin-top: 20px; }
+.auth-link { color: var(--primary); font-weight: 600; text-decoration: none; }
+.auth-link:hover { text-decoration: underline; }
+
+/* ── PAGE FOOTER ── */
+.auth-page-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 0; border-top: 1px solid var(--divider);
+  font-size: 12px; color: var(--footer-link);
+  max-width: 400px; width: 100%; margin: 0 auto;
+}
+.footer-links { display: flex; gap: 16px; }
+.footer-links a { color: var(--footer-link); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--primary); }
+.theme-toggle {
+  /* Was a rounded square (6px) — every other theme toggle on the public-facing pages is a circle
+     now; this is the one that got left out. Width/height/box-sizing/padding forced explicitly:
+     a <button> picked up UA-default padding once before that inflated it past its own set height
+     despite the CSS saying otherwise (see .nav-theme-btn in index.css for the same fix). */
+  box-sizing: border-box;
+  width: 40px; height: 40px; min-width: 40px; min-height: 40px;
+  padding: 0; margin: 0; line-height: 1;
+  background: var(--card); border: 1px solid var(--input-border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--text-muted); transition: all 0.2s;
+}
+.theme-toggle:hover { border-color: var(--primary); color: var(--primary); }
+
+/* ── RIGHT PANEL ── */
+.auth-right-bg {
+  position: absolute; inset: 0;
+  background: url('../img/house_image.jpg') center/cover;
+}
+.auth-right-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgb(var(--k-ink-rgb) / 0.88) 0%, rgb(var(--k-ink-rgb) / 0.3) 45%, transparent 100%);
+}
+.auth-testimonial { position: absolute; bottom: 60px; left: 40px; right: 40px; z-index: 2; }
+.stars { font-size: 18px; margin-bottom: 14px; letter-spacing: 3px; color: var(--warning); }
+blockquote {
+  font-size: 17px; font-weight: 500; color: var(--text);
+  line-height: 1.6; margin-bottom: 22px; font-style: italic;
+}
+.testimonial-author { display: flex; align-items: center; gap: 12px; }
+.author-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgb(var(--wash-rgb) / 0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 14px; color: var(--text); flex-shrink: 0;
+}
+.author-name { font-weight: 700; font-size: 14px; color: var(--text); }
+.author-role { font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+
+/* ── VERIFY EMAIL MODAL ── */
+.modal-backdrop {
+  display: none; position: fixed; inset: 0;
+  background: rgb(var(--shade-rgb) / var(--overlay-a, 0.55)); z-index: 300;
+  align-items: center; justify-content: center; backdrop-filter: blur(2px);
+}
+.modal-backdrop.active { display: flex; }
+.modal-card {
+  background: var(--surface); border: 1px solid rgb(var(--wash-rgb) / 0.08);
+  border-radius: 20px; padding: 40px 32px 32px;
+  width: 360px; text-align: center; position: relative;
+  box-shadow: 0 24px 64px rgb(var(--shade-rgb) / min(0.5, var(--shadow-cap, 1)));
+}
+.modal-close {
+  position: absolute; top: 14px; right: 16px;
+  background: none; border: none; color: var(--text-muted);
+  font-size: 22px; cursor: pointer; line-height: 1; padding: 4px 8px; font-family: inherit;
+}
+.modal-close:hover { color: var(--text); }
+.modal-icon-wrap { position: relative; width: 64px; height: 64px; margin: 0 auto 20px; }
+.modal-check {
+  position: absolute; bottom: -4px; right: -4px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--primary); border: 2px solid var(--surface);
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-title  { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 10px; }
+.modal-text   { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+.modal-email  { font-size: 15px; font-weight: 700; color: var(--text); margin: 6px 0 12px; }
+.modal-resend-btn { width: 100%; margin-top: 20px; margin-bottom: 10px; }
+.modal-resend-btn:disabled { opacity: 0.55; cursor: default; }
+.modal-countdown { font-size: 12px; color: var(--text-muted); min-height: 18px; }
+
+/* ── FORGOT PASSWORD ── */
+.fp-icon-wrap {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: rgb(var(--primary-rgb) / 0.1); border: 1px solid rgb(var(--primary-rgb) / 0.2);
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;
+}
+.fp-success-wrap { text-align: center; }
+.fp-success-icon { position: relative; width: 68px; height: 68px; margin: 0 auto 24px; }
+.fp-success-check {
+  position: absolute; bottom: -4px; right: -4px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--primary); border: 2px solid var(--bg);
+  display: flex; align-items: center; justify-content: center;
+}
+.fp-sent-email { font-size: 15px; font-weight: 700; color: var(--text); margin: 4px 0 16px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .auth-right  { display: none; }
+  .auth-left   { flex: 1; width: 100%; padding: 0 28px; }
+  .auth-header, .auth-form-wrap, .auth-page-footer { max-width: 100%; }
+}
+@media (max-width: 480px) {
+  .auth-left   { padding: 0 20px; }
+  .auth-title  { font-size: 22px; }
+  .auth-sub    { font-size: 13px; margin-bottom: 22px; }
+  .name-row    { flex-wrap: wrap; }
+  /* These two used to sit after the password-reveal rules below, outside any media query, with a
+     stray extra closing brace after them — meant to be mobile-only but applying at every width
+     instead (and the stray brace was a dangling syntax error, harmless only because nothing
+     followed it). Moved to where they were clearly meant to be. */
+  .name-row .field-input.mi { flex: 0 0 72px; }
+  .role-btn    { font-size: 12px; padding: 8px 10px; }
+}
+
+/* ── Hide browser's default password reveal button ── */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-textfield-decoration-container {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Card-centered auth page — signin.html and signup.html only.
+   forgot-password.html keeps the old .auth-layout/.auth-left styles above untouched; nothing here
+   removes or renames those, so it is unaffected by this section.
+
+   Replaces the old 40/60 split (a form panel plus a panel with a hardcoded stock photo and a fake
+   testimonial attributed to a made-up person) with a single floating card over a full-bleed
+   background. That background is a real, randomly-picked photo from an actual approved listing
+   (data.js's randomListingPhoto(), wired up in auth.js) rather than a fixed file that never
+   changed no matter what was actually listed — dimmed enough that it reads as atmosphere, not a
+   photo someone is meant to look at directly, with the same dark-navy-to-teal-glow language the
+   rest of the site already uses rather than borrowing another brand's gold.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.auth-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 90px 24px 32px;
+  background: linear-gradient(160deg, var(--bg) 0%, var(--surface) 55%, var(--bg) 100%);
+}
+body.light .auth-page {
+  background: linear-gradient(160deg, var(--bg) 0%, var(--surface-soft) 55%, var(--bg) 100%);
+}
+
+/* The real listing photo. Loaded via JS (randomListingPhoto()); this element sits behind
+   everything else and stays empty (just the gradient above shows through) until a photo arrives,
+   so a slow connection or an empty database never shows a broken image. */
+.auth-bg-photo {
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  background-size: cover;
+  opacity: 0;
+  filter: blur(18px) saturate(115%);
+  transform: scale(1.08);  /* covers the edge softening the blur would otherwise reveal */
+  transition: opacity 0.6s ease;
+}
+.auth-bg-photo.loaded { opacity: 0.4; }
+body.light .auth-bg-photo.loaded { opacity: 0.22; }
+
+.auth-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgb(var(--k-ink-rgb) / 0.82) 0%, rgb(var(--k-ink-rgb) / 0.55) 55%, rgb(var(--k-ink-rgb) / 0.82) 100%);
+}
+body.light .auth-bg-overlay {
+  background: linear-gradient(160deg, rgb(var(--bg-rgb) / 0.88) 0%, rgb(var(--bg-rgb) / 0.6) 55%, rgb(var(--bg-rgb) / 0.88) 100%);
+}
+
+/* Soft decorative glow circles, teal rather than the gold a reference for this used — this is
+   still Kasafide, with its own established glow colour, not a borrowed palette. */
+.auth-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgb(var(--primary-rgb) / 0.16) 0%, transparent 70%);
+}
+.auth-glow-1 { width: 520px; height: 520px; top: -160px; left: -140px; }
+.auth-glow-2 { width: 420px; height: 420px; bottom: -140px; right: -100px; }
+
+
+/* Shown only on wide screens, to the left of the card — mirrors the reference's large marketing
+   line, but in Kasafide's own words rather than someone else's product promise, and nothing
+   attributed to a made-up person the way the testimonial it replaces was. */
+.auth-tagline {
+  display: none;
+  z-index: 2;
+  max-width: 360px;
+  margin-right: 64px;
+}
+.auth-tagline h2 {
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+.auth-tagline h2 em {
+  font-style: normal;
+  color: var(--teal, var(--primary));
+}
+body.light .auth-tagline h2 { color: var(--text); }
+.auth-tagline p {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: rgb(var(--wash-rgb) / 0.65);
+}
+body.light .auth-tagline p { color: rgb(var(--k-ink-rgb) / 0.6); }
+
+.auth-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 420px;
+  background: rgb(var(--k-ink-rgb) / 0.6);
+  border: 1px solid rgb(var(--wash-rgb) / 0.1);
+  border-radius: 22px;
+  padding: 36px 32px 30px;
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  box-shadow: 0 24px 64px rgb(var(--shade-rgb) / min(0.4, var(--shadow-cap, 1))), inset 0 1px 0 rgb(var(--wash-rgb) / 0.08);
+}
+body.light .auth-card {
+  background: rgb(var(--surface-rgb) / 0.82);
+  border-color: rgb(var(--k-ink-rgb) / 0.08);
+  box-shadow: 0 24px 64px rgb(var(--k-ink-rgb) / 0.12), inset 0 1px 0 rgb(var(--surface-rgb) / 0.6);
+}
+
+.auth-card-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 22px;
+  color: var(--text);
+  font-weight: 800;
+  font-size: 17px;
+  text-decoration: none;
+  /* The "Back to Home" link was removed — this logo already goes home, and having both said the
+     same thing twice. The press animation is what tells you it is clickable now that it is the
+     only way back. */
+  transition: transform 0.15s ease;
+  /* Without this, mobile browsers flash their own default blue tap-highlight rectangle over the
+     whole link the instant you touch it, on top of the scale/rotate animation — two animations
+     fighting each other. outline-color keeps a visible ring for keyboard focus (Tab key), since
+     removing that outright would be an accessibility regression just to kill an unrelated effect. */
+  -webkit-tap-highlight-color: transparent;
+  outline-color: var(--primary);
+}
+body.light .auth-card-brand { color: var(--text); }
+.auth-card-brand img {
+  display: block !important;
+  width: 26px !important;
+  height: 26px !important;
+  max-width: 26px !important;
+  max-height: 26px !important;
+  transition: transform 0.15s ease;
+}
+.auth-card-brand:hover img { transform: scale(1.06); }
+.auth-card-brand:active { transform: scale(0.96); }
+.auth-card-brand:active img { transform: scale(0.94) rotate(-4deg); }
+
+.auth-page .auth-form-wrap {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+.auth-page .auth-title { text-align: center; font-size: 24px; }
+.auth-page .auth-sub   { text-align: center; }
+
+.auth-page .auth-page-footer {
+  /* Was a single justify-content: space-between row at every width — fine with room to spare, but
+     squeezed on a phone: copyright text, two links and the round theme toggle all competing for
+     one line. Stacked instead below 1040px, each piece centered with real breathing room, so
+     nothing fights for the same horizontal space. */
+  position: relative;
+  z-index: 2;
+  max-width: 420px;
+  width: 100%;
+  margin-top: 28px;
+  border-top: none;
+  padding: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+.auth-page .auth-page-footer .footer-links { gap: 22px; }
+
+@media (min-width: 1040px) {
+  .auth-page { flex-direction: row; padding: 24px 64px; }
+  .auth-tagline { display: block; }
+  .auth-page .auth-page-footer {
+    position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+    flex-direction: row; gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-card { padding: 28px 22px 24px; border-radius: 18px; }
+  .auth-glow-1, .auth-glow-2 { opacity: 0.6; }
+}
+
+/* ── Sign-up: wider card, fields in pairs, tighter rhythm ──────────────────────────────
+   The sign-up form has twice the fields of sign-in, so in a 420px single column the card grew
+   taller than a laptop screen: the page scrolled, and the footer below (absolutely placed on
+   desktop) ended up sitting inside the card. Here the card widens, Email/Phone and
+   Password/Confirm share a row, and the vertical spacing tightens so the whole form fits. */
+.auth-card--wide { max-width: 540px; padding: 28px 32px 24px; }
+.auth-card--wide .auth-card-brand { margin-bottom: 14px; }
+.auth-card--wide .auth-title { font-size: 22px; margin-bottom: 4px; }
+.auth-card--wide .auth-sub { margin-bottom: 18px; }
+.auth-card--wide .field-group { margin-bottom: 12px; }
+.auth-card--wide .field-label { margin-bottom: 6px; }
+.auth-card--wide .divider { margin: 12px 0; }
+.auth-card--wide .auth-footer-text { margin-top: 14px; }
+
+.field-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.field-pair .field-group { min-width: 0; }
+.field-hint--pair { margin: -4px 0 12px; }
+
+@media (max-width: 560px) {
+  .field-pair { grid-template-columns: 1fr; gap: 0; }
+}
+
+/* The footer was absolutely positioned at the bottom of the screen on desktop, which only works
+   while the card is shorter than the screen. It now wraps onto its own line under the card and
+   tagline instead, so it can never land on top of the form. */
+@media (min-width: 1040px) {
+  .auth-page { flex-wrap: wrap; align-content: center; }
+  .auth-page .auth-page-footer {
+    position: relative; bottom: auto; left: auto; transform: none;
+    flex-basis: 100%; max-width: none; justify-content: center;
+    margin-top: 22px;
+  }
+}
+
+/* Short laptop screens (about 690–760px of viewport): a little less air so the sign-up card and
+   the footer under it fit without scrolling. */
+@media (min-width: 1040px) and (max-height: 780px) {
+  .auth-page { padding-top: 10px; padding-bottom: 10px; }
+  .auth-page .auth-page-footer { margin-top: 10px; }
+  .auth-card--wide { padding: 20px 32px 18px; }
+  .auth-card--wide .auth-card-brand { margin-bottom: 8px; }
+  .auth-card--wide .auth-sub { margin-bottom: 12px; }
+  .auth-card--wide .field-group { margin-bottom: 9px; }
+  .auth-card--wide .field-hint--pair { margin-bottom: 9px; }
+  .auth-card--wide .divider { margin: 8px 0; }
+  .auth-card--wide .auth-footer-text { margin-top: 10px; }
+}
+
+/* ── Grainient background (assets/js/kasafide-grainient.js) ─────────────────────────────
+   Adapted from React Bits' Grainient. The script adds .has-grainient only once WebGL2 has
+   actually started; without it the blurred listing photo above stays the background. */
+.auth-grainient { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.auth-grainient-canvas { display: block; width: 100%; height: 100%; }
+
+/* The gradient is the background now, so the photo and the two glow circles step aside, and the
+   overlay only dims enough to keep the tagline and footer readable. */
+.auth-page.has-grainient .auth-bg-photo,
+.auth-page.has-grainient .auth-glow { display: none; }
+.auth-page.has-grainient .auth-bg-overlay {
+  background: linear-gradient(160deg,
+    rgb(var(--k-ink-rgb) / 0.45) 0%,
+    rgb(var(--k-ink-rgb) / 0.10) 55%,
+    rgb(var(--k-ink-rgb) / 0.35) 100%);
+}
+body.light .auth-page.has-grainient .auth-bg-overlay {
+  background: linear-gradient(160deg,
+    rgb(var(--bg-rgb) / 0.45) 0%,
+    rgb(var(--bg-rgb) / 0.10) 55%,
+    rgb(var(--bg-rgb) / 0.35) 100%);
+}
+
+/* A disabled button (e.g. "Resend Email" during its countdown) has to look disabled, not just
+   ignore clicks. */
+.btn-primary:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* ── Send animation, played in the envelope at the top of "Check Your Email" ──────────────
+   forgot-password.html + auth.js. Classes on #fpMailIcon:
+     .is-sending   the envelope flies off to the upper right and comes back in from the left
+     .is-sent      the envelope steps aside and a big check pops in and draws itself
+     .is-settling  the big check shrinks into the badge corner while the envelope returns
+   The button only changes its label ("Sending…"). */
+.btn-send { min-height: 46px; }
+
+.fp-success-icon { display: flex; align-items: center; justify-content: center; }
+.fp-success-icon .fp-mail { display: block; transition: opacity 0.3s ease, transform 0.35s ease; }
+
+.fp-success-icon.is-sending .fp-mail { animation: kfEnvFly 1.3s ease-in-out infinite; }
+@keyframes kfEnvFly {
+  0%   { transform: none; opacity: 1; }
+  40%  { transform: translate(30px, -22px) rotate(16deg) scale(0.6); opacity: 0; }
+  41%  { transform: translate(-30px, 14px) rotate(-12deg) scale(0.6); opacity: 0; }
+  75%  { transform: none; opacity: 1; }
+  100% { transform: none; opacity: 1; }
+}
+/* Badge out of the way while sending, and until the big check arrives in its place. */
+.fp-success-icon.is-sending .fp-success-check,
+.fp-success-icon.is-sent .fp-success-check { transform: scale(0); animation: none; }
+
+.fp-big-check {
+  position: absolute; left: 50%; top: 50%;
+  width: 64px; height: 64px; margin: -32px 0 0 -32px;
+  border-radius: 50%;
+  background: var(--primary); color: var(--on-primary);
+  display: grid; place-items: center;
+  box-shadow: 0 8px 22px rgb(var(--primary-rgb) / 0.4);
+  transform: scale(0); opacity: 0; pointer-events: none;
+}
+.fp-big-check svg { width: 32px; height: 32px; }
+.fp-big-check .ck { stroke-dasharray: 24; stroke-dashoffset: 24; }
+
+.fp-success-icon.is-sent .fp-mail { opacity: 0; transform: scale(0.6); }
+.fp-success-icon.is-sent .fp-big-check { animation: kfBigIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.fp-success-icon.is-sent .fp-big-check .ck { animation: kfDrawCheck 0.45s ease 0.25s forwards; }
+@keyframes kfBigIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes kfDrawCheck { to { stroke-dashoffset: 0; } }
+
+/* Into the badge corner: the badge (22px) sits 4px outside the 68px box, so its centre is 27px
+   right of and below the box's centre; 22 / 64 is the shrink. */
+.fp-success-icon.is-sent.is-settling .fp-mail { opacity: 1; transform: none; }
+.fp-success-icon.is-sent.is-settling .fp-big-check { animation: kfBigSettle 0.55s cubic-bezier(0.5, 0, 0.3, 1) forwards; }
+@keyframes kfBigSettle {
+  from { transform: none; opacity: 1; }
+  to   { transform: translate(27px, 27px) scale(0.34); opacity: 1; }
+}
+
+.fp-success-check.pop { animation: kfBadgePop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+@keyframes kfBadgePop { 0% { transform: scale(0.7); } 60% { transform: scale(1.25); } 100% { transform: scale(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .fp-success-icon.is-sending .fp-mail { animation: none; opacity: 0.45; }
+  .fp-success-icon.is-sent .fp-big-check,
+  .fp-success-icon.is-sent.is-settling .fp-big-check { animation: none; opacity: 0; }
+  .fp-success-icon.is-sent .fp-big-check .ck { animation: none; stroke-dashoffset: 0; }
+  .fp-success-check.pop { animation: none; }
+}

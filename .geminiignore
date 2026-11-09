@@ -1,0 +1,43 @@
+# Gemini / Antigravity AI Context Exclusion File
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Next.js Build Output & Cache
+.next/
+out/
+build/
+dist/
+tsconfig.tsbuildinfo
+
+# Environment & Sensitive Files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.json-key
+service-account*.json
+
+# Database Dumps & Backups
+*.dump
+*.sql.gz
+supabase_backup.dump
+
+# Logs & Debug Output
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Git & System Files
+.git/
+.ds_store
+Thumbs.db
+
+# Test Coverage
+coverage/
+.nyc_output/

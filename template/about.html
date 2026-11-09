@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us – HomeSure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/about.css" />
+  <link rel="stylesheet" href="assets/css/responsive.css" />
+  <script>
+    (function() {
+      var t = localStorage.getItem('hs-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav>
+    <a class="nav-logo" href="index.html">
+      <span class="nav-catstone-wrap">
+        <img src="assets/img/CatsTone Logo.png" alt="CatsTone" class="nav-catstone-img" />
+      </span>
+      <span class="nav-logo-divider"></span>
+      <img src="assets/img/image.png" alt="HomeSure" height="30" style="display:block;border-radius:6px;" />
+      HomeSure
+    </a>
+    <div class="nav-btns">
+      <button class="nav-theme-btn" id="themeBtn" title="Toggle theme"></button>
+      <button class="btn-outline" onclick="location.href='auth/signin.html'">Sign In</button>
+      <button class="btn-solid"   onclick="location.href='auth/signup.html'">Sign Up</button>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="about-hero">
+    <div class="about-hero-left">
+      <span class="hero-badge">Our Story</span>
+      <h1 class="about-hero-title">
+        We're just<br>
+        <span class="accent">getting started.</span>
+      </h1>
+      <p class="about-hero-sub">
+        HomeSure is a fresh face web-based on housing
+        rental and listing platform designed to connect to
+        verified property owners.
+      </p>
+    </div>
+    <div class="about-hero-right">
+      <img
+        class="about-hero-img"
+        src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=700&q=80"
+        alt="HomeSure Team"
+      />
+    </div>
+  </section>
+
+  <!-- ── STATS BAR ── -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-num">100%</div>
+      <div class="stat-lbl">Verified Sellers<br><span>Every listing is identity-checked</span></div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-num">0</div>
+      <div class="stat-lbl">Fake Listings<br><span>Our system filters them all out</span></div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-num">24/7</div>
+      <div class="stat-lbl">Secure Platform<br><span>Always-on data protection</span></div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-num">10k+</div>
+      <div class="stat-lbl">Happy Renters<br><span>Across Sta. Maria, Bulacan</span></div>
+    </div>
+  </div>
+
+  <!-- ── STORY ── -->
+  <section class="story-section">
+    <div class="story-left">
+      <span class="section-eyebrow">Our Origin</span>
+      <h2 class="story-title">
+        Born from<br>frustration.<br>
+        Built for <span class="accent">Trust.</span>
+      </h2>
+    </div>
+    <div class="story-right">
+      <p class="story-body">
+        The search for a home should be exciting, but too often, it's riddled with anxiety. We
+        developed HomeSure in direct response to a growing epidemic in online real estate: a
+        flood of misleading and unverified property listings found on traditional marketplaces.
+      </p>
+      <p class="story-body">
+        Many individuals searching for homes were encountering severe challenges —
+        navigating a maze of fake sellers, completely inaccurate property information, and
+        frustratingly outdated listings that wasted time and compromised their security.
+      </p>
+      <blockquote class="story-quote">
+        "We realized the industry didn't just need another
+        marketplace; it needed a fortress of
+        <strong>accountability.</strong>"
+      </blockquote>
+      <p class="story-body">
+        To address these critical issues, we conceptualized HomeSure as a centralized, secure
+        platform. By making strict identity verification, structured data management, and
+        secure communication our foundational pillars, we transformed the chaotic
+        property hunt into a safer, more organized environment.
+      </p>
+      <p class="story-body">
+        Today, HomeSure stands as the bridge connecting verified property owners with
+        genuine buyers and renters, ensuring that what you see online is exactly what you get
+        in reality.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── CORE VALUES ── -->
+  <section class="values-section">
+    <span class="section-eyebrow center">Core Values</span>
+    <h2 class="section-title center">The Principles That Drive Us</h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Trust and Transparency</h3>
+        <p>We prioritize verification processes and clear property information to build confidence among users.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3>Accountability</h3>
+        <p>We promote responsible seller behavior through structured listing management and admin-based verification.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <h3>Accuracy</h3>
+        <p>We ensure organized geographic filtering and updated listing statuses for reliable property search results.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <h3>User-Centered Design</h3>
+        <p>We design the platform to be intuitive, accessible, and efficient for both buyers and sellers.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GUIDING PRINCIPLES ── -->
+  <section class="principles-section">
+    <div class="principles-left">
+      <span class="section-eyebrow">Our Approach</span>
+      <h2 class="principles-title">Guiding Principles</h2>
+      <p class="principles-sub">These fundamental rules govern every feature we build and every decision we make for the HomeSure platform.</p>
+    </div>
+    <div class="principles-list">
+      <div class="principle-item">
+        <div class="principle-num">1</div>
+        <div class="principle-body">
+          <div class="principle-title">Security First</div>
+          <div class="principle-desc">Seller verification and listing monitoring are essential components of the system.</div>
+        </div>
+      </div>
+      <div class="principle-item">
+        <div class="principle-num">2</div>
+        <div class="principle-body">
+          <div class="principle-title">Structured Information</div>
+          <div class="principle-desc">Organized property data improves search accuracy and decision-making.</div>
+        </div>
+      </div>
+      <div class="principle-item">
+        <div class="principle-num">3</div>
+        <div class="principle-body">
+          <div class="principle-title">Clear Communication</div>
+          <div class="principle-desc">Secure in-platform messaging reduces misunderstandings between parties.</div>
+        </div>
+      </div>
+      <div class="principle-item">
+        <div class="principle-num">4</div>
+        <div class="principle-body">
+          <div class="principle-title">Continuous Improvement</div>
+          <div class="principle-desc">The platform evolves based on user needs and system analysis.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MISSION & VISION ── -->
+  <section class="mv-section">
+    <div class="mv-card">
+      <div class="mv-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <h3>Our Mission</h3>
+      <p>To provide a secure, transparent, and user-friendly housing rental and listing platform that prioritizes verified sellers, structured property information, and reliable communication.</p>
+    </div>
+    <div class="mv-card">
+      <div class="mv-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M12 19c-4 0-7.333-2.333-10-7 2.667-4.667 6-7 10-7s7.333 2.333 10 7c-2.667 4.667-6 7-10 7z"/></svg>
+      </div>
+      <h3>Our Vision</h3>
+      <p>To become a trusted digital housing marketplace that enhances user confidence, promotes accountability among sellers, and improves the overall experience of property discovery.</p>
+    </div>
+  </section>
+
+  <!-- ── FOUNDING TEAM ── -->
+  <section class="team-section">
+    <div class="team-header">
+      <div>
+        <h2 class="team-title">Meet the Founding Team</h2>
+        <p class="team-sub">We are a small, tight-knit group of builders, dreamers, and doers.</p>
+      </div>
+    </div>
+    <div class="team-grid">
+
+      <div class="team-card">
+        <img class="team-photo" src="assets/img/Lhenna.png" alt="Lhenna-Marie Velasco" />
+        <div class="team-info">
+          <div class="team-name">Lhenna-Marie Velasco</div>
+          <div class="team-role accent">Founder &amp; CEO</div>
+          <div class="team-subrole">Project Manager and Front-End Developer</div>
+          <div class="team-socials">
+            <a href="#" class="team-social" title="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="#" class="team-social" title="GitHub">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            </a>
+            <a href="#" class="team-social" title="Email">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div style="width:100%;aspect-ratio:1/1;overflow:hidden;">
+          <img src="assets/img/Aljon.png" alt="Aljon Lenard Gumafelix" style="width:100%;height:100%;object-fit:cover;transform:scale(1.15);transform-origin:top center;display:block;" />
+        </div>
+        <div class="team-info">
+          <div class="team-name">Aljon Lenard Gumafelix</div>
+          <div class="team-role accent">Co-Founder &amp; COO</div>
+          <div class="team-subrole">QA Tester and Lead Researcher</div>
+          <div class="team-socials">
+            <a href="#" class="team-social" title="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="#" class="team-social" title="GitHub">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            </a>
+            <a href="#" class="team-social" title="Email">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <img class="team-photo" src="assets/img/Emman.png" alt="Emmanuel John Catiis" />
+        <div class="team-info">
+          <div class="team-name">Emmanuel John Catiis</div>
+          <div class="team-role accent">Founding Engineer</div>
+          <div class="team-subrole">Database Manager</div>
+          <div class="team-socials">
+            <a href="#" class="team-social" title="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="#" class="team-social" title="GitHub">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            </a>
+            <a href="#" class="team-social" title="Email">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <img class="team-photo" src="assets/img/Ma. Melchora.png" alt="Ma. Melchora Lyndit Dayrit" />
+        <div class="team-info">
+          <div class="team-name">Ma. Melchora Lyndit Dayrit</div>
+          <div class="team-role accent">Founding Engineer</div>
+          <div class="team-subrole">Back-End Developer</div>
+          <div class="team-socials">
+            <a href="#" class="team-social" title="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="#" class="team-social" title="GitHub">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            </a>
+            <a href="#" class="team-social" title="Email">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── JOIN CTA ── -->
+  <section class="hiring-section">
+    <div class="hiring-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#1fc8b4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </div>
+    <h2 class="hiring-title">Your next home starts here.</h2>
+    <p class="hiring-sub">
+      Whether you're looking for a place to call home or a verified platform to list your
+      property, HomeSure connects you with the right people — safely, transparently, and
+      without the guesswork.
+    </p>
+    <div class="hiring-btns">
+      <button class="btn-solid" onclick="location.href='auth/signup.html'">Browse Listings</button>
+      <button class="btn-ghost" onclick="location.href='auth/signup.html'">List Your Property</button>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="assets/img/image.png" alt="HomeSure" height="28" />
+          HomeSure
+        </div>
+        <p class="footer-tagline">A verified housing platform for secure property rentals and purchases.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Platform</div>
+        <a class="footer-link" href="index.html">About Us</a>
+        <a class="footer-link" href="auth/signup.html">List Your Property</a>
+      </div>
+      <div>
+        <div class="footer-col-title">Legal</div>
+        <a class="footer-link" href="privacy-policy.html">Privacy Policy</a>
+        <a class="footer-link" href="terms.html">Terms of Service</a>
+      </div>
+      <div>
+        <div class="footer-col-title">Contacts</div>
+        <a class="footer-link" href="tel:+63281234567">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 5.55 5.55l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +63 (2) 8123 4567
+        </a>
+        <a class="footer-link" href="mailto:support@homesure.ph">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          support@homesure.ph
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 HomeSure. All rights reserved.</div>
+  </footer>
+
+  <script>
+    const _sunSVG  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
+    const _moonSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+    const _btn = document.getElementById('themeBtn');
+    function _updateBtn() {
+      const t = document.documentElement.getAttribute('data-theme') || 'dark';
+      _btn.innerHTML = t === 'dark' ? _sunSVG : _moonSVG;
+      _btn.title = t === 'dark' ? 'Switch to Light' : 'Switch to Dark';
+    }
+    _updateBtn();
+    _btn.addEventListener('click', function() {
+      const next = (document.documentElement.getAttribute('data-theme') || 'dark') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('hs-theme', next);
+      _updateBtn();
+    });
+  </script>
+</body>
+</html>

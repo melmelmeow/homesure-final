@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="assets/img/kasafide-favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png" />
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="assets/js/kasafide-theme.js"></script>
+  <script src="assets/js/kasafide-logo.js"></script>
+  <link rel="stylesheet" href="assets/css/kasafide-theme.css" />
+  <title>Kasafide – Help & Support</title>
+  <meta name="description" content="Kasafide is a verified housing rental and listing platform for Sta. Maria, Bulacan. Every seller is ID-checked and every listing is reviewed before it goes live." />
+  <meta property="og:site_name" content="Kasafide" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Kasafide – Help & Support" />
+  <meta property="og:description" content="Verified homes in Sta. Maria, Bulacan." />
+  <meta property="og:image" content="/assets/img/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Kasafide – Help & Support" />
+  <meta name="twitter:description" content="Verified homes in Sta. Maria, Bulacan." />
+  <meta name="twitter:image" content="/assets/img/og-image.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/chatbot-widget.css?v=2" />
+  <link rel="stylesheet" href="assets/css/glass-nav.css" />
+  <link rel="stylesheet" href="assets/css/site-nav.css?v=2" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+
+    /* Container */
+    .help-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .help-title-section {
+      margin-bottom: 20px;
+    }
+
+    .help-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .help-subtitle {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Chat window overrides */
+    .chatbot-window {
+      position: static;
+      width: 100%;
+      flex: 1;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgb(var(--shade-rgb) / min(0.3, var(--shadow-cap, 1)));
+      display: flex;
+      max-height: calc(100vh - 230px);
+    }
+
+    .chatbot-bubble {
+      display: none !important;
+    }
+
+    .chatbot-close {
+      display: none !important;
+    }
+
+    @media (max-width: 768px) {
+      .help-container {
+        padding: 16px;
+      }
+
+      .help-title {
+        font-size: 22px;
+      }
+
+      .chatbot-window {
+        max-height: calc(100vh - 160px);
+      }
+    }
+  </style>
+</head>
+<body class="sn-offset">
+  <nav class="site-nav" data-page="help"></nav>
+
+  <!-- Help Container -->
+  <div class="help-container">
+    <div class="help-title-section">
+      <div class="help-title">Help & Support</div>
+      <div class="help-subtitle">Get quick answers from Meowrie, our assistant, or connect with our support team</div>
+    </div>
+
+    <!-- Chat Window -->
+    <div class="chatbot-window open" id="chatbotWindow">
+      <div class="chatbot-header">
+        <div class="chatbot-avatar">
+          <img src="assets/img/kasafide-chatbot-avatar.svg" alt="Meowrie" data-assistant-name />
+        </div>
+        <div class="chatbot-header-info">
+          <div class="chatbot-header-title" data-assistant-name>Meowrie</div>
+          <div class="chatbot-header-status">
+            <span class="chatbot-status-dot"></span>
+            Online - Always here to help
+          </div>
+        </div>
+      </div>
+
+      <div class="chatbot-messages" id="chatbotMessages"></div>
+
+      <div class="chatbot-input-area">
+        <div class="chatbot-input-wrap">
+          <textarea
+            class="chatbot-input"
+            id="chatbotInput"
+            placeholder="Type your message..."
+            rows="1"
+            onkeydown="ChatbotWidget.handleKeyDown(event)"
+          ></textarea>
+          <button class="chatbot-send-btn" id="chatbotSendBtn" onclick="ChatbotWidget.sendMessage()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="assets/js/chatbot-widget.js?v=4"></script>
+<script src="assets/js/site-nav.js?v=3"></script>
+<script>ChatbotWidget.initFullPage();</script>
+</body>
+</html>

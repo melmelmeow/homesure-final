@@ -1,0 +1,87 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Kasafide — shared top bar (assets/js/site-nav.js) for browse.html, about.html, help.html.
+   The glass pill (position, size, blur, rounded ends) comes from glass-nav.css, which matches any
+   bare <nav>; this file styles what is inside it, scoped to .site-nav so it cannot collide with
+   each page's own older nav rules. Mirrors the landing page's bar in index.css.
+   ───────────────────────────────────────────────────────────────────────────── */
+nav.site-nav {
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Pages without a hero: the fixed pill would otherwise sit on top of the first content. */
+body.sn-offset { padding-top: 88px; }
+
+.site-nav .sn-logo {
+  display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+  color: var(--text); text-decoration: none;
+  font-size: 18px; font-weight: 800; letter-spacing: -0.2px; white-space: nowrap;
+}
+.site-nav .sn-catstone {
+  display: flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; overflow: hidden; border-radius: 6px; flex-shrink: 0;
+}
+.site-nav .sn-catstone img { width: 100%; height: 100%; object-fit: contain; }
+.site-nav .sn-divider { width: 1px; height: 22px; background: var(--border); flex-shrink: 0; }
+
+/* Links with one sliding highlight behind them (site-nav.js moves .sn-pill). */
+.site-nav .sn-links { position: relative; display: flex; align-items: center; gap: 4px; }
+.site-nav .sn-links a {
+  position: relative; z-index: 1;
+  padding: 7px 14px; border-radius: 999px;
+  color: var(--text-soft); font-size: 13.5px; font-weight: 600;
+  text-decoration: none; white-space: nowrap; transition: color 0.35s ease;
+}
+.site-nav .sn-links a.is-lit { color: var(--text); }
+.site-nav .sn-links a.is-active { font-weight: 700; }
+.site-nav .sn-pill {
+  position: absolute; left: 0; top: 50%;
+  height: 32px; margin-top: -16px; border-radius: 999px;
+  background: rgb(var(--primary-rgb) / 0.16);
+  box-shadow: inset 0 0 0 1px rgb(var(--primary-rgb) / 0.28);
+  pointer-events: none; opacity: 0;
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.25s ease;
+}
+@media (prefers-reduced-motion: reduce) { .site-nav .sn-pill { transition: opacity 0.2s; } }
+
+.site-nav .sn-actions { display: flex; align-items: center; gap: 10px; }
+.site-nav .sn-theme {
+  box-sizing: border-box;
+  width: 34px; height: 34px; min-width: 34px; min-height: 34px; padding: 0;
+  border-radius: 50%; border: 1px solid var(--border); background: var(--surface);
+  color: var(--text-muted); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.15s, color 0.15s;
+}
+.site-nav .sn-theme:hover { border-color: var(--primary); color: var(--primary); }
+.site-nav .sn-theme svg { width: 16px; height: 16px; }
+
+/* Sign In / Sign Up, same look as the landing page's pair (.btn-outline / .btn-solid in
+   index.css). On phones only Sign In stays, so it is reachable from anywhere on the page. */
+.site-nav .sn-btn-signin,
+.site-nav .sn-btn-signup {
+  display: flex; align-items: center; justify-content: center;
+  height: 34px; padding: 0 20px; border-radius: 999px;
+  font-size: 13px; font-weight: 700; text-decoration: none; white-space: nowrap;
+  transition: opacity 0.15s, border-color 0.15s;
+}
+.site-nav .sn-btn-signin {
+  background: var(--primary); color: var(--on-primary); border: 1px solid transparent;
+  box-shadow: 0 4px 12px rgb(var(--primary-rgb) / 0.28);
+}
+.site-nav .sn-btn-signin:hover { opacity: 0.88; }
+.site-nav .sn-btn-signup { border: 1px solid var(--border); color: var(--text); background: var(--surface); }
+.site-nav .sn-btn-signup:hover { border-color: var(--text-muted); }
+
+@media (max-width: 980px) { .site-nav .sn-links { display: none; } }
+@media (max-width: 640px) {
+  .site-nav .sn-btn-signup { display: none; }
+  .site-nav .sn-btn-signin { padding: 0 14px; }
+}
+@media (max-width: 480px) {
+  .site-nav .sn-catstone, .site-nav .sn-divider { display: none; }
+  body.sn-offset { padding-top: 76px; }
+}

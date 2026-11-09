@@ -1,0 +1,242 @@
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #1E293B; --card: #253347; --card2: #1a2739; --border: rgba(255,255,255,0.07);
+      --teal: #00c9a7; --teal-faint: rgba(0,201,167,0.12);
+      --text: #f1f5f9; --muted: rgba(255,255,255,0.4); --muted2: rgba(255,255,255,0.65);
+      --radius: 12px;
+    }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
+    .layout { display: flex; height: 100vh; }
+    .main   { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .content { flex: 1; overflow-y: auto; padding: 22px 26px 40px; }
+    .content::-webkit-scrollbar { width: 5px; }
+    .content::-webkit-scrollbar-track { background: transparent; }
+    .content::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #1fc8b4, #0a5e53); border-radius: 99px; }
+    .content::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #24e0ca, #1a9e8f); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Back link ── */
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--muted2); font-size: 13px; font-weight: 500;
+      cursor: pointer; border: none; background: none;
+      font-family: inherit; padding: 0; margin-bottom: 18px;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--teal); }
+    .back-link svg { width: 16px; height: 16px; }
+
+    /* ── Profile card ── */
+    .profile-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 22px 24px;
+      display: flex; align-items: center; gap: 20px;
+      margin-bottom: 28px;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .profile-avatar {
+      width: 68px; height: 68px; border-radius: 50%;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; font-weight: 800; color: #fff;
+      flex-shrink: 0; letter-spacing: -0.02em;
+    }
+
+    .profile-info { flex: 1; min-width: 0; }
+
+    .profile-name-row {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 5px; flex-wrap: wrap;
+    }
+    .profile-name { font-size: 20px; font-weight: 800; color: var(--text); }
+    .profile-verified-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: #00c9a7; color: #fff;
+      font-size: 11px; font-weight: 700;
+      padding: 3px 9px; border-radius: 20px;
+    }
+    .profile-verified-badge svg { width: 11px; height: 11px; }
+
+    .profile-buyer-tag {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12.5px; color: #3b82f6; font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .profile-buyer-tag svg { width: 14px; height: 14px; }
+
+    .profile-stats {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--muted);
+    }
+    .profile-stats-dot { color: var(--muted); }
+    .profile-stats strong { color: var(--muted2); font-weight: 600; }
+
+    /* ── Ratings Section ── */
+    .ratings-section {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px;
+      margin-bottom: 28px;
+      animation: fadeUp 0.4s ease 0.04s both;
+    }
+
+    .ratings-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 24px; gap: 20px; flex-wrap: wrap;
+    }
+
+    .ratings-title {
+      font-size: 16px; font-weight: 800; color: var(--text);
+    }
+
+    .ratings-summary {
+      display: flex; align-items: center; gap: 14px;
+    }
+
+    .avg-rating {
+      font-size: 42px; font-weight: 900; color: var(--text);
+      line-height: 1; letter-spacing: -0.02em;
+    }
+
+    .avg-rating-meta {
+      display: flex; flex-direction: column; gap: 4px;
+    }
+
+    .avg-stars {
+      display: flex; gap: 2px;
+    }
+
+    .review-count {
+      font-size: 11px; color: var(--muted); font-weight: 600;
+    }
+
+    /* ── Star Bars ── */
+    .star-bars {
+      display: flex; flex-direction: column; gap: 8px;
+      padding-bottom: 24px; margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .star-bar-row {
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .star-bar-label {
+      font-size: 11px; font-weight: 600; color: var(--muted2);
+      min-width: 38px;
+    }
+
+    .star-bar-track {
+      flex: 1; height: 6px; background: rgba(0,201,167,0.08);
+      border-radius: 99px; overflow: hidden;
+    }
+
+    .star-bar-fill {
+      height: 100%; background: linear-gradient(90deg, #00c9a7, #0F766E);
+      border-radius: 99px; transition: width 0.4s ease;
+    }
+
+    .star-bar-count {
+      font-size: 11px; font-weight: 700; color: var(--muted);
+      min-width: 20px; text-align: right;
+    }
+
+    /* ── Reviews List ── */
+    .reviews-list {
+      display: flex; flex-direction: column; gap: 14px;
+    }
+
+    .review-card {
+      background: var(--card2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px 18px;
+      transition: border-color 0.2s;
+    }
+
+    .review-card:hover {
+      border-color: rgba(0,201,167,0.2);
+    }
+
+    .review-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .review-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, #0F766E, #00c9a7);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+    }
+
+    .review-meta {
+      flex: 1; min-width: 0;
+    }
+
+    .review-author {
+      font-size: 13px; font-weight: 700; color: var(--text);
+      margin-bottom: 3px;
+    }
+
+    .review-stars {
+      display: flex; gap: 2px;
+    }
+
+    .review-date {
+      font-size: 11px; color: var(--muted); font-weight: 500;
+    }
+
+    .review-comment {
+      font-size: 12.5px; color: var(--muted2); line-height: 1.6;
+    }
+
+    /* ── Info Section ── */
+    .info-section {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px;
+      animation: fadeUp 0.4s ease 0.08s both;
+    }
+
+    .info-title {
+      font-size: 16px; font-weight: 800; color: var(--text);
+      margin-bottom: 18px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .info-item {
+      display: flex; flex-direction: column; gap: 6px;
+    }
+
+    .info-label {
+      font-size: 11px; font-weight: 600; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+
+    .info-value {
+      font-size: 14px; font-weight: 700; color: var(--text);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 32px; color: var(--muted); font-size: 14px;
+    }
+
+    /* ── Light mode ── */
+    [data-theme="light"] {
+      --bg: #f1f5f9; --card: #ffffff; --border: rgba(0,0,0,0.09);
+      --text: #1e293b; --muted: rgba(0,0,0,0.65); --muted2: rgba(0,0,0,0.8);
+    }
+    [data-theme="light"] body { background: var(--bg); color: var(--text); }
+    [data-theme="light"] .review-card {
+      background: #f8fafc;
+    }

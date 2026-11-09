@@ -1,0 +1,132 @@
+/* FILE: assets/css/seller/seller-tenants.css */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+--radius: 14px;
+}
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
+.layout { display: flex; height: 100vh; }
+.main   { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.content { flex: 1; overflow-y: auto; padding: 26px 30px 60px; }
+.content::-webkit-scrollbar { width: 5px; }
+.content::-webkit-scrollbar-thumb { background: linear-gradient(180deg,var(--primary),var(--primary)); border-radius: 99px; }
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── Page header ── */
+.page-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 22px; animation: fadeUp .28s ease both;
+}
+.page-title { font-size: 22px; font-weight: 800; }
+.page-sub   { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+
+/* ── Stat row ── */
+.stat-row {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 14px; margin-bottom: 24px;
+  animation: fadeUp .28s ease .06s both;
+}
+.stat-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 20px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.stat-label { font-size: 11.5px; color: var(--muted); font-weight: 600; letter-spacing: 0.02em; }
+.stat-value { font-size: 24px; font-weight: 800; }
+.stat-hint  { font-size: 11.5px; color: var(--muted); }
+
+/* ── Search ── */
+.toolbar { margin-bottom: 18px; animation: fadeUp .28s ease .1s both; }
+.search-wrap { position: relative; max-width: 360px; }
+.search-icon {
+  position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+  width: 15px; height: 15px; color: var(--muted); pointer-events: none;
+}
+.search-input {
+  width: 100%; background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 14px 10px 36px;
+  color: var(--text); font-family: inherit; font-size: 13px;
+}
+.search-input::placeholder { color: var(--muted); }
+.search-input:focus { outline: none; border-color: var(--teal-mid); }
+
+/* ── Tenant cards ── */
+.tenant-list { display: flex; flex-direction: column; gap: 12px; animation: fadeUp .28s ease .14s both; }
+
+.tenant-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 20px;
+  display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center;
+  cursor: pointer; text-align: left; width: 100%;
+  font-family: inherit; color: inherit;
+  transition: border-color .18s, transform .18s;
+}
+.tenant-card:hover { border-color: var(--teal-mid); transform: translateY(-1px); }
+.tenant-card:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+.tenant-avatar {
+  width: 46px; height: 46px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 800; color: var(--text); flex-shrink: 0;
+  overflow: hidden;
+}
+.tenant-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.tenant-main { min-width: 0; }
+.tenant-name {
+  font-size: 15px; font-weight: 700; margin-bottom: 3px;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.tenant-property {
+  font-size: 12.5px; color: var(--muted2);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.tenant-meta { display: flex; gap: 18px; margin-top: 10px; flex-wrap: wrap; }
+.tenant-meta-item { display: flex; flex-direction: column; gap: 2px; }
+.tenant-meta-label { font-size: 10.5px; color: var(--muted); font-weight: 600; letter-spacing: 0.02em; }
+.tenant-meta-value { font-size: 13px; font-weight: 700; }
+.tenant-meta-value.teal  { color: var(--teal); }
+.tenant-meta-value.red   { color: var(--red); }
+.tenant-meta-value.muted { color: var(--muted2); font-weight: 600; }
+
+.tenant-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.tenant-btn {
+  background: var(--card2); border: 1px solid var(--border); border-radius: 9px;
+  padding: 8px 14px; color: var(--muted2);
+  font-family: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer;
+  transition: border-color .18s, color .18s;
+}
+.tenant-btn:hover { border-color: var(--teal-mid); color: var(--teal); }
+
+/* ── Badges ── */
+.badge {
+  font-size: 10.5px; font-weight: 800; letter-spacing: 0.03em;
+  padding: 3px 9px; border-radius: 99px; white-space: nowrap;
+}
+.badge-overdue { background: var(--red-faint); color: var(--red); }
+.badge-waiting { background: var(--yellow-faint); color: var(--yellow); }
+.badge-clear   { background: var(--green-faint); color: var(--green); }
+
+/* ── Empty state ── */
+.empty {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 56px 32px; text-align: center; animation: fadeUp .28s ease .14s both;
+}
+.empty svg { width: 54px; height: 54px; color: var(--muted); opacity: 0.4; margin-bottom: 18px; }
+.empty-title { font-size: 17px; font-weight: 800; margin-bottom: 8px; }
+.empty-text { font-size: 13px; color: var(--muted2); line-height: 1.7; max-width: 400px; margin: 0 auto; }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .content { padding: 20px 18px 48px; }
+  .stat-row { grid-template-columns: 1fr; }
+  .tenant-card { grid-template-columns: auto 1fr; }
+  /* The buttons drop under the details rather than squeezing the name column. */
+  .tenant-actions { grid-column: 1 / -1; }
+  .tenant-btn { flex: 1; }
+}
+
+@media (max-width: 480px) {
+  .tenant-card { padding: 16px; gap: 14px; }
+  .tenant-meta { gap: 14px; }
+}

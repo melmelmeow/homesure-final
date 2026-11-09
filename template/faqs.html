@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – FAQs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #1a1f2e;
+      --card: #252d3d;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.1);
+      --teal: #00c9a7;
+      --accent: #6366f1;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .faq-header {
+      background: #0F766E;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+    .faq-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .faq-logo img {
+      height: 28px;
+    }
+
+    .faq-logo-text {
+      font-size: 17px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+    }
+
+    .faq-back-btn {
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .faq-back-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Container */
+    .faq-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    .faq-hero {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .faq-title {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .faq-subtitle {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Search Box */
+    .faq-search {
+      position: relative;
+      margin-bottom: 40px;
+    }
+
+    .faq-search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      width: 18px;
+      height: 18px;
+    }
+
+    .faq-search-input {
+      width: 100%;
+      padding: 14px 14px 14px 46px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .faq-search-input:focus {
+      outline: none;
+      border-color: var(--teal);
+      background: rgba(0, 201, 167, 0.05);
+    }
+
+    .faq-search-input::placeholder {
+      color: var(--muted);
+    }
+
+    /* Categories */
+    .faq-categories {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .faq-category-btn {
+      padding: 8px 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .faq-category-btn:hover,
+    .faq-category-btn.active {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: #fff;
+    }
+
+    /* FAQ Items */
+    .faq-section {
+      margin-bottom: 32px;
+    }
+
+    .faq-section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .faq-section-icon {
+      width: 24px;
+      height: 24px;
+      color: var(--teal);
+    }
+
+    .faq-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+
+    .faq-item:hover {
+      border-color: rgba(0, 201, 167, 0.3);
+    }
+
+    .faq-question {
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .faq-question-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .faq-toggle {
+      width: 20px;
+      height: 20px;
+      color: var(--muted);
+      transition: transform 0.3s;
+      flex-shrink: 0;
+    }
+
+    .faq-item.open .faq-toggle {
+      transform: rotate(180deg);
+      color: var(--teal);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .faq-answer-content {
+      padding: 0 20px 18px 20px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .faq-item.open .faq-answer {
+      max-height: 500px;
+    }
+
+    /* Help CTA */
+    .faq-help-cta {
+      background: linear-gradient(135deg, var(--teal) 0%, #00a388 100%);
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+      margin-top: 48px;
+    }
+
+    .faq-help-cta-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .faq-help-cta-text {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 20px;
+    }
+
+    .faq-help-btn {
+      padding: 12px 24px;
+      background: #fff;
+      color: var(--teal);
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .faq-help-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+      .faq-title {
+        font-size: 28px;
+      }
+
+      .faq-container {
+        padding: 24px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="faq-header">
+    <a href="index.html" class="faq-logo">
+      <img src="assets/img/image.png" alt="HomeSure" />
+      <span class="faq-logo-text">HomeSure</span>
+    </a>
+    <a href="index.html" class="faq-back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      Back to Home
+    </a>
+  </div>
+
+  <!-- FAQ Container -->
+  <div class="faq-container">
+    <div class="faq-hero">
+      <div class="faq-title">Frequently Asked Questions</div>
+      <div class="faq-subtitle">Find answers to common questions about HomeSure's property rental and purchase platform</div>
+    </div>
+
+    <!-- Search -->
+    <div class="faq-search">
+      <svg class="faq-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" class="faq-search-input" id="faqSearch" placeholder="Search for answers..." />
+    </div>
+
+    <!-- Categories -->
+    <div class="faq-categories">
+      <button class="faq-category-btn active" data-category="all">All</button>
+      <button class="faq-category-btn" data-category="getting-started">Getting Started</button>
+      <button class="faq-category-btn" data-category="listings">Listings</button>
+      <button class="faq-category-btn" data-category="payments">Payments</button>
+      <button class="faq-category-btn" data-category="verification">Verification</button>
+    </div>
+
+    <!-- FAQ Sections -->
+    <div id="faqContent">
+      <!-- Getting Started -->
+      <div class="faq-section" data-category="getting-started">
+        <div class="faq-section-title">
+          <svg class="faq-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          Getting Started
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <div class="faq-question-text">What is HomeSure?</div>
+            <svg class="faq-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              HomeSure is a verified housing platform for secure property rentals and purchases in Sta. Maria, Bulacan. We provide identity verification, secure payments via QRPH, and admin-approved listings to ensure safe transactions for both buyers and sellers.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <div class="faq-question-text">How do I create an account?</div>
+            <svg class="faq-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              Click "Get Started" on the homepage and choose whether you're a buyer or seller. Fill in your details, complete identity verification (ID photo + selfie), and submit for approval. You'll be notified within 24 hours.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <div class="faq-question-text">Is HomeSure free to use?</div>
+            <svg class="faq-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              Yes! Browsing listings and creating an account is completely free. Sellers can list properties for free, and buyers only pay for the property itself through our secure QRPH payment system.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Listings -->
+      <div class="faq-section" data-category="listings">
+        <div class="faq-section-title">
+          <svg class="faq-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          Listings
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <div class="faq-question-text">How do I list my property?</div>
+            <svg class="faq-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              After creating a seller account and completing verification, click "Post Property" from your dashboard. Fill in property details, upload photos using your camera, and submit required documents (TCT/Deed of Sale). Admin will review and approve within 1-2 business days.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <div class="faq-question-text">What documents do I need to list a property?</div>
+            <svg class="faq-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              You'll need to provide photos of your Transfer Certificate of Title (TCT) or Deed of Sale. Use your camera to capture ALL pages (front and back if applicable). Additional supporting documents like tax declarations and permits are also helpful.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <div class="faq-question-text">Can I list properties with multiple units?</div>
+            <svg class="faq-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              Yes! When listing a property, toggle "Multiple Units" and specify total units and available units. Perfect for apartment buildings or condos. Each booking automatically decreases available units, and you can adjust availability anytime.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payments -->
+      <div class="faq-section" data-category="payments">
+        <div class="faq-section-title">
+          <svg class="faq-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+            <line x1="1" y1="10" x2="23" y2="10"/>
+          </svg>
+          Payments
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <div class="faq-question-text">How do payments work?</div>
+            <svg class="faq-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              HomeSure uses QRPH for secure payments. Sellers send payment requests via Messages, buyers pay using GCash, Maya (PayMaya), or Credit/Debit Card. Payments are confirmed instantly and sellers receive notifications.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <div class="faq-question-text">What payment methods are accepted?</div>
+            <svg class="faq-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              We accept GCash, Maya (formerly PayMaya), and all major credit/debit cards through our secure QRPH integration. All transactions are encrypted and processed securely.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <div class="faq-question-text">Is my payment information secure?</div>
+            <svg class="faq-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              Yes! All payments are processed through QRPH, a PCI-DSS certified payment gateway. We never store your credit card information, and all transactions are encrypted end-to-end.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Verification -->
+      <div class="faq-section" data-category="verification">
+        <div class="faq-section-title">
+          <svg class="faq-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          Verification
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <div class="faq-question-text">Why do I need to verify my identity?</div>
+            <svg class="faq-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              Identity verification ensures trust and safety for all users. It prevents fraud, scams, and fake listings. Verified users can message sellers, list properties, and make transactions with confidence.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <div class="faq-question-text">How do I verify my account?</div>
+            <svg class="faq-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              Go to your Profile page and click "Re-verify Account." Use your camera to take a photo of your government-issued ID and a selfie holding your ID. Submit for review, and you'll receive approval within 24 hours.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <div class="faq-question-text">What ID documents are accepted?</div>
+            <svg class="faq-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              We accept government-issued IDs such as Driver's License, Passport, National ID, PhilHealth ID, SSS/GSIS ID, Voter's ID, and other valid government IDs. Make sure all text is clearly visible in your photo.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Help CTA -->
+    <div class="faq-help-cta">
+      <div class="faq-help-cta-title">Still have questions?</div>
+      <div class="faq-help-cta-text">Our staff agent is here to help you 24/7</div>
+      <a href="help.html" class="faq-help-btn">Chat with Support</a>
+    </div>
+  </div>
+
+  <script>
+    // Toggle FAQ item
+    function toggleFaq(element) {
+      const item = element.closest('.faq-item');
+      const wasOpen = item.classList.contains('open');
+
+      // Close all items
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+
+      // Open clicked item if it wasn't open
+      if (!wasOpen) {
+        item.classList.add('open');
+      }
+    }
+
+    // Search functionality
+    const searchInput = document.getElementById('faqSearch');
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      const items = document.querySelectorAll('.faq-item');
+
+      items.forEach(item => {
+        const question = item.querySelector('.faq-question-text').textContent.toLowerCase();
+        const answer = item.querySelector('.faq-answer-content').textContent.toLowerCase();
+
+        if (question.includes(query) || answer.includes(query)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+
+    // Category filtering
+    const categoryButtons = document.querySelectorAll('.faq-category-btn');
+    categoryButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const category = btn.dataset.category;
+
+        // Update active button
+        categoryButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Filter sections
+        const sections = document.querySelectorAll('.faq-section');
+        sections.forEach(section => {
+          if (category === 'all' || section.dataset.category === category) {
+            section.style.display = 'block';
+          } else {
+            section.style.display = 'none';
+          }
+        });
+
+        // Clear search
+        searchInput.value = '';
+        document.querySelectorAll('.faq-item').forEach(item => item.style.display = 'block');
+      });
+    });
+  </script>
+</body>
+</html>

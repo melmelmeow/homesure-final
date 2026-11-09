@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/kasafide-favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../../assets/img/favicon-16.png" />
+  <link rel="apple-touch-icon" href="../../assets/img/apple-touch-icon.png" />
+  <link rel="manifest" href="../../site.webmanifest" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="../../assets/js/kasafide-theme.js"></script>
+  <script src="../../assets/js/kasafide-logo.js"></script>
+  <link rel="stylesheet" href="../../assets/css/kasafide-theme.css" />
+  <title>Kasafide – Notifications</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/notifications.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+  <div class="main">
+    <div id="hs-topbar"></div>
+    <div class="content">
+      <div class="page-header">
+        <div class="page-title">Notifications</div>
+        <button class="mark-all-btn" onclick="markAllRead()">Mark all as read</button>
+      </div>
+      <div class="notif-tabs">
+        <button class="notif-tab active" data-tab="all" onclick="switchTab(this,'all')">All</button>
+        <button class="notif-tab" data-tab="unread" onclick="switchTab(this,'unread')">Unread <span id="unreadCount"></span></button>
+      </div>
+      <div class="notif-list" id="notifList"></div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0/dist/umd/supabase.js"></script>
+<script src="../../assets/js/config.js?v=2"></script>
+<script src="../../assets/js/session.js"></script>
+<script src="../../assets/js/data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/admin/admin-notifications.js"></script>
+</body>
+</html>

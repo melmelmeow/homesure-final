@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – Payment Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/seller/seller-payments.css" />
+  <link rel="stylesheet" href="../../assets/css/close-listing-modal.css" />
+  <link rel="stylesheet" href="../../assets/css/adjust-availability-modal.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+  <div class="main">
+    <div id="hs-topbar"></div>
+    <div class="content">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div>
+          <div class="page-title">Payment Management</div>
+          <div class="page-sub">Manage rent collections and security deposits</div>
+        </div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="stat-row" id="statRow">
+        <!-- injected by JS -->
+      </div>
+
+      <!-- Tab Bar -->
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="pending" onclick="switchTab('pending')">
+          Pending Confirmation
+          <span class="tab-badge" id="pendingBadge"></span>
+        </button>
+        <button class="tab-btn" data-tab="all" onclick="switchTab('all')">All Payments</button>
+        <button class="tab-btn" data-tab="deposits" onclick="switchTab('deposits')">Deposits &amp; Damage</button>
+        <button class="tab-btn" data-tab="settings" onclick="switchTab('settings')">
+          Payment Settings
+        </button>
+      </div>
+
+      <!-- Tab: Pending -->
+      <div class="tab-content" id="tab-pending">
+        <div id="pendingContainer"></div>
+      </div>
+
+      <!-- Tab: All Payments -->
+      <div class="tab-content" id="tab-all" style="display:none">
+        <div class="tenant-filter">
+          <select class="form-select filter-select" id="tenantFilter" onchange="renderAllPayments()">
+            <option value="">All Tenants</option>
+            <option value="Maria Santos">Maria Santos</option>
+            <option value="Juan Cruz">Juan Cruz</option>
+            <option value="Ana Lim">Ana Lim</option>
+          </select>
+          <input class="search-input" type="text" id="allSearch" placeholder="Search by reference, period…" oninput="renderAllPayments()" />
+        </div>
+        <div class="table-wrap">
+          <table class="pay-table">
+            <thead>
+              <tr>
+                <th>Tenant</th>
+                <th>Property</th>
+                <th>Type</th>
+                <th>Period</th>
+                <th>Amount</th>
+                <th>Method</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="allPaymentsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab: Deposits & Damage -->
+      <div class="tab-content" id="tab-deposits" style="display:none">
+        <div class="table-wrap" style="margin-bottom: 28px;">
+          <table class="pay-table">
+            <thead>
+              <tr>
+                <th>Tenant</th>
+                <th>Property</th>
+                <th>Deposit</th>
+                <th>Deductions</th>
+                <th>Refundable</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="depositsBody"></tbody>
+          </table>
+        </div>
+        <div class="damage-section">
+          <div class="damage-section-title">Damage Reports</div>
+          <div id="damageReportsList"></div>
+        </div>
+      </div>
+
+      <!-- Tab: Payment Settings -->
+      <div class="tab-content" id="tab-settings" style="display:none">
+        <div class="settings-card">
+          <div class="settings-header">
+            <div class="settings-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            </div>
+            <div>
+              <div class="settings-title">Payment Methods</div>
+              <div class="settings-sub">Configure your payment details for faster transactions</div>
+            </div>
+          </div>
+
+          <div class="payment-methods-wrap">
+            <!-- GCash -->
+            <div class="payment-method-block">
+              <div class="payment-method-header">
+                <div class="payment-method-icon" style="background:#007dfe;overflow:hidden;">
+                  <img src="../../assets/img/gcashlogo.png" alt="GCash" style="width:100%;height:100%;object-fit:cover;" />
+                </div>
+                <div class="payment-method-info">
+                  <div class="payment-method-name">GCash</div>
+                  <div class="payment-method-desc">Mobile wallet payment</div>
+                </div>
+                <label class="payment-toggle">
+                  <input type="checkbox" id="enableGcashPay" onchange="togglePaymentMethodPay('gcash', this.checked)" />
+                  <div class="toggle-track"></div>
+                </label>
+              </div>
+              <div class="payment-method-fields" id="gcashFieldsPay" style="display:none">
+                <div class="payment-field">
+                  <label>GCash Number</label>
+                  <input type="tel" id="gcashNumberPay" placeholder="09XX XXX XXXX" maxlength="13" class="payment-input" />
+                </div>
+                <div class="payment-field">
+                  <label>Account Name</label>
+                  <input type="text" id="gcashNamePay" placeholder="Full name on GCash account" class="payment-input" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Maya -->
+            <div class="payment-method-block">
+              <div class="payment-method-header">
+                <div class="payment-method-icon" style="background:#1a1a1a;overflow:hidden;">
+                  <img src="../../assets/img/mayalogo.png" alt="Maya" style="width:100%;height:100%;object-fit:cover;" />
+                </div>
+                <div class="payment-method-info">
+                  <div class="payment-method-name">Maya</div>
+                  <div class="payment-method-desc">Mobile wallet payment</div>
+                </div>
+                <label class="payment-toggle">
+                  <input type="checkbox" id="enableMayaPay" onchange="togglePaymentMethodPay('maya', this.checked)" />
+                  <div class="toggle-track"></div>
+                </label>
+              </div>
+              <div class="payment-method-fields" id="mayaFieldsPay" style="display:none">
+                <div class="payment-field">
+                  <label>Maya Number</label>
+                  <input type="tel" id="mayaNumberPay" placeholder="09XX XXX XXXX" maxlength="13" class="payment-input" />
+                </div>
+                <div class="payment-field">
+                  <label>Account Name</label>
+                  <input type="text" id="mayaNamePay" placeholder="Full name on Maya account" class="payment-input" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Bank Transfer -->
+            <div class="payment-method-block">
+              <div class="payment-method-header">
+                <div class="payment-method-icon" style="background:#6b7280">
+                  <div style="font-size:20px;font-weight:700;color:white;">₱</div>
+                </div>
+                <div class="payment-method-info">
+                  <div class="payment-method-name">Bank Transfer</div>
+                  <div class="payment-method-desc">Direct bank deposit</div>
+                </div>
+                <label class="payment-toggle">
+                  <input type="checkbox" id="enableBankPay" onchange="togglePaymentMethodPay('bank', this.checked)" />
+                  <div class="toggle-track"></div>
+                </label>
+              </div>
+              <div class="payment-method-fields" id="bankFieldsPay" style="display:none">
+                <div class="payment-field">
+                  <label>Bank Name</label>
+                  <input type="text" id="bankNamePay" placeholder="e.g., BDO, BPI, Metrobank" class="payment-input" />
+                </div>
+                <div class="payment-field">
+                  <label>Account Number</label>
+                  <input type="text" id="bankAccountPay" placeholder="Account number" class="payment-input" />
+                </div>
+                <div class="payment-field">
+                  <label>Account Name</label>
+                  <input type="text" id="bankAccountNamePay" placeholder="Full name on bank account" class="payment-input" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-save-row">
+            <button class="btn-save-payment" onclick="savePaymentMethodsPay()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><polyline points="20 6 9 17 4 12"/></svg>
+              Save Payment Methods
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Damage Report Modal -->
+<div class="modal-backdrop" id="damageModal" style="display:none" onclick="handleDamageBackdrop(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">File Damage Report</div>
+        <div class="modal-sub" id="damageModalSub">Report a deduction against security deposit</div>
+      </div>
+      <button class="modal-close-btn" onclick="closeDamageModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form id="damageForm" onsubmit="submitDamage(event)">
+        <div class="form-group">
+          <label class="form-label">Tenant</label>
+          <input class="form-input" type="text" id="dTenant" readonly />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description of Damage</label>
+          <textarea class="form-input" id="dDescription" rows="3" placeholder="e.g. Cracked bathroom tile, broken window…" required style="resize:vertical; min-height:70px;"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Estimated Cost (₱)</label>
+          <input class="form-input" type="number" id="dCost" min="1" placeholder="e.g. 3500" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date</label>
+          <input class="form-input" type="date" id="dDate" required />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-ghost" onclick="closeDamageModal()">Cancel</button>
+          <button type="submit" class="btn-primary">Submit Report</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ── Reject Payment Confirmation Modal ─────────────────────────────────── -->
+<div id="rejectPaymentModal" style="display:none;position:fixed;inset:0;z-index:950;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#253347;border:1.5px solid rgba(248,113,113,0.3);border-radius:18px;width:100%;max-width:480px;overflow:hidden;animation:fadeUp .25s ease both;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+
+    <!-- Warning Header -->
+    <div style="background:linear-gradient(135deg, rgba(248,113,113,0.15) 0%, rgba(220,38,38,0.1) 100%);padding:20px 22px;border-bottom:1px solid rgba(248,113,113,0.2);display:flex;align-items:center;gap:12px;">
+      <div style="width:40px;height:40px;background:rgba(248,113,113,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.5" width="22" height="22">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </div>
+      <div>
+        <div style="font-size:17px;font-weight:800;color:#f87171;">REFUND WARNING</div>
+        <div style="font-size:12px;color:rgba(248,113,113,0.7);margin-top:2px;">Money will be returned to buyer</div>
+      </div>
+    </div>
+
+    <!-- Warning Content -->
+    <div style="padding:24px 22px;">
+      <div style="font-size:14px;color:#f1f5f9;font-weight:600;margin-bottom:16px;">
+        The buyer has already paid <strong style="color:#00c9a7;">₱15,000</strong>.
+      </div>
+
+      <div style="background:#1a2739;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;margin-bottom:16px;">
+        <div style="font-size:13px;color:rgba(255,255,255,0.85);font-weight:600;margin-bottom:10px;">If you REJECT this payment:</div>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;">
+          <li style="display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:rgba(255,255,255,0.7);">
+            <span style="color:#f87171;flex-shrink:0;">•</span>
+            Money will be <strong style="color:#f87171;">AUTO-REFUNDED</strong> from escrow to buyer
+          </li>
+          <li style="display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:rgba(255,255,255,0.7);">
+            <span style="color:#f87171;flex-shrink:0;">•</span>
+            Buyer will be notified to resubmit correct proof
+          </li>
+          <li style="display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:rgba(255,255,255,0.7);">
+            <span style="color:#f87171;flex-shrink:0;">•</span>
+            Transaction will be marked as <strong>"Refund Pending"</strong>
+          </li>
+        </ul>
+      </div>
+
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:12px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:10px;">
+        <span style="font-size:16px;flex-shrink:0;">💡</span>
+        <div style="font-size:11.5px;color:rgba(251,191,36,0.95);font-weight:600;line-height:1.5;">
+          <strong>NOTE:</strong> In production, HomeSure holds payments in ESCROW until you confirm. This prevents money loss for both parties.
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div style="display:flex;gap:10px;padding:18px 22px;border-top:1px solid rgba(255,255,255,0.07);background:#1a2739;">
+      <button onclick="closeRejectPaymentModal()" style="flex:1;background:transparent;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:12px 20px;color:rgba(255,255,255,0.6);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;">
+        Cancel
+      </button>
+      <button onclick="confirmRejectPayment()" style="flex:1;background:#dc2626;border:none;border-radius:10px;padding:12px 20px;color:#fff;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(220,38,38,0.3);">
+        Yes, Reject & Refund
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <span class="toast-icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </span>
+  <span id="toastMsg"></span>
+</div>
+
+<script src="../../assets/js/fake-data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/payment-integration.js"></script>
+<script src="../../assets/js/close-listing.js"></script>
+<script src="../../assets/js/adjust-availability.js"></script>
+<script src="../../assets/js/seller/seller-payments.js"></script>
+</body>
+</html>

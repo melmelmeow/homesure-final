@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – Listing Detail</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/admin/listing-detail.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+  <div class="main">
+    <div id="hs-topbar"></div>
+    <div class="content" id="pageContent">
+      <div style="color:var(--muted);padding:60px;text-align:center">Loading…</div>
+    </div>
+  </div>
+</div>
+
+<!-- Reject Reason Modal -->
+<div class="modal-backdrop" id="rejectModal" style="display:none">
+  <div class="reject-modal">
+    <div class="reject-modal-header">
+      <div class="reject-modal-title">Reject Listing</div>
+      <button class="reject-close-btn" onclick="closeRejectModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="reject-modal-body">
+      <p class="reject-modal-sub">Select a reason for rejection. The seller will see this message.</p>
+      <div class="reject-reasons" id="rejectReasons"></div>
+      <div class="reject-custom-wrap">
+        <label class="reject-custom-label">Or write a custom reason</label>
+        <textarea id="rejectCustom" class="reject-textarea" placeholder="e.g. Photos are low quality and do not represent the property accurately…" rows="3"></textarea>
+      </div>
+    </div>
+    <div class="reject-modal-footer">
+      <button class="btn-action secondary" onclick="closeRejectModal()">Cancel</button>
+      <button class="btn-action danger" onclick="confirmReject()">Confirm Rejection</button>
+    </div>
+  </div>
+</div>
+
+<script src="../../assets/js/fake-data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/admin/listing-detail.js"></script>
+</body>
+</html>

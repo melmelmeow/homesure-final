@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../../assets/img/image.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeSure – Account Settings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/css/seller/seller-settings.css" />
+  <link rel="stylesheet" href="../../assets/css/responsive.css" />
+</head>
+<body>
+<div class="layout">
+  <div id="hs-sidebar"></div>
+  <div class="main">
+    <div id="hs-topbar"></div>
+    <div class="content">
+
+      <div class="page-header">
+        <div class="page-title">Account Settings</div>
+        <div class="page-sub">Manage your account settings and preferences</div>
+      </div>
+
+      <div class="settings-col">
+
+        <!-- ── Section 1: Personal Information ── -->
+        <div class="section-card">
+          <div class="section-header">
+            <div class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div>
+              <div class="section-title">Personal Information</div>
+              <div class="section-sub">Update your personal details</div>
+            </div>
+          </div>
+
+          <div class="form-body">
+            <div class="form-grid">
+              <div class="field">
+                <label>Full Name</label>
+                <div class="field-input-wrap">
+                  <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  <input type="text" id="profileName" placeholder="Your full name" autocomplete="name" />
+                </div>
+              </div>
+              <div class="field">
+                <label>Email Address</label>
+                <div class="field-input-wrap">
+                  <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  <input type="email" id="profileEmail" placeholder="Your email" readonly />
+                </div>
+              </div>
+              <div class="field">
+                <label>Phone Number</label>
+                <div class="field-input-wrap">
+                  <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.37 2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.27a16 16 0 0 0 5.82 5.82l.86-.86a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.18 14l.74 2.92z"/></svg>
+                  <input type="tel" id="profilePhone" placeholder="+63 9XX XXX XXXX" autocomplete="tel" />
+                </div>
+                <span class="verify-phone-link" onclick="showToast('Phone verification coming soon.','error')">Verify Phone Number</span>
+              </div>
+              <div class="field">
+                <label>Location</label>
+                <div class="field-input-wrap">
+                  <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <input type="text" id="profileLocation" placeholder="City, Province" autocomplete="address-level2" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-save-row">
+            <button class="btn-primary" onclick="savePersonalInfo()">Save Changes</button>
+          </div>
+        </div>
+
+        <!-- ── Section 2: Security ── -->
+        <div class="section-card">
+          <div class="section-header">
+            <div class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <div class="section-title">Security</div>
+              <div class="section-sub">Manage your password and account access</div>
+            </div>
+          </div>
+
+          <!-- Password row -->
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-label">Password</div>
+              <div class="setting-desc"><span class="pw-nudge-dot"></span>Last changed: Never — we recommend updating your password</div>
+            </div>
+            <button class="change-pw-btn" id="changePwBtn" onclick="togglePwForm()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Change Password
+            </button>
+          </div>
+
+          <!-- Password form (expandable) -->
+          <div class="pw-form" id="pwForm">
+            <div class="field">
+              <label>Current Password</label>
+              <div class="field-input-wrap">
+                <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input type="password" id="currentPw" placeholder="Enter current password" autocomplete="current-password" />
+              </div>
+            </div>
+            <div class="field">
+              <label>New Password</label>
+              <div class="field-input-wrap">
+                <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input type="password" id="newPw" placeholder="Create a strong password" autocomplete="new-password" oninput="checkStrength(this.value)" />
+                <span class="pw-toggle-visibility" onclick="toggleVis('newPw',this)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </span>
+              </div>
+              <!-- Strength meter -->
+              <div class="pw-strength" id="pwStrengthWrap">
+                <div class="pw-strength-bars">
+                  <div class="pw-bar" id="pwBar1"></div>
+                  <div class="pw-bar" id="pwBar2"></div>
+                  <div class="pw-bar" id="pwBar3"></div>
+                  <div class="pw-bar" id="pwBar4"></div>
+                </div>
+                <span class="pw-strength-label" id="pwStrengthLabel"></span>
+              </div>
+              <div class="pw-requirements" id="pwRequirements">
+                <div class="pw-req" id="req-len">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
+                  At least 8 characters
+                </div>
+                <div class="pw-req" id="req-upper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
+                  One uppercase letter (A–Z)
+                </div>
+                <div class="pw-req" id="req-num">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
+                  One number (0–9)
+                </div>
+                <div class="pw-req" id="req-special">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
+                  One special character (!@#$…)
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <label>Confirm New Password</label>
+              <div class="field-input-wrap">
+                <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input type="password" id="confirmPw" placeholder="Re-enter new password" autocomplete="new-password" />
+                <span class="pw-toggle-visibility" onclick="toggleVis('confirmPw',this)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </span>
+              </div>
+            </div>
+            <div class="pw-actions">
+              <button class="btn-primary" onclick="savePassword()">Update Password</button>
+              <button class="btn-ghost" onclick="togglePwForm()">Cancel</button>
+            </div>
+          </div>
+
+          <!-- 2FA row -->
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-label">Two-Factor Authentication</div>
+              <div class="setting-desc">Add an extra layer of security — require a code when signing in</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="twoFaToggle" onchange="handle2FA(this)" />
+              <div class="toggle-track"></div>
+            </label>
+          </div>
+
+          <div class="setting-row" id="twoFaStatus">
+            <div class="setting-desc" id="twoFaStatusInner" style="display:flex;align-items:center;gap:7px;">
+              <svg id="twoFaStatusIcon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span id="twoFaStatusText">Two-Factor Authentication is disabled</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Section 3: Payment Methods ── -->
+        <div class="section-card">
+          <div class="section-header">
+            <div class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            </div>
+            <div>
+              <div class="section-title">Payment Methods</div>
+              <div class="section-sub">Save your payment details for faster transactions</div>
+            </div>
+          </div>
+
+          <div class="form-body">
+            <!-- GCash -->
+            <div class="payment-method-block">
+              <div class="payment-method-header">
+                <div class="payment-method-icon" style="background:#007dfe;overflow:hidden;">
+                  <img src="../../assets/img/gcashlogo.png" alt="GCash" style="width:100%;height:100%;object-fit:cover;" />
+                </div>
+                <div class="payment-method-info">
+                  <div class="payment-method-name">GCash</div>
+                  <div class="payment-method-desc">Mobile wallet payment</div>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="enableGcash" onchange="togglePaymentMethod('gcash', this.checked)" />
+                  <div class="toggle-track"></div>
+                </label>
+              </div>
+              <div class="payment-method-fields" id="gcashFields" style="display:none">
+                <div class="field">
+                  <label>GCash Number</label>
+                  <div class="field-input-wrap">
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.37A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.27a16 16 0 0 0 5.82 5.82l.86-.86a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.18 14l.74 2.92z"/></svg>
+                    <input type="tel" id="gcashNumber" placeholder="09XX XXX XXXX" maxlength="13" />
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Account Name</label>
+                  <div class="field-input-wrap">
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <input type="text" id="gcashName" placeholder="Full name on GCash account" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Maya -->
+            <div class="payment-method-block">
+              <div class="payment-method-header">
+                <div class="payment-method-icon" style="background:#1a1a1a;overflow:hidden;">
+                  <img src="../../assets/img/mayalogo.png" alt="Maya" style="width:100%;height:100%;object-fit:cover;" />
+                </div>
+                <div class="payment-method-info">
+                  <div class="payment-method-name">Maya</div>
+                  <div class="payment-method-desc">Mobile wallet payment</div>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="enableMaya" onchange="togglePaymentMethod('maya', this.checked)" />
+                  <div class="toggle-track"></div>
+                </label>
+              </div>
+              <div class="payment-method-fields" id="mayaFields" style="display:none">
+                <div class="field">
+                  <label>Maya Number</label>
+                  <div class="field-input-wrap">
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.37A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.27a16 16 0 0 0 5.82 5.82l.86-.86a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.18 14l.74 2.92z"/></svg>
+                    <input type="tel" id="mayaNumber" placeholder="09XX XXX XXXX" maxlength="13" />
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Account Name</label>
+                  <div class="field-input-wrap">
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <input type="text" id="mayaName" placeholder="Full name on Maya account" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bank Transfer -->
+            <div class="payment-method-block">
+              <div class="payment-method-header">
+                <div class="payment-method-icon" style="background:#6b7280">
+                  <div style="font-size:20px;font-weight:700;color:white;">₱</div>
+                </div>
+                <div class="payment-method-info">
+                  <div class="payment-method-name">Bank Transfer</div>
+                  <div class="payment-method-desc">Direct bank deposit</div>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="enableBank" onchange="togglePaymentMethod('bank', this.checked)" />
+                  <div class="toggle-track"></div>
+                </label>
+              </div>
+              <div class="payment-method-fields" id="bankFields" style="display:none">
+                <div class="field">
+                  <label>Bank Name</label>
+                  <div class="field-input-wrap">
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <input type="text" id="bankName" placeholder="e.g., BDO, BPI, Metrobank" />
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Account Number</label>
+                  <div class="field-input-wrap">
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                    <input type="text" id="bankAccount" placeholder="Account number" />
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Account Name</label>
+                  <div class="field-input-wrap">
+                    <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <input type="text" id="bankAccountName" placeholder="Full name on bank account" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-save-row">
+            <button class="btn-primary" onclick="savePaymentMethods()">Save Payment Methods</button>
+          </div>
+        </div>
+
+        <!-- ── Section 4: Notification Preferences ── -->
+        <div class="section-card">
+          <div class="section-header">
+            <div class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </div>
+            <div>
+              <div class="section-title">Notification Preferences</div>
+              <div class="section-sub">Choose how and when you want to be notified</div>
+            </div>
+          </div>
+
+          <div class="notif-section-label">Notification Channels</div>
+
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-label">Email Notifications</div>
+              <div class="setting-desc">Receive notifications via your email address</div>
+            </div>
+            <div class="toggle-group">
+              <span class="toggle-state on" id="notifEmail-lbl">On</span>
+              <label class="toggle"><input type="checkbox" id="notifEmail" checked onchange="updateToggleLabel(this,'notifEmail-lbl');updateChannelDependency()" /><div class="toggle-track"></div></label>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-label">SMS Notifications</div>
+              <div class="setting-desc">Receive notifications via text message</div>
+            </div>
+            <div class="toggle-group">
+              <span class="toggle-state" id="notifSms-lbl">Off</span>
+              <label class="toggle"><input type="checkbox" id="notifSms" onchange="updateToggleLabel(this,'notifSms-lbl');updateChannelDependency()" /><div class="toggle-track"></div></label>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-label">Push Notifications</div>
+              <div class="setting-desc">Receive in-browser push notifications</div>
+            </div>
+            <div class="toggle-group">
+              <span class="toggle-state on" id="notifPush-lbl">On</span>
+              <label class="toggle"><input type="checkbox" id="notifPush" checked onchange="updateToggleLabel(this,'notifPush-lbl');updateChannelDependency()" /><div class="toggle-track"></div></label>
+            </div>
+          </div>
+
+          <div class="notif-section-label">Notification Types</div>
+
+          <div class="setting-row" id="rowInquiries">
+            <div class="setting-info">
+              <div class="setting-label">Listing Inquiries</div>
+              <div class="setting-desc">Get notified when buyers send inquiries about your listings</div>
+            </div>
+            <div class="toggle-group">
+              <span class="toggle-state on" id="notifInquiries-lbl">On</span>
+              <label class="toggle"><input type="checkbox" id="notifInquiries" checked onchange="updateToggleLabel(this,'notifInquiries-lbl')" /><div class="toggle-track"></div></label>
+            </div>
+          </div>
+          <div class="setting-row" id="rowMessages">
+            <div class="setting-info">
+              <div class="setting-label">New Messages</div>
+              <div class="setting-desc">Get notified when buyers send you messages</div>
+            </div>
+            <div class="toggle-group">
+              <span class="toggle-state on" id="notifMessages-lbl">On</span>
+              <label class="toggle"><input type="checkbox" id="notifMessages" checked onchange="updateToggleLabel(this,'notifMessages-lbl')" /><div class="toggle-track"></div></label>
+            </div>
+          </div>
+          <div class="setting-row" id="rowListingStatus">
+            <div class="setting-info">
+              <div class="setting-label">Listing Status Updates</div>
+              <div class="setting-desc">Know when your listing is approved, rejected, or flagged</div>
+            </div>
+            <div class="toggle-group">
+              <span class="toggle-state on" id="notifListingStatus-lbl">On</span>
+              <label class="toggle"><input type="checkbox" id="notifListingStatus" checked onchange="updateToggleLabel(this,'notifListingStatus-lbl')" /><div class="toggle-track"></div></label>
+            </div>
+          </div>
+          <div class="setting-row" id="rowMarket">
+            <div class="setting-info">
+              <div class="setting-label">Price &amp; Market Alerts</div>
+              <div class="setting-desc">Receive updates on market trends and competitive pricing in your area</div>
+            </div>
+            <div class="toggle-group">
+              <span class="toggle-state" id="notifMarket-lbl">Off</span>
+              <label class="toggle"><input type="checkbox" id="notifMarket" onchange="updateToggleLabel(this,'notifMarket-lbl')" /><div class="toggle-track"></div></label>
+            </div>
+          </div>
+          <div class="setting-row" id="rowPromo">
+            <div class="setting-info">
+              <div class="setting-label">Promotions &amp; Updates</div>
+              <div class="setting-desc">Receive news, tips, and HomeSure platform updates</div>
+            </div>
+            <div class="toggle-group">
+              <span class="toggle-state" id="notifPromo-lbl">Off</span>
+              <label class="toggle"><input type="checkbox" id="notifPromo" onchange="updateToggleLabel(this,'notifPromo-lbl')" /><div class="toggle-track"></div></label>
+            </div>
+          </div>
+
+          <div class="notif-save-row">
+            <div class="notif-saved-msg" id="notifSavedMsg">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Preferences saved
+            </div>
+            <button class="btn-primary" onclick="saveNotifications()">Save Preferences</button>
+          </div>
+        </div>
+
+        <!-- ── Section 4: Identity Verification ── -->
+        <div class="section-card verify-card">
+          <div class="section-header">
+            <div class="section-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            </div>
+            <div>
+              <div class="section-title">Identity Verification</div>
+              <div class="section-sub">Manage your seller verification status</div>
+            </div>
+          </div>
+
+          <div class="verify-status-row" id="verifyStatusRow">
+            <!-- Filled dynamically -->
+          </div>
+        </div>
+
+        <!-- ── Section 5: Account Removal ── -->
+        <div class="section-card danger-card">
+          <div class="section-header">
+            <div class="section-icon danger">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </div>
+            <div>
+              <div class="section-title" style="color:var(--danger)">Account Removal</div>
+              <div class="section-sub">Permanently delete your account and all associated data</div>
+            </div>
+          </div>
+
+          <div class="danger-body">
+            <!-- Pending deletion banner (shown after scheduling) -->
+            <div class="pending-banner" id="pendingBanner" style="display:none">
+              <div class="pending-banner-left">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <div>
+                  <div class="pending-banner-title">Account scheduled for deletion</div>
+                  <div class="pending-banner-sub" id="pendingBannerSub"></div>
+                </div>
+              </div>
+              <button class="pending-cancel-btn" onclick="cancelScheduledDeletion()">Cancel Deletion</button>
+            </div>
+
+            <div class="danger-warning" id="deletionWarning">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <div class="danger-warning-text">
+                Your account, listings, messages, and all associated data will be <strong>permanently removed</strong>. You will have <strong>30 days</strong> to change your mind before deletion is finalized.
+              </div>
+            </div>
+
+            <div id="deleteBtn">
+              <button class="btn-danger" onclick="openDeleteModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                Delete My Account
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /settings-col -->
+    </div><!-- /content -->
+  </div>
+</div>
+
+<!-- ── 2FA Modal ── -->
+<div class="modal-backdrop" id="twoFaModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Enable Two-Factor Authentication</div>
+        <div class="modal-sub">Enter the code we sent to your email</div>
+      </div>
+      <button class="modal-close" onclick="close2FA()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="twofa-email-sent">
+      <div class="twofa-email-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <div>
+        <div class="twofa-email-title">Code sent!</div>
+        <div class="twofa-email-sub">We sent a 6-digit code to <strong id="twoFaEmailTarget"></strong></div>
+      </div>
+    </div>
+
+    <div class="otp-boxes" id="twoFaBoxes">
+      <input class="otp-box" maxlength="1" type="text" inputmode="numeric" />
+      <input class="otp-box" maxlength="1" type="text" inputmode="numeric" />
+      <input class="otp-box" maxlength="1" type="text" inputmode="numeric" />
+      <input class="otp-box" maxlength="1" type="text" inputmode="numeric" />
+      <input class="otp-box" maxlength="1" type="text" inputmode="numeric" />
+      <input class="otp-box" maxlength="1" type="text" inputmode="numeric" />
+    </div>
+    <div class="otp-error" id="twoFaError">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Invalid code. Please try again.
+    </div>
+
+    <div class="twofa-resend">
+      <span id="twoFaResendText">Resend code in <strong id="twoFaTimer">30s</strong></span>
+      <span class="twofa-resend-link disabled" id="twoFaResendLink" onclick="resend2FA()">Resend</span>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="close2FA()">Cancel</button>
+      <button class="btn-primary" onclick="verify2FA()">Verify &amp; Enable</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Delete Account Modal ── -->
+<div class="modal-backdrop" id="deleteModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" style="color:var(--danger)">Delete Your Account?</div>
+        <div class="modal-sub">This will schedule your account for permanent deletion</div>
+      </div>
+      <button class="modal-close" onclick="closeDeleteModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="delete-modal-info">
+      <div class="delete-modal-step">
+        <div class="delete-step-num">1</div>
+        <div>Your account will be <strong>deactivated immediately</strong> and hidden from the platform.</div>
+      </div>
+      <div class="delete-modal-step">
+        <div class="delete-step-num">2</div>
+        <div>You have <strong>30 days</strong> to log back in and cancel the deletion.</div>
+      </div>
+      <div class="delete-modal-step">
+        <div class="delete-step-num">3</div>
+        <div>After 30 days, your account and all data will be <strong>permanently removed</strong>.</div>
+      </div>
+    </div>
+
+    <div class="field" style="margin-bottom:16px;">
+      <label>Confirm by typing your email</label>
+      <div class="field-input-wrap">
+        <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <input type="text" id="deleteEmailInput" placeholder="Enter your email address" autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" />
+      </div>
+      <div class="otp-error" id="deleteEmailError" style="margin-top:8px;margin-bottom:0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Email does not match your account.
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeDeleteModal()">Keep My Account</button>
+      <button class="btn-danger" style="flex:2;justify-content:center" onclick="confirmScheduleDeletion()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        Schedule Deletion
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <div class="toast-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="toastIcon"></svg></div>
+  <span id="toastMsg"></span>
+</div>
+
+<script src="../../assets/js/fake-data.js"></script>
+<script src="../../components/sidebar.js"></script>
+<script src="../../components/topbar.js"></script>
+<script src="../../assets/js/seller/seller-settings.js"></script>
+</body>
+</html>

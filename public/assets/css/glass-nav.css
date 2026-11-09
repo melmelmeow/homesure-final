@@ -1,0 +1,228 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Kasafide — frosted-glass top bar
+   Load this AFTER the page's own stylesheet so it wins.
+
+   The public pages were each written with their own theme switch, and there are three
+   different conventions among them:
+       index.css / about.css   dark :root, overridden by [data-theme="light"]
+       browse.css              light :root, overridden by [data-theme="dark"]
+       policy.css              body.dark / body.light classes
+   So the tokens below key off every one of them rather than off ":root" alone. Whichever
+   way a page flips its theme, the glass follows.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* Before the theme script runs there is no attribute yet, so start light — that is what
+   every page falls back to anyway, and a flash of the wrong glass is very visible. */
+:root {
+  --glass-bg:        rgb(var(--wash-rgb) / 0.55);
+  --glass-tint:      rgb(var(--primary-rgb) / 0.035);
+  --glass-edge:      rgb(var(--wash-rgb) / 0.85);   /* the hairline along the top */
+  --glass-border:    rgb(var(--k-ink-rgb) / 0.07);
+  --glass-shadow:    0 6px 28px rgb(var(--k-ink-rgb) / min(0.07, var(--shadow-cap, 1)));
+  --glass-blur:      blur(22px) saturate(175%);
+  --glass-solid:     rgb(var(--wash-rgb) / 0.94);   /* used where blur is unavailable */
+}
+
+[data-theme="light"],
+body.light {
+  --glass-bg:     rgb(var(--surface-rgb) / 0.55);
+  --glass-tint:   rgb(var(--primary-rgb) / 0.035);
+  --glass-edge:   var(--border);
+  --glass-border: rgb(var(--k-ink-rgb) / 0.07);
+  --glass-shadow: 0 6px 28px rgb(var(--k-ink-rgb) / 0.07);
+  --glass-solid:  rgb(var(--surface-rgb) / 0.94);
+}
+
+[data-theme="dark"],
+body.dark {
+  --glass-bg:     rgb(var(--k-ink-rgb) / 0.52);
+  --glass-tint:   rgb(var(--primary-rgb) / 0.05);
+  --glass-edge:   rgba(255, 255, 255, 0.11);
+  --glass-border: rgba(255, 255, 255, 0.07);
+  --glass-shadow: 0 6px 28px rgba(0, 0, 0, 0.3);
+  --glass-solid:  rgb(var(--k-ink-rgb) / 0.93);
+}
+
+/* The four floating bars across the public pages. auth.css is left out on purpose: its
+   header sits inside a split column with nothing scrolling behind it, so frosting it
+   would blur nothing and just look muddy. */
+nav,
+.browse-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  /* Two layers: a faint teal tint over the blurred page, so the glass picks up the brand
+     colour the way real tinted glass would, instead of reading as flat grey. */
+  background-color: var(--glass-bg);
+  background-image: linear-gradient(var(--glass-tint), var(--glass-tint));
+
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+
+  border-bottom: 1px solid var(--glass-border);
+
+  /* inset: the lit edge along the very top, which is what sells it as glass rather than
+     as a translucent rectangle. Outset: a soft shadow so the bar floats above the page. */
+  box-shadow:
+    inset 0 1px 0 var(--glass-edge),
+    var(--glass-shadow);
+
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* ─── While the bar sits on top of the hero ────────────────────────────────────
+   In dark mode the hero is the darkest thing on the page, so a lighter bar on top of it looked
+   like a separate strip rather than part of the page. In light mode the hero follows the page
+   and the ordinary light glass already blends in, so this only applies under data-theme="dark". Over the hero the bar borrows the dark
+   tokens, and its contents have to follow — dark text on a dark panel would be unreadable.
+   glass-nav.js adds and removes this class as you scroll. */
+:root[data-theme="dark"] nav.over-hero,
+:root[data-theme="dark"] .browse-nav.over-hero {
+  /* No blur here for .browse-nav — a performance decision, not a visual one;
+     backdrop-filter recomputes every frame anything behind it moves. For nav.over-hero on
+     index.html/about.html specifically, this is moot: the pill rule further down
+     (nav:not(.browse-nav):not(.toc-nav)) has higher specificity and restores the blur there,
+     on request, to match a reference that wanted the headline visibly blurred through it. */
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  --glass-bg:     rgb(var(--k-ink-rgb) / 0.72);
+  --glass-tint:   rgb(var(--primary-rgb) / 0.06);
+  --glass-edge:   rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: none;
+  --glass-solid:  rgb(var(--k-ink-rgb) / 0.92);
+}
+
+/* Somebody who has asked their system for less motion should not be paying for any of it. */
+@media (prefers-reduced-motion: reduce) {
+  nav, .browse-nav {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-color: var(--glass-solid);
+  }
+}
+
+/* The logo, the divider and the theme button are all themed off the page, so they need pulling
+   back to light here. The Sign in / Sign up buttons already read on a dark panel. */
+:root[data-theme="dark"] nav.over-hero .nav-logo,
+:root[data-theme="dark"] nav.over-hero .nav-logo-text {
+  color: var(--text);
+}
+:root[data-theme="dark"] nav.over-hero .nav-logo-divider {
+  background: rgba(255, 255, 255, 0.18);
+}
+:root[data-theme="dark"] nav.over-hero .nav-tagline {
+  color: rgba(255, 255, 255, 0.55);
+}
+:root[data-theme="dark"] nav.over-hero .nav-theme-btn {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.7);
+}
+:root[data-theme="dark"] nav.over-hero .nav-theme-btn:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+
+/* Sign In (.btn-outline) is the solid, glowing teal button now — index.css's base rule already
+   gives it that everywhere, over the hero included, so it needs no override here. Sign Up
+   (.btn-solid) is the glass one instead; its default dark-navy border already reads fine over the
+   hero without changes either, so this file has nothing left to override for either button. */
+
+/* Safari ≤ 8 and Firefox with backdrop-filter disabled show no blur at all. Without this
+   the bar would be a half-transparent panel with the page legible straight through it,
+   and the links would be unreadable. Fall back to near-solid instead. */
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  nav,
+  .browse-nav {
+    background-color: var(--glass-solid);
+  }
+}
+
+/* Someone who has asked for less motion still gets the glass, just no cross-fade. */
+@media (prefers-reduced-motion: reduce) {
+  nav,
+  .browse-nav {
+    transition: none;
+  }
+}
+
+/* ─── Floating pill ──────────────────────────────────────────────────────────
+   The bar stops being a strip across the top and becomes a rounded panel sitting ON the page,
+   with the hero running underneath it.
+
+   Only index.html and about.html use a bare <nav>. browse.html's bar is .browse-nav and stays
+   full width — it sits above dense listing content with nothing worth seeing behind it. The
+   policy pages' .policy-header gets its own pill, defined in policy.css rather than here, since
+   it is simple enough (logo and a theme toggle, nothing else) not to need this file's over-hero
+   handling at all.
+
+   This used to skip backdrop-filter here on purpose — the hero behind it never stops moving (a
+   particle layer, six animated markers), and blurring moving content is recomputed every frame.
+   Restored on request to match a reference that wanted the headline visibly blurred through the
+   pill, not just dimmed. If this turns out to cost real frame time on a weaker phone, the fix is
+   to drop back to the translucent-only version above, not to fight the browser over it. */
+nav:not(.browse-nav):not(.toc-nav) {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 28px);
+  max-width: 1180px;
+  height: 58px;
+  padding: 0 10px 0 20px;
+  border-radius: 999px;
+
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow:
+    inset 0 1px 0 var(--glass-edge),
+    var(--glass-shadow);
+
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
+  transition: background 0.3s ease, box-shadow 0.3s ease, max-width 0.3s ease;
+}
+
+/* Once the hero is behind you the page is still, so the blur costs nothing and the panel can
+   tighten up and settle against the content. Kept at the same max-width as the over-hero state on
+   request — it was reading as the bar shrinking while scrolling, not settling. */
+nav:not(.browse-nav):not(.toc-nav):not(.over-hero) {
+  background: var(--glass-bg);
+  max-width: 1180px;
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 var(--glass-edge),
+    0 8px 28px rgb(var(--shade-rgb) / min(0.18, var(--shadow-cap, 1)));
+}
+
+/* A pill cannot have a bottom border — it has no bottom edge. */
+:root[data-theme="dark"] nav:not(.browse-nav):not(.toc-nav).over-hero {
+  background: rgb(var(--k-ink-rgb) / 0.58);
+  border-color: rgba(255, 255, 255, 0.10);
+}
+
+/* responsive.css still carries padding and height for the old full-width bar, written with
+   !important, and !important beats specificity however the files are ordered. Rather than unpick
+   rules that other pages' bars still rely on, the pill states its own with the same weight. */
+@media (max-width: 760px) {
+  nav:not(.browse-nav):not(.toc-nav) {
+    top: 10px;
+    width: calc(100% - 20px);
+    height: 54px !important;
+    padding: 0 12px 0 14px !important;
+    border-radius: 999px;
+  }
+}
+
+@media (max-width: 480px) {
+  nav:not(.browse-nav):not(.toc-nav) {
+    top: 8px;
+    width: calc(100% - 16px);
+    height: 52px !important;
+    padding: 0 10px 0 12px !important;
+  }
+}
