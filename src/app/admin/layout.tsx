@@ -2,18 +2,20 @@ import { requireRole, ADMIN_ROLES } from "@/lib/auth";
 import { DashboardShell } from "@/components/DashboardShell";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const me = await requireRole(ADMIN_ROLES);
+  const { user, profile } = await requireRole(ADMIN_ROLES);
+
+  const shellUser = {
+    id: user.id,
+    email: profile.email ?? user.email ?? "",
+    role: profile.role,
+    firstName: profile.first_name ?? undefined,
+    lastName: profile.last_name ?? undefined,
+    fullName: profile.full_name ?? undefined,
+    avatarUrl: profile.avatar_url ?? undefined,
+  };
+
   return (
-    <DashboardShell
-      title="Admin"
-      name={me.profile.full_name ?? me.profile.email ?? "Admin"}
-      nav={[
-        { href: "/admin/dashboard", label: "Dashboard" },
-        { href: "/admin/users", label: "Users" },
-        { href: "/admin/listings", label: "Pending listings" },
-        { href: "/admin/payments", label: "Payments" },
-      ]}
-    >
+    <DashboardShell user={shellUser} activePage="dashboard">
       {children}
     </DashboardShell>
   );

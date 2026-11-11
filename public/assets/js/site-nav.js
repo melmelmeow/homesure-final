@@ -17,12 +17,10 @@
   'use strict';
 
   const LINKS = [
-    { label: 'Home',         href: 'index.html',               page: 'home' },
-    { label: 'Listings',     href: 'index.html#featured' },
-    { label: 'How it works', href: 'index.html#how-it-works' },
-    // Browse is a section of the landing page now; browse.html (still there for old links) keeps
-    // the highlight on it. About and Help are reachable from the footer.
-    { label: 'Browse',       href: 'index.html#browse',        page: 'browse' },
+    { label: 'Home',         href: '/',                        page: 'home' },
+    { label: 'Listings',     href: '/#featured' },
+    { label: 'How it works', href: '/#how-it-works' },
+    { label: 'Browse',       href: '/#browse',                 page: 'browse' },
   ];
 
   const SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
@@ -36,8 +34,8 @@
     const logo = window.KasafideLogo ? KasafideLogo.svg({ size: 30 }) : '';
 
     nav.innerHTML =
-      '<a class="sn-logo" href="index.html">' +
-        '<span class="sn-catstone"><img src="assets/img/CatsTone Logo.svg" alt="CatsTone" /></span>' +
+      '<a class="sn-logo" href="/">' +
+        '<span class="sn-catstone"><img src="/assets/img/CatsTone Logo.svg" alt="CatsTone" /></span>' +
         '<span class="sn-divider"></span>' + logo + '<span>Kasafide</span>' +
       '</a>' +
       '<div class="sn-links">' +
@@ -46,8 +44,8 @@
       '</div>' +
       '<div class="sn-actions">' +
         '<button type="button" class="sn-theme" aria-label="Toggle theme"></button>' +
-        '<a class="sn-btn-signin" href="auth/signin.html">Sign In</a>' +
-        '<a class="sn-btn-signup" href="auth/signup.html">Sign Up</a>' +
+        '<a class="sn-btn-signin" href="/auth/login">Sign In</a>' +
+        '<a class="sn-btn-signup" href="/auth/signup">Sign Up</a>' +
       '</div>';
 
     // Theme: the same KasafideTheme every page uses, so the choice carries across pages.

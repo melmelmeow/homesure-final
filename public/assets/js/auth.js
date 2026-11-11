@@ -161,8 +161,36 @@ async function submitSignin() {
     return;
   }
 
-  // Coming from a public listing? Buyers go straight back to it (only our own buyer pages are allowed).
+  // ── Session Bridge: sync the session into SSR HTTP cookies ───────────────
+  // After a successful sign-in via this static page, POST the tokens to the
+  // Next.js API route so that server-rendered routes (/buyer/dashboard etc.)
+  // can read the session from cookies via @supabase/ssr middleware.
+  try {
+    if (typeof sb !== 'undefined') {
+      const { data: { session: sess } } = await sb.auth.getSession();
+      if (sess) {
+        await fetch('/api/auth/set-cookie', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            access_token:  sess.access_token,
+            refresh_token: sess.refresh_token,
+          }),
+        });
+      }
+    }
+  } catch (_) {
+    // Non-critical — SSR routes will still work once the user refreshes;
+    // localStorage session remains intact for static module pages.
+  }
+
+  // Coming from a protected page? Accept SSR-style ?redirect=/buyer/... paths.
   const back = new URLSearchParams(window.location.search).get('redirect');
+  if (back && /^\/[a-z/_-]+$/.test(back)) {
+    window.location.href = back;
+    return;
+  }
+  // Legacy pattern: module/buyer/[page].html — still supported during migration.
   if (user.role === 'buyer' && back && /^module\/buyer\/[a-z-]+\.html(\?[\w=&-]*)?$/.test(back)) {
     window.location.href = '../' + back;
     return;

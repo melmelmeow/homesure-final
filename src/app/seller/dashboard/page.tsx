@@ -17,9 +17,11 @@ export default async function SellerDashboardPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Welcome, {profile.first_name ?? profile.full_name ?? "there"}</h1>
-      <p className="mt-2 flex items-center gap-2 text-sm text-text-muted">Account status: <StatusBadge status={profile.account_status} /></p>
-      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+      <h1 className="dash-title">Welcome, {profile.first_name ?? profile.full_name ?? "there"}</h1>
+      <p className="dash-sub">
+        Account status: <StatusBadge status={profile.account_status} />
+      </p>
+      <div className="cards">
         <StatCard label="Total listings" value={all.count ?? 0} />
         <StatCard label="Live" value={approved.count ?? 0} />
         <StatCard label="Awaiting approval" value={pending.count ?? 0} />

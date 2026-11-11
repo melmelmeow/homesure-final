@@ -20,8 +20,9 @@ export default async function BuyerDashboardPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Welcome, {profile.first_name ?? profile.full_name ?? "there"}</h1>
-      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+      <h1 className="dash-title">Welcome, {profile.first_name ?? profile.full_name ?? "there"}</h1>
+      <p className="dash-sub">Here&apos;s a summary of your activity</p>
+      <div className="cards">
         <StatCard label="Recent payments" value={rows.length} />
         <StatCard label="Saved listings" value={saved.count ?? 0} />
         <StatCard label="Unread alerts" value={unread.count ?? 0} />

@@ -17,8 +17,8 @@ export default async function AdminDashboardPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Admin overview</h1>
-      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <h1 className="dash-title">Admin overview</h1>
+      <div className="cards">
         <StatCard label="Users" value={users.count ?? 0} />
         <StatCard label="Live listings" value={listings.count ?? 0} />
         <StatCard label="Awaiting approval" value={pending.count ?? 0} />

@@ -39,7 +39,21 @@ function saveSession(user) {
 function getSession() {
   try {
     const raw = sessionStorage.getItem(SESSION_KEY);
-    return raw ? JSON.parse(raw) : null;
+    if (raw) return JSON.parse(raw);
+    if (typeof window !== 'undefined' && window.__kasafide_ssr_user) {
+      const u = window.__kasafide_ssr_user;
+      return {
+        id: u.id,
+        role: u.role,
+        firstName: u.firstName,
+        lastName: u.lastName,
+        email: u.email,
+        phone: u.phone,
+        avatar: u.avatarUrl,
+        verified: true,
+      };
+    }
+    return null;
   } catch (e) {
     return null;
   }
@@ -51,24 +65,26 @@ function clearSession() {
 
 function redirectToDashboard(role) {
   const routes = {
-    buyer:      '../module/buyer/buyer.html',
-    seller:     '../module/seller/seller.html',
-    admin:      '../module/admin/admin.html',
-    superadmin:         '../module/super-admin/super-admin.html',
-    super_duper_admin:  '../module/super-admin/super-admin.html',
+    buyer:             '/buyer/dashboard',
+    seller:            '/seller/dashboard',
+    admin:             '/admin/dashboard',
+    superadmin:        '/admin/dashboard',
+    super_duper_admin: '/admin/dashboard',
   };
-  const path = routes[role];
-  if (path) window.location.href = path;
+  const dest = routes[role] || '/';
+  window.location.href = dest;
 }
 
-function signinUrl() {
-  return location.pathname.includes('/module/') ? '../../auth/signin.html' : 'auth/signin.html';
-}
+function signinUrl() { return '/auth/login'; }
 
 // Sign out of Supabase and drop the cached profile.
 async function hsSignOut() {
   try { await sb.auth.signOut(); } catch (e) { /* offline: still clear the local copy */ }
   clearSession();
+  try {
+    // Notify server to clear HTTP cookies if on SSR or shared origin
+    await fetch('/auth/signout', { method: 'POST' }).catch(() => {});
+  } catch (_) {}
 }
 
 // For pages that need a signed-in user of a given role. Redirects to sign-in otherwise.

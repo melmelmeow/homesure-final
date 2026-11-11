@@ -191,7 +191,7 @@
     const me = typeof getSession === 'function' ? getSession() : null;
     if (me && me.role === 'buyer') { window.location.href = target; return; }
     // Everyone else signs in first and is sent back to the listing afterwards (see auth.js)
-    window.location.href = 'auth/signin.html?redirect=' + encodeURIComponent(target);
+    window.location.href = '/auth/login?redirect=' + encodeURIComponent(target);
   };
 
   // ── Init ────────────────────────────────────────────────────────────────────

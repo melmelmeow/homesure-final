@@ -1,21 +1,26 @@
 import { requireRole } from "@/lib/auth";
 import { DashboardShell } from "@/components/DashboardShell";
 
-// A layout is NOT re-rendered when someone moves between its child pages, so this is only the first
-// gate. Every page below calls requireRole() itself too.
+/**
+ * Buyer section layout. Provides the design-system sidebar + topbar shell
+ * for every page under /buyer/. Each page still calls requireRole() itself
+ * to run its own data queries; this layout's call is for the shell user data.
+ */
 export default async function BuyerLayout({ children }: { children: React.ReactNode }) {
-  const me = await requireRole(["buyer"]);
+  const { user, profile } = await requireRole(["buyer"]);
+
+  const shellUser = {
+    id: user.id,
+    email: profile.email ?? user.email ?? "",
+    role: profile.role,
+    firstName: profile.first_name ?? undefined,
+    lastName: profile.last_name ?? undefined,
+    fullName: profile.full_name ?? undefined,
+    avatarUrl: profile.avatar_url ?? undefined,
+  };
+
   return (
-    <DashboardShell
-      title="Buyer"
-      name={me.profile.full_name ?? me.profile.email ?? "Buyer"}
-      nav={[
-        { href: "/buyer/dashboard", label: "Dashboard" },
-        { href: "/buyer/payments", label: "Payments" },
-        { href: "/buyer/saved", label: "Saved listings" },
-        { href: "/browse", label: "Browse" },
-      ]}
-    >
+    <DashboardShell user={shellUser} activePage="dashboard">
       {children}
     </DashboardShell>
   );

@@ -676,8 +676,8 @@ function Navbar() {
         title: theme === 'dark' ? 'Switch to Light' : 'Switch to Dark',
         dangerouslySetInnerHTML: { __html: theme === 'dark' ? sunSVG : moonSVG },
       }),
-      React.createElement("button", { className: "btn-outline", onClick: () => (window.location.href = "auth/signin.html") }, "Sign In"),
-      React.createElement("button", { className: "btn-solid", onClick: () => (window.location.href = "auth/signup.html") }, "Sign Up"),
+      React.createElement("button", { className: "btn-outline", onClick: () => (window.location.href = "/auth/login") }, "Sign In"),
+      React.createElement("button", { className: "btn-solid", onClick: () => (window.location.href = "/auth/signup") }, "Sign Up"),
     ),
   );
 }
@@ -1097,12 +1097,12 @@ function Hero() {
           h('span', null, 'Browse Listings'),
           h('span', { className: 'hero-btn-arrow', dangerouslySetInnerHTML: { __html: heroArrowIcon } }),
         ),
-        h('button', { className: 'hero-btn-secondary hero-btn-list', onClick: () => (window.location.href = 'auth/signup.html?role=seller') },
+        h('button', { className: 'hero-btn-secondary hero-btn-list', onClick: () => (window.location.href = '/auth/signup?role=seller') },
           h('span', null, 'List Your Property'),
         ),
         // Mobile: Sign In & Sign Up
-        h('button', { className: 'hero-btn-mobile-signin', onClick: () => (window.location.href = 'auth/signin.html') }, 'Sign In'),
-        h('button', { className: 'hero-btn-mobile-signup', onClick: () => (window.location.href = 'auth/signup.html') }, 'Sign Up'),
+        h('button', { className: 'hero-btn-mobile-signin', onClick: () => (window.location.href = '/auth/login') }, 'Sign In'),
+        h('button', { className: 'hero-btn-mobile-signup', onClick: () => (window.location.href = '/auth/signup') }, 'Sign Up'),
       ),
     ),
 
@@ -1371,7 +1371,7 @@ function openListing(id) {
   const target = 'module/buyer/listing.html?id=' + encodeURIComponent(id);
   const me = typeof getSession === 'function' ? getSession() : null;
   if (me && (me.role === 'buyer' || me.role === 'seller')) { window.location.href = target; return; }
-  window.location.href = 'auth/signin.html?redirect=' + encodeURIComponent(target);
+  window.location.href = '/auth/login?redirect=' + encodeURIComponent(target);
 }
 
 function FeaturedCard(prop) {
@@ -2025,7 +2025,7 @@ function CTA() {
           "button",
           {
             className: "cta-btn-white",
-            onClick: () => (window.location.href = "auth/signup.html?role=buyer"),
+            onClick: () => (window.location.href = "/auth/signup?role=buyer"),
           },
           "Sign Up as Buyer",
         ),
@@ -2033,7 +2033,7 @@ function CTA() {
           "button",
           {
             className: "cta-btn-ghost",
-            onClick: () => (window.location.href = "auth/signup.html?role=seller"),
+            onClick: () => (window.location.href = "/auth/signup?role=seller"),
           },
           "List Your Property",
         ),
@@ -2054,7 +2054,7 @@ function Footer() {
   // listing itself). Help & Support is Meowrie on help.html; FAQs is the static answers page.
   const footerHref = {
     "Browse Listings": "#browse",
-    "List Your Property": "auth/signup.html?role=seller",
+    "List Your Property": "/auth/signup?role=seller",
     "About Us": "about.html",
     "Help & Support": "help.html",
     "FAQs": "faqs.html",
