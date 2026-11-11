@@ -2,11 +2,8 @@ import { NextResponse } from "next/server";
 import { getAdminSupabase } from "@/lib/supabase/admin-client";
 import { sendMail, passwordResetEmail, appOrigin, isEmailConfigured } from "@/lib/email";
 import { issueResetToken, resetCooldownRemaining, RESET_TTL_MINUTES } from "@/lib/verification";
-<<<<<<< HEAD
 import { rateLimitByIp } from "@/lib/rate-limit";
 import { emailOnlySchema, firstIssue } from "@/lib/schemas";
-=======
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 
 /**
  * "Forgot password": email a reset link, sent by Kasafide rather than the Supabase auth server.
@@ -29,7 +26,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "This server cannot send email yet." }, { status: 503 });
   }
 
-<<<<<<< HEAD
   // 3 requests per IP per 10 minutes.
   const limited = await rateLimitByIp(request, "forgot-pwd", 3, 600);
   if (!limited.ok) return limited.response;
@@ -39,13 +35,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
   }
   const { email } = parsed.data;
-=======
-  const body = (await request.json().catch(() => null)) as { email?: string } | null;
-  const email = body?.email?.trim().toLowerCase();
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
-  }
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 
   const admin = getAdminSupabase();
 

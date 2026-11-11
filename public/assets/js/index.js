@@ -308,7 +308,6 @@ function HeroCards() {
 // listing photo now, so the map has its own section further down (MapSection) and lives here.
 const MAP_MIN_SCALE = 0.5, MAP_MAX_SCALE = 3;
 
-<<<<<<< HEAD
 // The map is injected with dangerouslySetInnerHTML, so strip anything that could run code before it
 // goes in: script/foreignObject/iframe elements, every on* attribute, and javascript: / data: links.
 // It is a first-party file today; this is the guard for the day a build step or CDN swaps it.
@@ -332,8 +331,6 @@ function sanitizeSvg(text) {
   }
 }
 
-=======
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 function BarangayMap() {
   const counts = useBarangayCounts();
   const mapWrapRef = useRef(null);
@@ -365,11 +362,7 @@ function BarangayMap() {
     let cancelled = false;
     fetch('assets/img/Sta. Maria Map.svg')
       .then((res) => res.text())
-<<<<<<< HEAD
       .then((svg) => { if (!cancelled) setSvgContent(sanitizeSvg(svg)); })
-=======
-      .then((svg) => { if (!cancelled) setSvgContent(svg); })
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
       .catch((err) => console.error('Could not load the map:', err));
     return () => { cancelled = true; };
   }, [near]);

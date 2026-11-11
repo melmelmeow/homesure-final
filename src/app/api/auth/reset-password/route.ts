@@ -1,11 +1,8 @@
 import { NextResponse } from "next/server";
 import { getAdminSupabase } from "@/lib/supabase/admin-client";
 import { hashToken } from "@/lib/verification";
-<<<<<<< HEAD
 import { rateLimitByIp } from "@/lib/rate-limit";
 import { resetPasswordSchema, firstIssue } from "@/lib/schemas";
-=======
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 
 /**
  * Set a new password from the link in the reset email (auth/reset-password.html posts here).
@@ -38,12 +35,9 @@ const MESSAGES: Record<string, string> = {
 };
 
 export async function GET(request: Request) {
-<<<<<<< HEAD
   const limited = await rateLimitByIp(request, "reset-pwd:check", 30, 600);
   if (!limited.ok) return limited.response;
 
-=======
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
   const found = await findToken(new URL(request.url).searchParams.get("token"));
   if (found.status !== "ok") {
     return NextResponse.json({ ok: false, status: found.status, error: MESSAGES[found.status] }, { status: 400 });
@@ -52,7 +46,6 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-<<<<<<< HEAD
   // Tokens are 256-bit random values, so guessing one is hopeless; the limit is about abuse of the
   // route itself, not about brute force.
   const limited = await rateLimitByIp(request, "reset-pwd", 10, 600);
@@ -65,16 +58,6 @@ export async function POST(request: Request) {
   const { token, password } = parsed.data;
 
   const found = await findToken(token);
-=======
-  const body = (await request.json().catch(() => null)) as { token?: string; password?: string } | null;
-  const password = body?.password ?? "";
-
-  if (password.length < 8) {
-    return NextResponse.json({ error: "Your password must be at least 8 characters." }, { status: 400 });
-  }
-
-  const found = await findToken(body?.token);
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
   if (found.status !== "ok") {
     return NextResponse.json({ error: MESSAGES[found.status], status: found.status }, { status: 400 });
   }

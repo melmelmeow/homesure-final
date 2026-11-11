@@ -569,13 +569,9 @@
         }
       }
 
-<<<<<<< HEAD
       // Signed-in users send their token so they get the AI model; visitors still get the built-in answers.
       const doFetch = (global.HS && typeof global.HS.authFetch === 'function') ? global.HS.authFetch : fetch;
       const res = await doFetch('/api/ai/customer-service', {
-=======
-      const res = await fetch('/api/ai/customer-service', {
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

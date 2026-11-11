@@ -51,12 +51,8 @@ export async function POST(request: Request) {
   if (!disbursementRes.ok) {
     const err = await disbursementRes.text();
     await admin.from("refunds").update({ status: "requested" }).eq("id", refund.id);
-<<<<<<< HEAD
     console.error("[Xendit] disbursement failed:", disbursementRes.status, err);
     return NextResponse.json({ error: "The refund could not be sent. Please try again or contact support." }, { status: 502 });
-=======
-    return NextResponse.json({ error: `Xendit disbursement error: ${err}` }, { status: 500 });
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
   }
 
   const disbursement = await disbursementRes.json();

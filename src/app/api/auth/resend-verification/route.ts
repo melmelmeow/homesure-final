@@ -2,11 +2,8 @@ import { NextResponse } from "next/server";
 import { getAdminSupabase } from "@/lib/supabase/admin-client";
 import { sendMail, verificationEmail, appOrigin, isEmailConfigured } from "@/lib/email";
 import { issueToken, cooldownRemaining } from "@/lib/verification";
-<<<<<<< HEAD
 import { rateLimitByIp } from "@/lib/rate-limit";
 import { emailOnlySchema } from "@/lib/schemas";
-=======
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 
 /**
  * Send the confirmation link again.
@@ -29,18 +26,12 @@ export async function POST(request: Request) {
     );
   }
 
-<<<<<<< HEAD
   const limited = await rateLimitByIp(request, "resend-verification", 5, 600);
   if (!limited.ok) return limited.response;
 
   const parsed = emailOnlySchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
   const { email } = parsed.data;
-=======
-  const body = (await request.json().catch(() => null)) as { email?: string } | null;
-  const email = body?.email?.trim().toLowerCase();
-  if (!email) return NextResponse.json({ error: "Email is required." }, { status: 400 });
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 
   const admin = getAdminSupabase();
 

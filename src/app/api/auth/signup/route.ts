@@ -2,29 +2,13 @@ import { NextResponse } from "next/server";
 import { getAdminSupabase } from "@/lib/supabase/admin-client";
 import { sendMail, verificationEmail, appOrigin, isEmailConfigured } from "@/lib/email";
 import { issueToken } from "@/lib/verification";
-<<<<<<< HEAD
 import { rateLimitByIp } from "@/lib/rate-limit";
 import { signupSchema, firstIssue } from "@/lib/schemas";
-=======
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 
 export async function GET() {
   return NextResponse.json({ error: "Method not allowed" }, { status: 405 });
 }
 
-<<<<<<< HEAD
-=======
-type Body = {
-  email?: string;
-  password?: string;
-  firstName?: string;
-  lastName?: string;
-  fullName?: string;
-  phone?: string;
-  role?: string;
-};
-
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 /**
  * Create an account and email the confirmation link ourselves.
  *
@@ -45,7 +29,6 @@ export async function POST(request: Request) {
     );
   }
 
-<<<<<<< HEAD
   // 5 sign-ups per IP per 15 minutes. Each one creates an auth user and sends an email.
   const limited = await rateLimitByIp(request, "signup", 5, 900);
   if (!limited.ok) return limited.response;
@@ -56,21 +39,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: firstIssue(parsed.error) }, { status: 400 });
   }
   const { email, password, firstName, lastName, fullName, phone, role } = parsed.data;
-=======
-  const body = (await request.json().catch(() => null)) as Body | null;
-  const email = body?.email?.trim().toLowerCase();
-  const { password, firstName, lastName, fullName, phone, role } = body ?? {};
-  console.log(body);
-  if (!email || !password) {
-    return NextResponse.json({ error: "Email and password are required." }, { status: 400 });
-  }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return NextResponse.json({ error: "That does not look like an email address." }, { status: 400 });
-  }
-  if (password.length < 8) {
-    return NextResponse.json({ error: "Your password must be at least 8 characters." }, { status: 400 });
-  }
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 
   // Only buyer and seller can be chosen here. Admin and superadmin are granted by an admin.
   const safeRole = role === "seller" ? "seller" : "buyer";
@@ -124,11 +92,7 @@ export async function POST(request: Request) {
       role: safeRole,
     },
   });
-<<<<<<< HEAD
   if (createError) console.error("[signup] createUser error:", createError.message);
-=======
-  console.log(createError);
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
   if (createError || !created?.user) {
     const message = createError?.message ?? "Could not create the account.";
     // Reached only if two sign-ups for the same address land at the same moment, since an

@@ -910,14 +910,14 @@ function Carousel({ propertiesList }: { propertiesList: LandingProperty[] }) {
               <div style={{ position: "relative" }}>
                 <Image
                   className="crd-img-center"
-                  src={centerProp.image || centerProp.images?.[0] || fallbackProperties[0].image}
+                  src={centerProp.image || fallbackProperties[0].image}
                   alt={centerProp.title || "Property"}
                   width={600}
                   height={200}
                   unoptimized
                   priority
                 />
-                {(centerProp.verified || centerProp.seller?.is_verified) && (
+                {centerProp.verified && (
                   <div className="verified-badge">
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                       <polyline points="20 6 9 17 4 12" />
@@ -933,11 +933,11 @@ function Carousel({ propertiesList }: { propertiesList: LandingProperty[] }) {
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                     <circle cx="12" cy="10" r="3" />
                   </svg>
-                  <span>{centerProp.location || centerProp.address}</span>
+                  <span>{centerProp.location}</span>
                 </div>
                 <div className="card-footer-row">
                   <div className="card-price">
-                    {typeof centerProp.price === "number" ? `₱${centerProp.price.toLocaleString()}` : centerProp.price}
+                    {centerProp.price}
                     <span>{centerProp.period || "/month"}</span>
                   </div>
                   <Link href="/browse" className="card-link">

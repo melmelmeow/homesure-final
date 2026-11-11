@@ -67,7 +67,6 @@ const HS = (function () {
     return payload || {};
   }
 
-<<<<<<< HEAD
   // Like fetch(), but sends the signed-in user's access token. For API routes that answer 401 to
   // anyone who is not signed in (2FA, SMS, the support assistant). Returns the raw Response so the
   // caller can read res.ok / res.json() exactly as it did with fetch().
@@ -79,8 +78,6 @@ const HS = (function () {
     return fetch((typeof API_URL === 'string' ? API_URL : '') + path, Object.assign({}, init, { headers }));
   }
 
-=======
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
   // ── Row ⇄ page-shape mapping ────────────────────────────────────────────────
   function mapProfile(r) {
     if (!r) return null;
@@ -1555,11 +1552,7 @@ const HS = (function () {
   };
 
   return {
-<<<<<<< HEAD
     PLACEHOLDER_IMG, cover, mapProfile, mapProperty, userId, authFetch,
-=======
-    PLACEHOLDER_IMG, cover, mapProfile, mapProperty, userId,
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
     auth, profiles, listings, favorites, storage, verification, viewing, messages, reviews, payments,
     deposits, tenants, reports, admin, audit, barangays, barangayId, notifications,
     publicStats, listingCountsByBarangay, listingCountsByType, featuredListings, randomListingPhoto,

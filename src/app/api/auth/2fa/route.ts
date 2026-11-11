@@ -1,15 +1,10 @@
 import { NextResponse } from "next/server";
-<<<<<<< HEAD
 import { sendBrevoEmail, sendBrevoSms } from "@/lib/brevo";
 import { generateOtpCode, storeOtp, verifyOtp, otpKey, OTP_MESSAGES } from "@/lib/otp";
 import { getGoogleConfig, getGoogleUserInfo } from "@/lib/auth/google";
 import { guardApi } from "@/lib/api";
 import { rateLimit, rateLimitByIp } from "@/lib/rate-limit";
 import { twoFactorSchema, firstIssue } from "@/lib/schemas";
-=======
-import { generateOtpCode, storeOtp, verifyOtpCode, sendBrevoEmail, sendBrevoSms } from "@/lib/brevo";
-import { getGoogleConfig, getGoogleUserInfo } from "@/lib/auth/google";
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 
 export const dynamic = "force-dynamic";
 
@@ -19,7 +14,6 @@ export const dynamic = "force-dynamic";
  * - action: 'send' -> generates and sends 6-digit OTP code to user's email and/or SMS via Brevo
  * - action: 'verify' -> verifies entered 6-digit OTP code
  * - action: 'google_verify' -> verifies Google Client OAuth credential
-<<<<<<< HEAD
  *
  * Security:
  *  - Every action needs a signed-in user. This route used to be open, so anyone could make it mail
@@ -61,23 +55,6 @@ export async function POST(request: Request) {
 
       const otp = generateOtpCode();
       await storeOtp(key, otp);
-=======
- */
-export async function POST(request: Request) {
-  try {
-    const body = await request.json();
-    const { action, email, phone, code, googleToken } = body;
-
-    // 1. Send OTP (Email and/or SMS via Brevo)
-    if (action === "send") {
-      if (!email && !phone) {
-        return NextResponse.json({ ok: false, error: "Email or phone number is required" }, { status: 400 });
-      }
-
-      const otp = generateOtpCode();
-      const identifier = email || phone;
-      storeOtp(identifier, otp);
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 
       let emailSent = false;
       let smsSent = false;
@@ -139,7 +116,6 @@ export async function POST(request: Request) {
     }
 
     // 2. Verify OTP
-<<<<<<< HEAD
     if (input.action === "verify") {
       const ip = await rateLimitByIp(request, "2fa:verify:ip", 60, 300);
       if (!ip.ok) return ip.response;
@@ -149,17 +125,6 @@ export async function POST(request: Request) {
       const result = await verifyOtp(key, input.code);
       if (result !== "ok") {
         return NextResponse.json({ ok: false, error: OTP_MESSAGES[result] }, { status: 400 });
-=======
-    if (action === "verify") {
-      const identifier = email || phone;
-      if (!identifier || !code) {
-        return NextResponse.json({ ok: false, error: "Identifier and code are required" }, { status: 400 });
-      }
-
-      const isValid = verifyOtpCode(identifier, code);
-      if (!isValid) {
-        return NextResponse.json({ ok: false, error: "Invalid or expired verification code." }, { status: 400 });
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
       }
 
       return NextResponse.json({
@@ -169,20 +134,15 @@ export async function POST(request: Request) {
     }
 
     // 3. Verify with Google Client
-<<<<<<< HEAD
     if (input.action === "google_verify") {
       const ip = await rateLimitByIp(request, "2fa:google:ip", 20, 300);
       if (!ip.ok) return ip.response;
 
-=======
-    if (action === "google_verify") {
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
       const config = getGoogleConfig();
       if (!config) {
         return NextResponse.json({ ok: false, error: "Google OAuth client is not configured" }, { status: 500 });
       }
 
-<<<<<<< HEAD
       try {
         const userInfo = await getGoogleUserInfo(input.googleToken);
         // Compare against the signed-in account's email, not one supplied in the request body.
@@ -190,18 +150,6 @@ export async function POST(request: Request) {
           return NextResponse.json({
             ok: false,
             error: "That Google account does not match your Kasafide account email.",
-=======
-      if (!googleToken) {
-        return NextResponse.json({ ok: false, error: "Google access token is required" }, { status: 400 });
-      }
-
-      try {
-        const userInfo = await getGoogleUserInfo(googleToken);
-        if (email && userInfo.email && userInfo.email.toLowerCase() !== email.toLowerCase()) {
-          return NextResponse.json({
-            ok: false,
-            error: `Google account (${userInfo.email}) does not match your account email (${email})`,
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
           }, { status: 400 });
         }
 
@@ -211,24 +159,14 @@ export async function POST(request: Request) {
           googleEmail: userInfo.email,
         });
       } catch (err: unknown) {
-<<<<<<< HEAD
         console.error("[2fa] Google token check failed:", err instanceof Error ? err.message : err);
         return NextResponse.json({ ok: false, error: "Google token verification failed" }, { status: 400 });
-=======
-        const msg = err instanceof Error ? err.message : "Google token verification failed";
-        return NextResponse.json({ ok: false, error: msg }, { status: 400 });
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
       }
     }
 
     return NextResponse.json({ ok: false, error: "Invalid action" }, { status: 400 });
   } catch (err: unknown) {
-<<<<<<< HEAD
     console.error("[2fa] unexpected error:", err instanceof Error ? err.message : err);
     return NextResponse.json({ ok: false, error: "Something went wrong. Please try again." }, { status: 500 });
-=======
-    const msg = err instanceof Error ? err.message : "Internal server error";
-    return NextResponse.json({ ok: false, error: msg }, { status: 500 });
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
   }
 }

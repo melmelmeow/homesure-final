@@ -1,15 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-<<<<<<< HEAD
 import { getAuth } from '@/lib/supabase/server-client';
 import { rateLimit, rateLimitByIp } from '@/lib/rate-limit';
 import { aiChatSchema, firstIssue } from '@/lib/schemas';
-=======
-
-interface ChatMessage {
-  role: 'system' | 'user' | 'assistant';
-  content: string;
-}
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 
 // Fallback intelligent domain response engine for HomeSure when HF key is missing or model is queueing
 function generateHomeSureKnowledgeResponse(userMessage: string, role: string, userName?: string): string {
@@ -72,7 +64,6 @@ function generateHomeSureKnowledgeResponse(userMessage: string, role: string, us
   return `Thank you for reaching out to HomeSure Customer Support, ${name}! ${roleHelp}\n\nCould you please provide a few more details about your inquiry? You can also reach our live support desk at **support@homesure.ph** or call **+63 (02) 8123-4567**.`;
 }
 
-<<<<<<< HEAD
 /**
  * Security: this endpoint spends money (Hugging Face credits) and used to be open to the internet.
  *
@@ -112,19 +103,6 @@ export async function POST(req: NextRequest) {
     } else {
       userName = (user.name || 'there').replace(/[\r\n]+/g, ' ').slice(0, 100);
     }
-=======
-export async function POST(req: NextRequest) {
-  try {
-    const body = await req.json();
-    const { messages = [], role = 'buyer', user = {} } = body;
-
-    const lastMessage = Array.isArray(messages) && messages.length > 0 
-      ? messages[messages.length - 1].content 
-      : '';
-
-    const userName = user?.name || user?.email || 'HomeSure User';
-    const userRole = role === 'seller' || role === 'landlord' ? 'seller' : 'buyer';
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
 
     const rawApiKey = process.env.HUGGINGFACE_API_KEY || process.env['HUGGINGFACE_API_KEY '] || process.env.HF_TOKEN || '';
     const hfApiKey = rawApiKey.trim();
@@ -141,20 +119,12 @@ Platform Guidelines:
 5. Tone: Polite, helpful, reassuring, concise, and structured with bullet points.
 If you do not know a specific account detail, advise contacting human support at support@homesure.ph or +63 (02) 8123-4567.`;
 
-<<<<<<< HEAD
     if (hfApiKey && authUser) {
-=======
-    if (hfApiKey) {
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
       try {
         // Attempt 1: Hugging Face Router Chat Completions API
         const formattedMessages = [
           { role: 'system', content: systemPrompt },
-<<<<<<< HEAD
           ...messages.slice(-6).map((m) => ({
-=======
-          ...messages.slice(-6).map((m: ChatMessage) => ({
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
             role: m.role === 'assistant' ? 'assistant' : 'user',
             content: m.content
           }))
@@ -229,7 +199,6 @@ If you do not know a specific account detail, advise contacting human support at
     return NextResponse.json({
       reply: smartReply,
       source: 'homesure_knowledge_engine',
-<<<<<<< HEAD
       ai_available: !!(hfApiKey && authUser)
     });
 
@@ -237,15 +206,6 @@ If you do not know a specific account detail, advise contacting human support at
     console.error('Customer service API error:', error instanceof Error ? error.message : error);
     return NextResponse.json(
       { error: 'Failed to process customer service request' },
-=======
-      huggingface_ready: !!hfApiKey
-    });
-
-  } catch (error: any) {
-    console.error('Customer service API error:', error);
-    return NextResponse.json(
-      { error: 'Failed to process customer service request', details: error?.message },
->>>>>>> b8d0dd5299b9554463705fb605522211f7cb64d6
       { status: 500 }
     );
   }
