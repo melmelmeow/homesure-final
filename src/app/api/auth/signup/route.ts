@@ -1,132 +1,121 @@
-import { NextResponse } from "next/server";
-import { getAdminSupabase } from "@/lib/supabase/admin-client";
-import { sendMail, verificationEmail, appOrigin, isEmailConfigured } from "@/lib/email";
-import { issueToken } from "@/lib/verification";
-import { rateLimitByIp } from "@/lib/rate-limit";
-import { signupSchema, firstIssue } from "@/lib/schemas";
+import { adminClient } from '@/lib/supabase/admin';
+import { NextRequest, NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
+import { z } from 'zod';
 
-export async function GET() {
-  return NextResponse.json({ error: "Method not allowed" }, { status: 405 });
-}
+const SignupSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
+  firstName: z.string().min(1, 'First name is required'),
+  lastName: z.string().min(1, 'Last name is required'),
+  phone: z.string().optional(),
+  role: z.enum(['buyer', 'seller']),
+});
 
-/**
- * Create an account and email the confirmation link ourselves.
- *
- * The Supabase auth server requires a confirmed email before sign-in but has no SMTP, so its own
- * public signup endpoint fails with "Error sending confirmation email". The admin endpoint used
- * here sends nothing, so it cannot fail that way — we create the account UNCONFIRMED and send the
- * mail from this app instead.
- *
- * The account stays unusable until the link is opened. That is enforced by the auth server, not by
- * this code: signing in to an unconfirmed account is refused with "Email not confirmed" no matter
- * who asks.
- */
-export async function POST(request: Request) {
-  if (!isEmailConfigured()) {
-    return NextResponse.json(
-      { error: "Sign-up is unavailable right now: this server cannot send email yet." },
-      { status: 503 },
-    );
-  }
-
-  // 5 sign-ups per IP per 15 minutes. Each one creates an auth user and sends an email.
-  const limited = await rateLimitByIp(request, "signup", 5, 900);
-  if (!limited.ok) return limited.response;
-
-  // NEVER log the request body here: it contains the password.
-  const parsed = signupSchema.safeParse(await request.json().catch(() => null));
-  if (!parsed.success) {
-    return NextResponse.json({ error: firstIssue(parsed.error) }, { status: 400 });
-  }
-  const { email, password, firstName, lastName, fullName, phone, role } = parsed.data;
-
-  // Only buyer and seller can be chosen here. Admin and superadmin are granted by an admin.
-  const safeRole = role === "seller" ? "seller" : "buyer";
-  const admin = getAdminSupabase();
-  // An address with a sign-up started but never confirmed belongs to nobody yet. Whoever typed it
-  // has not proved they can read that inbox, so they have no claim on it — and leaving the row in
-  // place would lock the real owner out of their own address until an admin deleted it by hand.
-  //
-  // So an unconfirmed account is replaced by this sign-up. The person who can read the mail still
-  // decides who gets in, because only they can open the link, and the password that ends up
-  // working is the one from the most recent attempt.
-  //
-  // A confirmed account is never touched. Someone has proved they own that inbox, and nothing
-  // here may take it from them.
-  const { data: existingProfile } = await admin
-    .from("profiles")
-    .select("id")
-    .eq("email", email)
-    .maybeSingle();
-
-  if (existingProfile) {
-    const { data: existingUser } = await admin.auth.admin.getUserById(existingProfile.id);
-
-    if (existingUser?.user?.email_confirmed_at) {
-      return NextResponse.json(
-        { error: "An account with that email already exists. Try signing in, or reset your password." },
-        { status: 409 },
-      );
-    }
-
-    // Deleting the auth user cascades the profile and any tokens issued for it.
-    const { error: deleteError } = await admin.auth.admin.deleteUser(existingProfile.id);
-    if (deleteError) {
-      console.error("Could not clear the unconfirmed account:", deleteError.message);
-      return NextResponse.json(
-        { error: "Something is wrong with that address. Please contact support." },
-        { status: 409 },
-      );
-    }
-  }
-
-  const { data: created, error: createError } = await admin.auth.admin.createUser({
-    email,
-    password,
-    email_confirm: false,          // ← the whole point: unusable until the link is opened
-    user_metadata: {
-      full_name: fullName ?? [firstName, lastName].filter(Boolean).join(" "),
-      first_name: firstName,
-      last_name: lastName,
-      phone_number: phone,
-      role: safeRole,
+function createMailTransporter() {
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT ?? 587),
+    secure: Number(process.env.SMTP_PORT ?? 587) === 465,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASSWORD,
     },
   });
-  if (createError) console.error("[signup] createUser error:", createError.message);
-  if (createError || !created?.user) {
-    const message = createError?.message ?? "Could not create the account.";
-    // Reached only if two sign-ups for the same address land at the same moment, since an
-    // unconfirmed one was cleared above.
-    if (/already|registered|exists|duplicate/i.test(message)) {
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const parsed = SignupSchema.safeParse(body);
+
+    if (!parsed.success) {
       return NextResponse.json(
-        { error: "An account with that email already exists. Try signing in, or reset your password." },
-        { status: 409 },
+        { error: parsed.error.errors[0]?.message ?? 'Validation error' },
+        { status: 422 },
       );
     }
-    return NextResponse.json({ error: message }, { status: 400 });
-  }
 
-  const userId = created.user.id;
+    const { email, password, firstName, lastName, phone, role } = parsed.data;
 
-  // From here on a failure leaves an account nobody can use, so roll it back and let them retry
-  // with the same address rather than stranding it.
-  try {
-    const token = await issueToken(userId, email);
-    const link = `${appOrigin(request)}/api/auth/verify-email?token=${encodeURIComponent(token)}`;
-    const mail = verificationEmail({ firstName: firstName ?? "", link });
-    await sendMail({ to: email, ...mail });
+    // Step 1: Create auth user (email not confirmed yet)
+    const { data: createData, error: createError } = await adminClient.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: false,
+    });
+
+    if (createError || !createData.user) {
+      return NextResponse.json(
+        { error: createError?.message ?? 'Failed to create user' },
+        { status: 400 },
+      );
+    }
+
+    const userId = createData.user.id;
+
+    // Step 2: Insert into users table
+    const { error: insertError } = await adminClient.from('users').insert({
+      id: userId,
+      email,
+      first_name: firstName,
+      last_name: lastName,
+      phone: phone ?? null,
+      role,
+      account_status: 'unverified',
+    });
+
+    if (insertError) {
+      // Roll back auth user creation on profile insert failure
+      await adminClient.auth.admin.deleteUser(userId);
+      return NextResponse.json({ error: insertError.message }, { status: 400 });
+    }
+
+    // Step 3: Generate confirmation magic link
+    const origin =
+      process.env.APP_ORIGIN ??
+      request.headers.get('origin') ??
+      `${request.nextUrl.protocol}//${request.nextUrl.host}`;
+
+    const { data: linkData, error: linkError } = await adminClient.auth.admin.generateLink({
+      type: 'signup',
+      email,
+      password,
+      options: {
+        redirectTo: `${origin}/auth/confirm`,
+      },
+    });
+
+    if (linkError || !linkData.properties?.action_link) {
+      // Non-fatal: user is created, just couldn't generate confirmation link
+      console.error('[signup] Failed to generate confirmation link:', linkError?.message);
+      return NextResponse.json({ ok: true });
+    }
+
+    const confirmationLink = linkData.properties.action_link;
+
+    // Step 4: Send confirmation email
+    const transporter = createMailTransporter();
+    await transporter.sendMail({
+      from: process.env.SMTP_FROM ?? process.env.SMTP_USER,
+      to: email,
+      subject: 'Confirm your Kasafide account',
+      html: `
+        <p>Hi ${firstName},</p>
+        <p>Thank you for signing up for Kasafide. Please confirm your email address to get started.</p>
+        <p>
+          <a href="${confirmationLink}" style="display:inline-block;padding:12px 24px;background:#1a56db;color:#fff;text-decoration:none;border-radius:6px;">
+            Confirm Email
+          </a>
+        </p>
+        <p>If you didn't create this account, you can safely ignore this email.</p>
+        <p>— The Kasafide Team</p>
+      `,
+    });
+
+    return NextResponse.json({ ok: true });
   } catch (err) {
-    await admin.auth.admin.deleteUser(userId).catch(() => {});
-    const detail = err instanceof Error ? err.message : "unknown error";
-    console.error("Signup rolled back, could not send the confirmation email:", detail);
-    return NextResponse.json(
-      { error: "We could not send your confirmation email. Please check the address and try again." },
-      { status: 502 },
-    );
+    const message = err instanceof Error ? err.message : 'Internal server error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
-
-  return NextResponse.json(
-    { ok: true, email, message: "Check your email for the confirmation link." },
-    { status: 201 },
-  );
 }

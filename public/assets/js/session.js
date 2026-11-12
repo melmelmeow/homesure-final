@@ -1,12 +1,12 @@
-// ─────────────────────────────────────────────────────────────────────────────
-//  Kasafide – Session helpers
+﻿// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+//  Kasafide â€“ Session helpers
 //  Depends on: config.js (sb)
 //
 //  The real session lives in Supabase (localStorage, auto-refreshed). 'kasafide_user' in
 //  sessionStorage is only a cached copy of the signed-in user's profile so pages can read
 //  it synchronously with getSession(). It is for UX (menus, redirects); the database never
-//  trusts it — Row Level Security decides what each request may do.
-// ─────────────────────────────────────────────────────────────────────────────
+//  trusts it â€” Row Level Security decides what each request may do.
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const SESSION_KEY = 'kasafide_user';
 
@@ -75,7 +75,7 @@ function redirectToDashboard(role) {
   window.location.href = dest;
 }
 
-function signinUrl() { return '/auth/login'; }
+function signinUrl() { return '/auth/signin'; }
 
 // Sign out of Supabase and drop the cached profile.
 async function hsSignOut() {
@@ -132,8 +132,8 @@ async function requireRole(...roles) {
 // every card nine times; eight of those renders were thrown away before anyone saw them. This
 // waits for a pause instead.
 //
-// Only for work that redraws a list. Anything that should feel instant as you type — a character
-// counter, a password strength meter — must stay undebounced.
+// Only for work that redraws a list. Anything that should feel instant as you type â€” a character
+// counter, a password strength meter â€” must stay undebounced.
 function hsDebounce(fn, wait) {
   let timer = null;
   return function debounced(...args) {
@@ -144,7 +144,7 @@ function hsDebounce(fn, wait) {
 
 // Initials for an avatar circle.
 //
-// Every caller used to write `first[0] + last[0]`, which throws the moment a name is null — and a
+// Every caller used to write `first[0] + last[0]`, which throws the moment a name is null â€” and a
 // name is null for any account made straight in Supabase rather than through the sign-up form.
 // One of those throws took the whole topbar down, and with it every line of the page script after
 // it, which is why a page could end up showing its leftover placeholder markup.
@@ -183,3 +183,4 @@ function hsToast(text, kind) {
   setTimeout(() => { el.style.opacity = '0'; }, 2800);
   setTimeout(() => el.remove(), 3300);
 }
+

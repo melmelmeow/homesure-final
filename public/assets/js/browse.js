@@ -1,7 +1,7 @@
-// Kasafide – Public Browse Listings
+﻿// Kasafide â€“ Public Browse Listings
 
 (function () {
-  // ── Theme ───────────────────────────────────────────────────────────────────
+  // â”€â”€ Theme â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   function applyTheme(mode) {
     document.documentElement.setAttribute('data-theme', mode);
     KasafideTheme.set(mode);
@@ -20,7 +20,7 @@
   // Apply theme on load
   applyTheme(getTheme());
 
-  // ── Load approved listings (public: RLS only returns admin-approved ones) ───
+  // â”€â”€ Load approved listings (public: RLS only returns admin-approved ones) â”€â”€â”€
   let allListings = [];
 
   function fillBarangays() {
@@ -38,7 +38,7 @@
   //
   // The dropdown above is built from the barangays that actually have listings, so a link to a
   // barangay with none would set a value no <option> carries. A <select> ignores that and keeps
-  // showing "All", which would quietly list every property in the municipality — the opposite of
+  // showing "All", which would quietly list every property in the municipality â€” the opposite of
   // what the visitor clicked. Adding the option means they get an honest "0 properties found"
   // with the barangay still named in the filter.
   function applyBarangayFromURL() {
@@ -61,7 +61,7 @@
   }
 
   // ?type=lot etc., from the landing page's "Browse by Type" cards. Only a value the dropdown
-  // actually offers is applied — the type list is fixed, unlike the barangay one above.
+  // actually offers is applied â€” the type list is fixed, unlike the barangay one above.
   function applyTypeFromURL() {
     const wanted = new URLSearchParams(window.location.search).get('type');
     if (!wanted) return;
@@ -83,16 +83,16 @@
     applyFilters();
   }
 
-  // ── Format helpers ──────────────────────────────────────────────────────────
+  // â”€â”€ Format helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   function formatPrice(listing) {
     const v = Number(listing.price) || 0;
     if (listing.listingFor === 'rent') {
-      return '₱' + v.toLocaleString('en-PH') + '/mo';
+      return 'â‚±' + v.toLocaleString('en-PH') + '/mo';
     }
     if (v >= 1000000) {
-      return '₱' + (v / 1000000).toFixed(v % 1000000 === 0 ? 0 : 2) + 'M';
+      return 'â‚±' + (v / 1000000).toFixed(v % 1000000 === 0 ? 0 : 2) + 'M';
     }
-    return '₱' + v.toLocaleString('en-PH');
+    return 'â‚±' + v.toLocaleString('en-PH');
   }
 
   // Bedrooms / bathrooms / area, skipping what a listing does not have (e.g. a lot).
@@ -104,11 +104,11 @@
     if (l.bedrooms !== null && l.bedrooms !== undefined) out.push(svgBed + ' ' + (l.bedrooms === 0 ? 'Studio' : l.bedrooms + ' bed'));
     if (l.bathrooms !== null && l.bathrooms !== undefined) out.push(svgBath + ' ' + l.bathrooms + ' bath');
     const area = l.floorArea || l.lotArea;
-    if (area) out.push(svgArea + ' ' + area + 'm²');
+    if (area) out.push(svgArea + ' ' + area + 'mÂ²');
     return out.map(t => '<div class="listing-detail">' + t + '</div>').join('');
   }
 
-  // ── Build listing card ──────────────────────────────────────────────────────
+  // â”€â”€ Build listing card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   function buildCard(listing) {
     const image = HS.cover(listing);
 
@@ -132,7 +132,7 @@
     `;
   }
 
-  // ── Filter & render ─────────────────────────────────────────────────────────
+  // â”€â”€ Filter & render â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   // Only the search box uses this. applyFilters() itself stays immediate, so the first render and
   // every call from code are unaffected.
@@ -185,15 +185,16 @@
     }
   };
 
-  // ── View listing ────────────────────────────────────────────────────────────
+  // â”€â”€ View listing â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   window.viewListing = function (id) {
     const target = 'module/buyer/listing.html?id=' + id;
     const me = typeof getSession === 'function' ? getSession() : null;
     if (me && me.role === 'buyer') { window.location.href = target; return; }
     // Everyone else signs in first and is sent back to the listing afterwards (see auth.js)
-    window.location.href = '/auth/login?redirect=' + encodeURIComponent(target);
+    window.location.href = '/auth/signin?redirect=' + encodeURIComponent(target);
   };
 
-  // ── Init ────────────────────────────────────────────────────────────────────
+  // â”€â”€ Init â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   loadListings();
 })();
+

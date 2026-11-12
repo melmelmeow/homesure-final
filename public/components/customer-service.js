@@ -1,9 +1,9 @@
-// ─────────────────────────────────────────────────────────────────────────────
-//  HomeSure – AI Customer Service Widget (Hugging Face Integration)
+﻿// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+//  Meowrie – Kasafide AI Customer Service Widget (Hugging Face Integration)
 //  Usage:
 //    Automatically mounted on Buyer & Seller pages via topbar.js
-//    Manual trigger: HomeSureCustomerService.open() or .ask('Question')
-// ─────────────────────────────────────────────────────────────────────────────
+//    Manual trigger: MeowrieCS.open() or .ask('Question')
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 (function (global) {
   'use strict';
 
@@ -376,26 +376,26 @@
       .replace(/\*(.*?)\*/g, '<em>$1</em>')
       .replace(/`([^`]+)`/g, '<code style="background:rgba(255,255,255,0.1);padding:1px 4px;border-radius:4px;font-size:11px;">$1</code>')
       .replace(/\n\n/g, '<br/><br/>')
-      .replace(/\n• /g, '<br/>• ')
+      .replace(/\nâ€¢ /g, '<br/>â€¢ ')
       .replace(/\n(\d+)\. /g, '<br/>$1. ');
   }
 
   function getPromptSuggestions(role) {
     if (role === 'seller' || role === 'landlord') {
       return [
-        { label: '📝 Post a Property', q: 'How do I post a new property listing?' },
-        { label: '📍 Pin Google Maps', q: 'How do I pin my property location on Google Maps?' },
-        { label: '📑 Verification Requirements', q: 'What documents are required for seller verification?' },
-        { label: '💰 Escrow Payouts', q: 'How and when do I receive payouts via escrow?' },
-        { label: '📅 Viewing Requests', q: 'How do I approve or reschedule buyer viewing requests?' }
+        { label: 'ðŸ“ Post a Property', q: 'How do I post a new property listing?' },
+        { label: 'ðŸ“ Pin Google Maps', q: 'How do I pin my property location on Google Maps?' },
+        { label: 'ðŸ“‘ Verification Requirements', q: 'What documents are required for seller verification?' },
+        { label: 'ðŸ’° Escrow Payouts', q: 'How and when do I receive payouts via escrow?' },
+        { label: 'ðŸ“… Viewing Requests', q: 'How do I approve or reschedule buyer viewing requests?' }
       ];
     }
     return [
-      { label: '🏠 Schedule Viewing', q: 'How do I schedule a viewing appointment?' },
-      { label: '🛡️ Escrow Protection', q: 'How does buyer payment escrow protection work?' },
-      { label: '✅ Verified Sellers', q: 'How do I know if a seller is legitimate and verified?' },
-      { label: '💳 Payment Methods', q: 'What payment options are accepted for reservations?' },
-      { label: '🔒 Setup 2FA', q: 'How do I enable Two-Factor Authentication for my account?' }
+      { label: 'ðŸ  Schedule Viewing', q: 'How do I schedule a viewing appointment?' },
+      { label: 'ðŸ›¡ï¸ Escrow Protection', q: 'How does buyer payment escrow protection work?' },
+      { label: 'âœ… Verified Sellers', q: 'How do I know if a seller is legitimate and verified?' },
+      { label: 'ðŸ’³ Payment Methods', q: 'What payment options are accepted for reservations?' },
+      { label: 'ðŸ”’ Setup 2FA', q: 'How do I enable Two-Factor Authentication for my account?' }
     ];
   }
 
@@ -436,9 +436,9 @@
             <span class="hs-cs-avatar-dot"></span>
           </div>
           <div>
-            <div class="hs-cs-name">HomeSure Support AI</div>
+            <div class="hs-cs-name">Meowrie â€“ Kasafide AI</div>
             <div class="hs-cs-sub">
-              <span>●</span> Online • Hugging Face AI
+              <span>â—</span> Online â€¢ Hugging Face AI
             </div>
           </div>
         </div>
@@ -462,7 +462,7 @@
 
       <div class="hs-cs-footer">
         <form class="hs-cs-form" id="hsCsForm">
-          <input type="text" class="hs-cs-input" id="hsCsInput" placeholder="Ask anything about HomeSure..." autocomplete="off" />
+          <input type="text" class="hs-cs-input" id="hsCsInput" placeholder="Ask Meowrie anything about Kasafide..." autocomplete="off" />
           <button type="submit" class="hs-cs-send" id="hsCsSendBtn" aria-label="Send Message">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="22" y1="2" x2="11" y2="13"></line>
@@ -471,7 +471,7 @@
           </button>
         </form>
         <div class="hs-cs-badge">
-          <span>Powered by Hugging Face & HomeSure AI</span>
+          <span>Powered by Hugging Face & Kasafide AI</span>
         </div>
       </div>
     `;
@@ -505,8 +505,8 @@
     if (!body) return;
     body.innerHTML = '';
     const welcome = currentRole === 'seller' || currentRole === 'landlord'
-      ? "Kumusta! 👋 I'm your **HomeSure Seller Assistant**, powered by Hugging Face AI. How can I assist you with publishing properties, pinning map locations, verification, or escrow payouts today?"
-      : "Kumusta! 👋 I'm your **HomeSure AI Assistant**, powered by Hugging Face AI. Looking to schedule a viewing, verify property credentials, or learn about our secure escrow payments?";
+      ? "Kumusta! ðŸ‘‹ I'm your \*\*Meowrie – Kasafide Seller Assistant\*\*, powered by Hugging Face AI. How can I assist you with publishing properties, pinning map locations, verification, or escrow payouts today?"
+      : "Kumusta! ðŸ‘‹ I'm your \*\*Meowrie – Kasafide AI Assistant\*\*, powered by Hugging Face AI. Looking to schedule a viewing, verify property credentials, or learn about our secure escrow payments?";
     
     appendMessage('bot', welcome);
   }
@@ -588,12 +588,12 @@
       }
 
       const data = await res.json();
-      const reply = data.reply || "I'm here to help! Please feel free to ask any other questions about HomeSure.";
+      const reply = data.reply || "I'm here to help! Please feel free to ask any other questions about Kasafide.";
       appendMessage('bot', reply);
     } catch (err) {
       removeTypingIndicator();
       console.warn('Customer Service Widget error:', err);
-      appendMessage('bot', "I apologize, but I encountered a temporary connection glitch. Please feel free to reach our customer care desk directly at **support@homesure.ph** or call **+63 (02) 8123-4567**.");
+      appendMessage('bot', "I apologize, but I encountered a temporary connection glitch. Please feel free to reach our customer care desk directly at **support@kasafide.ph** or call **+63 (02) 8123-4567**.");
     }
   }
 
@@ -668,7 +668,7 @@
   autoInit();
 
   // Export to global scope
-  global.HomeSureCustomerService = {
+  global.MeowrieCS = {
     init,
     open,
     close,
@@ -680,3 +680,5 @@
   };
 
 })(window);
+
+

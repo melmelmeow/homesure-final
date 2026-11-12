@@ -1,65 +1,81 @@
-import { NextResponse } from "next/server";
-import { guardApi } from "@/lib/api";
-import { getAdminSupabase } from "@/lib/supabase/admin-client";
+import { NextRequest, NextResponse } from 'next/server';
+import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { adminClient } from '@/lib/supabase/admin';
 
-export async function POST(request: Request) {
-  const guard = await guardApi();
-  if (!guard.ok) return guard.response;
-  const { supabase, user } = guard;
+export async function POST(req: NextRequest) {
+  try {
+    const supabase = await createSupabaseServerClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  const body = await request.json().catch(() => ({}));
-  const { paymentId, propertyId, amount, destinationAccountNo, destinationBankCode, reason } = body;
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
-  if ((!paymentId && !propertyId) || !amount || !destinationAccountNo || !destinationBankCode || !reason) {
-    return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    // Role check — buyer only
+    const { data: profile, error: profileError } = await adminClient
+      .from('users')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+
+    if (profileError || !profile) {
+      return NextResponse.json({ error: 'User profile not found' }, { status: 403 });
+    }
+
+    if (profile.role !== 'buyer') {
+      return NextResponse.json({ error: 'Forbidden: buyer role required' }, { status: 403 });
+    }
+
+    const body = await req.json();
+    const { paymentId, reason } = body as { paymentId: string; reason: string };
+
+    if (!paymentId || !reason) {
+      return NextResponse.json(
+        { error: 'paymentId and reason are required' },
+        { status: 400 },
+      );
+    }
+
+    // Verify payment belongs to this buyer and is confirmed
+    const { data: payment, error: paymentError } = await adminClient
+      .from('payments')
+      .select('id, buyer_id, status')
+      .eq('id', paymentId)
+      .single();
+
+    if (paymentError || !payment) {
+      return NextResponse.json({ error: 'Payment not found' }, { status: 404 });
+    }
+
+    if (payment.buyer_id !== user.id) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
+    if (payment.status !== 'confirmed') {
+      return NextResponse.json(
+        { error: 'Only confirmed payments can be refunded' },
+        { status: 400 },
+      );
+    }
+
+    const { error: updateError } = await adminClient
+      .from('payments')
+      .update({
+        status: 'refund_requested',
+        refund_requested_at: new Date().toISOString(),
+        refund_reason: reason,
+      })
+      .eq('id', paymentId);
+
+    if (updateError) {
+      return NextResponse.json({ error: updateError.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ ok: true });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Internal server error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
-
-  const requested = parseFloat(amount);
-  if (!Number.isFinite(requested) || requested <= 0) {
-    return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
-  }
-
-  // RLS limits this to the caller's own payments; the payer column is checked again explicitly.
-  let query = supabase.from("payments").select("*").eq("user_id", user.id).eq("status", "paid");
-  query = paymentId ? query.eq("id", paymentId) : query.eq("property_id", propertyId);
-  const { data: payment } = await query.order("paid_at", { ascending: false }).limit(1).maybeSingle();
-
-  if (!payment) return NextResponse.json({ error: "No paid payment found" }, { status: 404 });
-  if (requested > Number(payment.amount)) {
-    return NextResponse.json({ error: "Refund amount exceeds the amount paid" }, { status: 400 });
-  }
-
-  const admin = getAdminSupabase();
-
-  const { data: existing } = await admin
-    .from("refunds")
-    .select("id")
-    .eq("payment_id", payment.id)
-    .in("status", ["requested", "processing", "completed"])
-    .limit(1);
-  if (existing && existing.length > 0) {
-    return NextResponse.json({ error: "A refund already exists for this payment" }, { status: 409 });
-  }
-
-  // No INSERT policy on refunds for end users by design -> write with the service role.
-  const { data: refund, error } = await admin
-    .from("refunds")
-    .insert({
-      payment_id: payment.id,
-      requested_by: user.id,
-      amount: requested,
-      reason,
-      destination_account_no: destinationAccountNo,
-      destination_bank_code: destinationBankCode,
-      status: "requested",
-    })
-    .select("*")
-    .single();
-
-  if (error) {
-    console.error("[refunds/request] insert failed:", error.message);
-    return NextResponse.json({ error: "Could not record the refund request. Please try again." }, { status: 500 });
-  }
-
-  return NextResponse.json({ refund }, { status: 200 });
 }

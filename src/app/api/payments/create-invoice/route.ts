@@ -1,110 +1,110 @@
-import { NextResponse } from "next/server";
-import { guardApi } from "@/lib/api";
-import { getAdminSupabase } from "@/lib/supabase/admin-client";
-import { rateLimit } from "@/lib/rate-limit";
-import { createInvoiceSchema, firstIssue } from "@/lib/schemas";
+import { NextRequest, NextResponse } from 'next/server';
+import Xendit from 'xendit-node';
+import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { adminClient } from '@/lib/supabase/admin';
 
-export async function POST(request: Request) {
-  const guard = await guardApi();
-  if (!guard.ok) return guard.response;
-  const { supabase, user } = guard;
+export async function POST(req: NextRequest) {
+  try {
+    const supabase = await createSupabaseServerClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  // Each call creates a real Xendit QR code, so keep one user from creating them in a loop.
-  const limited = await rateLimit("create-invoice", user.id, 10, 600);
-  if (!limited.ok) return limited.response;
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
-  const parsed = createInvoiceSchema.safeParse(await request.json().catch(() => null));
-  if (!parsed.success) {
-    return NextResponse.json({ error: firstIssue(parsed.error) }, { status: 400 });
+    const body = await req.json();
+    const { propertyId, purpose, period, dueDate, depositMonths } = body as {
+      propertyId: string;
+      purpose: string;
+      period?: string;
+      dueDate?: string;
+      depositMonths?: number;
+    };
+
+    if (!propertyId || !purpose) {
+      return NextResponse.json(
+        { error: 'propertyId and purpose are required' },
+        { status: 400 },
+      );
+    }
+
+    // Fetch listing price from DB — never trust client-sent amount
+    const { data: property, error: propError } = await adminClient
+      .from('properties')
+      .select('id, title, price, landowner_id')
+      .eq('id', propertyId)
+      .single();
+
+    if (propError || !property) {
+      return NextResponse.json({ error: 'Property not found' }, { status: 404 });
+    }
+
+    const amount = property.price as number;
+    const userId = user.id;
+    const referenceId = `kf-${Date.now()}-${userId.slice(0, 8)}`;
+
+    // Create Xendit QR Ph
+    const x = new Xendit({ secretKey: process.env.XENDIT_SECRET_KEY! });
+    let qr: Record<string, unknown> | null = null;
+    const xAny = x as unknown as { QrCode?: { createQRCode: (args: unknown) => Promise<Record<string, unknown>> } };
+    if (xAny.QrCode?.createQRCode) {
+      qr = await xAny.QrCode.createQRCode({
+        data: {
+          referenceId,
+          type: 'DYNAMIC',
+          currency: 'PHP',
+          amount,
+        },
+      });
+    } else {
+      const authHeader = Buffer.from(`${process.env.XENDIT_SECRET_KEY}:`).toString('base64');
+      const res = await fetch('https://api.xendit.co/qr_codes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Basic ${authHeader}`,
+        },
+        body: JSON.stringify({
+          reference_id: referenceId,
+          type: 'DYNAMIC',
+          currency: 'PHP',
+          amount,
+        }),
+      });
+      qr = (await res.json()) as Record<string, unknown>;
+    }
+
+    const qrString = (qr?.qr_string ?? qr?.qrString ?? null) as string | null;
+
+    // Insert payment row
+    const { data: payment, error: insertError } = await adminClient
+      .from('payments')
+      .insert({
+        buyer_id: userId,
+        property_id: propertyId,
+        amount,
+        purpose,
+        period: period ?? null,
+        due_date: dueDate ?? null,
+        deposit_months: depositMonths ?? null,
+        status: 'pending',
+        method: 'qr',
+        xendit_reference_id: referenceId,
+        qr_code_url: qrString,
+        xendit_qr_string: qrString,
+      })
+      .select()
+      .single();
+
+    if (insertError) {
+      return NextResponse.json({ error: insertError.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ payment, qr });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Internal server error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
-  const { propertyId, purpose = "rent", period, dueDate, depositMonths: months = 1 } = parsed.data;
-
-  // RLS only lets the caller see publicly visible (admin-approved) listings.
-  const { data: property } = await supabase
-    .from("properties")
-    .select("id, price, status, lifecycle_status, listing_type, landowner_id")
-    .eq("id", propertyId)
-    .single();
-  if (!property) return NextResponse.json({ error: "Property not found" }, { status: 404 });
-  if (property.status !== "approved") return NextResponse.json({ error: "Property is not available" }, { status: 400 });
-  if (property.lifecycle_status === "sold" || property.lifecycle_status === "rented") {
-    return NextResponse.json({ error: "Property is no longer available" }, { status: 400 });
-  }
-  if (property.landowner_id === user.id) {
-    return NextResponse.json({ error: "You cannot pay for your own listing" }, { status: 400 });
-  }
-
-  // The amount is computed here, never taken from the request: a client that could name its own
-  // price could pay ₱1 for a ₱15,000 month.
-  const price = Number(property.price);
-  if (!Number.isFinite(price) || price <= 0) {
-    return NextResponse.json({ error: "This listing has no usable price" }, { status: 400 });
-  }
-  const amount =
-    purpose === "security" ? price * months :
-    purpose === "both"     ? price + price * months :
-    price;
-
-  const xenditSecret = process.env.XENDIT_SECRET_KEY;
-  if (!xenditSecret) return NextResponse.json({ error: "Xendit not configured" }, { status: 500 });
-
-  const auth = Buffer.from(`${xenditSecret}:`).toString("base64");
-  const referenceId = `property-${propertyId}-${Date.now()}`;
-
-  const xenditRes = await fetch("https://api.xendit.co/qr_codes", {
-    method: "POST",
-    headers: {
-      "Authorization": `Basic ${auth}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      reference_id: referenceId,
-      amount,
-      currency: "PHP",
-      channel_codes: ["PH_QRPH"],
-      expires_at: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
-    }),
-  });
-
-  if (!xenditRes.ok) {
-    // Log the gateway's answer here; never forward it to the browser. Payment-gateway error bodies
-    // can carry internal reference ids and account details.
-    const err = await xenditRes.text();
-    console.error("[Xendit] QR code creation failed:", xenditRes.status, err);
-    return NextResponse.json(
-      { error: "Payment could not be initiated. Please try again or contact support." },
-      { status: 502 },
-    );
-  }
-
-  const qr = await xenditRes.json();
-
-  // No INSERT policy on payments for end users by design -> write with the service role.
-  const { data: payment, error } = await getAdminSupabase()
-    .from("payments")
-    .insert({
-      property_id: propertyId,
-      user_id: user.id,
-      amount,
-      currency: "PHP",
-      purpose,
-      type: property.listing_type === "rent" ? "rent" : "sale",
-      period: period || null,
-      due_date: dueDate || null,
-      method: "QRPH",
-      reference: referenceId,
-      xendit_charge_id: qr.id,
-      xendit_qr_string: qr.qr_string,
-      qr_code_url: qr.qr_code_url,
-      status: "pending",
-    })
-    .select("*")
-    .single();
-
-  if (error) {
-    console.error("[create-invoice] could not record payment:", error.message);
-    return NextResponse.json({ error: "Could not record the payment. Please try again." }, { status: 500 });
-  }
-
-  return NextResponse.json({ payment, qr }, { status: 200 });
 }

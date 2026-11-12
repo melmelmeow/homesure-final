@@ -169,7 +169,7 @@ async function submitSignin() {
     if (typeof sb !== 'undefined') {
       const { data: { session: sess } } = await sb.auth.getSession();
       if (sess) {
-        await fetch('/api/auth/set-cookie', {
+        await fetch('/api/auth/set-session', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

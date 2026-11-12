@@ -1,73 +1,72 @@
-import { NextResponse } from "next/server";
-import { getAdminSupabase } from "@/lib/supabase/admin-client";
-import { sendMail, passwordResetEmail, appOrigin, isEmailConfigured } from "@/lib/email";
-import { issueResetToken, resetCooldownRemaining, RESET_TTL_MINUTES } from "@/lib/verification";
-import { rateLimitByIp } from "@/lib/rate-limit";
-import { emailOnlySchema, firstIssue } from "@/lib/schemas";
+import { adminClient } from '@/lib/supabase/admin';
+import { NextRequest, NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
 
-/**
- * "Forgot password": email a reset link, sent by Kasafide rather than the Supabase auth server.
- *
- * The auth server's own reset mail (sb.auth.resetPasswordForEmail) cannot work here: it has no
- * SMTP configured (the same reason /api/auth/signup sends its own confirmation), and its mail
- * still carried the old HomeSure branding. Migration 015 adds the token table this uses.
- *
- * The answer is the same whether or not the address has an account, so this cannot be used to
- * find out who is registered. Only a confirmed account gets a link: an unconfirmed one should
- * finish signing up first, and resetting it would not let it sign in anyway.
- */
-export async function POST(request: Request) {
-  const ok = NextResponse.json(
-    { ok: true, message: "If that email has a Kasafide account, a reset link is on its way." },
-    { status: 200 },
-  );
+function createMailTransporter() {
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT ?? 587),
+    secure: Number(process.env.SMTP_PORT ?? 587) === 465,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASSWORD,
+    },
+  });
+}
 
-  if (!isEmailConfigured()) {
-    return NextResponse.json({ error: "This server cannot send email yet." }, { status: 503 });
-  }
-
-  // 3 requests per IP per 10 minutes.
-  const limited = await rateLimitByIp(request, "forgot-pwd", 3, 600);
-  if (!limited.ok) return limited.response;
-
-  const parsed = emailOnlySchema.safeParse(await request.json().catch(() => null));
-  if (!parsed.success) {
-    return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
-  }
-  const { email } = parsed.data;
-
-  const admin = getAdminSupabase();
-
-  // There is no "get user by email" in the admin API, so find the profile first.
-  const { data: profile } = await admin
-    .from("profiles")
-    .select("id, first_name")
-    .eq("email", email)
-    .maybeSingle();
-  if (!profile) return ok;
-
-  const { data: existing } = await admin.auth.admin.getUserById(profile.id);
-  if (!existing?.user || !existing.user.email_confirmed_at) return ok;
-
-  const wait = await resetCooldownRemaining(profile.id);
-  if (wait > 0) {
-    return NextResponse.json(
-      { error: `Please wait ${wait} more second${wait === 1 ? "" : "s"} before asking again.`, retryAfter: wait },
-      { status: 429 },
-    );
-  }
-
+export async function POST(request: NextRequest) {
   try {
-    const token = await issueResetToken(profile.id, email);
-    const link = `${appOrigin(request)}/auth/reset-password.html?token=${encodeURIComponent(token)}`;
-    await sendMail({
-      to: email,
-      ...passwordResetEmail({ firstName: profile.first_name ?? "", link, minutes: RESET_TTL_MINUTES }),
-    });
-  } catch (err) {
-    console.error("Could not send the reset email:", err instanceof Error ? err.message : err);
-    return NextResponse.json({ error: "We could not send that email. Please try again shortly." }, { status: 502 });
-  }
+    const body = await request.json().catch(() => ({}));
+    const email = typeof body?.email === 'string' ? body.email.trim() : '';
 
-  return ok;
+    if (!email) {
+      // Don't reveal if email exists or validation details
+      return NextResponse.json({ ok: true });
+    }
+
+    const origin =
+      process.env.APP_ORIGIN ??
+      request.headers.get('origin') ??
+      `${request.nextUrl.protocol}//${request.nextUrl.host}`;
+
+    const { data, error } = await adminClient.auth.admin.generateLink({
+      type: 'recovery',
+      email,
+      options: {
+        redirectTo: `${origin}/auth/reset-password`,
+      },
+    });
+
+    if (error || !data?.properties?.action_link) {
+      console.warn('[forgot-password] generateLink error or user not found:', error?.message);
+      // Return { ok: true } always to prevent email enumeration
+      return NextResponse.json({ ok: true });
+    }
+
+    const resetLink = data.properties.action_link;
+
+    const transporter = createMailTransporter();
+    await transporter.sendMail({
+      from: process.env.SMTP_FROM ?? process.env.SMTP_USER,
+      to: email,
+      subject: 'Reset your Kasafide password',
+      html: `
+        <p>Hello,</p>
+        <p>We received a request to reset your Kasafide account password.</p>
+        <p>
+          <a href="${resetLink}" style="display:inline-block;padding:12px 24px;background:#1a56db;color:#fff;text-decoration:none;border-radius:6px;">
+            Reset Password
+          </a>
+        </p>
+        <p>If you did not request a password reset, you can safely ignore this email.</p>
+        <p>— The Kasafide Team</p>
+      `,
+    });
+
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    console.error('[forgot-password] unexpected error:', err);
+    // Return { ok: true } always
+    return NextResponse.json({ ok: true });
+  }
 }

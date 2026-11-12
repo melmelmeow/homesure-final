@@ -1,27 +1,31 @@
-import type { Metadata } from "next";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Plus_Jakarta_Sans } from 'next/font/google';
+import Script from 'next/script';
+import './globals.css';
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
-  title: { default: "Kasafide - Real Estate Marketplace", template: "%s | Kasafide" },
-  description: "Philippine real estate marketplace with instant payments and verified titles.",
+  title: 'Kasafide',
+  description: 'Verified homes in Sta. Maria, Bulacan.',
 };
-
-// Runs before first paint so a returning visitor never sees a flash of the wrong theme. Same key as
-// public/assets/js/kasafide-theme.js (kasafide_theme), so the app and the legacy pages agree.
-// A fixed string written here — nothing from a request or the database is ever put in it.
-const THEME_BOOTSTRAP = `(function(){try{var t=localStorage.getItem('kasafide_theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'}document.documentElement.setAttribute('data-theme',t)}catch(e){document.documentElement.setAttribute('data-theme','dark')}})();`;
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
+        <link rel="stylesheet" href="/assets/css/kasafide-theme.css" />
+        <Script src="/assets/js/kasafide-theme.js" strategy="beforeInteractive" />
+        <Script src="/assets/js/kasafide-logo.js" strategy="beforeInteractive" />
       </head>
-      <body>{children}</body>
+      <body className={plusJakartaSans.className}>{children}</body>
     </html>
   );
 }

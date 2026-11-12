@@ -1,5 +1,5 @@
-// ─────────────────────────────────────────────────────────────────────────────
-//  Kasafide — the shared top bar for the public pages that are not the landing page
+﻿// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+//  Kasafide â€” the shared top bar for the public pages that are not the landing page
 //  (browse.html, about.html, help.html).
 //
 //  Put this where the bar goes:      <nav class="site-nav" data-page="browse"></nav>
@@ -12,7 +12,7 @@
 //  data-page puts the resting highlight on the current page's link; the highlight slides to
 //  whichever link is hovered and back. Links to sections of the landing page go to
 //  index.html#section, since those sections only exist there.
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 (function () {
   'use strict';
 
@@ -44,7 +44,7 @@
       '</div>' +
       '<div class="sn-actions">' +
         '<button type="button" class="sn-theme" aria-label="Toggle theme"></button>' +
-        '<a class="sn-btn-signin" href="/auth/login">Sign In</a>' +
+        '<a class="sn-btn-signin" href="/auth/signin">Sign In</a>' +
         '<a class="sn-btn-signup" href="/auth/signup">Sign Up</a>' +
       '</div>';
 
@@ -95,3 +95,4 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 })();
+

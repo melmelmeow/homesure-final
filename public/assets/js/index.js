@@ -1,13 +1,13 @@
-// ── Data ──────────────────────────────────────────────────────────────────────
+﻿// â”€â”€ Data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// Counts used to come from fixed numbers here (342, 218, 97) that were never real — see
+// Counts used to come from fixed numbers here (342, 218, 97) that were never real â€” see
 // useTypeCounts() below for what replaced them. `type` is a property_type value; the schema
 // (006_frontend_alignment.sql) only has 'house' | 'apartment' | 'condo' | 'commercial' | 'lot', so
-// there is no real type called "Townhouses". The third card is land for sale — 'lot', what the
+// there is no real type called "Townhouses". The third card is land for sale â€” 'lot', what the
 // seller's post form calls "Lot Only".
 //
 // Each card shows a photo of the newest live listing of its type. When a type has none yet, it
-// falls back to `fallbacks` in order — drop a photo at assets/img/types/<type>.jpg to set one —
+// falls back to `fallbacks` in order â€” drop a photo at assets/img/types/<type>.jpg to set one â€”
 // and if none of those load either, the card's own teal gradient shows instead of a broken image.
 const categories = [
   { name: "Houses",      type: "house",     fallbacks: ["assets/img/types/house.jpg", "assets/img/house_image.jpg"] },
@@ -29,7 +29,7 @@ function CategoryPhoto({ sources, alt }) {
   });
 }
 
-// Each step is paired with the screen it describes, drawn the way the real page draws it — the
+// Each step is paired with the screen it describes, drawn the way the real page draws it â€” the
 // same listing card browse.html renders, the same chat bubbles and payment card. They hold
 // example content rather than live rows, because this runs before anyone has signed in, but the
 // shapes are the application's own.
@@ -45,7 +45,7 @@ const steps = [
     num: "02",
     label: "Discover",
     title: "Browse or List",
-    desc: "Search by barangay, budget and property type across Sta. Maria — or post your own listing and let buyers come to you.",
+    desc: "Search by barangay, budget and property type across Sta. Maria â€” or post your own listing and let buyers come to you.",
     screen: "listing",
   },
   {
@@ -83,7 +83,7 @@ const features = [
 ];
 
 // Counted from the database when the section comes into view. The numbers below are only what is
-// shown if that query fails — so they are the ones that are true regardless: the municipality has
+// shown if that query fails â€” so they are the ones that are true regardless: the municipality has
 // 24 barangays, no listing goes live unverified, and messaging is in-platform for everyone.
 //
 // "1,200+ Verified Sellers" used to sit here. Nobody could have said where it came from.
@@ -94,13 +94,13 @@ const statsData = [
   { key: null,              end: 0,   suffix: "",  label: "Unverified Listings" },
 ];
 
-// ── Theme init (read localStorage, default dark) ──────────────────────────────
+// â”€â”€ Theme init (read localStorage, default dark) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 (function () {
   const t = KasafideTheme.get();
   document.documentElement.setAttribute('data-theme', t);
 })();
 
-// ── SVG Helpers ───────────────────────────────────────────────────────────────
+// â”€â”€ SVG Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const pinIcon = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--text-muted)"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
 const checkIcon = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="stroke:var(--on-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
@@ -117,7 +117,7 @@ const logoMark = (size) => React.createElement("span", {
   dangerouslySetInnerHTML: { __html: KasafideLogo.svg({ size }) },
 });
 
-// ── React Components ──────────────────────────────────────────────────────────
+// â”€â”€ React Components â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const { useState, useEffect, useRef } = React;
 const h = React.createElement;
@@ -173,7 +173,7 @@ function useTypeCounts() {
   return counts;
 }
 
-// Real approved listings for the "Featured Properties" carousel, read once and shared — it used
+// Real approved listings for the "Featured Properties" carousel, read once and shared â€” it used
 // to be six hardcoded placeholder cards that never changed no matter what was actually listed.
 let featuredListingsPromise = null;
 
@@ -266,7 +266,7 @@ function TypingText() {
   );
 }
 
-// Hero Wheel — center is fixed, only arms orbit clockwise
+// Hero Wheel â€” center is fixed, only arms orbit clockwise
 function HeroCards() {
   const listings = useFeaturedListings();
   const cards = listings ? listings.slice(0, 3) : [];
@@ -342,7 +342,7 @@ function BarangayMap() {
   const [svgContent, setSvgContent] = useState('');
   const [near, setNear] = useState(false);
 
-  // Fetch the map artwork only once the section is close to the screen — it is ~140KB of SVG and
+  // Fetch the map artwork only once the section is close to the screen â€” it is ~140KB of SVG and
   // most visitors never scroll this far. The same observer pauses the pin animations while the map
   // is off screen (the hero used to get this from glass-nav.js; the map is not in the hero now).
   useEffect(() => {
@@ -377,7 +377,7 @@ function BarangayMap() {
   // Every barangay, positioned on its own name label in the map artwork. The label shapes are
   // paths in "Sta. Maria Map.svg" (no ids), so these are their centres in the SVG's own
   // 1575 x 1816 viewBox units, measured from the file. They used to be percentages of the whole
-  // right-hand panel for only six barangays — so a listing in any other barangay (Silangan) never
+  // right-hand panel for only six barangays â€” so a listing in any other barangay (Silangan) never
   // got a pin, and the six that did drifted off their barangay whenever the window's shape changed,
   // since the panel and the drawing inside it don't scale together.
   //
@@ -400,8 +400,8 @@ function BarangayMap() {
       'Tabing Bakod':     [280, 1540], 'Buenavista':       [786, 1607],
       'Camangyanan':      [585, 1643], 'Mahabang Parang':  [317, 1743],
       // Not one of the 24 and has no label in the artwork: a sitio inside Pulong Buhangin, on its
-      // northwest side by the Silangan / Mag-asawang Sapa border (~14.87°N 121.00°E, along the
-      // Norzagaray–Santa Maria road). Estimated, not measured. Listings are still filed under it.
+      // northwest side by the Silangan / Mag-asawang Sapa border (~14.87Â°N 121.00Â°E, along the
+      // Norzagarayâ€“Santa Maria road). Estimated, not measured. Listings are still filed under it.
       'Pulong Yantok':    [1060, 340],
     };
     // Shown in the tooltip after the name, for places that are part of a bigger barangay.
@@ -412,7 +412,7 @@ function BarangayMap() {
     // The SVG is centred in the container and scaled to fit (max-width/max-height 100%, never
     // above its own 1575x1816), so a viewBox point maps to container pixels like this. Layout
     // sizes (clientWidth/Height), not getBoundingClientRect, so the pan/zoom/rotate transform on
-    // the container isn't counted twice — the pins sit inside it and get that transform anyway.
+    // the container isn't counted twice â€” the pins sit inside it and get that transform anyway.
     const place = () => {
       const cw = container.clientWidth, ch = container.clientHeight;
       const s = Math.min(1, cw / VB_W, ch / VB_H);
@@ -438,7 +438,7 @@ function BarangayMap() {
         pin.setAttribute('role', 'link');
         pin.setAttribute('tabindex', '0');
         pin.setAttribute('aria-label',
-          `${n} ${n === 1 ? 'property' : 'properties'} in ${place} — browse them`);
+          `${n} ${n === 1 ? 'property' : 'properties'} in ${place} â€” browse them`);
         pin.innerHTML = `
           <div class="marker-pulse"></div>
           <div class="marker-icon">
@@ -473,7 +473,7 @@ function BarangayMap() {
     const wrap = mapWrapRef.current;
 
     // Mid-page now, so a plain scroll wheel must scroll the page, not get swallowed by the map.
-    // Ctrl/⌘ + wheel zooms (a trackpad pinch arrives as ctrl + wheel too), like an embedded map.
+    // Ctrl/âŒ˜ + wheel zooms (a trackpad pinch arrives as ctrl + wheel too), like an embedded map.
     const handleWheel = (e) => {
       if (!e.ctrlKey && !e.metaKey) return;
       e.preventDefault();
@@ -538,11 +538,11 @@ function BarangayMap() {
       ref: mapWrapRef,
       style: { cursor: isDragging ? 'grabbing' : isRotating ? 'crosshair' : 'grab' }
     },
-    !svgContent && React.createElement('div', { className: 'smap-loading' }, 'Loading map…'),
+    !svgContent && React.createElement('div', { className: 'smap-loading' }, 'Loading mapâ€¦'),
     React.createElement('div', { className: 'smap-controls' },
       ctrlBtn('Zoom in', '+', () => zoomBy(0.25)),
-      ctrlBtn('Zoom out', '−', () => zoomBy(-0.25)),
-      ctrlBtn('Reset view', '⟲', resetView),
+      ctrlBtn('Zoom out', 'âˆ’', () => zoomBy(-0.25)),
+      ctrlBtn('Reset view', 'âŸ²', resetView),
     ),
     React.createElement('div', {
       ref: containerRef,
@@ -676,7 +676,7 @@ function Navbar() {
         title: theme === 'dark' ? 'Switch to Light' : 'Switch to Dark',
         dangerouslySetInnerHTML: { __html: theme === 'dark' ? sunSVG : moonSVG },
       }),
-      React.createElement("button", { className: "btn-outline", onClick: () => (window.location.href = "/auth/login") }, "Sign In"),
+      React.createElement("button", { className: "btn-outline", onClick: () => (window.location.href = "/auth/signin") }, "Sign In"),
       React.createElement("button", { className: "btn-solid", onClick: () => (window.location.href = "/auth/signup") }, "Sign Up"),
     ),
   );
@@ -692,14 +692,14 @@ function HeroBento() {
   if (!tiles.length) return null;  // still loading, or nothing approved yet
 
   return React.createElement('div', { className:'hero-bento-wrap' },
-    // ── Live ping badge ──
+    // â”€â”€ Live ping badge â”€â”€
     // Used to claim a specific count ("3 new listings today") that was never real. Nothing here
     // counts how many were added today, so this says something true instead of an invented number.
     React.createElement('div', { className:'bento-ping' },
       React.createElement('span', { className:'bento-ping-dot' }),
       'New listings added regularly',
     ),
-    // ── Bento grid ──
+    // â”€â”€ Bento grid â”€â”€
     React.createElement('div', { className:'hero-bento' },
       tiles.map((l, i) =>
         React.createElement('div', {
@@ -736,10 +736,10 @@ function HeroBento() {
 // and a soft light following the cursor.
 //
 // Three things keep this cheap, because this page has been laggy on a mid-range machine before:
-//   • one listener on the grid rather than one per card;
-//   • pointer positions are stored and applied once per frame, not once per pointer event — a
+//   â€¢ one listener on the grid rather than one per card;
+//   â€¢ pointer positions are stored and applied once per frame, not once per pointer event â€” a
 //     mouse can fire far more often than the screen refreshes;
-//   • only transform and opacity change, so the compositor handles it and nothing repaints. The
+//   â€¢ only transform and opacity change, so the compositor handles it and nothing repaints. The
 //     light is a circle that gets moved, rather than a gradient redrawn at a new position.
 const TILT_DEGREES = 9;
 
@@ -975,7 +975,7 @@ const heroTypeIcons = {
 };
 const heroArrowIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;
 
-// ── Effects adapted from React Bits (reactbits.dev, MIT + Commons Clause) ────────────────────
+// â”€â”€ Effects adapted from React Bits (reactbits.dev, MIT + Commons Clause) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Those components ship for a bundler (BlurText needs `motion`, others run a JS loop per frame).
 // This page has no build step, so each is a small port: CSS keyframes where CSS can do it, and
 // one shared, frame-throttled listener for the pointer effects. All of it is skipped under
@@ -1061,7 +1061,7 @@ function Hero() {
     'section',
     { className: 'hero hero-photo', ref: heroRef },
 
-    // ── Background photos, one per slide, cross-faded ──
+    // â”€â”€ Background photos, one per slide, cross-faded â”€â”€
     h('div', { className: 'hero-bg', 'aria-hidden': 'true' },
       n
         ? slides.map((s, i) => h('img', {
@@ -1075,7 +1075,7 @@ function Hero() {
     h('div', { className: 'hero-shade', 'aria-hidden': 'true' }),
     h('div', { className: 'hero-watermark', 'aria-hidden': 'true' }, 'KASAFIDE'),
 
-    // ── Copy ──
+    // â”€â”€ Copy â”€â”€
     h('div', { className: 'hero-left' },
       h('h1', { className: 'hero-title' },
         h(BlurText, { text: 'Buy. Sell. Rent.' }), h('br'),
@@ -1101,12 +1101,12 @@ function Hero() {
           h('span', null, 'List Your Property'),
         ),
         // Mobile: Sign In & Sign Up
-        h('button', { className: 'hero-btn-mobile-signin', onClick: () => (window.location.href = '/auth/login') }, 'Sign In'),
+        h('button', { className: 'hero-btn-mobile-signin', onClick: () => (window.location.href = '/auth/signin') }, 'Sign In'),
         h('button', { className: 'hero-btn-mobile-signup', onClick: () => (window.location.href = '/auth/signup') }, 'Sign Up'),
       ),
     ),
 
-    // ── Featured card + categories ──
+    // â”€â”€ Featured card + categories â”€â”€
     h('div', { className: 'hero-side' },
       cur && h('div', { className: 'hero-feature' },
         // Photo on the left, details in their own inner panel on the right, with the dots at the
@@ -1119,7 +1119,7 @@ function Hero() {
         ),
         h('div', { className: 'hf-panel' },
           h('div', { key: 'text-' + cur.id, className: 'hf-text' },
-            h('span', { className: 'hf-kicker' }, [cur.badge, cur.barangay].filter(Boolean).join(' · ')),
+            h('span', { className: 'hf-kicker' }, [cur.badge, cur.barangay].filter(Boolean).join(' Â· ')),
             h('button', { type: 'button', className: 'hf-title', tabIndex: -1, onClick: () => openListing(cur.id) }, h('span', null, cur.title)),
             h('span', { className: 'hf-price' }, cur.price, cur.period && h('small', null, cur.period)),
           ),
@@ -1172,12 +1172,12 @@ function MapSection() {
       h('div', { className: 'map-head' },
         h('span', { className: 'section-label' }, 'Explore the Map'),
         h('h2', { className: 'section-title' }, 'Every Barangay in Sta. Maria'),
-        h('p', { className: 'map-sub' }, 'Each pin is a barangay with live listings. Click one to see what’s there.'),
+        h('p', { className: 'map-sub' }, 'Each pin is a barangay with live listings. Click one to see whatâ€™s there.'),
       ),
       h('aside', { className: 'map-side' },
         h('div', { className: 'map-side-title' }, 'Barangays with listings'),
         list === null
-          ? h('p', { className: 'map-side-empty' }, 'Loading…')
+          ? h('p', { className: 'map-side-empty' }, 'Loadingâ€¦')
           : list.length
             ? h('ul', { className: 'map-side-list' },
                 list.map((name) => h('li', { key: name },
@@ -1189,12 +1189,12 @@ function MapSection() {
               )
             : h('p', { className: 'map-side-empty' }, 'No live listings yet.'),
       ),
-      h('p', { className: 'map-hint' }, 'Drag to move · Ctrl + scroll to zoom · Shift + drag to rotate'),
+      h('p', { className: 'map-hint' }, 'Drag to move Â· Ctrl + scroll to zoom Â· Shift + drag to rotate'),
     ),
   );
 }
 
-// Browse — every approved listing, filterable, as a section of this page. It used to be only
+// Browse â€” every approved listing, filterable, as a section of this page. It used to be only
 // browse.html (which still works for old links); now the navbar, the hero, the category chips,
 // Browse by Type and the map all bring you down here with the filter already set.
 const BROWSE_TYPES = [['', 'All types'], ['house', 'House'], ['apartment', 'Apartment'], ['condo', 'Condo'], ['commercial', 'Commercial'], ['lot', 'Lot only']];
@@ -1214,7 +1214,7 @@ function browseCard(l) {
   const rent = l.listingFor === 'rent';
   return {
     id: l.id, title: l.title,
-    price: '₱' + (Number(l.price) || 0).toLocaleString('en-PH'),
+    price: 'â‚±' + (Number(l.price) || 0).toLocaleString('en-PH'),
     period: rent ? '/month' : '',
     location: [l.barangay, l.city || 'Sta. Maria'].filter(Boolean).join(', '),
     beds: l.bedrooms || 0, baths: l.bathrooms || 0,
@@ -1280,12 +1280,12 @@ function BrowseSection() {
       select('barangay', 'Barangay', [['', 'All barangays']].concat(barangays.map((b) => [b, b]))),
       h('input', {
         className: 'bs-field bs-search', type: 'search', value: f.q, onChange: set('q'),
-        placeholder: 'Search by title or address…', 'aria-label': 'Search listings',
+        placeholder: 'Search by title or addressâ€¦', 'aria-label': 'Search listings',
       }),
     ),
     h('div', { className: 'bs-meta' },
       h('span', null, all === null
-        ? (failed ? 'Could not load listings.' : 'Loading listings…')
+        ? (failed ? 'Could not load listings.' : 'Loading listingsâ€¦')
         : `${shown.length} propert${shown.length === 1 ? 'y' : 'ies'} found`),
       filtering && h('button', { type: 'button', className: 'bs-clear', onClick: () => setF(NO_FILTERS) }, 'Clear filters'),
     ),
@@ -1323,10 +1323,10 @@ function Categories() {
       "div",
       { className: "categories-grid" },
       categories.map((c, i) => {
-        // null while still loading — say nothing definite yet rather than flash a wrong number.
+        // null while still loading â€” say nothing definite yet rather than flash a wrong number.
         const n = typeCounts && (typeCounts[c.type] || 0);
-        const countLabel = typeCounts == null ? ' ' : n === 1 ? '1 listing' : `${n} listings`;
-        // A real listing's photo first, then the bundled fallbacks — but only once the data is in.
+        const countLabel = typeCounts == null ? 'Â ' : n === 1 ? '1 listing' : `${n} listings`;
+        // A real listing's photo first, then the bundled fallbacks â€” but only once the data is in.
         // Starting on the fallbacks while it loads meant the stock photo flashed up, then got
         // swapped for the real one a moment later; the gradient is the honest "loading" state.
         const sources = summary == null ? []
@@ -1357,7 +1357,7 @@ function Categories() {
 
 // Featured Properties
 //
-// A row of real listing cards — up to three in view, the rest a swipe or an arrow away. It used to
+// A row of real listing cards â€” up to three in view, the rest a swipe or an arrow away. It used to
 // be one card in the middle with half-faded neighbours, which with only one or two listings meant a
 // lone card and two arrows a long way off. Now the row simply holds however many there are: centred
 // when they all fit, scrollable (scroll-snap, so it works by touch too) when they don't, and the
@@ -1371,12 +1371,12 @@ function openListing(id) {
   const target = 'module/buyer/listing.html?id=' + encodeURIComponent(id);
   const me = typeof getSession === 'function' ? getSession() : null;
   if (me && (me.role === 'buyer' || me.role === 'seller')) { window.location.href = target; return; }
-  window.location.href = '/auth/login?redirect=' + encodeURIComponent(target);
+  window.location.href = '/auth/signin?redirect=' + encodeURIComponent(target);
 }
 
 function FeaturedCard(prop) {
   const specs = [];
-  // A lot has no rooms — showing "0 bed · 0 bath" on land would read like missing data.
+  // A lot has no rooms â€” showing "0 bed Â· 0 bath" on land would read like missing data.
   if (prop.beds) specs.push({ icon: bedIcon, text: `${prop.beds} bed${prop.beds === 1 ? '' : 's'}` });
   if (prop.baths) specs.push({ icon: bathIcon, text: `${prop.baths} bath${prop.baths === 1 ? '' : 's'}` });
   const open = () => openListing(prop.id);
@@ -1428,7 +1428,7 @@ function FeaturedCard(prop) {
             s.text,
           )),
         ),
-        React.createElement("span", { className: "fp-cta" }, "View details →"),
+        React.createElement("span", { className: "fp-cta" }, "View details â†’"),
       ),
     ),
   );
@@ -1440,7 +1440,7 @@ function Carousel() {
   const trackRef = useRef(null);
   const [edges, setEdges] = useState({ start: true, end: true });
 
-  // Which arrows make sense right now — re-checked on scroll and whenever the row resizes.
+  // Which arrows make sense right now â€” re-checked on scroll and whenever the row resizes.
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
@@ -1478,8 +1478,8 @@ function Carousel() {
         "p",
         { className: "section-sub" },
         listings === null
-          ? "Loading listings…"
-          : "No approved listings yet — check back soon, or be the first to list.",
+          ? "Loading listingsâ€¦"
+          : "No approved listings yet â€” check back soon, or be the first to list.",
       ),
     );
   }
@@ -1517,7 +1517,7 @@ function Carousel() {
     React.createElement(
       "a",
       { className: "fp-all", href: "#browse" },
-      "Browse all properties →",
+      "Browse all properties â†’",
     ),
   );
 }
@@ -1536,7 +1536,7 @@ function Carousel() {
 // getBoundingClientRect would be the obvious choice and it is the wrong one here: it reports the
 // painted position, which includes transforms. Each step comes in under
 // `transform: translateY(22px)` and animates to none, so measuring that way put every dot 22px
-// below where it settles — and because a transform changes nothing about layout, the container
+// below where it settles â€” and because a transform changes nothing about layout, the container
 // never resized and the ResizeObserver never fired to correct it. offsetTop/offsetLeft ignore
 // transforms, so this reads the position the dot will actually rest at.
 function offsetWithin(el, root) {
@@ -1580,7 +1580,7 @@ function useCurvedSpine(containerRef, pathRef) {
 
       // The loop is a circle hung off the route: the line runs into it at one side, goes the long
       // way round, and carries on from the other. A circle costs its radius plus the offset of its
-      // centre, which is 1.65 radii in all — much cheaper than tying the knot with a single curve,
+      // centre, which is 1.65 radii in all â€” much cheaper than tying the knot with a single curve,
       // where most of the width goes on the approach and the curl ends up a third of the size.
       const radius = Math.min(46, rect.width * 0.043);
       const halfChord = radius * 0.76;                               // where the circle meets the line
@@ -1625,7 +1625,7 @@ function useCurvedSpine(containerRef, pathRef) {
     draw();
 
     // Step heights change when the window resizes, when a font finishes loading, and when an
-    // image inside a preview settles — a ResizeObserver on the container catches all three.
+    // image inside a preview settles â€” a ResizeObserver on the container catches all three.
     //
     // It is guarded because this runs in an effect, and an effect that throws takes the whole page
     // down with it. A browser without ResizeObserver still gets the curve; it just redraws on
@@ -1666,7 +1666,7 @@ function HowItWorks() {
     React.createElement(
       "p",
       { className: "section-sub" },
-      "Get started in minutes — no complicated process",
+      "Get started in minutes â€” no complicated process",
     ),
     React.createElement(
       "div",
@@ -1733,7 +1733,7 @@ function tlWindow(title, body) {
   );
 }
 
-/** Step 1 — the verification screen: two documents, then the badge it earns you. */
+/** Step 1 â€” the verification screen: two documents, then the badge it earns you. */
 function screenVerification() {
   const doc = (name, meta) => h('div', { className: 'tl-doc' },
     h('div', { className: 'tl-doc-thumb' },
@@ -1761,7 +1761,7 @@ function screenVerification() {
   ]);
 }
 
-/** Step 2 — the card browse.html renders, at a smaller size. */
+/** Step 2 â€” the card browse.html renders, at a smaller size. */
 function screenListing() {
   return tlWindow('Browse', [
     h('div', { key: 'f', className: 'tl-filters' },
@@ -1788,7 +1788,7 @@ function screenListing() {
   ]);
 }
 
-/** Step 3 — the thread, with the viewing request the chat can carry. */
+/** Step 3 â€” the thread, with the viewing request the chat can carry. */
 function screenMessages() {
   return tlWindow('Messages', [
     h('div', { key: 'a', className: 'tl-msg tl-msg-them' },
@@ -1810,7 +1810,7 @@ function screenMessages() {
   ]);
 }
 
-/** Step 4 — the payment card, with the meta row the real page shows. */
+/** Step 4 â€” the payment card, with the meta row the real page shows. */
 function screenPayment() {
   const item = (label, value) => h('div', { className: 'tl-pay-item' },
     h('span', { className: 'tl-pay-label' }, label),
@@ -1899,8 +1899,8 @@ function useCounter(end, duration, active) {
   // `end` has to be a dependency, not just `active`.
   //
   // The figures in the Stats section arrive from the database after the page has mounted. With
-  // only [active] here, the count-up ran once against whatever `end` was at that moment — the
-  // fallback, which is 0 for the live figures — and never ran again when the real number landed.
+  // only [active] here, the count-up ran once against whatever `end` was at that moment â€” the
+  // fallback, which is 0 for the live figures â€” and never ran again when the real number landed.
   // The section would sit on "0 Listings Live" with three listings in the database.
   useEffect(() => {
     if (!active) return;
@@ -1951,7 +1951,7 @@ function Stats() {
   const [ref, visible] = useReveal();
   const [live, setLive] = useState(null);
 
-  // One request, once. If it fails the section still renders — the fallback figures above are
+  // One request, once. If it fails the section still renders â€” the fallback figures above are
   // true on their own, so a database that is briefly unreachable costs nothing on screen.
   useEffect(() => {
     if (typeof HS === 'undefined' || !HS.publicStats) return;
@@ -2142,23 +2142,23 @@ function Footer() {
     React.createElement(
       "div",
       { className: "footer-copy" },
-      "© 2026 Kasafide. All rights reserved.",
+      "Â© 2026 Kasafide. All rights reserved.",
     ),
   );
 }
 
-// ── Root App ──────────────────────────────────────────────────────────────────
+// â”€â”€ Root App â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// ── How We Verify ────────────────────────────────────────────────────────────
+// â”€â”€ How We Verify â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // This replaced the testimonials block, which quoted people who do not exist yet.
 //
 // Every gate below is one the code actually enforces, and each is worth checking against:
-//   • email       — api/auth/signup creates the account unconfirmed and emails a hashed token
+//   â€¢ email       â€” api/auth/signup creates the account unconfirmed and emails a hashed token
 //                   (migrations/008); the account cannot be used until that link is opened
-//   • identity    — module/seller/verification.html takes a government ID and a selfie from the
+//   â€¢ identity    â€” module/seller/verification.html takes a government ID and a selfie from the
 //                   camera, and profiles.account_status stays 'pending' until an admin moves it
-//   • ownership   — module/seller/post.html requires photos of the Deed of Sale or TCT per listing
-//   • publication — RLS only returns properties with status 'approved', so an unreviewed listing
+//   â€¢ ownership   â€” module/seller/post.html requires photos of the Deed of Sale or TCT per listing
+//   â€¢ publication â€” RLS only returns properties with status 'approved', so an unreviewed listing
 //                   is not merely unlabelled, it is unreachable
 const verifySteps = [
   {
@@ -2170,19 +2170,19 @@ const verifySteps = [
   {
     tag: 'Step 2',
     title: 'A government ID and a live selfie',
-    desc: 'Sellers submit a valid ID and take a selfie through the camera, in the app — not a photo chosen from a gallery. An administrator compares the two before the account is marked verified.',
+    desc: 'Sellers submit a valid ID and take a selfie through the camera, in the app â€” not a photo chosen from a gallery. An administrator compares the two before the account is marked verified.',
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="9" cy="12" r="2.6"/><path d="M14.5 10h4M14.5 14h3"/></svg>`,
   },
   {
     tag: 'Step 3',
     title: 'Proof the property is theirs',
-    desc: 'Every listing carries photographs of its Deed of Sale or Transfer Certificate of Title, or a tax declaration. One per property — a verified seller still cannot post a house they cannot document.',
+    desc: 'Every listing carries photographs of its Deed of Sale or Transfer Certificate of Title, or a tax declaration. One per property â€” a verified seller still cannot post a house they cannot document.',
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9 15 2 2 4-4"/></svg>`,
   },
   {
     tag: 'Step 4',
     title: 'Nothing is public until it is reviewed',
-    desc: 'A new listing is not hidden behind a label — it is not on the site at all. It appears in browse only after an administrator approves it, and it comes straight back down if a seller’s verification lapses.',
+    desc: 'A new listing is not hidden behind a label â€” it is not on the site at all. It appears in browse only after an administrator approves it, and it comes straight back down if a sellerâ€™s verification lapses.',
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>`,
   },
 ];
@@ -2196,7 +2196,7 @@ function HowWeVerify() {
     React.createElement('span', { className: 'section-label' }, 'How We Verify'),
     React.createElement('h2', { className: 'section-title' }, 'Four Things Nobody Gets Past'),
     React.createElement('p', { className: 'section-sub' },
-      'Not a promise about how careful we are — four checks the platform refuses to skip'),
+      'Not a promise about how careful we are â€” four checks the platform refuses to skip'),
     React.createElement('div', { className: 'verify-grid' },
       verifySteps.map((s, i) =>
         React.createElement('div', { key: i, className: 'verify-card' },
@@ -2213,7 +2213,7 @@ function HowWeVerify() {
       ),
     ),
     React.createElement('p', { className: 'verify-note' },
-      'Verification does not expire quietly. When a seller’s documents lapse they are moved back to re-verification, and their listings leave the site until the new ones are approved.'),
+      'Verification does not expire quietly. When a sellerâ€™s documents lapse they are moved back to re-verification, and their listings leave the site until the new ones are approved.'),
   );
 }
 
@@ -2249,3 +2249,4 @@ function App() {
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(React.createElement(App));
+

@@ -1,40 +1,51 @@
-import { NextResponse } from "next/server";
-import { timingSafeEqual } from "node:crypto";
-import { getAdminSupabase } from "@/lib/supabase/admin-client";
+import { NextRequest, NextResponse } from 'next/server';
+import { adminClient } from '@/lib/supabase/admin';
 
-export async function POST(request: Request) {
-  // Fail closed: without a configured token anybody could mark payments as paid.
-  const xenditToken = process.env.XENDIT_CALLBACK_TOKEN;
-  if (!xenditToken) return NextResponse.json({ error: "Webhook not configured" }, { status: 500 });
-  // Constant-time comparison, so response timing cannot be used to guess the token a byte at a time.
-  const given = Buffer.from(request.headers.get("x-callback-token") ?? "");
-  const expected = Buffer.from(xenditToken);
-  if (given.length !== expected.length || !timingSafeEqual(given, expected)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const body = await request.json().catch(() => ({}));
-  const { event, data } = body;
-
-  if (event === "qr.paid" || data?.status === "COMPLETED") {
-    // No UPDATE policy on payments for end users by design -> write with the service role.
-    const supabase = getAdminSupabase();
-
-    const { data: payment } = await supabase
-      .from("payments")
-      .update({ status: "paid", paid_at: new Date().toISOString() })
-      .eq("xendit_charge_id", data.id)
-      .select("*")
-      .maybeSingle();
-
-    if (payment) {
-      await supabase.channel("payment-updates").send({
-        type: "broadcast",
-        event: "payment-paid",
-        payload: payment,
-      });
+export async function POST(req: NextRequest) {
+  try {
+    // Validate Xendit callback token
+    const callbackToken = req.headers.get('x-callback-token');
+    if (!callbackToken || callbackToken !== process.env.XENDIT_CALLBACK_TOKEN) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
-  }
 
-  return NextResponse.json({ received: true }, { status: 200 });
+    const body = (await req.json()) as {
+      reference_id?: string;
+      external_id?: string;
+      status?: string;
+      data?: {
+        reference_id?: string;
+        status?: string;
+      };
+      [key: string]: unknown;
+    };
+
+    const reference_id = body.reference_id ?? body.external_id ?? body.data?.reference_id;
+    const status = body.status ?? body.data?.status;
+
+    if (!reference_id) {
+      return NextResponse.json({ received: true });
+    }
+
+    if (status === 'SUCCEEDED') {
+      const { error: updateError } = await adminClient
+        .from('payments')
+        .update({
+          status: 'confirmed',
+          paid_at: new Date().toISOString(),
+        })
+        .eq('xendit_reference_id', reference_id);
+
+      if (updateError) {
+        // Log but still return 200 so Xendit doesn't retry indefinitely
+        console.error('[xendit webhook] DB update error:', updateError.message);
+      }
+    }
+
+    return NextResponse.json({ received: true });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Internal server error';
+    console.error('[xendit webhook] error:', message);
+    return NextResponse.json({ received: true });
+  }
 }

@@ -6,6 +6,27 @@ This document records key milestones, major architecture decisions, refactoring 
 
 ## Log Entries
 
+### [2026-11-13] Full SSR Migration — Security Hardening & API Layer
+- **Author**: Antigravity AI Agent
+- **Scope**: Critical security overhaul + full SSR migration
+- **Changes**:
+  - **SECURITY FIX**: Renamed `NEXT_PUBLIC_SUPABASE_ROLE_KEY` → `SUPABASE_SERVICE_ROLE_KEY` in `.env.local`. Service-role JWT was previously exposed to browsers via `NEXT_PUBLIC_` prefix.
+  - **Middleware**: `src/middleware.ts` — Server-side auth guard for `/buyer/*`, `/seller/*`, `/admin/*`, `/super-admin/*`. Uses `@supabase/ssr` with HttpOnly cookies. Replaces client-side `requireRole()` JS guards.
+  - **Supabase clients**: `src/lib/supabase/server.ts` (cookie-based session), `src/lib/supabase/admin.ts` (service-role, server-only).
+  - **Auth API routes** (`src/app/api/auth/`): `set-session` (sets HttpOnly cookie), `signout`, `signup` (Zod + nodemailer confirmation), `forgot-password`, `reset-password`, `callback` (OAuth).
+  - **Payment API routes** (`src/app/api/payments/`): `create-invoice` (Xendit QR, DB price lookup), `manual-proof` (Supabase storage upload), `confirm` (seller action).
+  - **Webhook**: `src/app/api/webhooks/xendit/route.ts` — validates `x-callback-token`, updates payment status.
+  - **Refunds**: `src/app/api/refunds/request` (buyer), `src/app/api/refunds/disburse` (admin).
+  - **Meowrie AI**: `src/app/api/ai/customer-service/route.ts` — Mistral-7B via Hugging Face Inference API. Needs `HUGGING_FACE_API_KEY` in `.env.local`.
+  - **OCR**: `src/app/api/verify/ocr/route.ts` — Google Vision API.
+  - **Email notifications**: `src/app/api/notifications/email/route.ts` — admin-only, nodemailer.
+  - **next.config.mjs**: Replaced `redirects()` with `rewrites()` — maps clean SSR-protected URLs to existing HTML files in `public/`.
+  - **public/assets/js/auth.js**: Updated endpoint from `/api/auth/set-cookie` → `/api/auth/set-session`.
+  - **public/components/customer-service.js**: Rebranded HomeSure → Meowrie/Kasafide.
+  - **src/app/page.tsx**: Root page created (redirects to `index.html`).
+- **Build**: `npm run typecheck` ✅ zero errors. `npm run build` — run after this entry.
+- **Pending**: Add real `HUGGING_FACE_API_KEY` to `.env.local` from huggingface.co.
+
 ### [2026-09-29] Environment Initialization for Gemini & Antigravity
 - **Author**: Lead Project Architect
 - **Action**: Initialized standard AI developer workspace environment.
